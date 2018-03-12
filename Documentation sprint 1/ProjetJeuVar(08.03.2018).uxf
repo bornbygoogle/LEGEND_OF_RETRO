@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.5.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1140</x>
+      <y>0</y>
+      <w>320</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>Personne(AbstractClass)
+--
+-compteur=1:int
+-idp: int
+-nome: String
+-pren: String
+--
+&lt;&lt;constructeur&gt;&gt;+Personne(String _nom,String _pren)
++getCompteur():int
++getNom():String
++getPren():String
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>960</x>
+      <y>280</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>Fournisseur
+--
+
+--
+
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1470</x>
+      <y>280</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>Client
+--
+
+--
+
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>660</x>
+      <y>550</y>
+      <w>550</w>
+      <h>270</h>
+    </coordinates>
+    <panel_attributes>Produit(Classe abstraite)
+--
+-nom:String;
+-codebarre:int
+-prix:double
+-stock:int
+
+--
+&lt;&lt;constructeur&gt;&gt;+Jeu(String _nom,int _codebarre,double _prix)
++getNom():String
++getCodebarre():String
++getStock()
++getPrix();
++ public abstract String toString();
+
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1320</x>
+      <y>570</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>Operation
+--
+-idoperatiob:int
+--
+setAnnuler():void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1080</x>
+      <y>980</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>Vente
+--
+-compteur=1:int
+-nomjeuachat:String
+-prixventeHT:Double
+-tvavente:Double
+-prixventeTTC
+-datevente Date;
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1520</x>
+      <y>970</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>Achat
+--
+-compteur=1:int
+-idachat:int
+-nomjeuachat:String
+-prixachatHT:Double
+-tvaachat:Double
+-prixachatTTC:Double
+-dateachat Date;
+--
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>1370</x>
+      <y>430</y>
+      <w>220</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n
+r1=acheter</panel_attributes>
+    <additional_attributes>30;140;200;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>1030</x>
+      <y>440</y>
+      <w>380</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n
+r1=vente</panel_attributes>
+    <additional_attributes>360;130;30;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>20</x>
+      <y>240</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>INTERACEGRAPHIQUE
+--
+-
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>1110</x>
+      <y>730</y>
+      <w>330</w>
+      <h>270</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>310;30;30;250</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>1400</x>
+      <y>730</y>
+      <w>260</w>
+      <h>260</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;240;240</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>130</x>
+      <y>990</y>
+      <w>210</w>
+      <h>270</h>
+    </coordinates>
+    <panel_attributes>Console
+--
+
+
+--
+&lt;&lt;constructeur&gt;&gt;+Jeu(String _nom)
+
++toString():String
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>180</x>
+      <y>790</y>
+      <w>600</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>580;30;30;200</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>620</x>
+      <y>790</y>
+      <w>160</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>140;30;30;190</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>530</x>
+      <y>980</y>
+      <w>480</w>
+      <h>270</h>
+    </coordinates>
+    <panel_attributes>Jeu
+--
+tags:Vector&lt;String&gt;
+--
+&lt;&lt;constructeur&gt;&gt;+Jeu(String _nom,int _codebarre,double _prix,String _tags)
+
+_+parseTags(String):Vector&gt;String&gt;_
++getTags():Vector&lt;String&gt;
++setTag(String):void
+
++toString():String
+
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>420</x>
+      <y>240</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>Controleur
+--
+
+
+
+
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>160</x>
+      <y>500</y>
+      <w>250</w>
+      <h>270</h>
+    </coordinates>
+    <panel_attributes>Modele
+--
+
+
+
+
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>1090</x>
+      <y>140</y>
+      <w>220</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>200;30;30;150</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>1280</x>
+      <y>140</y>
+      <w>350</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;330;140</additional_attributes>
+  </element>
+</diagram>

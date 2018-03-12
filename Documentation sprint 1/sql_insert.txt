@@ -1,0 +1,26 @@
+INSERT INTO `p1514527`.`Console`
+	(`code_barre`, `nom`, `prix`, `stock`)
+	VALUES (codeBarre, nom, prix, stock);
+
+INSERT INTO `p1514527`.`Editeur`
+	VALUES (nom);
+
+INSERT INTO `p1514527`.`Jeu`
+	(`nom`, `id_editeur`, `description`)
+	VALUES (nom, editeurId, description);
+
+INSERT INTO `p1514527`.`Version`
+	(`code_barre`, `nom`, `id_jeu`,`prix`, `stock`)
+	VALUES (codeBarre, nom, jeuId, prix, stock);
+
+INSERT INTO `p1514527`.`Tag`
+	VALUES (tag);
+
+INSERT INTO `p1514527`.`Decrire`
+	(`id_jeu`, `id_tag`)
+	VALUES(jeuId, tagId);
+
+Remarque : les valeurs insérées sont indiquées entre guillemets simples : '0', 'monTexte', NULL, '43'...
+
+Remarque 2 : si la variable n'existe pas et que le modèle accepte NULL ou prévoit une valeur par défaut,
+on peut ne pas la lister.
