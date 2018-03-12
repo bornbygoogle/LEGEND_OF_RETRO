@@ -4,8 +4,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>54</x>
-      <y>189</y>
+      <x>0</x>
+      <y>360</y>
       <w>90</w>
       <h>27</h>
     </coordinates>
@@ -15,16 +15,17 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>297</x>
-      <y>117</y>
+      <x>243</x>
+      <y>288</y>
       <w>513</w>
-      <h>171</h>
+      <h>189</h>
     </coordinates>
-    <panel_attributes>VueFicheProduit
+    <panel_attributes>&lt;&lt;EventListener&gt;&gt;
+MenuProduit
 --
--flagModuleActif: int
+-eventListener: EventListener
 --
-+afficherErreur(Exception): void
++MenuProduit(EventListener listener)
 +getSaisieProduit(): beans.Produit
 +getSaisieProduit(): beans.Jeu
 +getSaisieProduit(): beans.Editeur
@@ -37,8 +38,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>702</x>
-      <y>0</y>
+      <x>648</x>
+      <y>171</y>
       <w>108</w>
       <h>99</h>
     </coordinates>
@@ -54,8 +55,8 @@ EDITEUR</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>738</x>
-      <y>90</y>
+      <x>684</x>
+      <y>261</y>
       <w>27</w>
       <h>45</h>
     </coordinates>
@@ -65,32 +66,33 @@ EDITEUR</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>297</x>
-      <y>81</y>
-      <w>90</w>
-      <h>27</h>
+      <x>243</x>
+      <y>234</y>
+      <w>99</w>
+      <h>45</h>
     </coordinates>
-    <panel_attributes>Menu</panel_attributes>
+    <panel_attributes>&lt;&lt;ActionListener&gt;&gt;
+Menu</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>306</x>
-      <y>279</y>
+      <x>252</x>
+      <y>468</y>
       <w>27</w>
-      <h>162</h>
+      <h>144</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 m1=1
 m2=1</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;160.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>135</x>
-      <y>198</y>
+      <x>81</x>
+      <y>369</y>
       <w>180</w>
       <h>27</h>
     </coordinates>
@@ -100,8 +102,8 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>135</x>
-      <y>90</y>
+      <x>81</x>
+      <y>261</y>
       <w>180</w>
       <h>135</h>
     </coordinates>
@@ -111,8 +113,8 @@ m2=1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>297</x>
-      <y>423</y>
+      <x>243</x>
+      <y>594</y>
       <w>189</w>
       <h>279</h>
     </coordinates>
@@ -141,8 +143,8 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>135</x>
-      <y>198</y>
+      <x>81</x>
+      <y>369</y>
       <w>450</w>
       <h>594</h>
     </coordinates>
@@ -152,8 +154,8 @@ m2=1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>378</x>
-      <y>333</y>
+      <x>324</x>
+      <y>504</y>
       <w>108</w>
       <h>72</h>
     </coordinates>
@@ -167,19 +169,19 @@ VERSION</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>423</x>
-      <y>396</y>
+      <x>369</x>
+      <y>567</y>
       <w>27</w>
-      <h>45</h>
+      <h>63</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;30.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>477</x>
-      <y>396</y>
+      <x>423</x>
+      <y>567</y>
       <w>90</w>
       <h>180</h>
     </coordinates>
@@ -191,8 +193,8 @@ m2=0..1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>495</x>
-      <y>333</y>
+      <x>441</x>
+      <y>504</y>
       <w>126</w>
       <h>72</h>
     </coordinates>
@@ -207,8 +209,8 @@ m2=0..1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>54</x>
-      <y>405</y>
+      <x>0</x>
+      <y>576</y>
       <w>90</w>
       <h>27</h>
     </coordinates>
@@ -218,8 +220,8 @@ m2=0..1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>135</x>
-      <y>315</y>
+      <x>81</x>
+      <y>486</y>
       <w>414</w>
       <h>126</h>
     </coordinates>
@@ -230,21 +232,21 @@ fg=blue</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>621</x>
-      <y>279</y>
+      <x>567</x>
+      <y>468</y>
       <w>45</w>
-      <h>162</h>
+      <h>144</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 m1=1
 m2=0..1</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;160.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>567</x>
-      <y>423</y>
+      <x>513</x>
+      <y>594</y>
       <w>189</w>
       <h>279</h>
     </coordinates>
@@ -257,7 +259,6 @@ m2=0..1</panel_attributes>
 -selectionnerEditeur: JButton
 -erreurTagsInconus: JLabel
 --
-+afficherErreur(Exception): void
 +getBean(): beans.SaisieJeu
 +setResultats(Vector&lt;beans.
         SaisieJeu&gt;):void</panel_attributes>
@@ -266,8 +267,8 @@ m2=0..1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>522</x>
-      <y>396</y>
+      <x>468</x>
+      <y>567</y>
       <w>63</w>
       <h>180</h>
     </coordinates>
@@ -279,8 +280,8 @@ m2=0..1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>774</x>
-      <y>423</y>
+      <x>720</x>
+      <y>594</y>
       <w>189</w>
       <h>279</h>
     </coordinates>
@@ -296,58 +297,61 @@ m2=0..1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>783</x>
-      <y>279</y>
+      <x>729</x>
+      <y>468</y>
       <w>45</w>
-      <h>162</h>
+      <h>144</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 m1=1
 m2=0..1</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;160.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>297</x>
-      <y>0</y>
-      <w>90</w>
-      <h>27</h>
+      <x>243</x>
+      <y>99</y>
+      <w>153</w>
+      <h>54</h>
     </coordinates>
-    <panel_attributes>GUI</panel_attributes>
+    <panel_attributes>&lt;&lt;EventListener&gt;&gt;
+GUI
+--
+-controleur: EventListener</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>378</x>
-      <y>9</y>
-      <w>162</w>
-      <h>126</h>
+      <x>306</x>
+      <y>144</y>
+      <w>180</w>
+      <h>162</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 m1=1
 m2=1</panel_attributes>
-    <additional_attributes>10.0;10.0;160.0;10.0;160.0;120.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0;180.0;90.0;180.0;160.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>324</x>
-      <y>18</y>
+      <x>270</x>
+      <y>144</y>
       <w>27</w>
-      <h>81</h>
+      <h>108</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 m1=1
 m2=1</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>54</x>
-      <y>0</y>
+      <x>0</x>
+      <y>99</y>
       <w>90</w>
       <h>27</h>
     </coordinates>
@@ -357,8 +361,8 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>135</x>
-      <y>9</y>
+      <x>81</x>
+      <y>108</y>
       <w>180</w>
       <h>27</h>
     </coordinates>
@@ -368,26 +372,31 @@ m2=1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>567</x>
-      <y>765</y>
+      <x>513</x>
+      <y>936</y>
       <w>189</w>
-      <h>108</h>
+      <h>180</h>
     </coordinates>
-    <panel_attributes>/ChercherCreerModifier/
+    <panel_attributes>&lt;&lt;ActionListener&gt;&gt;
+/ChercherCreerModifier/
 --
+-eventListener: EventListener
 -chercher: JButton
 -enregistrer: JButton
+-annuler: JButton
 -aucunResultat: JLabel
 -erreurInconue: JLabel
 --
++ChercherCreerModifier
+        (EventListener listener)
 +afficherErreur(Exception): void</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>648</x>
-      <y>693</y>
+      <x>594</x>
+      <y>864</y>
       <w>27</w>
       <h>90</h>
     </coordinates>
@@ -397,8 +406,8 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>648</x>
-      <y>693</y>
+      <x>594</x>
+      <y>864</y>
       <w>234</w>
       <h>90</h>
     </coordinates>
@@ -408,12 +417,108 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>369</x>
-      <y>693</y>
+      <x>315</x>
+      <y>864</y>
       <w>306</w>
       <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>320.0;80.0;320.0;50.0;10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>720</x>
+      <y>936</y>
+      <w>117</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>FlagAnnulable
+" énumération"
+--
+ANNULABLE
+NON_ANNULABLE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>693</x>
+      <y>936</y>
+      <w>45</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>30.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>270</x>
+      <y>72</y>
+      <w>27</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>234</x>
+      <y>27</y>
+      <w>108</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>FlagMenuActif
+" énumération"
+--
+PRODUIT</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>180</x>
+      <y>0</y>
+      <w>819</w>
+      <h>1161</h>
+    </coordinates>
+    <panel_attributes>vue
+--
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>783</x>
+      <y>45</y>
+      <w>216</w>
+      <h>351</h>
+    </coordinates>
+    <panel_attributes>EVENEMENTS
+
+Le GUI, MenuProduit et
+/ChercherCreerModifier/
+écoutent leurs subordonnés
+(événements indiquant qu'il
+faut afficher un autre composant,
+OU que l'utilisateur a saisi qqch
+à transmettre au contrôleur).
+
+Le GUI est capable d'envoyer
+des events au contrôleur car il
+se souvient de son adresse.
+Il écoute aussi les events envoyés
+par le contrôleur (une classe du
+contrôleur censée fire ce genre
+d'events en tous cas)
+et réagit en conséquence.
+
+Les classes contenant des boutons
+implémentent ActionListener.
+Logique.</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>
