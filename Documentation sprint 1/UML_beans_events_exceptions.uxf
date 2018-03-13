@@ -4,8 +4,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>30</x>
-      <y>160</y>
+      <x>20</x>
+      <y>40</y>
       <w>210</w>
       <h>160</h>
     </coordinates>
@@ -25,10 +25,10 @@
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>10</x>
-      <y>120</y>
-      <w>1100</w>
-      <h>300</h>
+      <x>0</x>
+      <y>0</y>
+      <w>1220</w>
+      <h>350</h>
     </coordinates>
     <panel_attributes>beans
 --
@@ -39,8 +39,8 @@ layer=-1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>290</x>
-      <y>160</y>
+      <x>280</x>
+      <y>40</y>
       <w>210</w>
       <h>40</h>
     </coordinates>
@@ -51,8 +51,8 @@ Console</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>290</x>
-      <y>290</y>
+      <x>390</x>
+      <y>170</y>
       <w>210</w>
       <h>80</h>
     </coordinates>
@@ -66,30 +66,19 @@ VersionJeu
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>230</x>
-      <y>170</y>
-      <w>80</w>
+      <x>220</x>
+      <y>180</y>
+      <w>190</w>
       <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;60.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>230</x>
-      <y>300</y>
-      <w>80</w>
-      <h>30</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;60.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;170.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>580</x>
-      <y>290</y>
+      <x>680</x>
+      <y>170</y>
       <w>210</w>
       <h>120</h>
     </coordinates>
@@ -106,8 +95,8 @@ Jeu
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>490</x>
-      <y>300</y>
+      <x>590</x>
+      <y>180</y>
       <w>110</w>
       <h>40</h>
     </coordinates>
@@ -119,8 +108,8 @@ m2=0..1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>780</x>
-      <y>300</y>
+      <x>880</x>
+      <y>180</y>
       <w>120</w>
       <h>40</h>
     </coordinates>
@@ -132,8 +121,8 @@ m2=0..1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>880</x>
-      <y>290</y>
+      <x>980</x>
+      <y>170</y>
       <w>210</w>
       <h>120</h>
     </coordinates>
@@ -150,10 +139,10 @@ Editeur
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>10</x>
-      <y>440</y>
+      <x>0</x>
+      <y>370</y>
       <w>1100</w>
-      <h>300</h>
+      <h>500</h>
     </coordinates>
     <panel_attributes>events
 --
@@ -164,12 +153,567 @@ layer=-1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>40</x>
-      <y>470</y>
+      <x>580</x>
+      <y>530</y>
       <w>210</w>
-      <h>190</h>
+      <h>30</h>
     </coordinates>
-    <panel_attributes/>
+    <panel_attributes>Creation</panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>60</x>
+      <y>430</y>
+      <w>160</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>CreationErreur
+--
+-exception: Exception
+--
++getException()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>490</x>
+      <y>430</y>
+      <w>170</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>CreationVersionJeu
+--
+--
++getBeans():Vector
+        &lt;beans.VersionJeu&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>720</x>
+      <y>430</y>
+      <w>160</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>CreationJeu
+--
+--
++getBeans():Vector
+        &lt;beans.Jeu&gt;
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>930</x>
+      <y>430</y>
+      <w>160</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>CreationEditeur
+--
+--
++getBeans():Vector
+        &lt;beans.Editeur&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>580</x>
+      <y>490</y>
+      <w>120</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>100.0;40.0;100.0;20.0;10.0;20.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>120</x>
+      <y>490</y>
+      <w>580</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>560.0;40.0;560.0;20.0;10.0;20.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>670</x>
+      <y>490</y>
+      <w>140</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;20.0;120.0;20.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>670</x>
+      <y>490</y>
+      <w>370</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;20.0;350.0;20.0;350.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>270</x>
+      <y>430</y>
+      <w>160</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>CreationConsole
+--
+--
++getBeans():Vector
+        &lt;beans.Console&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>490</y>
+      <w>370</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>350.0;40.0;350.0;20.0;10.0;20.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>70</y>
+      <w>30</w>
+      <h>380</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;360.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>520</x>
+      <y>240</y>
+      <w>30</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;190.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>820</x>
+      <y>280</y>
+      <w>30</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;150.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1040</x>
+      <y>280</y>
+      <w>30</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;150.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>60</x>
+      <y>580</y>
+      <w>160</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>RechercheErreur
+--
+-exception: Exception
+--
++getException()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>120</x>
+      <y>640</y>
+      <w>580</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>560.0;40.0;560.0;20.0;10.0;20.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>270</x>
+      <y>580</y>
+      <w>160</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>RechercheConsole
+--
+--
++getBeans():Vector
+        &lt;beans.Console&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>80</y>
+      <w>50</w>
+      <h>520</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=0..n
+fg=blue</panel_attributes>
+    <additional_attributes>10.0;500.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>520</x>
+      <y>250</y>
+      <w>50</w>
+      <h>350</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=0..n
+fg=blue</panel_attributes>
+    <additional_attributes>10.0;330.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>490</x>
+      <y>580</y>
+      <w>170</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>RechercheVersionJeu
+--
+--
++getBeans():Vector
+        &lt;beans.VersionJeu&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>580</x>
+      <y>640</y>
+      <w>120</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>100.0;40.0;100.0;20.0;10.0;20.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>670</x>
+      <y>640</y>
+      <w>140</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;20.0;120.0;20.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>670</x>
+      <y>640</y>
+      <w>370</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;20.0;350.0;20.0;350.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>580</x>
+      <y>680</y>
+      <w>210</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>Recherche</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>720</x>
+      <y>580</y>
+      <w>160</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>RechercheJeu
+--
+--
++getBeans():Vector
+        &lt;beans.Jeu&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>820</x>
+      <y>290</y>
+      <w>50</w>
+      <h>310</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=0..n
+fg=blue</panel_attributes>
+    <additional_attributes>10.0;290.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>930</x>
+      <y>580</y>
+      <w>160</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>RechercheEditeur
+--
+--
++getBeans():Vector
+        &lt;beans.Editeur&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1040</x>
+      <y>290</y>
+      <w>50</w>
+      <h>310</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=0..n
+fg=blue</panel_attributes>
+    <additional_attributes>10.0;290.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>60</x>
+      <y>730</y>
+      <w>160</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>ModificationErreur
+--
+-exception: Exception
+--
++getException()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>120</x>
+      <y>790</y>
+      <w>580</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>560.0;40.0;560.0;20.0;10.0;20.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>270</x>
+      <y>730</y>
+      <w>160</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>ModificationConsole
+--
+--
++getBeans():Vector
+        &lt;beans.Console&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>90</y>
+      <w>30</w>
+      <h>660</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1
+fg=none</panel_attributes>
+    <additional_attributes>10.0;640.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>520</x>
+      <y>260</y>
+      <w>30</w>
+      <h>490</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1
+fg=none</panel_attributes>
+    <additional_attributes>10.0;470.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>490</x>
+      <y>730</y>
+      <w>170</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>ModificationVersionJeu
+--
+--
++getBeans():Vector
+        &lt;beans.VersionJeu&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>580</x>
+      <y>790</y>
+      <w>120</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>100.0;40.0;100.0;20.0;10.0;20.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>670</x>
+      <y>790</y>
+      <w>140</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;20.0;120.0;20.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>670</x>
+      <y>790</y>
+      <w>370</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;20.0;350.0;20.0;350.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>580</x>
+      <y>830</y>
+      <w>210</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>Modification</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>720</x>
+      <y>730</y>
+      <w>160</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>ModificationJeu
+--
+--
++getBeans():Vector
+        &lt;beans.Jeu&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>820</x>
+      <y>300</y>
+      <w>30</w>
+      <h>450</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1
+fg=none</panel_attributes>
+    <additional_attributes>10.0;430.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>930</x>
+      <y>730</y>
+      <w>160</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>ModificationEditeur
+--
+--
++getBeans():Vector
+        &lt;beans.Editeur&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1040</x>
+      <y>300</y>
+      <w>30</w>
+      <h>450</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1
+fg=none</panel_attributes>
+    <additional_attributes>10.0;430.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>
