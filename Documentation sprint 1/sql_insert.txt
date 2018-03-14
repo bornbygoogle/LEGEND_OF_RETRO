@@ -10,8 +10,8 @@ INSERT INTO `p1514527`.`Jeu`
 	VALUES (nom, editeurId, description);
 
 INSERT INTO `p1514527`.`Version`
-	(`code_barre`, `nom`, `id_jeu`,`prix`, `stock`)
-	VALUES (codeBarre, nom, jeuId, prix, stock);
+	(`code_barre`, `nom`, `id_jeu`, `id_console`,`prix`, `stock`)
+	VALUES (codeBarre, nom, jeuId, consoleId, prix, stock);
 
 INSERT INTO `p1514527`.`Tag`
 	VALUES (tag);
