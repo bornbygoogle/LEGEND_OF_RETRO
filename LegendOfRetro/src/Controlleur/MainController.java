@@ -18,7 +18,7 @@ public class MainController extends JFrame {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Vue.GUI_produit a = new Vue.GUI_produit();
+        Vue.GUI a = new Vue.GUI();
     }
     
 }
