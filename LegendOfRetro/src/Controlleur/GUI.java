@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Vue;
+package Controlleur;
 
+import java.util.Vector;
 import javax.swing.JFrame;
 
 /**
@@ -32,14 +33,13 @@ public class GUI extends javax.swing.JFrame {
     private void initComponents() {
 
         mainPanel1 = new Vue.mainPanel();
-        resultat2 = new Vue.Resultat();
         recherche = new javax.swing.JButton();
         creer = new javax.swing.JButton();
         modifier = new javax.swing.JButton();
+        resultat1 = new Vue.Resultat();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Legend Of Retro");
-        setPreferredSize(new java.awt.Dimension(900, 560));
 
         mainPanel1.setPreferredSize(new java.awt.Dimension(150, 379));
 
@@ -62,22 +62,21 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(mainPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(101, 101, 101)
-                        .addComponent(recherche)
-                        .addGap(148, 148, 148)
-                        .addComponent(creer)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
-                        .addComponent(modifier)
-                        .addGap(92, 92, 92))
-                    .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(resultat2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(resultat1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(95, 95, 95)
+                        .addComponent(recherche)
+                        .addGap(142, 142, 142)
+                        .addComponent(creer)
+                        .addGap(172, 172, 172)
+                        .addComponent(modifier))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(mainPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(resultat2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(resultat1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(recherche)
@@ -85,15 +84,50 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(modifier)))
         );
 
-        recherche.getAccessibleContext().setAccessibleName("Recherche");
-        modifier.getAccessibleContext().setAccessibleName("Modifier");
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Méthode pour vérifier si le Code Barre se compose que des intégers
+     * @param s
+     * @return boolean
+     */
+    public static boolean isInteger(String s) {
+    try { 
+        Integer.parseInt(s); 
+    } catch(NumberFormatException e) { 
+        return false; 
+    } catch(NullPointerException e) {
+        return false;
+    }
+    // only got here if we didn't return false
+    return true;
+    }
+    
+    /**
+     * Méthode formation le bean de donné
+     * @return Vector
+     */
+    
+    public static Vector makeDataBeans()
+    {
+        Vector vectTemp =  new Vector();
+        return vectTemp;
+    }
+    
     private void rechercheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rechercheActionPerformed
         // TODO add your handling code here:
-        Vue.Resultat.txtResultat.setText("Clicked Recherche !!!");
+        Vector dataBeans =  new Vector();
+        String codeBarre = "";
+        if (isInteger(Vue.Resultat.fieldCodeBarre.getText())) { codeBarre = Vue.Resultat.fieldCodeBarre.getText(); }
+        dataBeans = makeDataBeans();
+        String text = "Clicked Recherche !!!";
+        Vue.Resultat.fieldCodeBarre.setText(text);
+        Vue.Resultat.errorCodeBarre.setText(text);
+        Vue.Resultat.fieldNom.setText(text);
+        Vue.Resultat.fieldCote.setText(text);
+        Vue.Resultat.fieldDeveloppeur.setText(text);
+        Vue.Resultat.fieldTag.setText(text);
     }//GEN-LAST:event_rechercheActionPerformed
 
     /**
@@ -143,6 +177,6 @@ public class GUI extends javax.swing.JFrame {
     private Vue.mainPanel mainPanel1;
     private javax.swing.JButton modifier;
     private javax.swing.JButton recherche;
-    private Vue.Resultat resultat2;
+    private Vue.Resultat resultat1;
     // End of variables declaration//GEN-END:variables
 }

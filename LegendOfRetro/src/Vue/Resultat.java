@@ -26,18 +26,18 @@ public class Resultat extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtResultat = new javax.swing.JTextArea();
+        fieldTag = new javax.swing.JTextArea();
         fieldCodeBarre = new javax.swing.JTextField();
         errorCodeBarre = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        fieldCodeBarre1 = new javax.swing.JTextField();
-        fieldCodeBarre2 = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
+        fieldNom = new javax.swing.JTextField();
+        fieldDeveloppeur = new javax.swing.JTextField();
+        fieldCote = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jScrollPane3 = new javax.swing.JScrollPane();
+        fieldGenre = new javax.swing.JScrollPane();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -48,18 +48,18 @@ public class Resultat extends javax.swing.JPanel {
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jScrollPane5 = new javax.swing.JScrollPane();
+        fieldPlatforme = new javax.swing.JScrollPane();
         jLabel16 = new javax.swing.JLabel();
-        jScrollPane6 = new javax.swing.JScrollPane();
+        fieldEdition = new javax.swing.JScrollPane();
         jLabel17 = new javax.swing.JLabel();
 
         jLabel1.setText("Code Barre : ");
 
-        txtResultat.setColumns(20);
-        txtResultat.setRows(5);
-        jScrollPane1.setViewportView(txtResultat);
-        txtResultat.getAccessibleContext().setAccessibleName("txtResultat");
-        txtResultat.getAccessibleContext().setAccessibleDescription("Texte Resultat");
+        fieldTag.setColumns(20);
+        fieldTag.setRows(5);
+        jScrollPane1.setViewportView(fieldTag);
+        fieldTag.getAccessibleContext().setAccessibleName("txtResultat");
+        fieldTag.getAccessibleContext().setAccessibleDescription("Texte Resultat");
 
         fieldCodeBarre.setText("Code Barre here");
         fieldCodeBarre.setToolTipText("Code Barre");
@@ -73,17 +73,22 @@ public class Resultat extends javax.swing.JPanel {
 
         jLabel4.setText("Cote : ");
 
-        fieldCodeBarre1.setText("Code Barre here");
-        fieldCodeBarre1.setToolTipText("Code Barre");
+        fieldNom.setText("Nom here");
+        fieldNom.setToolTipText("Nom");
+        fieldNom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldNomActionPerformed(evt);
+            }
+        });
 
-        fieldCodeBarre2.setText("Code Barre here");
-        fieldCodeBarre2.setToolTipText("Code Barre");
+        fieldDeveloppeur.setText("Developpeur here");
+        fieldDeveloppeur.setToolTipText("Developpeur");
 
-        jLabel5.setText("Cote");
+        fieldCote.setText("Cote");
 
         jLabel6.setText("Nom :");
 
-        jScrollPane2.setViewportView(jScrollPane3);
+        jScrollPane2.setViewportView(fieldGenre);
 
         jLabel7.setText("Développeur");
 
@@ -103,7 +108,7 @@ public class Resultat extends javax.swing.JPanel {
 
         jLabel15.setText("Platforme : ");
 
-        jScrollPane4.setViewportView(jScrollPane5);
+        jScrollPane4.setViewportView(fieldPlatforme);
 
         jLabel16.setText("Edition : ");
 
@@ -115,18 +120,18 @@ public class Resultat extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fieldCodeBarre1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fieldNom, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel6)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fieldCodeBarre2)
+                    .addComponent(fieldDeveloppeur)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
+                        .addComponent(fieldCote)
                         .addGap(44, 44, 44))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(131, 131, 131)
@@ -138,7 +143,7 @@ public class Resultat extends javax.swing.JPanel {
                     .addComponent(jLabel2)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(fieldEdition, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel16))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,13 +191,13 @@ public class Resultat extends javax.swing.JPanel {
                 .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fieldCote, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(fieldCodeBarre1)
-                    .addComponent(fieldCodeBarre2))
+                    .addComponent(fieldNom)
+                    .addComponent(fieldDeveloppeur))
                 .addGap(3, 3, 3)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
@@ -226,46 +231,50 @@ public class Resultat extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel16)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(fieldEdition, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void fieldNomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldNomActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fieldNomActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel errorCodeBarre;
-    private javax.swing.JTextField fieldCodeBarre;
-    private javax.swing.JTextField fieldCodeBarre1;
-    private javax.swing.JTextField fieldCodeBarre2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
-    static javax.swing.JTextArea txtResultat;
+    public static javax.swing.JLabel errorCodeBarre;
+    public static javax.swing.JTextField fieldCodeBarre;
+    public static javax.swing.JLabel fieldCote;
+    public static javax.swing.JTextField fieldDeveloppeur;
+    public static javax.swing.JScrollPane fieldEdition;
+    public static javax.swing.JScrollPane fieldGenre;
+    public static javax.swing.JTextField fieldNom;
+    public static javax.swing.JScrollPane fieldPlatforme;
+    public static javax.swing.JTextArea fieldTag;
+    public static javax.swing.JLabel jLabel1;
+    public static javax.swing.JLabel jLabel10;
+    public static javax.swing.JLabel jLabel11;
+    public static javax.swing.JLabel jLabel12;
+    public static javax.swing.JLabel jLabel13;
+    public static javax.swing.JLabel jLabel14;
+    public static javax.swing.JLabel jLabel15;
+    public static javax.swing.JLabel jLabel16;
+    public static javax.swing.JLabel jLabel17;
+    public static javax.swing.JLabel jLabel2;
+    public static javax.swing.JLabel jLabel3;
+    public static javax.swing.JLabel jLabel4;
+    public static javax.swing.JLabel jLabel6;
+    public static javax.swing.JLabel jLabel7;
+    public static javax.swing.JLabel jLabel8;
+    public static javax.swing.JLabel jLabel9;
+    public static javax.swing.JScrollPane jScrollPane1;
+    public static javax.swing.JScrollPane jScrollPane2;
+    public static javax.swing.JScrollPane jScrollPane4;
     // End of variables declaration//GEN-END:variables
 
     public Resultat() {
         initComponents();
-        txtResultat.setText("Hello world !");
+        fieldTag.setText("Hello world !");
     }
 }

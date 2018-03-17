@@ -10,7 +10,7 @@
     <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
-    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="9"/>
   </AuxValues>
 
   <Layout>
@@ -18,20 +18,20 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="fieldCodeBarre1" min="-2" pref="234" max="-2" attributes="0"/>
+                  <Component id="fieldNom" min="-2" pref="234" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="fieldCodeBarre2" max="32767" attributes="0"/>
+                  <Component id="fieldDeveloppeur" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                      <Component id="fieldCote" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
@@ -47,7 +47,7 @@
                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jScrollPane2" alignment="1" min="-2" pref="165" max="-2" attributes="0"/>
-                      <Component id="jScrollPane6" alignment="0" min="-2" pref="165" max="-2" attributes="0"/>
+                      <Component id="fieldEdition" alignment="0" min="-2" pref="165" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jLabel16" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -110,14 +110,14 @@
               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel4" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
-                  <Component id="jLabel5" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                  <Component id="fieldCote" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
                   <Component id="jLabel6" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
                   <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="fieldCodeBarre1" max="32767" attributes="0"/>
-                  <Component id="fieldCodeBarre2" max="32767" attributes="0"/>
+                  <Component id="fieldNom" max="32767" attributes="0"/>
+                  <Component id="fieldDeveloppeur" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -157,7 +157,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jScrollPane6" min="-2" pref="176" max="-2" attributes="0"/>
+                              <Component id="fieldEdition" min="-2" pref="176" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jScrollPane4" alignment="0" min="-2" pref="192" max="-2" attributes="0"/>
                       </Group>
@@ -181,7 +181,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTextArea" name="txtResultat">
+        <Component class="javax.swing.JTextArea" name="fieldTag">
           <Properties>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
@@ -190,9 +190,6 @@
             <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="txtResultat"/>
             <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value="Texte Resultat"/>
           </AccessibilityProperties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="8"/>
-          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
@@ -223,19 +220,22 @@
         <Property name="text" type="java.lang.String" value="Cote : "/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="fieldCodeBarre1">
+    <Component class="javax.swing.JTextField" name="fieldNom">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Code Barre here"/>
-        <Property name="toolTipText" type="java.lang.String" value="Code Barre"/>
+        <Property name="text" type="java.lang.String" value="Nom here"/>
+        <Property name="toolTipText" type="java.lang.String" value="Nom"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldNomActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="fieldDeveloppeur">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Developpeur here"/>
+        <Property name="toolTipText" type="java.lang.String" value="Developpeur"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="fieldCodeBarre2">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Code Barre here"/>
-        <Property name="toolTipText" type="java.lang.String" value="Code Barre"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel5">
+    <Component class="javax.swing.JLabel" name="fieldCote">
       <Properties>
         <Property name="text" type="java.lang.String" value="Cote"/>
       </Properties>
@@ -249,7 +249,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Container class="javax.swing.JScrollPane" name="jScrollPane3">
+        <Container class="javax.swing.JScrollPane" name="fieldGenre">
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
         </Container>
@@ -304,7 +304,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Container class="javax.swing.JScrollPane" name="jScrollPane5">
+        <Container class="javax.swing.JScrollPane" name="fieldPlatforme">
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
         </Container>
@@ -315,7 +315,7 @@
         <Property name="text" type="java.lang.String" value="Edition : "/>
       </Properties>
     </Component>
-    <Container class="javax.swing.JScrollPane" name="jScrollPane6">
+    <Container class="javax.swing.JScrollPane" name="fieldEdition">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
     </Container>
