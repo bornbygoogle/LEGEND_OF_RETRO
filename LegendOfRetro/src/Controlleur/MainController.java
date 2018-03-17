@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package maquette;
+package Controlleur;
 
 import javax.swing.JFrame;
 
@@ -11,13 +11,14 @@ import javax.swing.JFrame;
  *
  * @author p1514527
  */
-public class Maquette extends JFrame {
+public class MainController extends JFrame {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Vue.GUI a = new Vue.GUI();
     }
     
 }
