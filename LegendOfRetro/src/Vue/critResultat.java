@@ -40,7 +40,7 @@ public class critResultat extends javax.swing.JPanel {
         fieldPlatforme = new javax.swing.JTextField();
         fieldGenre = new javax.swing.JTextField();
         fieldTag = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
+        fieldNomJeuObligatoire = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
 
         jLabel1.setText("Code Barre : ");
@@ -73,6 +73,11 @@ public class critResultat extends javax.swing.JPanel {
         labelCategorie.setText("Categorie * :");
 
         listeCategorie.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Console", "Jeu" }));
+        listeCategorie.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                listeCategorieItemStateChanged(evt);
+            }
+        });
 
         jLabel18.setText("Tag : ");
 
@@ -88,8 +93,9 @@ public class critResultat extends javax.swing.JPanel {
         fieldTag.setText("Tag here");
         fieldTag.setToolTipText("Tag");
 
-        jLabel8.setForeground(new java.awt.Color(255, 0, 7));
-        jLabel8.setText("*");
+        fieldNomJeuObligatoire.setForeground(new java.awt.Color(255, 0, 7));
+        fieldNomJeuObligatoire.setText("*");
+        fieldNomJeuObligatoire.setVisible(false);
 
         jLabel9.setText(":");
 
@@ -106,7 +112,7 @@ public class critResultat extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel8)
+                        .addComponent(fieldNomJeuObligatoire)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel9)))
                 .addGap(18, 18, 18)
@@ -150,7 +156,7 @@ public class critResultat extends javax.swing.JPanel {
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15)
                     .addComponent(fieldPlatforme)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fieldNomJeuObligatoire, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(2, 2, 2)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -166,6 +172,14 @@ public class critResultat extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_fieldNomActionPerformed
 
+    private void listeCategorieItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listeCategorieItemStateChanged
+        // TODO add your handling code here:
+        if ((String)listeCategorie.getSelectedItem() == "Jeu") 
+        {
+            fieldNomJeuObligatoire.setVisible(true);
+        }
+    }//GEN-LAST:event_listeCategorieItemStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JTextField fieldCodeBarre;
@@ -173,6 +187,7 @@ public class critResultat extends javax.swing.JPanel {
     public static javax.swing.JTextField fieldEdition;
     public static javax.swing.JTextField fieldGenre;
     public static javax.swing.JTextField fieldNom;
+    public static javax.swing.JLabel fieldNomJeuObligatoire;
     public static javax.swing.JTextField fieldPlatforme;
     public static javax.swing.JTextField fieldTag;
     public static javax.swing.JLabel jLabel1;
@@ -182,7 +197,6 @@ public class critResultat extends javax.swing.JPanel {
     public static javax.swing.JLabel jLabel2;
     public static javax.swing.JLabel jLabel6;
     public static javax.swing.JLabel jLabel7;
-    public static javax.swing.JLabel jLabel8;
     public static javax.swing.JLabel jLabel9;
     public static javax.swing.JLabel labelCategorie;
     public static javax.swing.JComboBox<String> listeCategorie;
