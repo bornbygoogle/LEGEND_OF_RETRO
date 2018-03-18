@@ -4,10 +4,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1000</x>
-      <y>70</y>
+      <x>880</x>
+      <y>40</y>
       <w>210</w>
-      <h>230</h>
+      <h>40</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Serializable&gt;&gt;
 /Form/</panel_attributes>
@@ -16,10 +16,10 @@
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>970</x>
-      <y>30</y>
-      <w>300</w>
-      <h>540</h>
+      <x>750</x>
+      <y>0</y>
+      <w>570</w>
+      <h>460</h>
     </coordinates>
     <panel_attributes>bean
 --
@@ -28,249 +28,53 @@ layer=-1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLPackage</id>
-    <coordinates>
-      <x>610</x>
-      <y>30</y>
-      <w>340</w>
-      <h>300</h>
-    </coordinates>
-    <panel_attributes>event
---
-bg=orange
-layer=-1</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>780</x>
-      <y>70</y>
-      <w>120</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>Creer
---
-+getBean():
-        bean.Form</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>890</x>
-      <y>70</y>
-      <w>130</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m2=1</panel_attributes>
-    <additional_attributes>10.0;10.0;110.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>890</x>
-      <y>170</y>
-      <w>130</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m2=1</panel_attributes>
-    <additional_attributes>10.0;10.0;110.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>780</x>
-      <y>170</y>
-      <w>120</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>Rechercher
---
-+getBean():
-        bean.Form</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>890</x>
-      <y>260</y>
-      <w>130</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m2=1</panel_attributes>
-    <additional_attributes>10.0;10.0;110.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>780</x>
-      <y>260</y>
-      <w>120</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>Modifier
---
-+getBean():
-        bean.Form</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>260</x>
-      <y>250</y>
+      <x>390</x>
+      <y>220</y>
       <w>320</w>
-      <h>400</h>
+      <h>520</h>
     </coordinates>
-    <panel_attributes>&lt;&lt;ActionListener&gt;&gt;
-Controleur
+    <panel_attributes>Controleur
 --
 -BDD: java.sql.Connection
 --
 _+main(): void_
 +init(): void
-+actionPerformed(): void
 
--chercher(): void
+-chercher(bean.Form): Vector
 -chercherVersion(bean.Form): Vector&lt;Version&gt;
 -chercherConsole(bean.Form): Vector&lt;Console&gt;
 -chercherJeu(bean.Form): Vector&lt;Jeu&gt;
 -chercherEditeur(bean.Form): Vector&lt;Editeur&gt;
+-chercherFabricant(bean.Form): Vector&lt;Editeur&gt;
 
--modifier(): void
--chercherVersion(bean.Form): void
--chercherConsole(bean.Form): void
--chercherJeu(bean.Form): void
--chercherEditeur(bean.Form): void
+-modifier(bean.Form ancien,
+    bean.Form nouveau): Rapport
+-modifierVersion(bean.Form ancien,
+    bean.Form nouveau): Rapport
+-modifierConsole(bean.Form ancien,
+    bean.Form nouveau): Rapport
+-modifierJeu(bean.Form ancien,
+    bean.Form nouveau): Rapport
+-modifierEditeur(bean.Form ancien,
+    bean.Form nouveau): Rapport
+-modifierFabricant(bean.Form ancien,
+    bean.Form nouveau): Rapport
 
--creer(): void
--chercherVersion(bean.Form): void
--chercherConsole(bean.Form): void
--chercherJeu(bean.Form): void
--chercherEditeur(bean.Form): void</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLNote</id>
-    <coordinates>
-      <x>20</x>
-      <y>50</y>
-      <w>220</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>Le contrôleur écoute les events
-envoyés par la vue, et vice-versa :
-#dans init():
-#vue.addListener(this);
-#this.addListener(vue);
-
-bg=blue</panel_attributes>
+-creer(bean.Form): Rapport
+-creerVersion(bean.Form): Rapport
+-creerConsole(bean.Form): Rapport
+-creerJeu(bean.Form): Rapport
+-creerEditeur(bean.Form): Rapport
+-creerFabricant(bean.Form): Rapport</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>620</x>
-      <y>170</y>
-      <w>100</w>
-      <h>30</h>
-    </coordinates>
-    <panel_attributes>ActionEvent</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>710</x>
-      <y>170</y>
-      <w>90</w>
-      <h>30</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;70.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>710</x>
-      <y>70</y>
-      <w>90</w>
-      <h>130</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;110.0;50.0;110.0;50.0;10.0;70.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>710</x>
-      <y>170</y>
-      <w>90</w>
-      <h>120</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;50.0;10.0;50.0;100.0;70.0;100.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1000</x>
-      <y>340</y>
-      <w>210</w>
-      <h>210</h>
-    </coordinates>
-    <panel_attributes>ProduitForm
---
--id: int
--type: String
--codeBarre: int
--nom: String
--labelJeu: String
--tags: Vector&lt;String&gt;
--labelEditeur: String
--prix: float
--stock: int
---
-+getters
-+setters</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1090</x>
-      <y>290</y>
-      <w>30</w>
-      <h>70</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLNote</id>
-    <coordinates>
-      <x>20</x>
-      <y>150</y>
-      <w>220</w>
-      <h>70</h>
-    </coordinates>
-    <panel_attributes>actionPerformed() détermine
-si il faut chercher, modifier
-ou créer un enregistrement
-d'après le type de l'event.
-bg=blue</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>260</x>
-      <y>70</y>
+      <x>390</x>
+      <y>40</y>
       <w>160</w>
       <h>150</h>
     </coordinates>
@@ -289,31 +93,28 @@ PWD: String
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>20</x>
-      <y>230</y>
+      <x>150</x>
+      <y>200</y>
       <w>220</w>
       <h>200</h>
     </coordinates>
-    <panel_attributes>Subséquemment, ces méthodes
+    <panel_attributes>Les méthodes chercher,
+creer et modifier
 déterminent ce qu'il faut
 ch/cr/mod d'après le type
 et les paramètres du bean.
 
-En fonction des résultats ou
-des exceptions, elles construisent
-un événement qu'elles fire
-pour le retour.
-Celui-ci est capté par le listener
-du contrôleur, à savoir
-la vue.
+S'il n'y a pas d'exception
+les fonctions de recherche renvoient
+un vecteur à l'affichage.
 bg=blue</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>20</x>
-      <y>440</y>
+      <x>150</x>
+      <y>410</y>
       <w>220</w>
       <h>80</h>
     </coordinates>
@@ -327,15 +128,163 @@ bg=blue</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>250</x>
-      <y>30</y>
+      <x>380</x>
+      <y>0</y>
       <w>340</w>
-      <h>640</h>
+      <h>910</h>
     </coordinates>
     <panel_attributes>controleur
 --
 bg=orange
 layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>500</y>
+      <w>370</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>Interface
+Vue
+-
++setContoleur(Controleur): void
++resultatsConsole(Vector&lt;bean.Console&gt;): void
++resultatsVersionJeu(Vector&lt;bean.VersionJeu&gt;):void
++resultatsJeu(Vector&lt;bean.Jeu&gt;): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>770</x>
+      <y>110</y>
+      <w>210</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>CodeBarreForm
+--
+-codeBarre: String
+--
++getters
++setters</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>870</x>
+      <y>70</y>
+      <w>30</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1010</x>
+      <y>110</y>
+      <w>210</w>
+      <h>330</h>
+    </coordinates>
+    <panel_attributes>ProduitForm
+--
+-idConsole: int
+-idJeu: int
+-idVersionJeu: int
+-idEditeur: int
+
+-type: String
+-codeBarre: String
+-label: String
+-edition: String
+-zone: String
+-nomEditeur: String
+-description: String
+-tags: Vector&lt;String&gt;
+
+-prix: float
+-stock: int
+--
++getters
++setters</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1080</x>
+      <y>70</y>
+      <w>30</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1330</x>
+      <y>130</y>
+      <w>200</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>Attention : le label peut être
+le nom de la console,
+qui est un produit,
+ou le nom du JEU
+(table Jeu dans la BDD),
+qui n'est pas un produit.
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1330</x>
+      <y>250</y>
+      <w>200</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>nomEditeur désigne le nom
+de l'EDITEUR pour un jeu,
+d'un FABRICANT
+pour une console.
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>390</x>
+      <y>750</y>
+      <w>210</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>Rapport
+-
+-id: Vector&lt;int&gt;
+-table: Vector&lt;Table&gt;
+-operation: Vector&lt;Operation&gt;
+-
+-concatener(Rapport): void
+-getId(Table, Operation): int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>780</x>
+      <y>760</y>
+      <w>140</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>TODO: modéliser Table et Opération (énumérations)
+bg=blue</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>
