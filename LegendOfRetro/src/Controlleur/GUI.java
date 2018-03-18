@@ -32,16 +32,14 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        mainPanel1 = new Vue.mainPanel();
         recherche = new javax.swing.JButton();
         creer = new javax.swing.JButton();
-        modifier = new javax.swing.JButton();
-        resultat1 = new Vue.Resultat();
+        critResultat1 = new Vue.critResultat();
+        mainPanel2 = new Vue.mainPanel();
+        resultat2 = new Vue.Resultat();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Legend Of Retro");
-
-        mainPanel1.setPreferredSize(new java.awt.Dimension(150, 379));
 
         recherche.setLabel("Recherche");
         recherche.addActionListener(new java.awt.event.ActionListener() {
@@ -52,36 +50,42 @@ public class GUI extends javax.swing.JFrame {
 
         creer.setLabel("Créer");
 
-        modifier.setText("Modifier");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(mainPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(mainPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(resultat1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(141, 141, 141)
+                        .addComponent(recherche, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(creer, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(146, 146, 146))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(95, 95, 95)
-                        .addComponent(recherche)
-                        .addGap(142, 142, 142)
-                        .addComponent(creer)
-                        .addGap(172, 172, 172)
-                        .addComponent(modifier))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(critResultat1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(resultat2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(resultat1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(28, 28, 28)
+                .addComponent(critResultat1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(recherche)
-                    .addComponent(creer)
-                    .addComponent(modifier)))
+                    .addComponent(creer))
+                .addGap(18, 18, 18)
+                .addComponent(resultat2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(mainPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -117,7 +121,7 @@ public class GUI extends javax.swing.JFrame {
     
     private void rechercheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rechercheActionPerformed
         // TODO add your handling code here:
-        Vector dataBeans =  new Vector();
+        /*Vector dataBeans =  new Vector();
         String codeBarre = "";
         if (isInteger(Vue.Resultat.fieldCodeBarre.getText())) { codeBarre = Vue.Resultat.fieldCodeBarre.getText(); }
         dataBeans = makeDataBeans();
@@ -127,7 +131,7 @@ public class GUI extends javax.swing.JFrame {
         Vue.Resultat.fieldNom.setText(text);
         Vue.Resultat.fieldCote.setText(text);
         Vue.Resultat.fieldDeveloppeur.setText(text);
-        Vue.Resultat.fieldTag.setText(text);
+        Vue.Resultat.fieldTag.setText(text);*/
     }//GEN-LAST:event_rechercheActionPerformed
 
     /**
@@ -174,9 +178,9 @@ public class GUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton creer;
-    private Vue.mainPanel mainPanel1;
-    private javax.swing.JButton modifier;
+    private Vue.critResultat critResultat1;
+    private Vue.mainPanel mainPanel2;
     private javax.swing.JButton recherche;
-    private Vue.Resultat resultat1;
+    private Vue.Resultat resultat2;
     // End of variables declaration//GEN-END:variables
 }
