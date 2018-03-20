@@ -14,6 +14,7 @@ import java.util.Vector;
 public class ProduitForm extends Form
 {
     private int idConsole;
+    private int idVersionConsole;
     private int idJeu;
     private int idVersionJeu;
     private int idEditeur;
@@ -26,11 +27,13 @@ public class ProduitForm extends Form
     private String editeur;
     private String description;
     private Vector<String> tags;
+    private String plateforme;
     private float prix;
     private int stock;
     
     public ProduitForm()
     {
+        this.idVersionConsole = -1;
         this.idConsole = -1;
         this.idJeu = -1;
         this.idVersionJeu = -1;
@@ -46,12 +49,14 @@ public class ProduitForm extends Form
         this.prix = -1;
         this.stock = -1;
     }
-    public ProduitForm(int idConsole, int idJeu, int idVersionJeu, int idEditeur,
+    public ProduitForm(int idConsole, int idVersionConsole,
+            int idJeu, int idVersionJeu, int idEditeur,
             String type, String cb, String nom, String edition, String zone,
-            String editeur, String description, Vector<String> tags,
+            String editeur, String description, Vector<String> tags, String plateforme,
             float prix, int stock)
     {
         this.idConsole = idConsole;
+        this.idVersionConsole = idVersionConsole;
         this.idJeu = idJeu;
         this.idVersionJeu = idVersionJeu;
         this.idEditeur = idEditeur;
@@ -62,12 +67,14 @@ public class ProduitForm extends Form
         this.zone = zone;
         this.editeur = editeur;
         this.description = description;
+        this.plateforme = plateforme;
         this.tags = tags;
         this.prix = prix;
         this.stock = stock;
     }
     
     public int getIdConsole()      {return this.idConsole;}
+    public int getIdVersionConsole()      {return this.idVersionConsole;}
     public int getIdJeu()      {return this.idJeu;}
     public int getIdVersionJeu()      {return this.idVersionJeu;}
     public int getIdEditeur()      {return this.idEditeur;}
@@ -79,10 +86,12 @@ public class ProduitForm extends Form
     public String getEditeur()      {return this.editeur;}
     public String getDescription()      {return this.description;}
     public Vector<String> getTags()      {return this.tags;}
+    public String getPlateforme()      {return this.plateforme;}
     public float getPrix()      {return this.prix;}
     public int getStock()      {return this.stock;}
     
     public void setIdConsole(int id)      {this.idConsole = id;}
+    public void setIdVersionConsole(int id)      {this.idVersionConsole = id;}
     public void setIdJeu(int id)      {this.idJeu = id;}
     public void setIdVersionJeu(int id)      {this.idVersionJeu = id;}
     public void setIdEditeur(int id)      {this.idEditeur = id;}
@@ -94,6 +103,7 @@ public class ProduitForm extends Form
     public void setEditeur(String editeur)      {this.editeur = editeur;}
     public void setDescription(String descr)      {this.description = descr;}
     public void setTags(Vector<String> tags)      {this.tags = tags;}
+    public void setPlateforme(String pf)      {this.plateforme = pf;}
     public void setPrix(float p)      {this.prix = p;}
     public void setStock(int n)      {this.stock = n;}
     

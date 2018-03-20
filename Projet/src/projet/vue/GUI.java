@@ -16,6 +16,7 @@ import projet.controleur.Controleur;
  */
 public class GUI extends JFrame implements ActionListener, Vue
 {
+    private enum MenuActif {PRODUIT};
     private Controleur controleur;
     
     
@@ -29,7 +30,10 @@ public class GUI extends JFrame implements ActionListener, Vue
         this.controleur = c;
     }
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e)
+    {
+        //si 
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

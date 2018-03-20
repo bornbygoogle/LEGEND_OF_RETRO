@@ -14,4 +14,5 @@ import projet.controleur.Controleur;
 public interface Vue
 {
     public void setContoleur(Controleur c);
+    
 }
