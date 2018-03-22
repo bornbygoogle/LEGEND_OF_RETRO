@@ -29,41 +29,61 @@ public class critResultat extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         fieldNom = new javax.swing.JTextField();
         fieldDeveloppeur = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        labelNom = new javax.swing.JLabel();
+        fieldDevFab = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         labelCategorie = new javax.swing.JLabel();
         listeCategorie = new javax.swing.JComboBox<>();
         jLabel18 = new javax.swing.JLabel();
         fieldEdition = new javax.swing.JTextField();
-        fieldPlatforme = new javax.swing.JTextField();
-        fieldGenre = new javax.swing.JTextField();
         fieldTag = new javax.swing.JTextField();
-        fieldNomJeuObligatoire = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        listePlatforme = new javax.swing.JComboBox<>();
+        labelPrix = new javax.swing.JLabel();
+        labelStock = new javax.swing.JLabel();
+        labelCasse = new javax.swing.JLabel();
+        fieldCasse1 = new javax.swing.JLabel();
+        fieldCasse2 = new javax.swing.JLabel();
+        fieldPrix = new javax.swing.JLabel();
+        labelCurrency = new javax.swing.JLabel();
+        labelCote = new javax.swing.JLabel();
+        fieldCote = new javax.swing.JLabel();
+        fieldStock = new javax.swing.JLabel();
+        fieldCasse = new javax.swing.JLabel();
+        listeZone = new javax.swing.JComboBox<>();
+        fieldAjoutCasse = new javax.swing.JSpinner();
+        fieldTxtAjoutZone = new javax.swing.JTextField();
+        buttonAjoutZone = new javax.swing.JButton();
+
+        setName("critResultat"); // NOI18N
 
         jLabel1.setText("Code Barre : ");
 
-        fieldCodeBarre.setText("Code Barre here");
+        fieldCodeBarre.setText("01234567890123");
         fieldCodeBarre.setToolTipText("Code Barre");
-
-        jLabel2.setText("Genre : ");
-
-        fieldNom.setText("Nom here");
-        fieldNom.setToolTipText("Nom");
-        fieldNom.addActionListener(new java.awt.event.ActionListener() {
+        fieldCodeBarre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldNomActionPerformed(evt);
+                fieldCodeBarreActionPerformed(evt);
             }
         });
 
-        fieldDeveloppeur.setText("Developpeur here");
-        fieldDeveloppeur.setToolTipText("Developpeur");
+        jLabel2.setText("Zone : ");
 
-        jLabel6.setText("Nom");
+        fieldNom.setText("Nom here");
+        fieldNom.setToolTipText("Nom");
 
-        jLabel7.setText("Développeur");
+        fieldDeveloppeur.setText("Fabricant here");
+        fieldDeveloppeur.setToolTipText("Developpeur / Fabricant");
+        fieldDeveloppeur.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldDeveloppeurActionPerformed(evt);
+            }
+        });
+
+        labelNom.setText("Nom : ");
+        labelNom.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        fieldDevFab.setText("Fabricant : ");
 
         jLabel15.setText("Platforme : ");
 
@@ -84,20 +104,62 @@ public class critResultat extends javax.swing.JPanel {
         fieldEdition.setText("Edition here");
         fieldEdition.setToolTipText("Edition");
 
-        fieldPlatforme.setText("Platforme here");
-        fieldPlatforme.setToolTipText("Platforme");
-
-        fieldGenre.setText("Genre here");
-        fieldGenre.setToolTipText("Genre");
-
         fieldTag.setText("Tag here");
         fieldTag.setToolTipText("Tag");
 
-        fieldNomJeuObligatoire.setForeground(new java.awt.Color(255, 0, 7));
-        fieldNomJeuObligatoire.setText("*");
-        fieldNomJeuObligatoire.setVisible(false);
+        listePlatforme.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PC", "PS", " " }));
+        listePlatforme.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                listePlatformeItemStateChanged(evt);
+            }
+        });
+        listePlatforme.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listePlatformeActionPerformed(evt);
+            }
+        });
 
-        jLabel9.setText(":");
+        labelPrix.setText("Prix :");
+
+        labelStock.setText("Stock :");
+
+        labelCasse.setText("Casse :");
+
+        fieldCasse1.setText("Description :");
+        fieldCasse1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        fieldCasse1.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+
+        fieldCasse2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        fieldCasse2.setText("Photo :");
+        fieldCasse2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        fieldPrix.setText("0");
+
+        labelCurrency.setText("€");
+
+        labelCote.setText("Cote :");
+
+        fieldCote.setText("0");
+
+        fieldStock.setText("0");
+
+        fieldCasse.setText("0");
+
+        listeZone.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Console", "Jeu", "Autre" }));
+        listeZone.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                listeZoneItemStateChanged(evt);
+            }
+        });
+
+        fieldAjoutCasse.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+
+        fieldTxtAjoutZone.setText("Ajout Zone here");
+        fieldTxtAjoutZone.setToolTipText("Developpeur / Fabricant");
+        fieldTxtAjoutZone.setVisible(false);
+
+        buttonAjoutZone.setText("Ajouter");
+        buttonAjoutZone.setVisible(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -108,102 +170,210 @@ public class critResultat extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelCategorie)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel7)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fieldNomJeuObligatoire)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel9)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fieldNom)
-                    .addComponent(listeCategorie, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(fieldDeveloppeur, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
-                    .addComponent(fieldCodeBarre))
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel18)
-                    .addComponent(jLabel15)
+                    .addComponent(fieldDevFab)
+                    .addComponent(labelNom)
                     .addComponent(jLabel16)
-                    .addComponent(jLabel2))
-                .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(fieldTag)
-                    .addComponent(fieldPlatforme, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                    .addComponent(fieldEdition)
-                    .addComponent(fieldGenre))
-                .addContainerGap())
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(listeCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fieldCodeBarre, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fieldNom, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(fieldEdition, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(listeZone, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(fieldDeveloppeur, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(27, 27, 27)
+                                        .addComponent(jLabel18)
+                                        .addGap(2, 2, 2)
+                                        .addComponent(fieldTag, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(fieldTxtAjoutZone, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(buttonAjoutZone))))
+                            .addComponent(listePlatforme, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(53, 53, 53)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(labelStock)
+                                .addGap(18, 18, 18)
+                                .addComponent(fieldStock))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelPrix)
+                                    .addComponent(labelCote))
+                                .addGap(25, 25, 25)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(fieldCote)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(fieldPrix, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(fieldAjoutCasse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(labelCurrency, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(labelCasse)
+                                .addGap(18, 18, 18)
+                                .addComponent(fieldCasse)))))
+                .addGap(20, 20, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(fieldCasse1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(fieldCasse2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(listeCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(fieldGenre))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fieldCodeBarre)
-                    .addComponent(jLabel16)
-                    .addComponent(fieldEdition))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fieldNom)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15)
-                    .addComponent(fieldPlatforme)
-                    .addComponent(fieldNomJeuObligatoire, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(2, 2, 2)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(fieldDeveloppeur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel18)
-                    .addComponent(fieldTag))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(listeCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(fieldCodeBarre)
+                                    .addComponent(jLabel18))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(fieldNom)
+                                    .addComponent(labelNom, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(fieldDevFab)
+                                    .addComponent(fieldDeveloppeur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelCote)
+                                    .addComponent(fieldCote))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelPrix)
+                                    .addComponent(fieldPrix)
+                                    .addComponent(labelCurrency))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelStock)
+                                    .addComponent(fieldStock))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelCasse)
+                                    .addComponent(fieldCasse)
+                                    .addComponent(fieldAjoutCasse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(fieldTag, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(listeZone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fieldTxtAjoutZone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buttonAjoutZone))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel16)
+                                .addGap(17, 17, 17))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(fieldEdition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(7, 7, 7))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(fieldCasse2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(fieldCasse1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel15)
+                        .addComponent(listePlatforme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
-    }// </editor-fold>//GEN-END:initComponents
 
-    private void fieldNomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldNomActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldNomActionPerformed
+        getAccessibleContext().setAccessibleName("critResultat");
+    }// </editor-fold>//GEN-END:initComponents
 
     private void listeCategorieItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listeCategorieItemStateChanged
         // TODO add your handling code here:
-        if ((String)listeCategorie.getSelectedItem() == "Jeu") 
-        {
-            fieldNomJeuObligatoire.setVisible(true);
-        }
+        if ("Jeu".equals((String)listeCategorie.getSelectedItem())) { fieldDevFab.setText("Développeur :"); }
+            else { fieldDevFab.setText("Fabricant : "); }
     }//GEN-LAST:event_listeCategorieItemStateChanged
+
+    private void fieldCodeBarreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldCodeBarreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fieldCodeBarreActionPerformed
+
+    private void listePlatformeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listePlatformeItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_listePlatformeItemStateChanged
+
+    private void listeZoneItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listeZoneItemStateChanged
+        // TODO add your handling code here:
+        if ("Autre".equals((String)listeZone.getSelectedItem())) 
+        {
+            fieldTxtAjoutZone.setVisible(true); 
+            buttonAjoutZone.setVisible(true);
+        }
+        else 
+        {
+            fieldTxtAjoutZone.setVisible(false); 
+            buttonAjoutZone.setVisible(false);
+        }
+    }//GEN-LAST:event_listeZoneItemStateChanged
+
+    private void listePlatformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listePlatformeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_listePlatformeActionPerformed
+
+    private void fieldDeveloppeurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldDeveloppeurActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fieldDeveloppeurActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static javax.swing.JButton buttonAjoutZone;
+    public static javax.swing.JSpinner fieldAjoutCasse;
+    public static javax.swing.JLabel fieldCasse;
+    public static javax.swing.JLabel fieldCasse1;
+    public static javax.swing.JLabel fieldCasse2;
     public static javax.swing.JTextField fieldCodeBarre;
+    public static javax.swing.JLabel fieldCote;
+    public static javax.swing.JLabel fieldDevFab;
     public static javax.swing.JTextField fieldDeveloppeur;
     public static javax.swing.JTextField fieldEdition;
-    public static javax.swing.JTextField fieldGenre;
     public static javax.swing.JTextField fieldNom;
-    public static javax.swing.JLabel fieldNomJeuObligatoire;
-    public static javax.swing.JTextField fieldPlatforme;
+    public static javax.swing.JLabel fieldPrix;
+    public static javax.swing.JLabel fieldStock;
     public static javax.swing.JTextField fieldTag;
+    public static javax.swing.JTextField fieldTxtAjoutZone;
     public static javax.swing.JLabel jLabel1;
     public static javax.swing.JLabel jLabel15;
     public static javax.swing.JLabel jLabel16;
     public static javax.swing.JLabel jLabel18;
     public static javax.swing.JLabel jLabel2;
-    public static javax.swing.JLabel jLabel6;
-    public static javax.swing.JLabel jLabel7;
-    public static javax.swing.JLabel jLabel9;
+    public static javax.swing.JLabel labelCasse;
     public static javax.swing.JLabel labelCategorie;
+    public static javax.swing.JLabel labelCote;
+    public static javax.swing.JLabel labelCurrency;
+    public static javax.swing.JLabel labelNom;
+    public static javax.swing.JLabel labelPrix;
+    public static javax.swing.JLabel labelStock;
     public static javax.swing.JComboBox<String> listeCategorie;
+    public static javax.swing.JComboBox<String> listePlatforme;
+    public static javax.swing.JComboBox<String> listeZone;
     // End of variables declaration//GEN-END:variables
 
     public critResultat() {
         initComponents();
-        fieldTag.setText("Hello world !");
     }
 }

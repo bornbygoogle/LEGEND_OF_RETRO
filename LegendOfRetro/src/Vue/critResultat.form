@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <Properties>
+    <Property name="name" type="java.lang.String" value="critResultat" noResource="true"/>
+  </Properties>
+  <AccessibilityProperties>
+    <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="critResultat"/>
+  </AccessibilityProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -21,74 +27,176 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="labelCategorie" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="fieldNomJeuObligatoire" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="fieldNom" alignment="0" max="32767" attributes="0"/>
-                  <Component id="listeCategorie" alignment="0" max="32767" attributes="0"/>
-                  <Component id="fieldDeveloppeur" alignment="0" pref="195" max="32767" attributes="0"/>
-                  <Component id="fieldCodeBarre" alignment="0" max="32767" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabel18" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel15" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="fieldDevFab" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelNom" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel16" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="fieldTag" max="32767" attributes="0"/>
-                  <Component id="fieldPlatforme" alignment="1" pref="200" max="32767" attributes="0"/>
-                  <Component id="fieldEdition" alignment="1" max="32767" attributes="0"/>
-                  <Component id="fieldGenre" alignment="1" max="32767" attributes="0"/>
+                  <Component id="jLabel2" alignment="0" min="-2" pref="65" max="-2" attributes="0"/>
+                  <Component id="jLabel15" min="-2" pref="86" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="listeCategorie" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                  <Component id="fieldCodeBarre" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                  <Component id="fieldNom" min="-2" pref="150" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="fieldEdition" min="-2" pref="150" max="-2" attributes="0"/>
+                                  <Component id="listeZone" min="-2" pref="150" max="-2" attributes="0"/>
+                                  <Component id="fieldDeveloppeur" alignment="1" min="-2" pref="150" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                                      <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                                      <Component id="fieldTag" min="-2" pref="200" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="fieldTxtAjoutZone" min="-2" pref="108" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="buttonAjoutZone" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <Component id="listePlatforme" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="labelStock" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="fieldStock" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="labelPrix" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labelCote" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="fieldCote" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="fieldPrix" min="-2" pref="38" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="fieldAjoutCasse" min="-2" max="-2" attributes="0"/>
+                                          <Component id="labelCurrency" min="-2" pref="20" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="labelCasse" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="fieldCasse" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+              </Group>
+              <EmptySpace min="55" pref="20" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="fieldCasse1" pref="250" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="fieldCasse2" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="labelCategorie" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
-                  <Component id="listeCategorie" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="fieldGenre" alignment="3" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="labelCategorie" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                                  <Component id="listeCategorie" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel1" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                                  <Component id="fieldCodeBarre" alignment="3" max="32767" attributes="0"/>
+                                  <Component id="jLabel18" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="fieldNom" alignment="3" max="32767" attributes="0"/>
+                                  <Component id="labelNom" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="fieldDevFab" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fieldDeveloppeur" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="labelCote" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fieldCote" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="labelPrix" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fieldPrix" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labelCurrency" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="labelStock" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fieldStock" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="labelCasse" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fieldCasse" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fieldAjoutCasse" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="fieldTag" min="-2" pref="130" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel2" alignment="3" max="32767" attributes="0"/>
+                          <Component id="listeZone" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="fieldTxtAjoutZone" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="buttonAjoutZone" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="fieldEdition" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="fieldCasse2" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="fieldCasse1" min="-2" pref="80" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                      <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="listePlatforme" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel1" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
-                  <Component id="fieldCodeBarre" alignment="3" max="32767" attributes="0"/>
-                  <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="fieldEdition" alignment="3" max="32767" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="fieldNom" alignment="3" max="32767" attributes="0"/>
-                  <Component id="jLabel6" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
-                  <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="fieldPlatforme" alignment="3" max="32767" attributes="0"/>
-                  <Component id="fieldNomJeuObligatoire" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
-                  <Component id="jLabel9" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="fieldDeveloppeur" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel18" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="fieldTag" alignment="3" max="32767" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -101,13 +209,16 @@
     </Component>
     <Component class="javax.swing.JTextField" name="fieldCodeBarre">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Code Barre here"/>
+        <Property name="text" type="java.lang.String" value="01234567890123"/>
         <Property name="toolTipText" type="java.lang.String" value="Code Barre"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldCodeBarreActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Genre : "/>
+        <Property name="text" type="java.lang.String" value="Zone : "/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="fieldNom">
@@ -115,24 +226,27 @@
         <Property name="text" type="java.lang.String" value="Nom here"/>
         <Property name="toolTipText" type="java.lang.String" value="Nom"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldNomActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="fieldDeveloppeur">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Developpeur here"/>
-        <Property name="toolTipText" type="java.lang.String" value="Developpeur"/>
+        <Property name="text" type="java.lang.String" value="Fabricant here"/>
+        <Property name="toolTipText" type="java.lang.String" value="Developpeur / Fabricant"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldDeveloppeurActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelNom">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Nom : "/>
+        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+          <Color id="Default Cursor"/>
+        </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel6">
+    <Component class="javax.swing.JLabel" name="fieldDevFab">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Nom"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel7">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="D&#xe9;veloppeur"/>
+        <Property name="text" type="java.lang.String" value="Fabricant : "/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel15">
@@ -181,39 +295,135 @@
         <Property name="toolTipText" type="java.lang.String" value="Edition"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="fieldPlatforme">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Platforme here"/>
-        <Property name="toolTipText" type="java.lang.String" value="Platforme"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="fieldGenre">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Genre here"/>
-        <Property name="toolTipText" type="java.lang.String" value="Genre"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JTextField" name="fieldTag">
       <Properties>
         <Property name="text" type="java.lang.String" value="Tag here"/>
         <Property name="toolTipText" type="java.lang.String" value="Tag"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="fieldNomJeuObligatoire">
+    <Component class="javax.swing.JComboBox" name="listePlatforme">
       <Properties>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="7" green="0" red="ff" type="rgb"/>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="3">
+            <StringItem index="0" value="PC"/>
+            <StringItem index="1" value="PS"/>
+            <StringItem index="2" value=" "/>
+          </StringArray>
         </Property>
-        <Property name="text" type="java.lang.String" value="*"/>
       </Properties>
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="listePlatformeItemStateChanged"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="listePlatformeActionPerformed"/>
+      </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="fieldNomJeuObligatoire.setVisible(false);"/>
+        <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="critResultat_listeCategorie"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel9">
+    <Component class="javax.swing.JLabel" name="labelPrix">
       <Properties>
-        <Property name="text" type="java.lang.String" value=":"/>
+        <Property name="text" type="java.lang.String" value="Prix :"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelStock">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Stock :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelCasse">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Casse :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="fieldCasse1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Description :"/>
+        <Property name="verticalAlignment" type="int" value="1"/>
+        <Property name="verticalTextPosition" type="int" value="1"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="fieldCasse2">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" value="Photo :"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+            <LineBorder/>
+          </Border>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="fieldPrix">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelCurrency">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x20ac;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelCote">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cote :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="fieldCote">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="fieldStock">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="fieldCasse">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="listeZone">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="3">
+            <StringItem index="0" value="Console"/>
+            <StringItem index="1" value="Jeu"/>
+            <StringItem index="2" value="Autre"/>
+          </StringArray>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="listeZoneItemStateChanged"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="critResultat_listeCategorie"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="fieldAjoutCasse">
+      <Properties>
+        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+          <SpinnerModel initial="0" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="fieldTxtAjoutZone">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ajout Zone here"/>
+        <Property name="toolTipText" type="java.lang.String" value="Developpeur / Fabricant"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="fieldTxtAjoutZone.setVisible(false);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JButton" name="buttonAjoutZone">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ajouter"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="buttonAjoutZone.setVisible(false);"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>
