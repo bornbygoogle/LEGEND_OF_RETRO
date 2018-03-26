@@ -7,3 +7,6 @@ DECRIRE (_#id-tag, #id-description_)
 ZONE (_id-zone_, nom)
 VERSIONJEU (_id-version-jeu_, code-barre, edition, prix, stock, #id-zone, #id-jeu)
 VERSIONCONSOLE (_id-version-console_, code-barre, edition, prix, stock, #id-zone, #id-console)
+
+Varchar sauf identifiants, stock (int) et prix (float).
+! Le code barre est un varchar !
