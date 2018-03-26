@@ -190,8 +190,8 @@ public class Controleur
                 idEditeur = existant.getId(); //s'il existe, il n'en existe qu'un.
 
             //on vérifie que le jeu n'existe pas déjà !
-            Vector<Jeu> jeuExistant = chercherJeu(nomJeu);
-            if (!jeuExistant.isEmpty())
+            Jeu jeuExistant = chercherJeu(-1, idEditeur, nomJeu, tags, "");
+            if (jeuExistant != null)
                 throw new EnregistrementExistantException("Impossible de créer le jeu : ce jeu existe déjà.");
 
             //TODO : on génère la requête pour créer la console.
@@ -348,14 +348,14 @@ public class Controleur
             cb = codeBarreValide(cb); //on vérifie le code barre
             
             //on détermine l'identifiant du jeu
-            Vector<Jeu> existant = chercherJeu(nomJeu, description, tags, idEditeur, nomEditeur);
-            if (existant.isEmpty())
+            Jeu existant = chercherJeu(-1, idEditeur, nomJeu, tags, nomEditeur);
+            if (existant == null)
             {
                 rapport.concatener(creerJeu(nomJeu, description, tags, idEditeur, nomEditeur)); //s'il n'existe pas, on le crée à la volée.
                 idJeu = rapport.getidDerniereOperation();
             }
             else
-                idJeu = existant.iterator().next().getId(); //s'il existe, il n'en existe qu'un.
+                idJeu = existant.getId(); //s'il existe, il n'en existe qu'un.
             
             //on détermine l'identifiant de la zone
             Zone zoneExistante = chercherZone(-1, zone);
@@ -392,7 +392,7 @@ public class Controleur
         if (form instanceof CodeBarreForm) //recherche rapide par code barre
         {
             String cb = codeBarreValide(((CodeBarreForm) form).getCodeBarre());
-            for (VersionConsole enr : chercherVersionConsole(cb, "", "", "", ""))
+            for (VersionConsole enr : chercherVersionsConsole(cb, "", "", "", ""))
                 ret.add(new ProduitForm(
                         enr.getConsole().getId(), enr.getIdVersionConsole(), -1, -1,
                         enr.getFabricant().getId(), "Console",
@@ -405,8 +405,8 @@ public class Controleur
                         enr.getJeu().getId(), enr.getId(),
                         enr.getJeu().getEditeur().getId(), "Jeu",
                         enr.getCodeBarre(), enr.getJeu().getNom(), enr.getEdition(), enr.getZone().getNom(),
-                        enr.getJeu().getEditeur().getNom(), enr.getJeu().getDescription,
-                        enr.getJeu().getTags(), enr.getPlateforme().getNom(),
+                        enr.getJeu().getEditeur().getNom(), enr.getJeu().getDescription(),
+                        tagsToStrings(enr.getJeu().getTags()), enr.getPlateforme().getNom(),
                         enr.getPrix(), enr.getStock()));
             if (ret.size() > 1)
                 throw new ResultatInvalideException("Erreur : la recherche du code barre " + cb
@@ -417,7 +417,9 @@ public class Controleur
             ProduitForm f = (ProduitForm) form;
             //On récupère les variables du bean pour améliorer la lisibilité
             String type = f.getType();
-            String cb = codeBarreValide(f.getCodeBarre());
+            String cb = f.getCodeBarre();
+            if (!"".equals(cb))
+                cb = codeBarreValide(cb);
             String nom = f.getNom();
             String edition = f.getEdition();
             String zone = f.getZone();
@@ -430,7 +432,7 @@ public class Controleur
             if ("Console".equals(type))
             {
                 if (!"".equals(cb) || !"".equals(edition) || !"".equals(zone) || !"".equals(nom) || !"".equals(editeur))
-                for (VersionConsole enr : chercherVersionConsole(cb, edition, zone, nom, editeur))
+                for (VersionConsole enr : chercherVersionsConsole(cb, edition, zone, nom, editeur))
                     ret.add(new ProduitForm(
                             enr.getConsole().getId(), enr.getId(), -1, -1,
                             enr.getFabricant().getId(), "Console",
@@ -450,12 +452,43 @@ public class Controleur
                                 enr.getJeu().getEditeur().getId(), "Jeu",
                                 enr.getCodeBarre(), enr.getJeu().getNom(), enr.getEdition(), enr.getZone().getNom(),
                                 enr.getJeu().getEditeur().getNom(), enr.getJeu().getDescription(),
-                                enr.getJeu().getTags(), enr.getPlateforme().getNom(),
+                                tagsToStrings(enr.getJeu().getTags()), enr.getPlateforme().getNom(),
                                 enr.getPrix(), enr.getStock()));
                 else
                     throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
             }
         }
+        
+        return ret;
+    }
+    /**
+     * Recherche les versions de consoles dont le code barre, l'édition, la zone et le fabricant correspondent parfaitement aux données renseignées,
+     * et dont le nom contient la chaîne renseignée.
+     * La zone et l'édition ne sont pas suffisantes pour lancer une recherche.
+     */
+    private Vector<VersionConsole> chercherVersionsConsole(String cb, String edition, String zone, String nom, String fabricant)
+            throws DonneesInsuffisantesException
+    {
+        if ("".equals(cb) && "".equals(nom) && "".equals(fabricant))
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche des produits de type console : il faut renseigner un code barre, un nom, ou un fabricant.");
+        
+        //TODO: la recherche à proprement parler.
+        
+        return ret;
+    }
+    /**
+     * Recherche les versions de consoles dont le code barre, l'édition, la zone et le fabricant correspondent parfaitement aux données renseignées,
+     * et dont le nom contient la chaîne renseignée.
+     * La zone et l'édition ne sont pas suffisantes pour lancer une recherche.
+     */
+    private Vector<VersionJeu> chercherVersionJeu(String cb, String edition, String zone,
+            String plateforme, String nom, String editeur, Vector<String> tags)
+            throws DonneesInsuffisantesException
+    {
+        if ("".equals(cb) && "".equals(plateforme) && "".equals(nom) && "".equals(editeur) && tags.isEmpty())
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche des produits de type jeu : il faut renseigner un code barre, une plateforme, un nom, un éditeur ou au moins un tag.");
+        
+        //TODO: la recherche à proprement parler.
         
         return ret;
     }
@@ -467,19 +500,82 @@ public class Controleur
         if (idConsole < 0 && (nomCons == null || "".equals(nomCons)))
             throw new DonneesInsuffisantesException("Erreur lors de la recherche de la console : nom de la console non renseigné.");
         
+        if (nomFabr != null && !"".equals(nomFabr))
+            idFabr = chercherFabricant(-1, nomFabr).getId();
+        
+        /* Attention
+        Il est possible qu'une recherche renvoie plusieurs résultats. Par exemple, si deux consoles produites par des fabricants
+        différents ont le même nom et que le fabricant n'a pas été renseigné. Pour traiter ce type d'erreur,
+        on commence par stocker les résultats de la requête dans un vecteur ; puis, si le vecteur n'a pas une taille de 1,
+        on renvoie null ou on lance une exception.
+        */
+        Vector<Console> resultat;
+        
+        //TODO: la recherche à proprement parler. On ne réutilise pas chercherVersionsConsole car la correspondance demandée par chercherConsole est parfaite.
+        //Attention, pour le fabricant, si le nom est renseigné, on demande une correspondance parfaite.
+        
+        if (resultat.isEmpty())
+            return null;
+        else if (resultat.size() > 1)
+            throw new  DonneesInsuffisantesException("Erreur lors de la recherche de la console : plusieurs résultats obtenus. Veuillez renseigner le fabricant de la console.");
+        
+        return resultat.firstElement();
+    }
+    /**
+     * Recherche les consoles dont le nom contient la chaîne renseignée et/ou ayant le fabricant désigné.
+     */
+    private Vector<Console> chercherConsoles(int idFabr, String nomCons, String nomFabr) throws DonneesInsuffisantesException
+    {
+        if ((nomCons == null || "".equals(nomCons)) && idFabr < 0 && (nomFabr == null || "".equals(nomFabr)))
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche de consoles : aucun champ renseigné.");
+        
         //TODO: la recherche à proprement parler. Attention, pour le fabricant, si le nom est renseigné, on demande une correspondance parfaite.
+        //Attention, pour le fabricant, si le nom est renseigné, on demande une correspondance parfaite.
         
         return ret;
     }
     /**
-     * Recherche les jeux dont le nom correspond parfaitement à la chaîne renseignée et ayant l'éditeur désigné.
+     * Recherche le jeu dont le nom correspond parfaitement à la chaîne renseignée et ayant l'éditeur et les tags renseignés.
      */
-    private Console chercherJeu(int idJeu, int idEditeur, String nomJeu, String nomEditeur) throws DonneesInsuffisantesException
+    private Jeu chercherJeu(int idJeu, int idEditeur, String nomJeu,
+            Vector<String> tags, String nomEditeur) throws DonneesInsuffisantesException
     {
         if (idJeu < 0 && (nomJeu == null || "".equals(nomJeu)))
-            throw new DonneesInsuffisantesException("Erreur lors de la recherche du fabricant : nom du fabricant non renseigné.");
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche du jeu : nom du jeu non renseigné.");
         
-        //TODO: la recherche à proprement parler. Attention, pour l'éditeur, si le nom est renseigné, on demande une correspondance parfaite.
+        if (nomEditeur != null && !"".equals(nomEditeur))
+            idEditeur = chercherEditeur(-1, nomEditeur).getId();
+        
+        /* Attention
+        Il est possible qu'une recherche renvoie plusieurs résultats. Par exemple, si deux jeux produits par des éditeurs
+        différents ont le même nom et que l'éditeur n'a pas été renseigné. Pour traiter ce type d'erreur,
+        on commence par stocker les résultats de la requête dans un vecteur ; puis, si le vecteur n'a pas une taille de 1,
+        on renvoie null ou on lance une exception.
+        */
+        Vector<Jeu> resultat;
+        
+        //TODO: la recherche à proprement parler. On ne réutilise pas chercherVersionsJeu car la correspondance demandée par chercherJeu est parfaite.
+        //Attention, pour l'éditeur, si le nom est renseigné, on demande une correspondance parfaite.
+        //Penser à traiter les tags avec une requête imbriquée
+        
+        if (resultat.isEmpty())
+            return null;
+        else if (resultat.size() > 1)
+            throw new  DonneesInsuffisantesException("Erreur lors de la recherche du jeu : plusieurs résultats obtenus. Veuillez renseigner l'éditeur du jeu.");
+        
+        return resultat.firstElement();
+    }
+    /**
+     * Recherche les jeux dont le nom contient la chaîne renseignée et/ou ayant l'éditeur désigné et/ou les tags renseignés.
+     */
+    private Vector<Console> chercherJeux(int idEditeur, String nomCons, String nomEditeur) throws DonneesInsuffisantesException
+    {
+        if ((nomCons == null || "".equals(nomCons)) && idEditeur < 0 && (nomEditeur == null || "".equals(nomEditeur)))
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche de consoles : aucun champ renseigné.");
+        
+        //TODO: la recherche à proprement parler.
+        //Attention, pour l'éditeur, si le nom est renseigné, on demande une correspondance parfaite.
+        //Penser à traiter les tags avec une requête imbriquée
         
         return ret;
     }
@@ -629,6 +725,16 @@ public class Controleur
             ret = ret.concat("0");
         
         return ret.concat(cb);
+    }
+    /**
+     * Transforme un vecteur de tags en un vecteur de strings pour l'affichage.
+     */
+    protected final Vector<String> tagsToStrings(Vector<Tag> tags)
+    {
+        Vector <String> ret = new Vector<String>();
+        for (Tag t : tags)
+            ret.add(t.getNom());
+        return ret;
     }
     
     /**
