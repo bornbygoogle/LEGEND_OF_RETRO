@@ -5,6 +5,16 @@
  */
 package projet.controleur;
 
+//Imports pour version temporaire ? Voir fonctionalités de Hibernate.
+    import entites.VersionJeu;
+    import entites.Jeu;
+    import entites.VersionConsole;
+    import entites.Console;
+    import entites.Editeur;
+    import entites.Fabricant;
+    import entites.Tag;
+    import entites.Zone;
+//Fin imports pour version temporaire
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -91,8 +101,8 @@ public class Controleur
             throw new DonneesInsuffisantesException("Impossible de créer le fabricant : un nom est requis.");
         
         //on vérifie que le fabricant n'existe pas déjà !
-        Vector<Fabricant> existant = chercherFabricant(nomFabr);
-        if (!existant.isEmpty())
+        Fabricant existant = chercherFabricant(nomFabr);
+        if (existant != null)
             throw new EnregistrementExistantException("Impossible de créer le fabricant : ce fabricant existe déjà.");
             
         //TODO : on génère la requête pour créer le fabricant
@@ -110,8 +120,8 @@ public class Controleur
             throw new DonneesInsuffisantesException("Impossible de créer l'éditeur : un nom est requis.");
         
         //on vérifie que l'éditeur n'existe pas déjà !
-        Vector<Editeur> existant = chercherEditeur(nomEditeur);
-        if (!existant.isEmpty())
+        Editeur existant = chercherEditeur(nomEditeur);
+        if (existant != null)
             throw new EnregistrementExistantException("Impossible de créer l'éditeur : cet éditeur existe déjà.");
             
         //TODO : on génère la requête pour créer l'éditeur
@@ -130,8 +140,8 @@ public class Controleur
             throw new DonneesInsuffisantesException("Impossible de créer le tag : un libellé est requis."); //vérifier le code appelant.
         
         //on vérifie que le tag n'existe pas déjà !
-        Vector<Tag> existant = chercherTag(tag);
-        if (!existant.isEmpty())
+        Tag existant = chercherTag(tag);
+        if (existant != null)
             throw new EnregistrementExistantException("Impossible de créer le tag : ce tag existe déjà."); //vérifier le code appelant.
             
         //TODO : on génère la requête pour créer l'éditeur
@@ -169,43 +179,41 @@ public class Controleur
         else //si on crée un jeu
         {
             //on détermine l'identifiant de l'éditeur
-            Vector<Editeur> existant = chercherEditeur(nomEditeur);
-            if (existant.isEmpty())
+            Editeur existant = chercherEditeur(nomEditeur);
+            if (existant == null)
             {
                 rapport.concatener(creerEditeur(nomEditeur)); //s'il n'existe pas, on le crée à la volée.
                 idEditeur = rapport.getidDerniereOperation();
             }
             else
+                idEditeur = existant.getId(); //s'il existe, il n'en existe qu'un.
+
+            //on vérifie que le jeu n'existe pas déjà !
+            Vector<Jeu> jeuExistant = chercherJeu(nomJeu);
+            if (!jeuExistant.isEmpty())
+                throw new EnregistrementExistantException("Impossible de créer le jeu : ce jeu existe déjà.");
+
+            //TODO : on génère la requête pour créer la console.
+
+            //problème : comment obtenir l'identifiant de la console pour le rapport ?
+            rapport.addOperation(idJeu, Rapport.Table.CONSOLE, Rapport.Operation.CREER);
+
+            //traitement des tags
+            int idTag;
+            for (String tag : tags)
             {
-                idEditeur = existant.iterator().next().getId(); //s'il existe, il n'en existe qu'un.
-            
-                //on vérifie que le jeu n'existe pas déjà !
-                Vector<Jeu> jeuExistant = chercherJeu(nom);
-                if (!jeuExistant.isEmpty())
-                    throw new EnregistrementExistantException("Impossible de créer le jeu : ce jeu existe déjà.");
-
-                //TODO : on génère la requête pour créer la console.
-
-                //problème : comment obtenir l'identifiant de la console pour le rapport ?
-                rapport.addOperation(idJeu, Rapport.Table.CONSOLE, Rapport.Operation.CREER);
-
-                //traitement des tags
-                int idTag;
-                for (String tag : tags)
+                //on vérifie l'existence du tag et, au besoin, on le crée.
+                Tag t = chercherTag(tag);
+                if (t == null)
                 {
-                    //on vérifie l'existence du tag et, au besoin, on le crée.
-                    Vector<Tag> tagExistant = chercherTag(tag);
-                    if (tagExistant.isEmpty())
-                        idTag = tagExistant.next().getId(); //si le tag existe, il n'y en a qu'un
-                    else
-                    {
-                        rapport.concatener(creerTag(tag));
-                        idTag = rapport.getidDerniereOperation();
-                    }
-
-                    //on associe le tag au jeu.
-                    rapport.concatener(lierTag(idJeu, idTag));
+                    rapport.concatener(creerTag(tag));
+                    idTag = rapport.getidDerniereOperation();
                 }
+                else
+                    idTag = t.getId();
+
+                //on associe le tag au jeu.
+                rapport.concatener(lierTag(idJeu, idTag));
             }
         }
         
@@ -232,19 +240,19 @@ public class Controleur
         else //si on crée une console
         {
             //on détermine l'identifiant du fabricant
-            Vector<Fabricant> existant = chercherFabricant(nomFabr);
-            if (existant.isEmpty())
+            Fabricant fabricant = chercherFabricant(nomFabr);
+            if (fabricant == null)
             {
                 rapport.concatener(creerFabricant(nomFabr)); //s'il n'existe pas, on le crée à la volée.
                 idFabr = rapport.getidDerniereOperation();
             }
             else
             {
-                idFabr = existant.iterator().next().getId(); //s'il existe, il n'en existe qu'un.
+                idFabr = fabricant.getId(); //s'il existe, il n'en existe qu'un.
             
                 //on vérifie que la console n'existe pas déjà !
-                Vector<Console> existante = chercherConsole(nomConsole, idFabr);
-                if (!existante.isEmpty())
+                Console existante = chercherConsole(nomConsole, idFabr);
+                if (existante != null)
                     throw new EnregistrementExistantException("Impossible de créer la console : cette console existe déjà.");
 
                 //TODO : on génère la requête pour créer la console.
@@ -283,25 +291,22 @@ public class Controleur
             cb = codeBarreValide(cb); //on vérifie le code barre
             
             //on détermine l'identifiant de la console
-            Vector<Console> existante = chercherConsole(nomConsole, nomFabr);
-            if (existante.isEmpty())
+            Console existante = chercherConsole(nomConsole, nomFabr);
+            if (existante == null)
             {
-                rapport.concatener(creerConsole(nomConsole, idFabr, nomFabr)); //s'il n'existe pas, on le crée à la volée.
+                rapport.concatener(creerConsole(nomConsole, idFabr, nomFabr)); //si elle n'existe pas, on la crée à la volée.
                 idConsole = rapport.getidDerniereOperation();
             }
             else
-                idConsole = existante.iterator().next().getId(); //s'il existe, il n'en existe qu'un.
+                idConsole = existante.getId();
             
             //on détermine l'identifiant de la zone
-            int idZone;
-            Vector<Zone> zones = chercherZone(zone);
-            if (zones.isEmpty())
+            Zone zoneExistante = chercherZone(zone);
+            if (zoneExistante == null)
                 throw new DonneeInvalideException("Impossible de créer la version de console : la zone renseignée n'existe pas.");
-            else
-                idZone = zones.iterator().next();
             
-            //on vérifie que la console n'existe pas déjà !
-            Vector<VersionConsole> existe = chercherVersionConsole(cb, edition, idZone, idConsole);
+            //on vérifie que la version de console n'existe pas déjà !
+            Vector<VersionConsole> existe = chercherVersionConsole(cb, edition, zoneExistante.getId(), idConsole);
             if (!existante.isEmpty())
                 throw new EnregistrementExistantException("Impossible de créer la version de console : cette dernière existe déjà.");
             
@@ -351,23 +356,17 @@ public class Controleur
                 idJeu = existant.iterator().next().getId(); //s'il existe, il n'en existe qu'un.
             
             //on détermine l'identifiant de la zone
-            int idZone;
-            Vector<Zone> zones = chercherZone(zone);
-            if (zones.isEmpty())
-                throw new DonneeInvalideException("Impossible de créer la version de jeu : la zone renseignée n'existe pas.");
-            else
-                idZone = zones.iterator().next();
+            Zone zoneExistante = chercherZone(zone);
+            if (zoneExistante == null)
+                throw new DonneeInvalideException("Impossible de créer la version de console : la zone renseignée n'existe pas.");
             
             //on détermine l'identifiant de la console
-            int idConsole;
-            Vector<Console> consoles = chercherConsole(nomConsole);
-            if (consoles.isEmpty())
+            Console console = chercherConsole(nomConsole);
+            if (console == null)
                 throw new DonneeInvalideException("Impossible de créer la version de jeu : la console renseignée n'existe pas.");
-            else
-                idConsole = consoles.iterator().next();
             
             //on vérifie que la version de jeu n'existe pas déjà !
-            Vector<VersionJeu> existante = chercherVersionJeu(cb, edition, idZone, idJeu);
+            Vector<VersionJeu> existante = chercherVersionJeu(cb, edition, zoneExistante.getId(), console.getId(), idJeu);
             if (!existante.isEmpty())
                 throw new EnregistrementExistantException("Impossible de créer la version de jeu : cette dernière existe déjà.");
             
@@ -382,28 +381,30 @@ public class Controleur
     
     /**
      * Détermine, à partir d'un bean, quelle(s) requête(s) de recherche générer et exécuter. Transforme les résultats en formulaires.
+     * Les formulaires renvoyés correspondront à des produits : nommément, soit à une version de jeu, soit à une version de console.
     */
     public Vector<ProduitForm> chercher(Form form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
     {
         Vector<ProduitForm> ret = new Vector<ProduitForm>();
         
-        if (form instanceof CodeBarreForm)
+        if (form instanceof CodeBarreForm) //recherche rapide par code barre
         {
             String cb = codeBarreValide(((CodeBarreForm) form).getCodeBarre());
-            for (VersionConsole enr : chercherVersionConsole(cb))
+            for (VersionConsole enr : chercherVersionConsole(cb, "", "", "", ""))
                 ret.add(new ProduitForm(
                         enr.getConsole().getId(), enr.getIdVersionConsole(), -1, -1,
                         enr.getFabricant().getId(), "Console",
                         enr.getCodeBarre(), enr.getConsole().getNom(), enr.getEdition(), enr.getZone().getNom(),
                         enr.getConsole().getFabricant().getNom(), "", new Vector<String>(), "",
-                        enr.getPrix(), enr.getStock());
-            for (VersionJeu enr : chercherVersionJeu(cb))
+                        enr.getPrix(), enr.getStock()));
+            for (VersionJeu enr : chercherVersionJeu(cb, "", "", "", "", "", null))
                 ret.add(new ProduitForm(
-                        -1, -1, enr.getJeu().getId(), enr.getIdVersionJeu(),
-                        enr.getEditeur().getId(), "Jeu",
-                        enr.getCodeBarre(), enr.getNom(), enr.getEdition(), enr.getZone().getNom(),
-                        enr.getEditeur().getNom(), enr.getDescription,
-                        enr.getTags(), enr.getConsole().getNom(),
+                        enr.getPlateforme().getId(), enr.getPlateforme().getId(),
+                        enr.getJeu().getId(), enr.getId(),
+                        enr.getJeu().getEditeur().getId(), "Jeu",
+                        enr.getCodeBarre(), enr.getJeu().getNom(), enr.getEdition(), enr.getZone().getNom(),
+                        enr.getJeu().getEditeur().getNom(), enr.getJeu().getDescription,
+                        enr.getJeu().getTags(), enr.getPlateforme().getNom(),
                         enr.getPrix(), enr.getStock()));
             if (ret.size() > 1)
                 throw new ResultatInvalideException("Erreur : la recherche du code barre " + cb
@@ -419,17 +420,17 @@ public class Controleur
             String edition = f.getEdition();
             String zone = f.getZone();
             String editeur = f.getEditeur();
-            String description = f.getDescription();
+            //String description = f.getDescription();      La description n'est pas un critère de recherche viable.
             Vector<String> tags = f.getTags();
             String plateforme = f.getPlateforme();
-            //Pas besoin de récupérer les identifiants, le prix et le stock.
+            //Pas besoin de récupérer les identifiants, la description de jeu, le prix et le stock.
             
             if ("Console".equals(type))
             {
                 if (!"".equals(cb) || !"".equals(edition) || !"".equals(zone) || !"".equals(nom) || !"".equals(editeur))
                 for (VersionConsole enr : chercherVersionConsole(cb, edition, zone, nom, editeur))
                     ret.add(new ProduitForm(
-                            enr.getConsole().getId(), enr.getIdVersionConsole(), -1, -1,
+                            enr.getConsole().getId(), enr.getId(), -1, -1,
                             enr.getFabricant().getId(), "Console",
                             enr.getCodeBarre(), enr.getConsole().getNom(), enr.getEdition(), enr.getZone().getNom(),
                             enr.getConsole().getFabricant().getNom(), "", new Vector<String>(), "",
@@ -439,9 +440,96 @@ public class Controleur
             }
             else if ("Jeu".equals(type))
             {
-                if (!"".equals(cb) ||
+                if (!"".equals(cb) || !"".equals(nom) || !"".equals(editeur) || !tags.isEmpty())
+                    for (VersionJeu enr : chercherVersionJeu(cb, edition, zone, plateforme, nom, editeur, tags))
+                        ret.add(new ProduitForm(
+                                enr.getPlateforme().getId(), enr.getPlateforme().getId(),
+                                enr.getJeu().getId(), enr.getId(),
+                                enr.getJeu().getEditeur().getId(), "Jeu",
+                                enr.getCodeBarre(), enr.getJeu().getNom(), enr.getEdition(), enr.getZone().getNom(),
+                                enr.getJeu().getEditeur().getNom(), enr.getJeu().getDescription(),
+                                enr.getJeu().getTags(), enr.getPlateforme().getNom(),
+                                enr.getPrix(), enr.getStock()));
+                else
+                    throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
             }
         }
+        
+        return ret;
+    }
+    /**
+     * Recherche les fabricants dont le nom contient la chaîne renseignée.
+     */
+    private Fabricant chercherFabricant(String nomFabr) throws DonneesInsuffisantesException
+    {
+        if (nomFabr == null || "".equals(nomFabr))
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche du fabricant : nom du fabricant non renseigné.");
+        
+        //TODO: la recherche à proprement parler.
+        
+        return ret;
+    }
+    /**
+     * Recherche les fabricants dont le nom contient la chaîne renseignée.
+     */
+    private Vector<Fabricant> chercherFabricants(String nomFabr) throws DonneesInsuffisantesException
+    {
+        if (nomFabr == null || "".equals(nomFabr))
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche de fabricants : nom du fabricant non renseigné.");
+        
+        Vector<Fabricant> ret = new Vector<Fabricant>();
+        
+        //TODO: la recherche à proprement parler.
+        
+        return ret;
+    }
+    /**
+     * Recherche l'éditeur dont le nom correspond parfaitement à la chaîne renseignée.
+     */
+    private Editeur chercherEditeur(String nomEdit) throws DonneesInsuffisantesException
+    {
+        if (nomEdit == null || "".equals(nomEdit))
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche de l'éditeur : nom de l'éditeur non renseigné.");
+        
+        //TODO: la recherche à proprement parler.
+        
+        return ret;
+    }
+    /**
+     * Recherche les éditeurs dont le nom contient la chaîne renseignée.
+     */
+    private Vector<Editeur> chercherEditeurs(String nomEdit) throws DonneesInsuffisantesException
+    {
+        if (nomEdit == null || "".equals(nomEdit))
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche des éditeurs : nom de l'éditeur non renseigné.");
+        
+        Vector<Editeur> ret = new Vector<Editeur>();
+        
+        //TODO: la recherche à proprement parler.
+        
+        return ret;
+    }
+    /**
+     * Recherche une zone dans la base de données. Si la zone renseignée est trouvé, un objet Zone est renvoyé. Sinon, la méthode renvoie null.
+     */
+    private Zone chercherZone(String zone) throws DonneesInsuffisantesException
+    {
+        if (zone == null || "".equals(zone))
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche de la zone : nom de la zone non renseigné.");
+        
+        //TODO: la recherche à proprement parler.
+        
+        return ret;
+    }
+    /**
+     * Recherche un tag dans la base de données. Si le tag renseigné est trouvé, un objet Tag est renvoyé. Sinon, la méthode renvoie null.
+     */
+    private Tag chercherTag(String tag) throws DonneesInsuffisantesException
+    {
+        if (tag == null || "".equals(tag))
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche du tag : nom du tag non renseigné.");
+        
+        //TODO: la recherche à proprement parler.
         
         return ret;
     }
@@ -450,13 +538,16 @@ public class Controleur
      * Crée une zone dans la table des zones.
     */
     public Rapport creerZone(String zone)
-            throws EnregistrementExistantException
+            throws EnregistrementExistantException, DonneesInsuffisantesException
     {
         Rapport rapport = new Rapport();
+        
+        if (zone == null || "".equals(zone))
+            throw new DonneesInsuffisantesException("Erreur lors de la création de la zone : nom de la zone non renseigné.");
             
-            //on vérifie que la version de jeu n'existe pas déjà !
-        Vector<Zone> existante = chercherZone(zone);
-        if (!existante.isEmpty())
+        //on vérifie que la zone n'existe pas déjà !
+        Zone existante = chercherZone(zone);
+        if (existante != null)
             throw new EnregistrementExistantException("Impossible de créer la zone : cette zone existe déjà.");
         
         //TODO : on génère la zone pour créer la version de jeu.
