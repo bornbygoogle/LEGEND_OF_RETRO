@@ -83,7 +83,8 @@ public class Controleur
                         f.getEdition(), f.getZone(),
                         f.getPrix(), f.getStock(),
                         f.getIdJeu(), f.getNom(),       //getNom() renvoie le nom du JEU, pas de la Version du jeu
-                        f.getDescription(), f.getTags(), f.getPlateforme(),
+                        f.getDescription(), f.getTags(),
+                        f.getIdConsole(), f.getPlateforme(),
                         f.getIdEditeur(), f.getEditeur());
         }
         else if (form instanceof CodeBarreForm)
@@ -101,7 +102,7 @@ public class Controleur
             throw new DonneesInsuffisantesException("Impossible de créer le fabricant : un nom est requis.");
         
         //on vérifie que le fabricant n'existe pas déjà !
-        Fabricant existant = chercherFabricant(nomFabr);
+        Fabricant existant = chercherFabricant(-1, nomFabr);
         if (existant != null)
             throw new EnregistrementExistantException("Impossible de créer le fabricant : ce fabricant existe déjà.");
             
@@ -120,7 +121,7 @@ public class Controleur
             throw new DonneesInsuffisantesException("Impossible de créer l'éditeur : un nom est requis.");
         
         //on vérifie que l'éditeur n'existe pas déjà !
-        Editeur existant = chercherEditeur(nomEditeur);
+        Editeur existant = chercherEditeur(-1, nomEditeur);
         if (existant != null)
             throw new EnregistrementExistantException("Impossible de créer l'éditeur : cet éditeur existe déjà.");
             
@@ -140,7 +141,7 @@ public class Controleur
             throw new DonneesInsuffisantesException("Impossible de créer le tag : un libellé est requis."); //vérifier le code appelant.
         
         //on vérifie que le tag n'existe pas déjà !
-        Tag existant = chercherTag(tag);
+        Tag existant = chercherTag(-1, tag);
         if (existant != null)
             throw new EnregistrementExistantException("Impossible de créer le tag : ce tag existe déjà."); //vérifier le code appelant.
             
@@ -179,7 +180,7 @@ public class Controleur
         else //si on crée un jeu
         {
             //on détermine l'identifiant de l'éditeur
-            Editeur existant = chercherEditeur(nomEditeur);
+            Editeur existant = chercherEditeur(-1, nomEditeur);
             if (existant == null)
             {
                 rapport.concatener(creerEditeur(nomEditeur)); //s'il n'existe pas, on le crée à la volée.
@@ -203,7 +204,7 @@ public class Controleur
             for (String tag : tags)
             {
                 //on vérifie l'existence du tag et, au besoin, on le crée.
-                Tag t = chercherTag(tag);
+                Tag t = chercherTag(-1, tag);
                 if (t == null)
                 {
                     rapport.concatener(creerTag(tag));
@@ -240,7 +241,7 @@ public class Controleur
         else //si on crée une console
         {
             //on détermine l'identifiant du fabricant
-            Fabricant fabricant = chercherFabricant(nomFabr);
+            Fabricant fabricant = chercherFabricant(-1, nomFabr);
             if (fabricant == null)
             {
                 rapport.concatener(creerFabricant(nomFabr)); //s'il n'existe pas, on le crée à la volée.
@@ -251,7 +252,7 @@ public class Controleur
                 idFabr = fabricant.getId(); //s'il existe, il n'en existe qu'un.
             
                 //on vérifie que la console n'existe pas déjà !
-                Console existante = chercherConsole(nomConsole, idFabr);
+                Console existante = chercherConsole(-1, idFabr, nomConsole, "");
                 if (existante != null)
                     throw new EnregistrementExistantException("Impossible de créer la console : cette console existe déjà.");
 
@@ -291,7 +292,7 @@ public class Controleur
             cb = codeBarreValide(cb); //on vérifie le code barre
             
             //on détermine l'identifiant de la console
-            Console existante = chercherConsole(nomConsole, nomFabr);
+            Console existante = chercherConsole(idConsole, idFabr, nomConsole, nomFabr);
             if (existante == null)
             {
                 rapport.concatener(creerConsole(nomConsole, idFabr, nomFabr)); //si elle n'existe pas, on la crée à la volée.
@@ -301,7 +302,7 @@ public class Controleur
                 idConsole = existante.getId();
             
             //on détermine l'identifiant de la zone
-            Zone zoneExistante = chercherZone(zone);
+            Zone zoneExistante = chercherZone(-1, zone);
             if (zoneExistante == null)
                 throw new DonneeInvalideException("Impossible de créer la version de console : la zone renseignée n'existe pas.");
             
@@ -327,7 +328,8 @@ public class Controleur
     */
     protected Rapport creerVersionJeu(String cb, String edition, String zone,
             float prix, int stock,
-            int idJeu, String nomJeu, String description, Vector<String> tags, String nomConsole,
+            int idJeu, String nomJeu, String description, Vector<String> tags,
+            int idCons, String nomConsole,
             int idEditeur, String nomEditeur)
             throws DonneesInsuffisantesException, DonneeInvalideException, EnregistrementExistantException
     {
@@ -356,12 +358,12 @@ public class Controleur
                 idJeu = existant.iterator().next().getId(); //s'il existe, il n'en existe qu'un.
             
             //on détermine l'identifiant de la zone
-            Zone zoneExistante = chercherZone(zone);
+            Zone zoneExistante = chercherZone(-1, zone);
             if (zoneExistante == null)
                 throw new DonneeInvalideException("Impossible de créer la version de console : la zone renseignée n'existe pas.");
             
             //on détermine l'identifiant de la console
-            Console console = chercherConsole(nomConsole);
+            Console console = chercherConsole(idCons, -1, nomConsole, "");
             if (console == null)
                 throw new DonneeInvalideException("Impossible de créer la version de jeu : la console renseignée n'existe pas.");
             
@@ -458,11 +460,35 @@ public class Controleur
         return ret;
     }
     /**
+     * Recherche les consoles dont le nom correspond parfaitement à la chaîne renseignée et ayant le fabricant désigné.
+     */
+    private Console chercherConsole(int idConsole, int idFabr, String nomCons, String nomFabr) throws DonneesInsuffisantesException
+    {
+        if (idConsole < 0 && (nomCons == null || "".equals(nomCons)))
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche de la console : nom de la console non renseigné.");
+        
+        //TODO: la recherche à proprement parler. Attention, pour le fabricant, si le nom est renseigné, on demande une correspondance parfaite.
+        
+        return ret;
+    }
+    /**
+     * Recherche les jeux dont le nom correspond parfaitement à la chaîne renseignée et ayant l'éditeur désigné.
+     */
+    private Console chercherJeu(int idJeu, int idEditeur, String nomJeu, String nomEditeur) throws DonneesInsuffisantesException
+    {
+        if (idJeu < 0 && (nomJeu == null || "".equals(nomJeu)))
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche du fabricant : nom du fabricant non renseigné.");
+        
+        //TODO: la recherche à proprement parler. Attention, pour l'éditeur, si le nom est renseigné, on demande une correspondance parfaite.
+        
+        return ret;
+    }
+    /**
      * Recherche les fabricants dont le nom contient la chaîne renseignée.
      */
-    private Fabricant chercherFabricant(String nomFabr) throws DonneesInsuffisantesException
+    private Fabricant chercherFabricant(int id, String nomFabr) throws DonneesInsuffisantesException
     {
-        if (nomFabr == null || "".equals(nomFabr))
+        if (id < 0 && (nomFabr == null || "".equals(nomFabr)))
             throw new DonneesInsuffisantesException("Erreur lors de la recherche du fabricant : nom du fabricant non renseigné.");
         
         //TODO: la recherche à proprement parler.
@@ -486,9 +512,9 @@ public class Controleur
     /**
      * Recherche l'éditeur dont le nom correspond parfaitement à la chaîne renseignée.
      */
-    private Editeur chercherEditeur(String nomEdit) throws DonneesInsuffisantesException
+    private Editeur chercherEditeur(int id, String nomEdit) throws DonneesInsuffisantesException
     {
-        if (nomEdit == null || "".equals(nomEdit))
+        if (id < 0 && (nomEdit == null || "".equals(nomEdit)))
             throw new DonneesInsuffisantesException("Erreur lors de la recherche de l'éditeur : nom de l'éditeur non renseigné.");
         
         //TODO: la recherche à proprement parler.
@@ -512,9 +538,9 @@ public class Controleur
     /**
      * Recherche une zone dans la base de données. Si la zone renseignée est trouvé, un objet Zone est renvoyé. Sinon, la méthode renvoie null.
      */
-    private Zone chercherZone(String zone) throws DonneesInsuffisantesException
+    private Zone chercherZone(int id, String zone) throws DonneesInsuffisantesException
     {
-        if (zone == null || "".equals(zone))
+        if (id < 0 && (zone == null || "".equals(zone)))
             throw new DonneesInsuffisantesException("Erreur lors de la recherche de la zone : nom de la zone non renseigné.");
         
         //TODO: la recherche à proprement parler.
@@ -524,9 +550,9 @@ public class Controleur
     /**
      * Recherche un tag dans la base de données. Si le tag renseigné est trouvé, un objet Tag est renvoyé. Sinon, la méthode renvoie null.
      */
-    private Tag chercherTag(String tag) throws DonneesInsuffisantesException
+    private Tag chercherTag(int id, String tag) throws DonneesInsuffisantesException
     {
-        if (tag == null || "".equals(tag))
+        if (id < 0 && (tag == null || "".equals(tag)))
             throw new DonneesInsuffisantesException("Erreur lors de la recherche du tag : nom du tag non renseigné.");
         
         //TODO: la recherche à proprement parler.
@@ -546,7 +572,7 @@ public class Controleur
             throw new DonneesInsuffisantesException("Erreur lors de la création de la zone : nom de la zone non renseigné.");
             
         //on vérifie que la zone n'existe pas déjà !
-        Zone existante = chercherZone(zone);
+        Zone existante = chercherZone(-1, zone);
         if (existante != null)
             throw new EnregistrementExistantException("Impossible de créer la zone : cette zone existe déjà.");
         
