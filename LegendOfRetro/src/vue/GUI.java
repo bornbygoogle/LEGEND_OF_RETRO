@@ -32,32 +32,12 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonRecherche = new javax.swing.JButton();
-        buttonCreer = new javax.swing.JButton();
         mainPanel2 = new vue.mainPanel();
-        buttonModifier = new javax.swing.JButton();
-        resultat1 = new vue.Resultat();
-        critResultat1 = new vue.critResultat();
+        gUI_produit1 = new vue.GUI_produit();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Legend Of Retro");
         setMaximumSize(new java.awt.Dimension(1000, 560));
-
-        buttonRecherche.setLabel("Recherche");
-        buttonRecherche.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonRechercheActionPerformed(evt);
-            }
-        });
-
-        buttonCreer.setLabel("Créer");
-
-        buttonModifier.setText("Modifier");
-        buttonModifier.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonModifierActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -65,62 +45,19 @@ public class GUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(mainPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(resultat1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(critResultat1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(103, 103, 103)
-                        .addComponent(buttonRecherche, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonCreer, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(258, 258, 258)
-                        .addComponent(buttonModifier, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(101, 101, 101))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(gUI_produit1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(mainPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(critResultat1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(buttonRecherche)
-                            .addComponent(buttonCreer)
-                            .addComponent(buttonModifier))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(resultat1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(48, Short.MAX_VALUE))
+            .addComponent(mainPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(gUI_produit1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void buttonRechercheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRechercheActionPerformed
-        // TODO add your handling code here:
-        /*Vector dataBeans =  new Vector();
-        String codeBarre = "";
-        if (isInteger(Vue.Resultat.fieldCodeBarre.getText())) { codeBarre = Vue.Resultat.fieldCodeBarre.getText(); }
-        dataBeans = makeDataBeans();
-        String text = "Clicked Recherche !!!";
-        Vue.Resultat.fieldCodeBarre.setText(text);
-        Vue.Resultat.errorCodeBarre.setText(text);
-        Vue.Resultat.fieldNom.setText(text);
-        Vue.Resultat.fieldCote.setText(text);
-        Vue.Resultat.fieldDeveloppeur.setText(text);
-        Vue.Resultat.fieldTag.setText(text);*/
-    }//GEN-LAST:event_buttonRechercheActionPerformed
-
-    private void buttonModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonModifierActionPerformed
-        // TODO add your handling code here:
-        critResultat.fieldTxtAjoutZone.setVisible(true);
-        critResultat.buttonAjoutZone.setVisible(true);
-    }//GEN-LAST:event_buttonModifierActionPerformed
 
     /**
      * Méthode pour vérifier si le Code Barre se compose que des intégers
@@ -193,11 +130,7 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonCreer;
-    private javax.swing.JButton buttonModifier;
-    private javax.swing.JButton buttonRecherche;
-    private vue.critResultat critResultat1;
+    private vue.GUI_produit gUI_produit1;
     private vue.mainPanel mainPanel2;
-    private vue.Resultat resultat1;
     // End of variables declaration//GEN-END:variables
 }

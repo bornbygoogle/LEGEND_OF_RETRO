@@ -117,6 +117,7 @@ public class mainPanel extends javax.swing.JPanel {
 
     private void buttonProduitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonProduitActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_buttonProduitActionPerformed
 
     private void buttonClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonClientActionPerformed
