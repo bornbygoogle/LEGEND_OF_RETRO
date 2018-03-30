@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controlleur;
+package vue;
 
 import java.util.Vector;
 import javax.swing.JFrame;
@@ -32,23 +32,32 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        recherche = new javax.swing.JButton();
-        creer = new javax.swing.JButton();
-        critResultat1 = new Vue.critResultat();
-        mainPanel2 = new Vue.mainPanel();
-        resultat2 = new Vue.Resultat();
+        buttonRecherche = new javax.swing.JButton();
+        buttonCreer = new javax.swing.JButton();
+        mainPanel2 = new vue.mainPanel();
+        buttonModifier = new javax.swing.JButton();
+        resultat1 = new vue.Resultat();
+        critResultat1 = new vue.critResultat();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Legend Of Retro");
+        setMaximumSize(new java.awt.Dimension(1000, 560));
 
-        recherche.setLabel("Recherche");
-        recherche.addActionListener(new java.awt.event.ActionListener() {
+        buttonRecherche.setLabel("Recherche");
+        buttonRecherche.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rechercheActionPerformed(evt);
+                buttonRechercheActionPerformed(evt);
             }
         });
 
-        creer.setLabel("Créer");
+        buttonCreer.setLabel("Créer");
+
+        buttonModifier.setText("Modifier");
+        buttonModifier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonModifierActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -58,38 +67,60 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(mainPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(141, 141, 141)
-                        .addComponent(recherche, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(resultat1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(critResultat1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(103, 103, 103)
+                        .addComponent(buttonRecherche, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(creer, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(146, 146, 146))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(critResultat1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(resultat2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addComponent(buttonCreer, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(258, 258, 258)
+                        .addComponent(buttonModifier, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(101, 101, 101))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(critResultat1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(recherche)
-                    .addComponent(creer))
-                .addGap(18, 18, 18)
-                .addComponent(resultat2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(mainPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(mainPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(critResultat1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(buttonRecherche)
+                            .addComponent(buttonCreer)
+                            .addComponent(buttonModifier))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(resultat1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonRechercheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRechercheActionPerformed
+        // TODO add your handling code here:
+        /*Vector dataBeans =  new Vector();
+        String codeBarre = "";
+        if (isInteger(Vue.Resultat.fieldCodeBarre.getText())) { codeBarre = Vue.Resultat.fieldCodeBarre.getText(); }
+        dataBeans = makeDataBeans();
+        String text = "Clicked Recherche !!!";
+        Vue.Resultat.fieldCodeBarre.setText(text);
+        Vue.Resultat.errorCodeBarre.setText(text);
+        Vue.Resultat.fieldNom.setText(text);
+        Vue.Resultat.fieldCote.setText(text);
+        Vue.Resultat.fieldDeveloppeur.setText(text);
+        Vue.Resultat.fieldTag.setText(text);*/
+    }//GEN-LAST:event_buttonRechercheActionPerformed
+
+    private void buttonModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonModifierActionPerformed
+        // TODO add your handling code here:
+        critResultat.fieldTxtAjoutZone.setVisible(true);
+        critResultat.buttonAjoutZone.setVisible(true);
+    }//GEN-LAST:event_buttonModifierActionPerformed
 
     /**
      * Méthode pour vérifier si le Code Barre se compose que des intégers
@@ -119,21 +150,6 @@ public class GUI extends javax.swing.JFrame {
         return vectTemp;
     }
     
-    private void rechercheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rechercheActionPerformed
-        // TODO add your handling code here:
-        /*Vector dataBeans =  new Vector();
-        String codeBarre = "";
-        if (isInteger(Vue.Resultat.fieldCodeBarre.getText())) { codeBarre = Vue.Resultat.fieldCodeBarre.getText(); }
-        dataBeans = makeDataBeans();
-        String text = "Clicked Recherche !!!";
-        Vue.Resultat.fieldCodeBarre.setText(text);
-        Vue.Resultat.errorCodeBarre.setText(text);
-        Vue.Resultat.fieldNom.setText(text);
-        Vue.Resultat.fieldCote.setText(text);
-        Vue.Resultat.fieldDeveloppeur.setText(text);
-        Vue.Resultat.fieldTag.setText(text);*/
-    }//GEN-LAST:event_rechercheActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -177,10 +193,11 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton creer;
-    private Vue.critResultat critResultat1;
-    private Vue.mainPanel mainPanel2;
-    private javax.swing.JButton recherche;
-    private Vue.Resultat resultat2;
+    private javax.swing.JButton buttonCreer;
+    private javax.swing.JButton buttonModifier;
+    private javax.swing.JButton buttonRecherche;
+    private vue.critResultat critResultat1;
+    private vue.mainPanel mainPanel2;
+    private vue.Resultat resultat1;
     // End of variables declaration//GEN-END:variables
 }
