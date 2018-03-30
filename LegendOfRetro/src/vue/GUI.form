@@ -86,7 +86,7 @@
         <Property name="label" type="java.lang.String" value="Cr&#xe9;er"/>
       </Properties>
     </Component>
-    <Component class="Vue.mainPanel" name="mainPanel2">
+    <Component class="vue.mainPanel" name="mainPanel2">
     </Component>
     <Component class="javax.swing.JButton" name="buttonModifier">
       <Properties>
@@ -96,9 +96,9 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonModifierActionPerformed"/>
       </Events>
     </Component>
-    <Component class="Vue.Resultat" name="resultat1">
+    <Component class="vue.Resultat" name="resultat1">
     </Component>
-    <Component class="Vue.critResultat" name="critResultat1">
+    <Component class="vue.critResultat" name="critResultat1">
     </Component>
   </SubComponents>
 </Form>

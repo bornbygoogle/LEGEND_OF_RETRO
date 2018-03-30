@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Vue;
+package vue;
 
 import java.util.Vector;
 import javax.swing.JFrame;
@@ -34,10 +34,10 @@ public class GUI extends javax.swing.JFrame {
 
         buttonRecherche = new javax.swing.JButton();
         buttonCreer = new javax.swing.JButton();
-        mainPanel2 = new Vue.mainPanel();
+        mainPanel2 = new vue.mainPanel();
         buttonModifier = new javax.swing.JButton();
-        resultat1 = new Vue.Resultat();
-        critResultat1 = new Vue.critResultat();
+        resultat1 = new vue.Resultat();
+        critResultat1 = new vue.critResultat();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Legend Of Retro");
@@ -196,8 +196,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton buttonCreer;
     private javax.swing.JButton buttonModifier;
     private javax.swing.JButton buttonRecherche;
-    private Vue.critResultat critResultat1;
-    private Vue.mainPanel mainPanel2;
-    private Vue.Resultat resultat1;
+    private vue.critResultat critResultat1;
+    private vue.mainPanel mainPanel2;
+    private vue.Resultat resultat1;
     // End of variables declaration//GEN-END:variables
 }

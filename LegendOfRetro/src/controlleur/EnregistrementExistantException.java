@@ -3,18 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Modele;
+package controlleur;
 
 /**
  *
- * @author bornbygoogle
+ * @author Home
  */
-public class Recherche 
+public class EnregistrementExistantException extends Exception
 {
-    private String Affiche() 
+    public EnregistrementExistantException(String erreur)
     {
-        String response = "Hello world !";
-        return response;
+        super(erreur);
     }
-    
 }
