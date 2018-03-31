@@ -31,12 +31,12 @@ import vue.GUI;
  *
  * @author Adrien Marchand
  */
-public class Controleur_test1
+public class Controleur
 {
     //private Vue vue; //utilisé pour communiquer avec l'affichage
     private Connection BDD; //utilisé pour créer des requêtes SQL
     
-    public Controleur_test1() throws InitException
+    public Controleur() throws InitException
     {
         init();
     }
@@ -755,7 +755,7 @@ public class Controleur_test1
     public static void main(String[] args)
     {
         try {
-            new Controleur_test1();}
+            new Controleur();}
         catch (InitException ex) {
             System.out.println(ex.getMessage());}
     }
