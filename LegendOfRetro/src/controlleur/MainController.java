@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controlleur;
+package controlleur;
 
 import javax.swing.JFrame;
 
@@ -18,7 +18,7 @@ public class MainController extends JFrame {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Controlleur.GUI a = new Controlleur.GUI();
+        vue.GUI a = new vue.GUI();
     }
     
 }
