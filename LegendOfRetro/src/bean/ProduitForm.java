@@ -26,7 +26,7 @@ public class ProduitForm extends Form
     private String zone;
     private String editeur;
     private String description;
-    private Vector<String> tags;
+    private String tags;
     private String plateforme;
     private float prix;
     private int stock;
@@ -45,14 +45,14 @@ public class ProduitForm extends Form
         this.zone = "";
         this.editeur = "";
         this.description = "";
-        this.tags = new Vector<String>();
+        this.tags = "";
         this.prix = -1;
         this.stock = -1;
     }
     public ProduitForm(int idConsole, int idVersionConsole,
             int idJeu, int idVersionJeu, int idEditeur,
             String type, String cb, String nom, String edition, String zone,
-            String editeur, String description, Vector<String> tags, String plateforme,
+            String editeur, String description, String tags, String plateforme,
             float prix, int stock)
     {
         this.idConsole = idConsole;
@@ -85,7 +85,7 @@ public class ProduitForm extends Form
     public String getZone()      {return this.zone;}
     public String getEditeur()      {return this.editeur;}
     public String getDescription()      {return this.description;}
-    public Vector<String> getTags()      {return this.tags;}
+    public String getTags()      {return this.tags;}
     public String getPlateforme()      {return this.plateforme;}
     public float getPrix()      {return this.prix;}
     public int getStock()      {return this.stock;}
@@ -102,7 +102,7 @@ public class ProduitForm extends Form
     public void setZone(String zone)      {this.zone = zone;}
     public void setEditeur(String editeur)      {this.editeur = editeur;}
     public void setDescription(String descr)      {this.description = descr;}
-    public void setTags(Vector<String> tags)      {this.tags = tags;}
+    public void setTags(String tags)      {this.tags = tags;}
     public void setPlateforme(String pf)      {this.plateforme = pf;}
     public void setPrix(float p)      {this.prix = p;}
     public void setStock(int n)      {this.stock = n;}
