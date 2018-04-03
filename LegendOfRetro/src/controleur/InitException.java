@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controlleur;
+package controleur;
 
 /**
  *
- * @author Home
+ * @author Adrien Marchand
  */
-public class DonneeInvalideException extends Exception
+public class InitException extends Exception
 {
-    public DonneeInvalideException(String erreur)
+    public InitException(String erreur)
     {
         super(erreur);
     }

@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controlleur;
+package controleur;
 
 /**
  *
  * @author Home
  */
-public class EnregistrementExistantException extends Exception
+public class DonneeInvalideException extends Exception
 {
-    public EnregistrementExistantException(String erreur)
+    public DonneeInvalideException(String erreur)
     {
         super(erreur);
     }
