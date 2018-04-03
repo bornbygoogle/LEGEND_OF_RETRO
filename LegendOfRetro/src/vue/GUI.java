@@ -99,7 +99,7 @@ public class GUI extends JFrame implements ActionListener
         c.add(this.menuPanel, BorderLayout.WEST);
         
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setSize(700, 560);
+        this.setSize(990, 560);
         this.setVisible(true);
         
         this.controleur = controleur;
