@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>130</x>
+      <y>70</y>
+      <w>210</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Serializable&gt;&gt;
+/Form/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>0</x>
+      <y>30</y>
+      <w>570</w>
+      <h>480</h>
+    </coordinates>
+    <panel_attributes>bean
+--
+bg=orange
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>600</x>
+      <y>440</y>
+      <w>340</w>
+      <h>520</h>
+    </coordinates>
+    <panel_attributes>Controleur
+--
+-BDD: java.sql.Connection
+--
+_+main(): void_
++init(): void
+
++chercher(bean.Form): Vector&lt;ProduitForm&gt;
+-chercherCodeBarre(String): ProduitForm
+-chercherVersion(bean.Form): Vector&lt;VersioJeun&gt;
+-chercherConsole(bean.Form): Vector&lt;Console&gt;
+-chercherJeu(bean.Form): Vector&lt;Jeu&gt;
+-chercherEditeur(bean.Form): Vector&lt;Editeur&gt;
+-chercherFabricant(bean.Form): Vector&lt;Editeur&gt;
+
++modifier(bean.Form ancien,
+    bean.Form nouveau): Rapport
+-modifierVersion(bean.Form ancien,
+    bean.Form nouveau): Rapport
+-modifierConsole(bean.Form ancien,
+    bean.Form nouveau): Rapport
+-modifierJeu(bean.Form ancien,
+    bean.Form nouveau): Rapport
+-modifierEditeur(bean.Form ancien,
+    bean.Form nouveau): Rapport
+-modifierFabricant(bean.Form ancien,
+    bean.Form nouveau): Rapport
+
++creer(bean.Form): Rapport
+-creerVersionJeu(bean.Form): Rapport
+-creerVersionConsole(bean.Form): Rapport
+-creerConsole(bean.Form): Rapport
+-creerJeu(bean.Form): Rapport
+-creerEditeur(bean.Form): Rapport
+-creerFabricant(bean.Form): Rapport
++creerZone(String zone): Rapport</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>600</x>
+      <y>260</y>
+      <w>160</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>/Modele/
+-
+DRIVER: String
+SERVER: String
+DBNAME: String
+PORT: String
+USR: String
+PWD: String
+-
++getDerbyURL(): String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>360</x>
+      <y>510</y>
+      <w>220</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>Les méthodes chercher,
+creer et modifier
+déterminent ce qu'il faut
+ch/cr/mod d'après le type
+et les paramètres du bean.
+
+S'il n'y a pas d'exception
+les fonctions de recherche renvoient
+un vecteur à l'affichage.
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>360</x>
+      <y>720</y>
+      <w>220</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Enfin, les fonctions les plus
+spécialisées génèrent
+et exécutent la/les requête(s)
+SQL nécessaires.
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>590</x>
+      <y>220</y>
+      <w>800</w>
+      <h>1050</h>
+    </coordinates>
+    <panel_attributes>controleur
+--
+bg=orange
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>210</x>
+      <y>810</y>
+      <w>370</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>Interface
+Vue
+-
++setContoleur(Controleur): void
++resultatsConsole(Vector&lt;bean.Console&gt;): void
++resultatsVersionJeu(Vector&lt;bean.VersionJeu&gt;):void
++resultatsJeu(Vector&lt;bean.Jeu&gt;): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>260</x>
+      <y>140</y>
+      <w>210</w>
+      <h>360</h>
+    </coordinates>
+    <panel_attributes>ProduitForm
+--
+-idConsole: int
+-idVersionConsole: int
+-idJeu: int
+-idVersionJeu: int
+-idEditeur: int
+
+-type: String
+-codeBarre: String
+-label: String
+-edition: String
+-zone: String
+-nomEditeur: String
+
+-description: String
+-tags: Vector&lt;String&gt;
+-plateforme: String
+-prix: float
+-stock: int
+--
++getters
++setters</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>100</y>
+      <w>30</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>480</x>
+      <y>0</y>
+      <w>200</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>Attention : le label peut être
+le nom de la console,
+qui est un produit,
+ou le nom du JEU
+(table Jeu dans la BDD),
+qui n'est pas un produit.
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>480</x>
+      <y>120</y>
+      <w>200</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>nomEditeur désigne le nom
+de l'EDITEUR pour un jeu,
+d'un FABRICANT
+pour une console.
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>900</x>
+      <y>260</y>
+      <w>210</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>Rapport
+-
+-ids: Vector&lt;Integer&gt;
+-tables: Vector&lt;Table&gt;
+-operations: Vector&lt;Operation&gt;
+-
+-concatener(Rapport): void
+-getId(Table, Operation): int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1130</x>
+      <y>260</y>
+      <w>100</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;énumération&gt;&gt;
+Table
+-
+FABRICANT
+CONSOLE
+VERSIONJEU
+JEU
+EDITEUR</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1130</x>
+      <y>410</y>
+      <w>100</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;énumération&gt;&gt;
+Operation
+-
+CREER
+MODIFIER</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1100</x>
+      <y>380</y>
+      <w>50</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;30.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1100</x>
+      <y>290</y>
+      <w>50</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;30.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>990</x>
+      <y>770</y>
+      <w>210</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Jeu
+-
+-description: String
+-tags: Vector&lt;String&gt;
+-idEditeur: int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1100</x>
+      <y>690</y>
+      <w>100</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>VersionJeu</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1070</x>
+      <y>630</y>
+      <w>110</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0;90.0;50.0;90.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>960</x>
+      <y>690</y>
+      <w>110</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Console
+-
+-idFabricant: int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>980</x>
+      <y>530</y>
+      <w>210</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>/Produit/
+--
+-id: int
+-codeBarre: String
+-label: String
+-edition: String
+-zone: String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1010</x>
+      <y>630</y>
+      <w>90</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>70.0;10.0;70.0;50.0;10.0;50.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1150</x>
+      <y>710</y>
+      <w>30</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>120</x>
+      <y>100</y>
+      <w>30</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>50</x>
+      <y>140</y>
+      <w>160</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>CodeBarreForm
+--
+-codeBarre: String
+--
++getters
++setters</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
