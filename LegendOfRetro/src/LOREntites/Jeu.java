@@ -1,5 +1,5 @@
 package LOREntites;
-// Generated Apr 6, 2018 5:26:24 PM by Hibernate Tools 4.3.1
+// Generated Apr 7, 2018 9:35:06 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -15,17 +15,21 @@ public class Jeu  implements java.io.Serializable {
      private Editeur editeur;
      private String nom;
      private String description;
-     private Set versions = new HashSet(0);
+     private Set versionJeus = new HashSet(0);
      private Set tags = new HashSet(0);
 
     public Jeu() {
     }
 
-    public Jeu(Editeur editeur, String nom, String description, Set versions, Set tags) {
+	
+    public Jeu(Editeur editeur) {
+        this.editeur = editeur;
+    }
+    public Jeu(Editeur editeur, String nom, String description, Set versionJeus, Set tags) {
        this.editeur = editeur;
        this.nom = nom;
        this.description = description;
-       this.versions = versions;
+       this.versionJeus = versionJeus;
        this.tags = tags;
     }
    
@@ -57,12 +61,12 @@ public class Jeu  implements java.io.Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    public Set getVersions() {
-        return this.versions;
+    public Set getVersionJeus() {
+        return this.versionJeus;
     }
     
-    public void setVersions(Set versions) {
-        this.versions = versions;
+    public void setVersionJeus(Set versionJeus) {
+        this.versionJeus = versionJeus;
     }
     public Set getTags() {
         return this.tags;

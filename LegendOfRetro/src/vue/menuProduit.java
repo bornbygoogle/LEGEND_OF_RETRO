@@ -72,7 +72,6 @@ public class menuProduit extends JPanel implements Chercheur
         //*/
         
         this.setLayout(new BorderLayout());
-        this.add(new JButton("Ici"), BorderLayout.CENTER);
         this.add(this.Criteres, BorderLayout.CENTER);
         this.add(this.Resultats, BorderLayout.SOUTH);
         /*GroupLayout layout = new GroupLayout(this);
