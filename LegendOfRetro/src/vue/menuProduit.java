@@ -6,11 +6,13 @@
 package vue;
 
 import bean.Form;
+import bean.ProduitForm;
 import controleur.Controleur;
 import controleur.DonneeInvalideException;
 import controleur.DonneesInsuffisantesException;
 import controleur.ResultatInvalideException;
 import java.awt.BorderLayout;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -25,7 +27,7 @@ public class menuProduit extends JPanel implements Chercheur
     private Controleur controleur;
 
     private critResultat Criteres;
-    private Resultat Resultats;
+    private Resultat<ProduitForm> Resultats;
 
     /**
      * Creates new form menuProduit
@@ -41,11 +43,12 @@ public class menuProduit extends JPanel implements Chercheur
      * Cette méthode est appelée depuis le constructeur pour initialiser le JPanel.
      * ATTENTION : cette fonction reprend du code généré par un JForm.
      */                       
-    private void initComponents() {
+    private void initComponents()
+    {
         this.setSize(500, 560);
 
         this.Criteres = new critResultat(this.controleur, this);
-        this.Resultats = new Resultat(this);
+        this.Resultats = new Resultat<ProduitForm>(this);
 
         /*
         GroupLayout jPanel1Layout = new GroupLayout(Criteres);
@@ -101,9 +104,14 @@ public class menuProduit extends JPanel implements Chercheur
     @Override
     public void lancerRecherche(Form form)
     {
-        System.out.println("Une recherche a été lancée (à implémenter)");
         try {
-            this.controleur.chercher(form);}
+            Vector<ProduitForm> resultatsRecherche = this.controleur.chercher(form);
+            
+            System.out.println("Affiché à des fins de test dans menuProduit > lancerRecherche(Form)");
+            resultatsRecherche.addElement(new ProduitForm(0,0,0,0,0,"jeu", "123456", "zelda", "edition", "FR", "Nintendo", "joli", "", "nintendo", 0.5f, 12));
+            resultatsRecherche.addElement(new ProduitForm(0,0,0,0,0,"jeu", "09876543", "Mario", "edition", "IT", "Sony", "moche", "", "PSX", 5000f, 1));
+            
+            this.Resultats.afficherRes(resultatsRecherche); }
         catch (DonneeInvalideException e) {
             afficherErreur(e);}
         catch (ResultatInvalideException e) {
@@ -115,7 +123,7 @@ public class menuProduit extends JPanel implements Chercheur
     @Override
     public void afficherErreur(Exception e)
     {
-        this.Resultats.displayError(e.getMessage());
+        this.Resultats.afficherErreur(e.getMessage());
     }
 
 

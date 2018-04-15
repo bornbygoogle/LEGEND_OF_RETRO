@@ -226,13 +226,11 @@
     </Component>
     <Component class="javax.swing.JTextField" name="fieldNom">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Nom here"/>
         <Property name="toolTipText" type="java.lang.String" value="Nom"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="fieldEditeur">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Fabricant here"/>
         <Property name="toolTipText" type="java.lang.String" value="Developpeur / Fabricant"/>
       </Properties>
       <Events>
@@ -294,13 +292,11 @@
     </Component>
     <Component class="javax.swing.JTextField" name="fieldEdition">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Edition here"/>
         <Property name="toolTipText" type="java.lang.String" value="Edition"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="fieldTag">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Tag here"/>
         <Property name="toolTipText" type="java.lang.String" value="Tag"/>
       </Properties>
     </Component>
@@ -415,7 +411,6 @@
     </Component>
     <Component class="javax.swing.JTextField" name="fieldTxtAjoutZone">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Ajout Zone here"/>
         <Property name="toolTipText" type="java.lang.String" value="Developpeur / Fabricant"/>
       </Properties>
       <AuxValues>
@@ -434,9 +429,9 @@
       </AuxValues>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="fieldCodeBarre">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="01234567890123"/>
-      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldCodeBarreActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="buttonChercher">
       <Properties>

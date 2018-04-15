@@ -85,10 +85,8 @@ public class critResultat extends javax.swing.JPanel
 
         labelZone.setText("Zone : ");
 
-        fieldNom.setText("Nom here");
         fieldNom.setToolTipText("Nom");
 
-        fieldEditeur.setText("Fabricant here");
         fieldEditeur.setToolTipText("Developpeur / Fabricant");
         fieldEditeur.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -117,10 +115,8 @@ public class critResultat extends javax.swing.JPanel
 
         labelTag.setText("Tag : ");
 
-        fieldEdition.setText("Edition here");
         fieldEdition.setToolTipText("Edition");
 
-        fieldTag.setText("Tag here");
         fieldTag.setToolTipText("Tag");
 
         listePlateforme.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PC", "PS", " " }));
@@ -172,7 +168,6 @@ public class critResultat extends javax.swing.JPanel
 
         fieldAjoutCasse.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
 
-        fieldTxtAjoutZone.setText("Ajout Zone here");
         fieldTxtAjoutZone.setToolTipText("Developpeur / Fabricant");
         fieldTxtAjoutZone.setVisible(false);
 
@@ -184,7 +179,11 @@ public class critResultat extends javax.swing.JPanel
             }
         });
 
-        fieldCodeBarre.setText("01234567890123");
+        fieldCodeBarre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldCodeBarreActionPerformed(evt);
+            }
+        });
 
         buttonChercher.setText("Chercher");
         buttonAjoutZone.setVisible(false);
@@ -427,6 +426,10 @@ public class critResultat extends javax.swing.JPanel
     private void buttonModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonModifierActionPerformed
         throw new UnsupportedOperationException("La modification de produit n'a pas encore été implémentée.");
     }//GEN-LAST:event_buttonModifierActionPerformed
+
+    private void fieldCodeBarreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldCodeBarreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fieldCodeBarreActionPerformed
 
     private Form toForm() throws DonneeInvalideException
     {
