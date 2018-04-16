@@ -21,6 +21,7 @@ import java.util.logging.Logger;
  */
 public class critResultat extends javax.swing.JPanel
 {
+    private Form selectedForm;
     private Controleur controleur;
     private Chercheur parent;
 
@@ -31,6 +32,7 @@ public class critResultat extends javax.swing.JPanel
     {
         this.controleur = controleur;
         this.parent = parent;
+        this.selectedForm = null;
         initComponents();
     }
     
@@ -431,6 +433,26 @@ public class critResultat extends javax.swing.JPanel
         // TODO add your handling code here:
     }//GEN-LAST:event_fieldCodeBarreActionPerformed
 
+    public void setForm(ProduitForm f)
+    {
+        this.selectedForm = f;
+        
+        if ("jeu".equals(f.getType()))
+        {
+            this.listeCategorie.setSelectedIndex(1); //type Jeu
+            this.fieldTag.setText(f.getTags());
+            this.jTextAreaDescription.setText(f.getDescription());
+        }
+        else if ("jeu".equals(f.getType()))
+            this.listeCategorie.setSelectedIndex(0); //type Console
+        
+        this.fieldCodeBarre.setText(f.getCodeBarre());
+        this.fieldNom.setText(f.getNom());
+        this.fieldEditeur.setText(f.getEditeur());
+        this.fieldEdition.setText(f.getEdition());
+        
+        //TODO: à terminer
+    }
     private Form toForm() throws DonneeInvalideException
     {
         float prix;

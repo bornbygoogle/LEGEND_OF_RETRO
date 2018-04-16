@@ -91,14 +91,14 @@ public class menuProduit extends JPanel implements Chercheur
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Resultats, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );//*/
-    }                     
-
-    //TODO: fonction de création dans la BDD
+    }
     
     @Override
-    public void selectionnerResultat(Object res)
+    public void selectionnerResultat(Form res)
     {
-        System.out.println("Un résultat a été sélectionné (à implémenter)");
+        if (!(res instanceof ProduitForm))
+            throw new IllegalArgumentException("Erreur dans menuProduit: le formulaire à sélectionner n'est pas un ProduitForm.");
+        this.Criteres.setForm((ProduitForm) res);
     }
 
     @Override
@@ -109,6 +109,7 @@ public class menuProduit extends JPanel implements Chercheur
             
             System.out.println("Affiché à des fins de test dans menuProduit > lancerRecherche(Form)");
             resultatsRecherche.addElement(new ProduitForm(0,0,0,0,0,"jeu", "123456", "zelda", "edition", "FR", "Nintendo", "joli", "", "nintendo", 0.5f, 12));
+            resultatsRecherche.addElement(new ProduitForm(0,0,0,0,0,"console", "43", "Un super nain tend dos", "gold", "FR", "Nintendo", "joli", "", "nintendo", 100000f, 1));
             resultatsRecherche.addElement(new ProduitForm(0,0,0,0,0,"jeu", "09876543", "Mario", "edition", "IT", "Sony", "moche", "", "PSX", 5000f, 1));
             
             this.Resultats.afficherRes(resultatsRecherche); }

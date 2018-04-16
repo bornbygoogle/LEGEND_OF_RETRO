@@ -14,7 +14,7 @@ import bean.Form;
  */
 interface Chercheur
 {
-    public void selectionnerResultat(Object res);
+    public void selectionnerResultat(Form res);
     public void lancerRecherche(Form form);
     public void afficherErreur(Exception e);
 }
