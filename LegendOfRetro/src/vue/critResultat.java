@@ -406,6 +406,7 @@ public class critResultat extends javax.swing.JPanel
 
     private void buttonChercherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChercherActionPerformed
         try {
+  System.out.println("ici");
             this.parent.lancerRecherche(toForm());}
         catch (DonneeInvalideException ex) {
             this.parent.afficherErreur(ex);
@@ -443,7 +444,7 @@ public class critResultat extends javax.swing.JPanel
             this.fieldTag.setText(f.getTags());
             this.jTextAreaDescription.setText(f.getDescription());
         }
-        else if ("jeu".equals(f.getType()))
+        else if ("console".equals(f.getType()))
             this.listeCategorie.setSelectedIndex(0); //type Console
         
         this.fieldCodeBarre.setText(f.getCodeBarre());
@@ -451,7 +452,7 @@ public class critResultat extends javax.swing.JPanel
         this.fieldEditeur.setText(f.getEditeur());
         this.fieldEdition.setText(f.getEdition());
         
-        //TODO: à terminer
+        //TODO: à terminer (zones, plateformes... D'ailleurs, celles-ci doivent être initialisées proprement !)
     }
     private Form toForm() throws DonneeInvalideException
     {
