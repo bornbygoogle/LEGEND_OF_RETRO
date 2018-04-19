@@ -34,6 +34,9 @@ public class critResultat extends javax.swing.JPanel
         this.parent = parent;
         this.selectedForm = null;
         initComponents();
+        
+        listeZone.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "TODO", "intialiser les zones", "Autre" }));
+        listePlateforme.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "PC", "PS", "TODO", "etc."}));
     }
     
     /**
@@ -165,6 +168,11 @@ public class critResultat extends javax.swing.JPanel
         listeZone.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 listeZoneItemStateChanged(evt);
+            }
+        });
+        listeZone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listeZoneActionPerformed(evt);
             }
         });
 
@@ -414,7 +422,6 @@ public class critResultat extends javax.swing.JPanel
     }//GEN-LAST:event_buttonChercherActionPerformed
 
     private void buttonNouveauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNouveauActionPerformed
-        System.out.println(controleur);
         try {
             this.controleur.creer(toForm());}
         catch (DonneeInvalideException ex) {
@@ -433,6 +440,10 @@ public class critResultat extends javax.swing.JPanel
     private void fieldCodeBarreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldCodeBarreActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_fieldCodeBarreActionPerformed
+
+    private void listeZoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listeZoneActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_listeZoneActionPerformed
 
     public void setForm(ProduitForm f)
     {

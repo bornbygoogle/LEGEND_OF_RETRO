@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 19 avr. 2018 21:09:00 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="LOREntities.VersionConsole" table="VersionConsole" catalog="p1514527" optimistic-lock="version">
+        <id name="idVersionConsole" type="java.lang.Integer">
+            <column name="id_version_console" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="console" class="LOREntities.Console" fetch="select">
+            <column name="id_console" not-null="true" />
+        </many-to-one>
+        <many-to-one name="zone" class="LOREntities.Zone" fetch="select">
+            <column name="id_zone" not-null="true" />
+        </many-to-one>
+        <property name="codeBarre" type="string">
+            <column name="code_barre" length="13" not-null="true" />
+        </property>
+        <property name="edition" type="string">
+            <column name="edition" length="50" not-null="true" />
+        </property>
+        <property name="prix" type="float">
+            <column name="prix" precision="12" scale="0" not-null="true" />
+        </property>
+        <property name="stock" type="int">
+            <column name="stock" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
