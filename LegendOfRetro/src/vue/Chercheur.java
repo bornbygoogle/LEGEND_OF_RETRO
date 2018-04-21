@@ -17,4 +17,5 @@ interface Chercheur
     public void selectionnerResultat(Form res);
     public void lancerRecherche(Form form);
     public void afficherErreur(Exception e);
+    public void afficherLog(String log);
 }

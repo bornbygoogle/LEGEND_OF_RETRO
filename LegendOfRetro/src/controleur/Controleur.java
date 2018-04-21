@@ -15,13 +15,14 @@ package controleur;
     import LOREntities.Tag;
     import LOREntities.Zone;
 //Fin imports pour version temporaire
-import java.sql.Connection;
 import bean.CodeBarreForm;
 import bean.Form;
 import bean.ProduitForm;
+import hibernateConfig.NewHibernateUtil;
 import java.util.Locale;
 import java.util.Set;
 import java.util.Vector;
+import org.hibernate.Session;
 import vue.GUI;
 //import vue.Vue;
 
@@ -32,7 +33,7 @@ import vue.GUI;
 public class Controleur
 {
     private GUI vue; //utilisé pour communiquer avec l'affichage
-    private Connection BDD; //utilisé pour créer des requêtes SQL
+    private Session modele; //session hibernate
     
     public Controleur() throws InitException
     {
@@ -43,20 +44,12 @@ public class Controleur
      */
     public void init() throws InitException
     {
-        this.vue = new GUI(this);
-        
-        /*
         try {
-            Class.forName(Modele.DRIVER);
-        this.BDD = DriverManager.getConnection(
-                Modele.getDerbyURL(),
-                Modele.ID,
-                Modele.MDP);
+            this.modele = NewHibernateUtil.getSessionFactory().openSession();
         }
-        catch (ClassNotFoundException ex) {
-            throw new InitException("Erreur à l'initialisation du driver de la base de données.");}
-        catch (SQLException ex) {
-            throw new InitException("Erreur lors de la connection avec la base de données.");}//*/
+        catch (ExceptionInInitializerError eiie)    {System.out.println("Erreur lors de l'initialisation du modèle.\n"
+                + eiie.getMessage());}
+        this.vue = new GUI(this);
     }
     
     /**
@@ -105,11 +98,16 @@ public class Controleur
         if (existant != null)
             throw new EnregistrementExistantException("Impossible de créer le fabricant : ce fabricant existe déjà.");
             
-        //TODO : on génère la requête pour créer le fabricant
-
-        //problème : comment obtenir l'identifiant du fabricant pour le rapport ?
-        //return new Rapport(idFabricant, Rapport.Table.FABRICANT, Rapport.Operation.CREER);
-        return null;
+        //création du fabricant
+        Fabricant fabr = new Fabricant();
+        fabr.setNom(nomFabr);
+        
+        //sauvegarde dans la base de données
+        this.modele.beginTransaction();
+        this.modele.save(fabr);
+        this.modele.getTransaction().commit();
+        
+        return new Rapport(fabr.getIdFabricant(), Rapport.Table.FABRICANT, Rapport.Operation.CREER);
     }
     /**
      * Crée un éditeur. Assure l'unicité de l'enregistrement.
@@ -128,8 +126,12 @@ public class Controleur
         //création de l'éditeur
         Editeur ed = new Editeur();
         ed.setNom(nomEditeur);
-        //!TODO : save lobjet ed dans la bdd !
-
+        
+        //sauvegarde dans la base de données
+        this.modele.beginTransaction();
+        this.modele.save(ed);
+        this.modele.getTransaction().commit();
+        
         return new Rapport(ed.getIdEditeur(), Rapport.Table.EDITEUR, Rapport.Operation.CREER);
     }
     /**

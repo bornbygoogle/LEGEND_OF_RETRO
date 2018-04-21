@@ -65,30 +65,28 @@ public class Rapport
         for (int i = 0 ; i < tables.size() ; i++)
         {
             if (this.operations.elementAt(i) == Operation.CREER)
-                ret.concat("Ajout");
+                ret = ret.concat("Ajout");
             else if (this.operations.elementAt(i) == Operation.MODIFIER)
-                ret.concat("Modification");
+                ret = ret.concat("Modification");
             
             if (this.tables.elementAt(i) == Table.DESCRIPTION)
-                ret.concat(" d'un lien entre un jeu et le tag ");
+                ret = ret.concat(" d'un lien entre un jeu et le tag ");
             else
             {
                 if (this.tables.elementAt(i) == Table.CONSOLE)
-                    ret.concat(" de la console ");
+                    ret = ret.concat(" de la console ");
                 else if (this.tables.elementAt(i) == Table.VERSIONJEU)
-                    ret.concat(" de la version de jeu ");
+                    ret = ret.concat(" de la version de jeu ");
                 else if (this.tables.elementAt(i) == Table.EDITEUR)
-                    ret.concat(" de l'éditeur ");
+                    ret = ret.concat(" de l'éditeur ");
                 else if (this.tables.elementAt(i) == Table.FABRICANT)
-                    ret.concat(" du fabricant ");
+                    ret = ret.concat(" du fabricant ");
                 else if (this.tables.elementAt(i) == Table.JEU)
-                    ret.concat(" du jeu ");
+                    ret = ret.concat(" du jeu ");
                 else if (this.tables.elementAt(i) == Table.TAG)
-                    ret.concat(" du tag ");
+                    ret = ret.concat(" du tag ");
             }
-                
-            ret.concat(this.ids.elementAt(i) + ".\n");
-            
+            ret = ret.concat(this.ids.elementAt(i) + ".\n");
         }
         
         return ret;

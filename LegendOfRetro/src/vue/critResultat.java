@@ -423,7 +423,8 @@ public class critResultat extends javax.swing.JPanel
 
     private void buttonNouveauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNouveauActionPerformed
         try {
-            this.controleur.creer(toForm());}
+            this.parent.afficherLog(this.controleur.creer(toForm()).toString());
+        }
         catch (DonneeInvalideException ex) {
             this.parent.afficherErreur(ex);}
         catch (DonneesInsuffisantesException ex) {

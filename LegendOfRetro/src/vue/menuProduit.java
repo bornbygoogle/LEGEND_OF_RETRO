@@ -13,8 +13,6 @@ import controleur.DonneesInsuffisantesException;
 import controleur.ResultatInvalideException;
 import java.awt.BorderLayout;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -88,6 +86,12 @@ public class menuProduit extends JPanel implements Chercheur
     public void afficherErreur(Exception e)
     {
         this.Resultats.afficherErreur(e.getMessage());
+    }
+
+    @Override
+    public void afficherLog(String log)
+    {
+        this.Resultats.afficherMessage(log);
     }
 
 
