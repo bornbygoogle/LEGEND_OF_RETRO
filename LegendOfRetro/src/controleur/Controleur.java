@@ -87,7 +87,7 @@ public class Controleur
     /**
      * Crée un fabricant. Assure l'unicité de l'enregistrement.
     */
-    protected Rapport creerFabricant(String nomFabr)
+    protected Fabricant creerFabricant(Rapport rapport, String nomFabr)
             throws DonneesInsuffisantesException, EnregistrementExistantException
     {
         if ("".equals(nomFabr)) //si le nom du fabricant n'est pas saisi
@@ -107,12 +107,13 @@ public class Controleur
         this.modele.save(fabr);
         this.modele.getTransaction().commit();
         
-        return new Rapport(fabr.getIdFabricant(), Rapport.Table.FABRICANT, Rapport.Operation.CREER);
+        rapport.addOperation(fabr.getIdFabricant(), Rapport.Table.FABRICANT, Rapport.Operation.CREER);
+        return fabr;
     }
     /**
      * Crée un éditeur. Assure l'unicité de l'enregistrement.
     */
-    protected Rapport creerEditeur(String nomEditeur)
+    protected Editeur creerEditeur(Rapport rapport, String nomEditeur)
             throws DonneesInsuffisantesException, EnregistrementExistantException
     {
         if ("".equals(nomEditeur)) //si le nom de l'éditeur n'est pas saisi
@@ -132,12 +133,13 @@ public class Controleur
         this.modele.save(ed);
         this.modele.getTransaction().commit();
         
-        return new Rapport(ed.getIdEditeur(), Rapport.Table.EDITEUR, Rapport.Operation.CREER);
+        rapport.addOperation(ed.getIdEditeur(), Rapport.Table.EDITEUR, Rapport.Operation.CREER);
+        return ed;
     }
     /**
      * Crée un tag. Assure l'unicité de l'enregistrement.
     */
-    protected Rapport creerTag(String tag)
+    protected Tag creerTag(Rapport rapport, String tag)
             throws DonneesInsuffisantesException, EnregistrementExistantException
             //Remarque : si une erreur est renvoyée, la faute en revient à un développeur !
     {
@@ -149,126 +151,124 @@ public class Controleur
         if (existant != null)
             throw new EnregistrementExistantException("Impossible de créer le tag : ce tag existe déjà."); //vérifier le code appelant.
             
-        //TODO : on génère la requête pour créer l'éditeur
-
-        //problème : comment obtenir l'identifiant du tag pour le rapport ?
-        //return new Rapport(idTag, Rapport.Table.TAG, Rapport.Operation.CREER);
-        return null;
+        //création du tag
+        Tag t = new Tag();
+        t.setLibelle(tag);
+        
+        //sauvegarde dans la base de données
+        this.modele.beginTransaction();
+        this.modele.save(t);
+        this.modele.getTransaction().commit();
+        
+        rapport.addOperation(t.getIdTag(), Rapport.Table.TAG, Rapport.Operation.CREER);
+        return t;
     }
-    /**
-     * Lie un tag à un jeu.
-     * L'identifiant du tag doit être valide. L'identifiant du jeu doit être valide. La relation ne doit pas déjà exister. Aucun contrôle d'erreur n'est réalisé.
-     */
-    protected Rapport lierTag(int idJeu, int idTag)
-    {
-        //TODO : on génère la requête pour créer l'enregistrement.
-        return new Rapport(idTag, Rapport.Table.DESCRIPTION, Rapport.Operation.CREER);
-    }
+//    /**
+//     * Lie un tag à un jeu.
+//     * L'identifiant du tag doit être valide. L'identifiant du jeu doit être valide. La relation ne doit pas déjà exister. Aucun contrôle d'erreur n'est réalisé.
+//     */
+//    protected void lierTag(Rapport rapport, Jeu jeu, Tag tag)
+//    {
+//        //TODO : on génère la requête pour créer l'enregistrement.
+//        rapport.addOperation(desc., Rapport.Table.DESCRIPTION, Rapport.Operation.CREER);
+//    }
     /**
      * Crée un jeu et/ou son éditeur. Assure l'unicité de l'enregistrement.
      * Si l'éditeur est inexistant dans la base de données, un nouvel éditeur est ajouté à la volée. De même pour les tags.
      */
-    protected Rapport creerJeu(String nomJeu, String description, Vector<String> tags,
+    protected Jeu creerJeu(Rapport rapport, String nomJeu, String description, Vector<String> tags,
             int idEditeur, String nomEditeur) throws DonneesInsuffisantesException, EnregistrementExistantException
     {
-        Rapport rapport = new Rapport();
-        
         if ("".equals(nomJeu)) //si on ne crée pas un jeu.
         {
             try {
-                rapport.concatener(creerEditeur(nomEditeur));}
+                creerEditeur(rapport, nomEditeur);}
             catch (EnregistrementExistantException eee) {
                 throw new DonneesInsuffisantesException(eee.getMessage()
                         + "Impossible de créer le jeu : un nom est requis.");}
-            
+            return null;
         }
         else //si on crée un jeu
         {
             //on détermine l'identifiant de l'éditeur
-            Editeur existant = chercherEditeur(-1, nomEditeur);
-            if (existant == null)
-            {
-                rapport.concatener(creerEditeur(nomEditeur)); //s'il n'existe pas, on le crée à la volée.
-                idEditeur = rapport.getidDerniereOperation();
-            }
-            else
-                idEditeur = existant.getIdEditeur(); //s'il existe, il n'en existe qu'un.
+            Editeur editeur = chercherEditeur(-1, nomEditeur);
+            if (editeur == null)
+                editeur = creerEditeur(rapport, nomEditeur); //s'il n'existe pas, on le crée à la volée.
 
             //on vérifie que le jeu n'existe pas déjà !
             Jeu jeuExistant = chercherJeu(-1, idEditeur, nomJeu, tags, "");
             if (jeuExistant != null)
                 throw new EnregistrementExistantException("Impossible de créer le jeu : ce jeu existe déjà.");
 
-            //TODO : on génère la requête pour créer la console.
-
-            //problème : comment obtenir l'identifiant de la console pour le rapport ?
-            //rapport.addOperation(idJeu, Rapport.Table.CONSOLE, Rapport.Operation.CREER);
+            //création de la console
+            Jeu jeu = new Jeu();
+            jeu.setNom(nomJeu);
+            jeu.setEditeur(editeur);
+            jeu.setDescription(description);
 
             //traitement des tags
-            int idTag;
             for (String tag : tags)
             {
                 //on vérifie l'existence du tag et, au besoin, on le crée.
                 Tag t = chercherTag(-1, tag);
                 if (t == null)
-                {
-                    rapport.concatener(creerTag(tag));
-                    idTag = rapport.getidDerniereOperation();
-                }
-                else
-                    idTag = t.getIdTag();
+                    t = creerTag(rapport, tag);
 
-                //on associe le tag au jeu.
-                //rapport.concatener(lierTag(idJeu, idTag));
+                jeu.getTags().add(t);
+                
+                rapport.addOperation(t.getIdTag(), Rapport.Table.DESCRIPTION, Rapport.Operation.CREER);
             }
+
+            //sauvegarde dans la base de données
+            this.modele.beginTransaction();
+            this.modele.save(jeu);
+            this.modele.getTransaction().commit();
+
+            rapport.addOperation(jeu.getIdJeu(), Rapport.Table.JEU, Rapport.Operation.CREER);
+            return jeu;
         }
-        
-        return rapport;
     }
     /**
      * Crée une console et/ou son fabricant.
      * Si le fabricant est renseigné par un label inexistant dans la base de données, un nouveau fabricant est ajouté à la volée.
     */
-    protected Rapport creerConsole(String nomConsole,
+    protected Console creerConsole(Rapport rapport, String nomConsole,
             int idFabr, String nomFabr) throws DonneesInsuffisantesException, EnregistrementExistantException
     {
-        Rapport rapport = new Rapport();
-        
         if ("".equals(nomConsole)) //si on ne crée pas une console.
         {
             try {
-                rapport.concatener(creerFabricant(nomFabr));}
+                creerFabricant(rapport, nomFabr);}
             catch (EnregistrementExistantException eee) {
                 throw new DonneesInsuffisantesException(eee.getMessage()
                         + "Impossible de créer la console : un nom est requis.");}
-            
+            return null;
         }
         else //si on crée une console
         {
             //on détermine l'identifiant du fabricant
             Fabricant fabricant = chercherFabricant(-1, nomFabr);
             if (fabricant == null)
-            {
-                rapport.concatener(creerFabricant(nomFabr)); //s'il n'existe pas, on le crée à la volée.
-                idFabr = rapport.getidDerniereOperation();
-            }
-            else
-            {
-                idFabr = fabricant.getIdFabricant(); //s'il existe, il n'en existe qu'un.
-            
-                //on vérifie que la console n'existe pas déjà !
-                Console existante = chercherConsole(-1, idFabr, nomConsole, "");
-                if (existante != null)
-                    throw new EnregistrementExistantException("Impossible de créer la console : cette console existe déjà.");
+                fabricant = creerFabricant(rapport, nomFabr); //s'il n'existe pas, on le crée à la volée.
 
-                //TODO : on génère la requête pour créer la console.
+            //on vérifie que la console n'existe pas déjà !
+            Console existante = chercherConsole(-1, idFabr, nomConsole, "");
+            if (existante != null)
+                throw new EnregistrementExistantException("Impossible de créer la console : cette console existe déjà.");
 
-                //problème : comment obtenir l'identifiant de la console pour le rapport ?
-                //rapport.addOperation(idConsole, Rapport.Table.CONSOLE, Rapport.Operation.CREER);
-            }
+            //création de la console
+            Console cons = new Console();
+            cons.setNom(nomConsole);
+            cons.setFabricant(fabricant);
+
+            //sauvegarde dans la base de données
+            this.modele.beginTransaction();
+            this.modele.save(cons);
+            this.modele.getTransaction().commit();
+
+            rapport.addOperation(cons.getIdConsole(), Rapport.Table.CONSOLE, Rapport.Operation.CREER);
+            return cons;
         }
-        
-        return rapport;
     }
     /**
      * Crée une version d'une console et/ou la console elle-même et/ou son fabricant.
@@ -276,7 +276,7 @@ public class Controleur
      * Si la console est inexistante dans la base de données, une nouvelle console est ajoutée à la volée. Par transitivité, cela s'applique au fabricant. Ne met pas à jour le fabricant d'une console existante.
      * La zone renseignée doit déjà exister dans la base de données.
     */
-    protected Rapport creerVersionConsole(String cb, String edition, String zone,
+    protected Rapport creerVersionConsole(String cb, String edition, String nomZone,
             float prix, int stock,
             int idConsole, String nomConsole,
             int idFabr, String nomFabr)
@@ -284,10 +284,10 @@ public class Controleur
     {
         Rapport rapport = new Rapport();
         
-        if ("".equals(edition) && "".equals(zone)) //si on ne crée pas une version de console.
+        if ("".equals(edition) && "".equals(nomZone)) //si on ne crée pas une version de console.
         {
             try {
-                rapport.concatener(creerConsole(nomConsole,idFabr, nomFabr));}
+                creerConsole(rapport, nomConsole,idFabr, nomFabr);}
             catch (EnregistrementExistantException eee) {
                 throw new DonneesInsuffisantesException(eee.getMessage()
                         + "Impossible de créer la version de console : une information de zone ou d'édition est requise.");}
@@ -297,29 +297,36 @@ public class Controleur
             cb = codeBarreValide(cb); //on vérifie le code barre
             
             //on détermine l'identifiant de la console
-            Console existante = chercherConsole(idConsole, idFabr, nomConsole, nomFabr);
-            if (existante == null)
-            {
-                rapport.concatener(creerConsole(nomConsole, idFabr, nomFabr)); //si elle n'existe pas, on la crée à la volée.
-                idConsole = rapport.getidDerniereOperation();
-            }
-            else
-                idConsole = existante.getIdConsole();
+            Console console = chercherConsole(idConsole, idFabr, nomConsole, nomFabr);
+            if (console == null)
+                console = creerConsole(rapport, nomConsole, idFabr, nomFabr); //si elle n'existe pas, on la crée à la volée.
             
             //on détermine l'identifiant de la zone
-            Zone zoneExistante = chercherZone(-1, zone);
-            if (zoneExistante == null)
+            Zone zone = chercherZone(-1, nomZone);
+            if (zone == null)
                 throw new DonneeInvalideException("Impossible de créer la version de console : la zone renseignée n'existe pas.");
             
             //on vérifie que la version de console n'existe pas déjà !
-            //Vector<VersionConsole> existe = chercherVersionConsole(cb, edition, zoneExistante.getId(), idConsole);
-            //if (!existante.isEmpty())
-                //throw new EnregistrementExistantException("Impossible de créer la version de console : cette dernière existe déjà.");
+            Vector<VersionConsole> existe = chercherVersionsConsole(cb, edition,
+                    zone.getNom(), console.getNom(), console.getFabricant().getNom());
+            if (!(existe == null) && !existe.isEmpty())
+                throw new EnregistrementExistantException("Impossible de créer la version de console : cette dernière existe déjà.");
             
-            //TODO : on génère la requête pour créer la version de console.
+            //création de la version de console
+            VersionConsole vc = new VersionConsole();
+            vc.setCodeBarre(cb);
+            vc.setEdition(edition);
+            vc.setZone(zone);
+            vc.setConsole(console);
+            vc.setPrix(prix);
+            vc.setStock(stock);
+
+            //sauvegarde dans la base de données
+            this.modele.beginTransaction();
+            this.modele.save(vc);
+            this.modele.getTransaction().commit();
             
-            //problème : comment obtenir l'identifiant de la version de console pour le rapport ?
-            //rapport.addOperation(idVersionConsole, Rapport.Table.VERSIONCONSOLE, Rapport.Operation.CREER);
+            rapport.addOperation(vc.getIdVersionConsole(), Rapport.Table.VERSIONCONSOLE, Rapport.Operation.CREER);
         }
         
         return rapport;
@@ -331,7 +338,7 @@ public class Controleur
      * La zone renseignée doit déjà exister dans la base de données.
      * La console renseignée doit déjà exister dans la base de données.
     */
-    protected Rapport creerVersionJeu(String cb, String edition, String zone,
+    protected Rapport creerVersionJeu(String cb, String edition, String nomZone,
             float prix, int stock,
             int idJeu, String nomJeu, String description, Vector<String> tags,
             int idCons, String nomConsole,
@@ -340,10 +347,10 @@ public class Controleur
     {
         Rapport rapport = new Rapport();
         
-        if ("".equals(edition) && "".equals(zone) && "".equals(nomConsole)) //si on ne crée pas une version de jeu.
+        if ("".equals(edition) && "".equals(nomZone) && "".equals(nomConsole)) //si on ne crée pas une version de jeu.
         {
             try {
-                rapport.concatener(creerJeu(nomJeu, description, tags, idEditeur, nomEditeur));}
+                creerJeu(rapport, nomJeu, description, tags, idEditeur, nomEditeur);}
             catch (EnregistrementExistantException eee) {
                 throw new DonneesInsuffisantesException(eee.getMessage()
                         + "Impossible de créer la version de jeu : une information de plateforme, de zone ou d'édition est requise.");}
@@ -355,32 +362,44 @@ public class Controleur
             //on détermine l'identifiant du jeu
             Jeu existant = chercherJeu(-1, idEditeur, nomJeu, tags, nomEditeur);
             if (existant == null)
-            {
-                rapport.concatener(creerJeu(nomJeu, description, tags, idEditeur, nomEditeur)); //s'il n'existe pas, on le crée à la volée.
-                idJeu = rapport.getidDerniereOperation();
-            }
-            else
-                idJeu = existant.getIdJeu(); //s'il existe, il n'en existe qu'un.
+                creerJeu(rapport, nomJeu, description, tags, idEditeur, nomEditeur); //s'il n'existe pas, on le crée à la volée.
             
             //on détermine l'identifiant de la zone
-            Zone zoneExistante = chercherZone(-1, zone);
-            if (zoneExistante == null)
+            Zone zone = chercherZone(-1, nomZone);
+            if (zone == null)
                 throw new DonneeInvalideException("Impossible de créer la version de console : la zone renseignée n'existe pas.");
             
-            //on détermine l'identifiant de la console
+            //on détermine l'identifiant de la plateforme
             Console console = chercherConsole(idCons, -1, nomConsole, "");
             if (console == null)
-                throw new DonneeInvalideException("Impossible de créer la version de jeu : la console renseignée n'existe pas.");
+                throw new DonneeInvalideException("Impossible de créer la version de jeu : la plateforme renseignée n'existe pas.");
+            
+            //on détermine l'identifiant du jeu
+            Jeu jeu = chercherJeu(idJeu, idEditeur, nomJeu, tags, nomEditeur);
+            if (jeu == null)
+                throw new DonneeInvalideException("Impossible de créer la version de jeu : le jeu renseigné n'existe pas.");
             
             //on vérifie que la version de jeu n'existe pas déjà !
-            //Vector<VersionJeu> existante = chercherVersionJeu(cb, edition, zoneExistante.getId(), console.getId(), idJeu);
-            //if (!existante.isEmpty())
-                //throw new EnregistrementExistantException("Impossible de créer la version de jeu : cette dernière existe déjà.");
+            Vector<VersionJeu> existante = chercherVersionJeu(cb, edition, zone.getNom(), console.getNom(), nomJeu, nomEditeur, tags);
+            if (!(existante == null) && !existante.isEmpty())
+                throw new EnregistrementExistantException("Impossible de créer la version de jeu : cette dernière existe déjà.");
             
-            //TODO : on génère la requête pour créer la version de jeu.
+            //création de la version de console
+            VersionJeu vj = new VersionJeu();
+            vj.setCodeBarre(cb);
+            vj.setEdition(edition);
+            vj.setZone(zone);
+            vj.setConsole(console);
+            vj.setJeu(jeu);
+            vj.setPrix(prix);
+            vj.setStock(stock);
+
+            //sauvegarde dans la base de données
+            this.modele.beginTransaction();
+            this.modele.save(vj);
+            this.modele.getTransaction().commit();
             
-            //problème : comment obtenir l'identifiant de la console pour le rapport ?
-            //rapport.addOperation(idVersionJeu, Rapport.Table.VERSIONJEU, Rapport.Operation.CREER);
+            rapport.addOperation(vj.getIdVersionJeu(), Rapport.Table.VERSIONCONSOLE, Rapport.Operation.CREER);
         }
         
         return rapport;
