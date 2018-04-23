@@ -414,7 +414,6 @@ public class critResultat extends javax.swing.JPanel
 
     private void buttonChercherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChercherActionPerformed
         try {
-  System.out.println("ici");
             this.parent.lancerRecherche(toForm());}
         catch (DonneeInvalideException ex) {
             this.parent.afficherErreur(ex);

@@ -19,6 +19,7 @@ import bean.CodeBarreForm;
 import bean.Form;
 import bean.ProduitForm;
 import hibernateConfig.NewHibernateUtil;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.Vector;
@@ -185,7 +186,7 @@ public class Controleur
                 creerEditeur(rapport, nomEditeur);}
             catch (EnregistrementExistantException eee) {
                 throw new DonneesInsuffisantesException(eee.getMessage()
-                        + "Impossible de créer le jeu : un nom est requis.");}
+                        + "\nImpossible de créer le jeu : un nom est requis.");}
             return null;
         }
         else //si on crée un jeu
@@ -241,7 +242,7 @@ public class Controleur
                 creerFabricant(rapport, nomFabr);}
             catch (EnregistrementExistantException eee) {
                 throw new DonneesInsuffisantesException(eee.getMessage()
-                        + "Impossible de créer la console : un nom est requis.");}
+                        + "\nImpossible de créer la console : un nom est requis.");}
             return null;
         }
         else //si on crée une console
@@ -290,7 +291,7 @@ public class Controleur
                 creerConsole(rapport, nomConsole,idFabr, nomFabr);}
             catch (EnregistrementExistantException eee) {
                 throw new DonneesInsuffisantesException(eee.getMessage()
-                        + "Impossible de créer la version de console : une information de zone ou d'édition est requise.");}
+                        + "\nImpossible de créer la version de console : une information de zone ou d'édition est requise.");}
         }
         else //si on crée une version de console
         {
@@ -353,7 +354,7 @@ public class Controleur
                 creerJeu(rapport, nomJeu, description, tags, idEditeur, nomEditeur);}
             catch (EnregistrementExistantException eee) {
                 throw new DonneesInsuffisantesException(eee.getMessage()
-                        + "Impossible de créer la version de jeu : une information de plateforme, de zone ou d'édition est requise.");}
+                        + "\nImpossible de créer la version de jeu : une information de plateforme, de zone ou d'édition est requise.");}
         }
         else //si on crée une version de jeu
         {
@@ -496,9 +497,11 @@ public class Controleur
         if ("".equals(cb) && "".equals(nom) && "".equals(fabricant))
             throw new DonneesInsuffisantesException("Erreur lors de la recherche des produits de type console : il faut renseigner un code barre, un nom, ou un fabricant.");
         
+        Vector<VersionConsole> ret = new Vector<VersionConsole>();
+        
         //TODO: la recherche à proprement parler.
         
-        return null;
+        return ret;
     }
     /**
      * Recherche les versions de consoles dont le code barre, l'édition, la zone et le fabricant correspondent parfaitement aux données renseignées,
@@ -512,10 +515,11 @@ public class Controleur
         if ("".equals(cb) && "".equals(plateforme) && "".equals(nom) && "".equals(editeur) && tags.isEmpty())
             throw new DonneesInsuffisantesException("Erreur lors de la recherche des produits de type jeu : il faut renseigner un code barre, une plateforme, un nom, un éditeur ou au moins un tag.");
         
+        Vector<VersionJeu> ret = new Vector<VersionJeu>();
+        
         //TODO: la recherche à proprement parler.
         
-        //return ret;
-        return null;
+        return ret;
     }
     /**
      * Recherche les consoles dont le nom correspond parfaitement à la chaîne renseignée et ayant le fabricant désigné.
@@ -657,8 +661,16 @@ public class Controleur
         
         //TODO: la recherche à proprement parler.
         
-        //return ret;
-        return null;
+        //test
+        HQLRecherche q = new HQLRecherche("Editeur e");
+        q.addCondition("e.nom", nomEdit, HQLRecherche.Operateur.EGAL);
+        System.out.println(q.toString());
+        List resultats = modele.createQuery(q.toString()).list();
+        
+        if (resultats.isEmpty())
+            return null;
+        else //on suppose qu'il n'y a qu'un seul résultat !
+            return (Editeur) resultats.get(0);
     }
     /**
      * Recherche les éditeurs dont le nom contient la chaîne renseignée.
