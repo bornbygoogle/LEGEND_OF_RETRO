@@ -151,7 +151,7 @@ public class Controleur
         Tag existant = chercherTag(-1, tag);
         if (existant != null)
             throw new EnregistrementExistantException("Impossible de créer le tag : ce tag existe déjà."); //vérifier le code appelant.
-            
+        
         //création du tag
         Tag t = new Tag();
         t.setLibelle(tag);
@@ -253,7 +253,7 @@ public class Controleur
                 fabricant = creerFabricant(rapport, nomFabr); //s'il n'existe pas, on le crée à la volée.
 
             //on vérifie que la console n'existe pas déjà !
-            Console existante = chercherConsole(-1, idFabr, nomConsole, "");
+            Console existante = chercherConsole(-1, idFabr, nomConsole, nomFabr);
             if (existante != null)
                 throw new EnregistrementExistantException("Impossible de créer la console : cette console existe déjà.");
 
@@ -381,7 +381,7 @@ public class Controleur
                 throw new DonneeInvalideException("Impossible de créer la version de jeu : le jeu renseigné n'existe pas.");
             
             //on vérifie que la version de jeu n'existe pas déjà !
-            Vector<VersionJeu> existante = chercherVersionJeu(cb, edition, zone.getNom(), console.getNom(), nomJeu, nomEditeur, tags);
+            Vector<VersionJeu> existante = chercherVersionsJeu(cb, edition, zone.getNom(), console.getNom(), nomJeu, nomEditeur, tags);
             if (!(existante == null) && !existante.isEmpty())
                 throw new EnregistrementExistantException("Impossible de créer la version de jeu : cette dernière existe déjà.");
             
@@ -424,7 +424,7 @@ public class Controleur
                         enr.getCodeBarre(), enr.getConsole().getNom(), enr.getEdition(), enr.getZone().getNom(),
                         enr.getConsole().getFabricant().getNom(), "", new Vector<String>(), "",
                         enr.getPrix(), enr.getStock()));*/
-            for (VersionJeu enr : chercherVersionJeu(cb, "", "", "", "", "", null))
+            for (VersionJeu enr : chercherVersionsJeu(cb, "", "", "", "", "", null))
                 ret.add(new ProduitForm(
                         enr.getConsole().getIdConsole(), -1,
                         enr.getJeu().getIdJeu(), enr.getIdVersionJeu(),
@@ -470,7 +470,7 @@ public class Controleur
             else if ("Jeu".equals(type))
             {
                 if (!"".equals(cb) || !"".equals(nom) || !"".equals(editeur) || !tags.isEmpty())
-                    for (VersionJeu enr : chercherVersionJeu(cb, edition, zone, plateforme, nom, editeur, tags))
+                    for (VersionJeu enr : chercherVersionsJeu(cb, edition, zone, plateforme, nom, editeur, tags))
                         ret.add(new ProduitForm(
                                 enr.getConsole().getIdConsole(), enr.getConsole().getIdConsole(),
                                 enr.getJeu().getIdJeu(), enr.getIdVersionJeu(),
@@ -499,7 +499,20 @@ public class Controleur
         
         Vector<VersionConsole> ret = new Vector<VersionConsole>();
         
-        //TODO: la recherche à proprement parler.
+        //ici rédaction des requêtes imbriquées pour console et pour zone
+        HQLRecherche imbrZone = new HQLRecherche("zone z");
+        imbrZone.setImbriquee(true);
+        imbrZone.addCondition("z.nom", zone, HQLRecherche.Operateur.EGAL);
+        
+        HQLRecherche q = new HQLRecherche(imbrZone + " vc"); //TODO: requête imbriquée imbrCons
+        q.addCondition("vc.edition", edition, HQLRecherche.Operateur.LIKE);
+        if (!"".equals(nomFabr))
+            q.addCondition("c.fabricant.nom", nomFabr, HQLRecherche.Operateur.LIKE);
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
+        ret.addAll(resultats);
+        
+        !en cours
         
         return ret;
     }
@@ -508,7 +521,7 @@ public class Controleur
      * et dont le nom contient la chaîne renseignée.
      * La zone et l'édition ne sont pas suffisantes pour lancer une recherche.
      */
-    private Vector<VersionJeu> chercherVersionJeu(String cb, String edition, String zone,
+    private Vector<VersionJeu> chercherVersionsJeu(String cb, String edition, String zone,
             String plateforme, String nom, String editeur, Vector<String> tags)
             throws DonneesInsuffisantesException
     {
@@ -528,34 +541,48 @@ public class Controleur
     {
         if (idConsole < 0 && (nomCons == null || "".equals(nomCons)))
             throw new DonneesInsuffisantesException("Erreur lors de la recherche de la console : nom de la console non renseigné.");
+
+        HQLRecherche q = new HQLRecherche("Console c");
+        q.addCondition("c.nom", nomCons, HQLRecherche.Operateur.LIKE);
+        if (!"".equals(nomFabr))
+            q.addCondition("c.fabricant.nom", nomFabr, HQLRecherche.Operateur.LIKE);
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
         
-        if (nomFabr != null && !"".equals(nomFabr))
-        {
-            Fabricant fabr = chercherFabricant(-1, nomFabr);
-            if (fabr == null)
-                return null;
-            //else
-            idFabr = fabr.getIdFabricant();
-        }
-        
-        /* Attention
-        Il est possible qu'une recherche renvoie plusieurs résultats. Par exemple, si deux consoles produites par des fabricants
-        différents ont le même nom et que le fabricant n'a pas été renseigné. Pour traiter ce type d'erreur,
-        on commence par stocker les résultats de la requête dans un vecteur ; puis, si le vecteur n'a pas une taille de 1,
-        on renvoie null (pour 0) ou on lance une exception.
-        */
-        Vector<Console> resultat;
-        
-        //TODO: la recherche à proprement parler. On ne réutilise pas chercherVersionsConsole car la correspondance demandée par chercherConsole est parfaite.
-        //Attention, pour le fabricant, si le nom est renseigné, on demande une correspondance parfaite.
-        
-        /*if (resultat.isEmpty())
+        if (resultats.isEmpty())
             return null;
-        else if (resultat.size() > 1)
-            throw new  DonneesInsuffisantesException("Erreur lors de la recherche de la console : plusieurs résultats obtenus. Veuillez renseigner le fabricant de la console.");
-        
-        return resultat.firstElement();*/
-        return null;
+        else if (resultats.size() != 1)
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche de la console : plusieurs résultats sont retournés.");
+        else
+            return (Console) resultats.get(0);
+//        
+//        if (nomFabr != null && !"".equals(nomFabr))
+//        {
+//            Fabricant fabr = chercherFabricant(-1, nomFabr);
+//            if (fabr == null)
+//                return null;
+//            //else
+//            idFabr = fabr.getIdFabricant();
+//        }
+//        
+//        /* Attention
+//        Il est possible qu'une recherche renvoie plusieurs résultats. Par exemple, si deux consoles produites par des fabricants
+//        différents ont le même nom et que le fabricant n'a pas été renseigné. Pour traiter ce type d'erreur,
+//        on commence par stocker les résultats de la requête dans un vecteur ; puis, si le vecteur n'a pas une taille de 1,
+//        on renvoie null (pour 0) ou on lance une exception.
+//        */
+//        Vector<Console> resultat;
+//        
+//        //TODO: la recherche à proprement parler. On ne réutilise pas chercherVersionsConsole car la correspondance demandée par chercherConsole est parfaite.
+//        //Attention, pour le fabricant, si le nom est renseigné, on demande une correspondance parfaite.
+//        
+//        /*if (resultat.isEmpty())
+//            return null;
+//        else if (resultat.size() > 1)
+//            throw new  DonneesInsuffisantesException("Erreur lors de la recherche de la console : plusieurs résultats obtenus. Veuillez renseigner le fabricant de la console.");
+//        
+//        return resultat.firstElement();*/
+//        return null;
     }
     /**
      * Recherche les consoles dont le nom contient la chaîne renseignée et/ou ayant le fabricant désigné.
@@ -632,10 +659,15 @@ public class Controleur
         if (id < 0 && (nomFabr == null || "".equals(nomFabr)))
             throw new DonneesInsuffisantesException("Erreur lors de la recherche du fabricant : nom du fabricant non renseigné.");
         
-        //TODO: la recherche à proprement parler.
+        HQLRecherche q = new HQLRecherche("Fabricant f");
+        q.addCondition("f.nom", nomFabr, HQLRecherche.Operateur.EGAL);
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
         
-        //return ret;
-        return null;
+        if (resultats.isEmpty())
+            return null;
+        else //on suppose qu'il n'y a qu'un seul résultat !
+            return (Fabricant) resultats.get(0);
     }
     /**
      * Recherche les fabricants dont le nom contient la chaîne renseignée.
@@ -647,7 +679,11 @@ public class Controleur
         
         Vector<Fabricant> ret = new Vector<Fabricant>();
         
-        //TODO: la recherche à proprement parler.
+        HQLRecherche q = new HQLRecherche("Fabricant f");
+        q.addCondition("f.nom", nomFabr, HQLRecherche.Operateur.LIKE);
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
+        ret.addAll(resultats);
         
         return ret;
     }
@@ -659,12 +695,9 @@ public class Controleur
         if (id < 0 && (nomEdit == null || "".equals(nomEdit)))
             throw new DonneesInsuffisantesException("Erreur lors de la recherche de l'éditeur : nom de l'éditeur non renseigné.");
         
-        //TODO: la recherche à proprement parler.
-        
-        //test
         HQLRecherche q = new HQLRecherche("Editeur e");
         q.addCondition("e.nom", nomEdit, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString());
+        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         
         if (resultats.isEmpty())
@@ -682,7 +715,11 @@ public class Controleur
         
         Vector<Editeur> ret = new Vector<Editeur>();
         
-        //TODO: la recherche à proprement parler.
+        HQLRecherche q = new HQLRecherche("Editeur e");
+        q.addCondition("e.nom", nomEdit, HQLRecherche.Operateur.LIKE);
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
+        ret.addAll(resultats);
         
         return ret;
     }
@@ -694,10 +731,15 @@ public class Controleur
         if (id < 0 && (zone == null || "".equals(zone)))
             throw new DonneesInsuffisantesException("Erreur lors de la recherche de la zone : nom de la zone non renseigné.");
         
-        //TODO: la recherche à proprement parler.
+        HQLRecherche q = new HQLRecherche("Zone z");
+        q.addCondition("z.nom", zone, HQLRecherche.Operateur.EGAL);
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
         
-        //return ret;
-        return null;
+        if (resultats.isEmpty())
+            return null;
+        else //on suppose qu'il n'y a qu'un seul résultat !
+            return (Zone) resultats.get(0);
     }
     /**
      * Recherche un tag dans la base de données. Si le tag renseigné est trouvé, un objet Tag est renvoyé. Sinon, la méthode renvoie null.
@@ -707,10 +749,15 @@ public class Controleur
         if (id < 0 && (tag == null || "".equals(tag)))
             throw new DonneesInsuffisantesException("Erreur lors de la recherche du tag : nom du tag non renseigné.");
         
-        //TODO: la recherche à proprement parler.
+        HQLRecherche q = new HQLRecherche("Tag t");
+        q.addCondition("t.libelle", tag, HQLRecherche.Operateur.EGAL);
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
         
-        //return ret;
-        return null;
+        if (resultats.isEmpty())
+            return null;
+        else //on suppose qu'il n'y a qu'un seul résultat !
+            return (Tag) resultats.get(0);
     }
     
     /**
@@ -729,7 +776,16 @@ public class Controleur
         if (existante != null)
             throw new EnregistrementExistantException("Impossible de créer la zone : cette zone existe déjà.");
         
-        //TODO : on génère la zone pour créer la version de jeu.
+        //création de la zone
+        Zone z = new Zone();
+        z.setNom(zone);
+        
+        //sauvegarde dans la base de données
+        this.modele.beginTransaction();
+        this.modele.save(z);
+        this.modele.getTransaction().commit();
+        
+        rapport.addOperation(z.getIdZone(), Rapport.Table.ZONE, Rapport.Operation.CREER);
         
         return rapport;
     }
@@ -740,11 +796,9 @@ public class Controleur
     {
         Vector<String> ret = new Vector();
         
-        Vector<Zone> zones = null;
-        //TODO : un SELECT * FROM ZONE avec Hibernate
-        
-        for (Zone z : zones)
-            ret.add(z.getNom());
+        List zones = modele.createQuery("from Zone").list();
+        for (Object z : zones)
+            ret.add(((Zone) z).getNom());
         
         return ret;
     }
@@ -755,11 +809,9 @@ public class Controleur
     {
         Vector<String> ret = new Vector();
         
-        Vector<Console> consoles = null;
-        //TODO : un SELECT * FROM CONSOLE avec Hibernate
-        
-        for (Console c : consoles)
-            ret.add(c.getNom());
+        List consoles = modele.createQuery("from Zone").list();
+        for (Object c : consoles)
+            ret.add(((Console) c).getNom());
         
         return ret;
     }

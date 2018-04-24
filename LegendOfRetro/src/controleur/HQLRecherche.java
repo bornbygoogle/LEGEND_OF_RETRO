@@ -24,7 +24,7 @@ public class HQLRecherche
     };
     public enum Operateur
     {
-        EGAL, INF, INFOUEGAL, SUP, SUPOUEGAL, DIFF, IN, NOTIN, ISNULL, ISNOTNULL;
+        EGAL, INF, INFOUEGAL, SUP, SUPOUEGAL, DIFF, LIKE, IN, NOTIN, ISNULL, ISNOTNULL;
         public String toString()
         {
             String ret;
@@ -40,6 +40,8 @@ public class HQLRecherche
                 ret = ">=";
             else if (this.equals(DIFF))
                 ret = "!=";
+            else if (this.equals(LIKE))
+                ret = "LIKE";
             else if (this.equals(IN))
                 ret = "in";
             else if (this.equals(NOTIN))
@@ -81,6 +83,8 @@ public class HQLRecherche
     //les conditions sont cumulatives (ET)
     public void addCondition(String membreGauche, String membreDroite, Operateur operateur)
     {
+        if (operateur.equals(Operateur.LIKE))
+            membreDroite = "%".concat(membreDroite).concat("%");
         String[] c = {membreGauche, "'" + membreDroite + "'", operateur.toString()};
         this.conditions.add(c);
     }

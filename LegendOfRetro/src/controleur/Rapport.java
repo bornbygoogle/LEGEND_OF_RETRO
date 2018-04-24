@@ -13,7 +13,7 @@ import java.util.Vector;
  */
 public class Rapport
 {
-    public enum Table {FABRICANT, CONSOLE, VERSIONCONSOLE, VERSIONJEU, JEU, EDITEUR, TAG, DESCRIPTION};
+    public enum Table {FABRICANT, CONSOLE, ZONE, VERSIONCONSOLE, VERSIONJEU, JEU, EDITEUR, TAG, DESCRIPTION};
     public enum Operation {CREER, MODIFIER};
     
     private int idDerniereOperation;
@@ -85,6 +85,8 @@ public class Rapport
                     ret = ret.concat(" du jeu ");
                 else if (this.tables.elementAt(i) == Table.TAG)
                     ret = ret.concat(" du tag ");
+                else if (this.tables.elementAt(i) == Table.ZONE)
+                    ret = ret.concat(" de la zone ");
             }
             ret = ret.concat(this.ids.elementAt(i) + ".\n");
         }
