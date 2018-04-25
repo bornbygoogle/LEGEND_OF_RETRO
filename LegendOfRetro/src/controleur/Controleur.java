@@ -417,14 +417,16 @@ public class Controleur
         if (form instanceof CodeBarreForm) //recherche rapide par code barre
         {
             String cb = codeBarreValide(((CodeBarreForm) form).getCodeBarre());
-            /*for (VersionConsole enr : chercherVersionsConsole(cb, "", "", "", ""))
+System.out.println("Codebarreform CB : " + cb);
+            for (VersionConsole enr : chercherVersionsConsole(cb, "", "", "", ""))
                 ret.add(new ProduitForm(
-                        enr.getConsole().getId(), enr.getIdVersionConsole(), -1, -1,
-                        enr.getFabricant().getId(), "Console",
-                        enr.getCodeBarre(), enr.getConsole().getNom(), enr.getEdition(), enr.getZone().getNom(),
-                        enr.getConsole().getFabricant().getNom(), "", new Vector<String>(), "",
-                        enr.getPrix(), enr.getStock()));*/
-            for (VersionJeu enr : chercherVersionsJeu(cb, "", "", "", "", "", null))
+                        enr.getConsole().getIdConsole(), enr.getIdVersionConsole(), -1, -1,
+                        enr.getConsole().getFabricant().getIdFabricant(), "Console",
+                        enr.getCodeBarre(), enr.getConsole().getNom(),
+                        enr.getEdition(), enr.getZone().getNom(),
+                        enr.getConsole().getFabricant().getNom(), "", "", "",
+                        enr.getPrix(), enr.getStock()));//*/
+            for (VersionJeu enr : chercherVersionsJeu(cb, "", "", "", "", "", new Vector<String>()))
                 ret.add(new ProduitForm(
                         enr.getConsole().getIdConsole(), -1,
                         enr.getJeu().getIdJeu(), enr.getIdVersionJeu(),
@@ -453,6 +455,7 @@ public class Controleur
             Vector<String> tags = stringToVector(f.getTags(), ',');
             String plateforme = f.getPlateforme();
             //Pas besoin de récupérer les identifiants, la description de jeu, le prix et le stock.
+System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + nom + " EDITION : " + edition + " EDITEUR : " + editeur + " ZONE : " + zone + " PF : " + plateforme);
             
             if ("Console".equals(type))
             {
@@ -492,27 +495,51 @@ public class Controleur
      * La zone et l'édition ne sont pas suffisantes pour lancer une recherche.
      */
     private Vector<VersionConsole> chercherVersionsConsole(String cb, String edition, String zone, String nom, String fabricant)
-            throws DonneesInsuffisantesException
+            throws DonneesInsuffisantesException, DonneeInvalideException
     {
+        
         if ("".equals(cb) && "".equals(nom) && "".equals(fabricant))
             throw new DonneesInsuffisantesException("Erreur lors de la recherche des produits de type console : il faut renseigner un code barre, un nom, ou un fabricant.");
         
         Vector<VersionConsole> ret = new Vector<VersionConsole>();
         
-        //ici rédaction des requêtes imbriquées pour console et pour zone
-        HQLRecherche imbrZone = new HQLRecherche("zone z");
-        imbrZone.setImbriquee(true);
-        imbrZone.addCondition("z.nom", zone, HQLRecherche.Operateur.EGAL);
+        HQLRecherche q = new HQLRecherche("VersionConsole vc"); //TODO: requête imbriquée imbrCons
+        //rédaction de la requête imbriquée pour console
+        if (!"".equals(nom) || !"".equals(fabricant)) //si la console est renseignée (et/ou son fabricant)
+        {
+            HQLRecherche imbrCons = new HQLRecherche("console c");
+            imbrCons.setImbriquee(true);
+            imbrCons.addCondition("c.nom", nom, HQLRecherche.Operateur.LIKE);
+            //rédaction de la requête imbriquée pour fabricant
+            if (!"".equals(fabricant)) //si le fabricant est renseigné
+            {
+                HQLRecherche imbrFabr = new HQLRecherche("fabricant f");
+                imbrFabr.setImbriquee(true);
+                imbrFabr.addCondition("f.nom", fabricant, HQLRecherche.Operateur.LIKE);
+                
+                imbrCons.addCondition("c.fabricant", imbrFabr.toString(), HQLRecherche.Operateur.IN);
+            }
+            
+            q.addCondition("vc.console", imbrCons.toString(), HQLRecherche.Operateur.IN);
+        }
+        //rédaction des requêtes imbriquées pour zone
+        if (!"".equals(zone)) //si la zone est renseignée
+        {
+            HQLRecherche imbrZone = new HQLRecherche("zone z");
+            imbrZone.setImbriquee(true);
+            imbrZone.addCondition("z.nom", zone, HQLRecherche.Operateur.EGAL);
+            
+            q.addCondition("vc.zone", imbrZone.toString(), HQLRecherche.Operateur.IN);
+        }
+        //autres conditions
+        if (!"".equals(cb))
+            q.addCondition("vc.codeBarre", cb, HQLRecherche.Operateur.EGAL);
+        if (!"".equals(edition))
+            q.addCondition("vc.edition", edition, HQLRecherche.Operateur.LIKE);
         
-        HQLRecherche q = new HQLRecherche(imbrZone + " vc"); //TODO: requête imbriquée imbrCons
-        q.addCondition("vc.edition", edition, HQLRecherche.Operateur.LIKE);
-        if (!"".equals(nomFabr))
-            q.addCondition("c.fabricant.nom", nomFabr, HQLRecherche.Operateur.LIKE);
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         ret.addAll(resultats);
-        
-        !en cours
         
         return ret;
     }
@@ -825,10 +852,22 @@ public class Controleur
     protected final String codeBarreValide(String cb)
             throws DonneeInvalideException
     {
+        //si le code barre n'est pas renseigné, il n'y a rien à faire
+        if (cb == null || "".equals(cb))
+            return cb;
+        
+        //on vérifie que l'entrée est légale
         String ret = "";
-        if (!cb.matches("\\d{1,13}"))
+        if (cb.length() > 13)
             throw new DonneeInvalideException("Veuillez entrer un code barre composé de 13 chiffres.");
+        else
+            try {
+                int test = new Integer(cb);}
+            catch (NumberFormatException nfe) {
+                throw new DonneeInvalideException("Veuillez entrer un code barre composé de 13 chiffres.");
+            }
 
+        //si le code barre est trop court, on complète à gauche par des 0.
         int missingCharacters = 13 - cb.length();
         for (int i = 0 ; i < missingCharacters ; i++)
             ret = ret.concat("0");
@@ -847,8 +886,8 @@ public class Controleur
     }
     protected static final Vector<String> stringToVector(String s, char separator)
     {
-        String[] tab = s.split(Character.toString(separator));
         Vector<String> ret = new Vector();
+        String[] tab = s.split(Character.toString(separator));
         for (String str : tab)
             ret.add(str);
         return ret;

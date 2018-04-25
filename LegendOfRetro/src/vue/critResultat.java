@@ -467,6 +467,7 @@ public class critResultat extends javax.swing.JPanel
     }
     private Form toForm() throws DonneeInvalideException
     {
+System.out.print("toform");
         float prix;
         int stock;
         try {
@@ -480,11 +481,13 @@ public class critResultat extends javax.swing.JPanel
             prix = 0f;
             stock = 0;
         }
+System.out.print("i");
         if("".equals(fieldNom.getText()) && "".equals(fieldEditeur.getText())
                 && "".equals(listeZone.getSelectedItem())  && "".equals(listePlateforme.getSelectedItem())
                 && "".equals(fieldEdition.getText()) && "".equals(fieldTag.getText()))
             return new CodeBarreForm(fieldCodeBarre.getText());
         else
+{System.out.print("c");
             return new ProduitForm(0, 0, 0, 0, 0, //TODO: gestion des identifiants.
                     (String) listeCategorie.getSelectedItem(), fieldCodeBarre.getText(),
                     fieldNom.getText(), fieldEdition.getText(),
@@ -492,6 +495,7 @@ public class critResultat extends javax.swing.JPanel
                     fieldEditeur.getText(), jTextAreaDescription.getText(),
                     fieldTag.getText(), (String) listePlateforme.getSelectedItem(),
                     prix, stock);
+}
     }
     
 

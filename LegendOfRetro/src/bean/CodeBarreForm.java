@@ -17,7 +17,7 @@ public class CodeBarreForm extends Form
     
     public CodeBarreForm(String cb)
     {
-        this.codeBarre = "";
+        this.codeBarre = cb;
     }
     
     public String getCodeBarre()      {return this.codeBarre;}

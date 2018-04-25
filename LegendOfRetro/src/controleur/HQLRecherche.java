@@ -103,7 +103,7 @@ public class HQLRecherche
         String ret = "";
         
         if (this.imbriquee)
-            ret = ret.concat("( ");
+            ret = ret.concat(" ( ");
         
         if (!"".equals(this.select))
             ret = ret.concat("select " + this.select);
@@ -134,7 +134,7 @@ public class HQLRecherche
         }
         
         if (this.imbriquee)
-            ret = ret.concat(" )");
+            ret = ret.concat(" ) ");
         
         return ret;
     }
