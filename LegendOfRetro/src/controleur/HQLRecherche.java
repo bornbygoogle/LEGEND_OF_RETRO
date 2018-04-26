@@ -14,14 +14,6 @@ import java.util.Vector;
  */
 public class HQLRecherche
 {
-    public enum TypeJointure
-    {
-        INNERJOIN;
-        public String toString()
-        {
-            return "join";
-        }
-    };
     public enum Operateur
     {
         EGAL, INF, INFOUEGAL, SUP, SUPOUEGAL, DIFF, LIKE, IN, NOTIN, ISNULL, ISNOTNULL;
@@ -57,9 +49,6 @@ public class HQLRecherche
     protected boolean imbriquee; //par défaut, false
     protected String select;
     protected String classe;
-//    /*taille 5 : type de jointure, alias de la table de gauche (connue), alias de la table de droite (jointe),
-//    nom du champ dans la table de gauche, nom du champ dans la table de droite */
-//    protected Vector<String[]> jointures; 
     /*taille 3 : membre de gauche, memebre de droite, opérateur*/
     protected Vector<String[]> conditions; 
     
@@ -68,17 +57,8 @@ public class HQLRecherche
         this.imbriquee = false;
         this.select = "";
         this.classe = classe;
-//        this.jointures = new Vector<String[]>();
         this.conditions = new Vector<String[]>();
     }
-    
-//    //Attention, les jointures doivent être ajoutées dans l'ordre où elles seront écrites dans la requête finale !
-//    public void addJointure(TypeJointure type, String tableConnue, String tableJointe,
-//            String champTableConnue, String champTableJointe)
-//    {
-//        String[] j = {type.toString(), tableConnue, tableJointe, champTableConnue, champTableJointe};
-//        this.jointures.add(j);
-//    }
     
     //les conditions sont cumulatives (ET)
     public void addCondition(String membreGauche, String membreDroite, Operateur operateur)
@@ -109,13 +89,6 @@ public class HQLRecherche
             ret = ret.concat("select " + this.select);
         
         ret = ret.concat(" from " + this.classe);
-        
-//        for (String[] jointure : this.jointures)
-//            ret = ret.concat (" " + jointure[0]
-//                    + " on " + jointure[1]
-//                    + "." + jointure[3]
-//                    + " " + jointure[2]
-//                    + "." + jointure[4]);
 
         if (!this.conditions.isEmpty())
         {
