@@ -570,9 +570,9 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
             throw new DonneesInsuffisantesException("Erreur lors de la recherche de la console : nom de la console non renseigné.");
 
         HQLRecherche q = new HQLRecherche("Console c");
-        q.addCondition("c.nom", nomCons, HQLRecherche.Operateur.LIKE);
+        q.addCondition("c.nom", nomCons, HQLRecherche.Operateur.EGAL);
         if (!"".equals(nomFabr))
-            q.addCondition("c.fabricant.nom", nomFabr, HQLRecherche.Operateur.LIKE);
+            q.addCondition("c.fabricant.nom", nomFabr, HQLRecherche.Operateur.EGAL);
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         
@@ -642,6 +642,8 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
             //else
             idEditeur = edtr.getIdEditeur();
         }
+        
+        !à implémenter; (voir chercher console, encore que, y'a les tags...');
         
         /* Attention
         Il est possible qu'une recherche renvoie plusieurs résultats. Par exemple, si deux jeux produits par des éditeurs
