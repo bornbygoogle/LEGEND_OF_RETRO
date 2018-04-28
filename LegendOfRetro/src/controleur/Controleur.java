@@ -643,7 +643,7 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
             idEditeur = edtr.getIdEditeur();
         }
         
-        !à implémenter; (voir chercher console, encore que, y'a les tags...');
+        //!à implémenter; (voir chercher console, encore que, y'a les tags...');
         
         /* Attention
         Il est possible qu'une recherche renvoie plusieurs résultats. Par exemple, si deux jeux produits par des éditeurs

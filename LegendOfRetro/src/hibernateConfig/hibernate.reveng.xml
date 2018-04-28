@@ -49,6 +49,6 @@ Contributor(s):
   <table-filter match-name="Tag"/>
   <table-filter match-name="Editeur"/>
   <table-filter match-name="Fabricant"/>
-  <table-filter match-name="Decrire"/>
+  <!--table-filter match-name="Decrire"/-->
   <table-filter match-name="Version"/>
 </hibernate-reverse-engineering>

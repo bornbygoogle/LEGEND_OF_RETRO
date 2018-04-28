@@ -23,13 +23,5 @@
             </key>
             <one-to-many class="LOREntities.VersionJeu" />
         </set>
-        <set name="tags" table="Decrire" inverse="false" lazy="true" fetch="select">
-            <key>
-                <column name="id_jeu" not-null="true" />
-            </key>
-            <many-to-many entity-name="LOREntities.Tag">
-                <column name="id_tag" not-null="true" />
-            </many-to-many>
-        </set>
     </class>
 </hibernate-mapping>

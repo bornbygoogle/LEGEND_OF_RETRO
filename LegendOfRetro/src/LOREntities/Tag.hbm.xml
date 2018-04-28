@@ -11,13 +11,5 @@
         <property name="libelle" type="string">
             <column name="libelle" length="30" not-null="true" />
         </property>
-        <set name="jeus" table="Decrire" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="id_tag" not-null="true" />
-            </key>
-            <many-to-many entity-name="LOREntities.Jeu">
-                <column name="id_jeu" not-null="true" />
-            </many-to-many>
-        </set>
     </class>
 </hibernate-mapping>
