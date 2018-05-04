@@ -6,7 +6,6 @@
 package controleur;
 
 //Imports pour version temporaire ? Voir fonctionalités de Hibernate.
-import LOREntities.HibernateUtil;
     import LOREntities.VersionJeu;
     import LOREntities.VersionConsole;
     import LOREntities.Jeu;
@@ -19,7 +18,7 @@ import LOREntities.HibernateUtil;
 import bean.CodeBarreForm;
 import bean.Form;
 import bean.ProduitForm;
-import LOREntities.HibernateUtil;
+import hibernateConfig.HibernateUtil;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;

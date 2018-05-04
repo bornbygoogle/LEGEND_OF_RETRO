@@ -1,5 +1,5 @@
 package LOREntities;
-// Generated May 2, 2018 8:07:14 PM by Hibernate Tools 4.3.1
+// Generated May 4, 2018 8:34:43 PM by Hibernate Tools 4.3.1
 
 
 
