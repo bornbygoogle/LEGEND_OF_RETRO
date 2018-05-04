@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Apr 7, 2018 9:35:07 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated May 2, 2018 8:07:17 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="LOREntites.Zone" table="Zone" catalog="p1514527" optimistic-lock="version">
+    <class name="LOREntities.Zone" table="Zone" catalog="p1514527" optimistic-lock="version">
         <id name="idZone" type="java.lang.Integer">
             <column name="id_zone" />
             <generator class="identity" />
@@ -15,13 +15,13 @@
             <key>
                 <column name="id_zone" not-null="true" />
             </key>
-            <one-to-many class="LOREntites.VersionConsole" />
+            <one-to-many class="LOREntities.VersionConsole" />
         </set>
         <set name="versionJeus" table="VersionJeu" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_zone" not-null="true" />
             </key>
-            <one-to-many class="LOREntites.VersionJeu" />
+            <one-to-many class="LOREntities.VersionJeu" />
         </set>
     </class>
 </hibernate-mapping>

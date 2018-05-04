@@ -21,6 +21,7 @@ import java.util.logging.Logger;
  */
 public class critResultat extends javax.swing.JPanel
 {
+    private Form selectedForm;
     private Controleur controleur;
     private Chercheur parent;
 
@@ -31,7 +32,11 @@ public class critResultat extends javax.swing.JPanel
     {
         this.controleur = controleur;
         this.parent = parent;
+        this.selectedForm = null;
         initComponents();
+        
+        listeZone.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "TODO", "intialiser les zones", "Autre" }));
+        listePlateforme.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "PC", "PS", "TODO", "etc."}));
     }
     
     /**
@@ -49,8 +54,8 @@ public class critResultat extends javax.swing.JPanel
         fieldEditeur = new javax.swing.JTextField();
         labelNom = new javax.swing.JLabel();
         fieldDevFab = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
+        labelPlateforme = new javax.swing.JLabel();
+        labelEdition = new javax.swing.JLabel();
         labelCategorie = new javax.swing.JLabel();
         listeCategorie = new javax.swing.JComboBox<>();
         labelTag = new javax.swing.JLabel();
@@ -85,10 +90,8 @@ public class critResultat extends javax.swing.JPanel
 
         labelZone.setText("Zone : ");
 
-        fieldNom.setText("Nom here");
         fieldNom.setToolTipText("Nom");
 
-        fieldEditeur.setText("Fabricant here");
         fieldEditeur.setToolTipText("Developpeur / Fabricant");
         fieldEditeur.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -101,9 +104,9 @@ public class critResultat extends javax.swing.JPanel
 
         fieldDevFab.setText("Fabricant : ");
 
-        jLabel15.setText("Plateforme : ");
+        labelPlateforme.setText("Plateforme : ");
 
-        jLabel16.setText("Edition : ");
+        labelEdition.setText("Edition : ");
 
         labelCategorie.setForeground(new java.awt.Color(248, 7, 7));
         labelCategorie.setText("Categorie * :");
@@ -117,10 +120,8 @@ public class critResultat extends javax.swing.JPanel
 
         labelTag.setText("Tag : ");
 
-        fieldEdition.setText("Edition here");
         fieldEdition.setToolTipText("Edition");
 
-        fieldTag.setText("Tag here");
         fieldTag.setToolTipText("Tag");
 
         listePlateforme.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PC", "PS", " " }));
@@ -169,10 +170,14 @@ public class critResultat extends javax.swing.JPanel
                 listeZoneItemStateChanged(evt);
             }
         });
+        listeZone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listeZoneActionPerformed(evt);
+            }
+        });
 
         fieldAjoutCasse.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
 
-        fieldTxtAjoutZone.setText("Ajout Zone here");
         fieldTxtAjoutZone.setToolTipText("Developpeur / Fabricant");
         fieldTxtAjoutZone.setVisible(false);
 
@@ -184,7 +189,11 @@ public class critResultat extends javax.swing.JPanel
             }
         });
 
-        fieldCodeBarre.setText("01234567890123");
+        fieldCodeBarre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldCodeBarreActionPerformed(evt);
+            }
+        });
 
         buttonChercher.setText("Chercher");
         buttonAjoutZone.setVisible(false);
@@ -229,7 +238,7 @@ public class critResultat extends javax.swing.JPanel
                                     .addComponent(labelCodeBarre)
                                     .addComponent(fieldDevFab)
                                     .addComponent(labelNom)
-                                    .addComponent(jLabel16)
+                                    .addComponent(labelEdition)
                                     .addComponent(labelZone))
                                 .addGap(25, 25, 25)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,7 +250,7 @@ public class critResultat extends javax.swing.JPanel
                                         .addComponent(listeZone, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(fieldEdition, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(labelPlateforme, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(listePlateforme, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
@@ -345,13 +354,13 @@ public class critResultat extends javax.swing.JPanel
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(fieldEdition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel16))
+                                .addComponent(labelEdition))
                             .addComponent(labelTag)
                             .addComponent(fieldTag))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(listePlateforme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel15))
+                            .addComponent(labelPlateforme))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(buttonChercher)
@@ -412,24 +421,53 @@ public class critResultat extends javax.swing.JPanel
     }//GEN-LAST:event_buttonChercherActionPerformed
 
     private void buttonNouveauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNouveauActionPerformed
-        System.out.println(controleur);
-        try {
-            this.controleur.creer(toForm());}
+        /*try {
+            this.parent.afficherLog(this.controleur.creer(toForm()).toString());
+        }
         catch (DonneeInvalideException ex) {
             this.parent.afficherErreur(ex);}
-        catch (DonneesInsuffisantesException ex) {
+        /*catch (DonneesInsuffisantesException ex) {
             this.parent.afficherErreur(ex);}
         catch (EnregistrementExistantException ex) {
-            this.parent.afficherErreur(ex);;
-        }
+            this.parent.afficherErreur(ex);
+        }*/
     }//GEN-LAST:event_buttonNouveauActionPerformed
 
     private void buttonModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonModifierActionPerformed
         throw new UnsupportedOperationException("La modification de produit n'a pas encore été implémentée.");
     }//GEN-LAST:event_buttonModifierActionPerformed
 
+    private void fieldCodeBarreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldCodeBarreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fieldCodeBarreActionPerformed
+
+    private void listeZoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listeZoneActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_listeZoneActionPerformed
+
+    public void setForm(ProduitForm f)
+    {
+        this.selectedForm = f;
+        
+        if ("jeu".equals(f.getType()))
+        {
+            this.listeCategorie.setSelectedIndex(1); //type Jeu
+            //this.fieldTag.setText(f.getTags());
+            this.jTextAreaDescription.setText(f.getDescription());
+        }
+        else if ("console".equals(f.getType()))
+            this.listeCategorie.setSelectedIndex(0); //type Console
+        
+        this.fieldCodeBarre.setText(f.getCodeBarre());
+        this.fieldNom.setText(f.getNom());
+        this.fieldEditeur.setText(f.getEditeur());
+        this.fieldEdition.setText(f.getEdition());
+        
+        //TODO: à terminer (zones, plateformes... D'ailleurs, celles-ci doivent être initialisées proprement !)
+    }
     private Form toForm() throws DonneeInvalideException
     {
+System.out.print("toform");
         float prix;
         int stock;
         try {
@@ -443,18 +481,22 @@ public class critResultat extends javax.swing.JPanel
             prix = 0f;
             stock = 0;
         }
+System.out.print("i");
         if("".equals(fieldNom.getText()) && "".equals(fieldEditeur.getText())
                 && "".equals(listeZone.getSelectedItem())  && "".equals(listePlateforme.getSelectedItem())
                 && "".equals(fieldEdition.getText()) && "".equals(fieldTag.getText()))
             return new CodeBarreForm(fieldCodeBarre.getText());
         else
-            return new ProduitForm(0, 0, 0, 0, 0, //TODO: gestion des identifiants.
+{System.out.print("c");
+            return null;
+            /*return new ProduitForm(0, 0, 0, 0, 0, //TODO: gestion des identifiants.
                     (String) listeCategorie.getSelectedItem(), fieldCodeBarre.getText(),
                     fieldNom.getText(), fieldEdition.getText(),
                     (String) listeZone.getSelectedItem(),
                     fieldEditeur.getText(), jTextAreaDescription.getText(),
                     fieldTag.getText(), (String) listePlateforme.getSelectedItem(),
-                    prix, stock);
+                    prix, stock);*/
+}
     }
     
 
@@ -477,8 +519,6 @@ public class critResultat extends javax.swing.JPanel
     public static javax.swing.JLabel fieldStock;
     public static javax.swing.JTextField fieldTag;
     public static javax.swing.JTextField fieldTxtAjoutZone;
-    public static javax.swing.JLabel jLabel15;
-    public static javax.swing.JLabel jLabel16;
     public static javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTextArea jTextAreaDescription;
     public static javax.swing.JLabel labelCasse;
@@ -486,7 +526,9 @@ public class critResultat extends javax.swing.JPanel
     public static javax.swing.JLabel labelCodeBarre;
     public static javax.swing.JLabel labelCote;
     public static javax.swing.JLabel labelCurrency;
+    public static javax.swing.JLabel labelEdition;
     public static javax.swing.JLabel labelNom;
+    public static javax.swing.JLabel labelPlateforme;
     public static javax.swing.JLabel labelPrix;
     public static javax.swing.JLabel labelStock;
     public static javax.swing.JLabel labelTag;

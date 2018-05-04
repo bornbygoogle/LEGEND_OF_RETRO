@@ -1,17 +1,20 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Apr 7, 2018 9:35:07 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated May 2, 2018 8:07:17 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="LOREntites.VersionConsole" table="VersionConsole" catalog="p1514527" optimistic-lock="version">
-        <id name="idVersionConsole" type="java.lang.Integer">
-            <column name="id_version_console" />
+    <class name="LOREntities.VersionJeu" table="VersionJeu" catalog="p1514527" optimistic-lock="version">
+        <id name="idVersionJeu" type="java.lang.Integer">
+            <column name="id_version_jeu" />
             <generator class="identity" />
         </id>
-        <many-to-one name="console" class="LOREntites.Console" fetch="select">
-            <column name="id_console" not-null="true" />
+        <many-to-one name="console" class="LOREntities.Console" fetch="select">
+            <column name="id_plateforme" not-null="true" />
         </many-to-one>
-        <many-to-one name="zone" class="LOREntites.Zone" fetch="select">
+        <many-to-one name="jeu" class="LOREntities.Jeu" fetch="select">
+            <column name="id_jeu" not-null="true" />
+        </many-to-one>
+        <many-to-one name="zone" class="LOREntities.Zone" fetch="select">
             <column name="id_zone" not-null="true" />
         </many-to-one>
         <property name="codeBarre" type="string">

@@ -15,10 +15,22 @@ import javax.swing.JPanel;
  *
  * @author bornbygoogle
  */
-public class Resultat extends javax.swing.JPanel
+public class Resultat <F extends Form> extends javax.swing.JPanel
 {
     protected Chercheur parent;
-    protected Vector<Form> res;
+    protected Vector<F> res;
+    protected static String [] typeJeu = {
+        "Code Barre",
+        "Nom",
+        "Edition",
+        "Zone",
+        "Développeur"};
+    protected static String [] typeConsole = {
+        "Code Barre",
+        "Nom",
+        "Edition",
+        "Zone",
+        "Fabricant"};
 
     /**
      * Creates new form Resultat
@@ -27,6 +39,12 @@ public class Resultat extends javax.swing.JPanel
     {
         this.parent = parent;
         initComponents();
+        
+        //destruction du tableau par défaut
+        this.table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] {}
+        ));
     }
 
     /**
@@ -38,14 +56,15 @@ public class Resultat extends javax.swing.JPanel
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        fieldErrorRecherche = new javax.swing.JLabel();
+        verbose = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table = new javax.swing.JTable();
 
-        fieldErrorRecherche.setForeground(new java.awt.Color(255, 3, 0));
-        fieldErrorRecherche.setText("Aucun résultat ne correspond à votre recherche");
+        verbose.setForeground(new java.awt.Color(255, 3, 0));
+        verbose.setText("Aucun résultat ne correspond à votre recherche");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table.setAutoCreateRowSorter(true);
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -56,17 +75,18 @@ public class Resultat extends javax.swing.JPanel
                 "Code Barre", "Nom", "Quantité disponible", "Developpeur", "Date de sortie", "Plus Infos"
             }
         ));
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        table.setShowVerticalLines(false);
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                tableMouseClicked(evt);
             }
         });
-        jTable1.addKeyListener(new java.awt.event.KeyAdapter() {
+        table.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTable1KeyTyped(evt);
+                tableKeyTyped(evt);
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(table);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -76,57 +96,112 @@ public class Resultat extends javax.swing.JPanel
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 976, Short.MAX_VALUE)
-                    .addComponent(fieldErrorRecherche, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(verbose, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(fieldErrorRecherche)
+                .addComponent(verbose)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTable1MouseClicked
+    //si une ligne est sélectionnée, ce produit sera affiché dans les critères (avec ses autres champs).
+    //si plusieurs lignes sont sélectionnées, on affiche la première ligne.
+    private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
+        int index = table.getSelectedRow();
+        if (0 <= index && index < this.res.size()) //this.res n'est normalement pas nul
+            this.parent.selectionnerResultat(res.elementAt(index));
+    }//GEN-LAST:event_tableMouseClicked
 
-    private void jTable1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyTyped
+    private void tableKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTable1KeyTyped
-
-    public void displayRes(Vector<Form> res)
+    }//GEN-LAST:event_tableKeyTyped
+    
+    //important : il est nécessaire que le vecteur contienne des données de type HOMOGENE (autrement dit, pas des formulaires différents. TODO: tester ça ?
+    public void afficherRes(Vector<F> res)
     {
         this.res = res;
         
         //Affichage du nombre de résultats
-        if (res.size() == 0)
-            displayError("Aucun résultat.");
-        else if (res.size() > 1)
-            this.fieldErrorRecherche.setText(res.size() + "résultats.");
+        if (this.res.size() == 0)
+            afficherErreur("Aucun résultat.");
+        else if (this.res.size() > 1)
+        {
+            afficherMessage(this.res.size() + " résultats.");
+            
+            //On recrée le tableau
+            String[] nomsChamps = null;
+            Object[][] donnees = new Object[this.res.size()][];
+            int rowIndex = 0;
+            Form test = this.res.iterator().next(); //on commence par déterminer le type de données avec un test. TODO: plus propre ?
+            if (test instanceof ProduitForm)
+            {
+                //on détermine l'intitulé des colonnes
+                if ("jeu".equals(((ProduitForm) test).getType()))
+                    nomsChamps = typeJeu;
+                else //if ("console".equals(((ProduitForm) test).getType()))
+                    nomsChamps = typeConsole;
+                
+                //on remplit le tableau ligne à ligne
+                for (Form f : this.res)
+                {
+                    ProduitForm pf = (ProduitForm) f;
+                    Object[] donneesLigne = {
+                        pf.getCodeBarre(),
+                        pf.getNom(),
+                        pf.getEdition(),
+                        pf.getZone(),
+                        pf.getEditeur()
+                    };
+                    donnees[rowIndex] = donneesLigne;
+                    rowIndex++;
+                }
+            }
+            else
+                throw new UnsupportedOperationException("Erreur lors de l'affichage du résultat : le type du formulaire est inconnu");
+            
+            this.table.setModel(
+                    new javax.swing.table.DefaultTableModel(donnees,nomsChamps));
+        }
         else //if (res.size() == 1)
         {
-            this.fieldErrorRecherche.setText("1 résultat.");
-            //TODO : sélectionner directement le résultat.
+            //verbose
+            afficherMessage("1 résultat.");
+            //destruction du tableau
+            this.table.setModel(new javax.swing.table.DefaultTableModel(
+                new Object [][] {},
+                new String [] {}
+            ));
+            //sélection du résultat
+            this.parent.selectionnerResultat(res.elementAt(0));
         }
-        
-        //TODO: recréer le tableau.
     }
-    public void displayError(String error)
+    public void afficherErreur(String error)
     {
-        //TODO changer la couleur
-        this.fieldErrorRecherche.setText(error);
+        this.verbose.setForeground(new java.awt.Color(255, 3, 0));
+        this.verbose.setText(error);
         this.res = null;
-        //TODO effacer le tableau
+        //destruction du tableau
+        this.table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] {}
+        ));
+    }
+    public void afficherMessage(String message)
+    {
+        this.verbose.setForeground(new java.awt.Color(3, 143, 10));
+        this.verbose.setText(message);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public static javax.swing.JLabel fieldErrorRecherche;
     public static javax.swing.JScrollPane jScrollPane1;
-    public static javax.swing.JTable jTable1;
+    public static javax.swing.JTable table;
+    public static javax.swing.JLabel verbose;
     // End of variables declaration//GEN-END:variables
 
 }
