@@ -51,7 +51,6 @@ public class Controleur
         }
         catch (ExceptionInInitializerError eiie)    {System.out.println("Erreur lors de l'initialisation du modèle.\n"
                 + eiie.getMessage());}
-        
     }
     
     /**
@@ -580,10 +579,11 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
         if (idConsole < 0 && (nomCons == null || "".equals(nomCons)))
             throw new DonneesInsuffisantesException("Erreur lors de la recherche de la console : nom de la console non renseigné.");
 
-        HQLRecherche q = new HQLRecherche("Console c");
+        HQLRecherche q = new HQLRecherche("LOREntities.Console c");
         q.addCondition("c.nom", nomCons, HQLRecherche.Operateur.EGAL);
         if (!"".equals(nomFabr))
             q.addCondition("c.fabricant.nom", nomFabr, HQLRecherche.Operateur.EGAL);
+        System.out.println("Recherche Console"); //imprimé à des fins de test
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         

@@ -487,15 +487,17 @@ System.out.print("i");
                 && "".equals(fieldEdition.getText()) && "".equals(fieldTag.getText()))
             return new CodeBarreForm(fieldCodeBarre.getText());
         else
+            
 {System.out.print("c");
-            return null;
-            /*return new ProduitForm(0, 0, 0, 0, 0, //TODO: gestion des identifiants.
+System.out.println(fieldNom.getText()+fieldEditeur.getText()); //imprimé à des fins de test
+            //return null;
+            return new ProduitForm(0, 0, 0, 0, 0, //TODO: gestion des identifiants.
                     (String) listeCategorie.getSelectedItem(), fieldCodeBarre.getText(),
                     fieldNom.getText(), fieldEdition.getText(),
                     (String) listeZone.getSelectedItem(),
-                    fieldEditeur.getText(), jTextAreaDescription.getText(),
-                    fieldTag.getText(), (String) listePlateforme.getSelectedItem(),
-                    prix, stock);*/
+                    fieldEditeur.getText(), jTextAreaDescription.getText()/*,
+                    fieldTag.getText()*/, (String) listePlateforme.getSelectedItem(),
+                    prix, stock);
 }
     }
     
