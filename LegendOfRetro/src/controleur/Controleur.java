@@ -391,7 +391,7 @@ public class Controleur
                 throw new DonneeInvalideException("Impossible de créer la version de jeu : le jeu renseigné n'existe pas.");
             
             //on vérifie que la version de jeu n'existe pas déjà !
-            Vector<VersionJeu> existante = chercherVersionsJeu(cb, edition, zone.getNom(), console.getNom(), nomJeu, nomEditeur, tags);
+            Vector<VersionJeu> existante = chercherVersionsJeu(cb, edition, zone.getNom(), console.getNom(), nomJeu, nomEditeur/*, tags*/);
             if (!(existante == null) && !existante.isEmpty())
                 throw new EnregistrementExistantException("Impossible de créer la version de jeu : cette dernière existe déjà.");
             
@@ -420,7 +420,7 @@ public class Controleur
      * Détermine, à partir d'un bean, quelle(s) requête(s) de recherche générer et exécuter. Transforme les résultats en formulaires.
      * Les formulaires renvoyés correspondront à des produits : nommément, soit à une version de jeu, soit à une version de console.
     */
-    public Vector<ProduitForm> chercher(Form form) throws DonneeInvalideException, ResultatInvalideException/*, DonneesInsuffisantesException*/
+    public Vector<ProduitForm> chercher(Form form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
     {
         Vector<ProduitForm> ret = new Vector<ProduitForm>();
         
@@ -467,7 +467,7 @@ System.out.println("Codebarreform CB : " + cb);
             //Pas besoin de récupérer les identifiants, la description de jeu, le prix et le stock.
 System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + nom + " EDITION : " + edition + " EDITEUR : " + editeur + " ZONE : " + zone + " PF : " + plateforme);
             
-            /*if ("Console".equals(type))
+            if ("Console".equals(type))
             {
                 if (!"".equals(cb) || !"".equals(edition) || !"".equals(zone) || !"".equals(nom) || !"".equals(editeur))
                 for (VersionConsole enr : chercherVersionsConsole(cb, edition, zone, nom, editeur))
@@ -475,15 +475,15 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
                             enr.getConsole().getIdConsole(), enr.getIdVersionConsole(), -1, -1,
                             enr.getConsole().getFabricant().getIdFabricant(), "Console",
                             enr.getCodeBarre(), enr.getConsole().getNom(), enr.getEdition(), enr.getZone().getNom(),
-                            enr.getConsole().getFabricant().getNom(), "", "", "",
+                            enr.getConsole().getFabricant().getNom(), "", "",
                             enr.getPrix(), enr.getStock()));
                 else
                     throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
             }
             else if ("Jeu".equals(type))
             {
-                if (!"".equals(cb) || !"".equals(nom) || !"".equals(editeur) || !tags.isEmpty())
-                    for (VersionJeu enr : chercherVersionsJeu(cb, edition, zone, plateforme, nom, editeur, tags))
+                if (!"".equals(cb) || !"".equals(nom) || !"".equals(editeur) /*|| !tags.isEmpty()*/)
+                    for (VersionJeu enr : chercherVersionsJeu(cb, edition, zone, plateforme, nom, editeur/*, tags*/))
                         ret.add(new ProduitForm(
                                 enr.getConsole().getIdConsole(), enr.getConsole().getIdConsole(),
                                 enr.getJeu().getIdJeu(), enr.getIdVersionJeu(),
@@ -494,9 +494,8 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
                                 enr.getPrix(), enr.getStock()));
                 else
                     throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
-            }*/
+            }
         }
-        
         return ret;
     }
     /**
@@ -506,39 +505,37 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
      */
     private Vector<VersionConsole> chercherVersionsConsole(String cb, String edition, String zone, String nom, String fabricant)
             throws DonneesInsuffisantesException, DonneeInvalideException
-    {
-        
+    {        
         if ("".equals(cb) && "".equals(nom) && "".equals(fabricant))
             throw new DonneesInsuffisantesException("Erreur lors de la recherche des produits de type console : il faut renseigner un code barre, un nom, ou un fabricant.");
         
         Vector<VersionConsole> ret = new Vector<VersionConsole>();
         
-        HQLRecherche q = new HQLRecherche("VersionConsole vc"); //TODO: requête imbriquée imbrCons
+        HQLRecherche q = new HQLRecherche("LOREntities.VersionConsole vc"); //TODO: requête imbriquée imbrCons
         //rédaction de la requête imbriquée pour console
         if (!"".equals(nom) || !"".equals(fabricant)) //si la console est renseignée (et/ou son fabricant)
         {
-            HQLRecherche imbrCons = new HQLRecherche("console c");
+            HQLRecherche imbrCons = new HQLRecherche("LOREntities.Console c");
             imbrCons.setImbriquee(true);
+            imbrCons.setSelect("c.idConsole");
             imbrCons.addCondition("c.nom", nom, HQLRecherche.Operateur.LIKE);
             //rédaction de la requête imbriquée pour fabricant
             if (!"".equals(fabricant)) //si le fabricant est renseigné
             {
-                HQLRecherche imbrFabr = new HQLRecherche("fabricant f");
+                HQLRecherche imbrFabr = new HQLRecherche("LOREntities.Fabricant f");
                 imbrFabr.setImbriquee(true);
-                imbrFabr.addCondition("f.nom", fabricant, HQLRecherche.Operateur.LIKE);
-                
+                imbrFabr.addCondition("f.nom", fabricant, HQLRecherche.Operateur.LIKE);                
                 imbrCons.addCondition("c.fabricant", imbrFabr.toString(), HQLRecherche.Operateur.IN);
             }
-            
             q.addCondition("vc.console", imbrCons.toString(), HQLRecherche.Operateur.IN);
         }
         //rédaction des requêtes imbriquées pour zone
         if (!"".equals(zone)) //si la zone est renseignée
         {
-            HQLRecherche imbrZone = new HQLRecherche("zone z");
+            HQLRecherche imbrZone = new HQLRecherche("LOREntities.Zone z");
             imbrZone.setImbriquee(true);
-            imbrZone.addCondition("z.nom", zone, HQLRecherche.Operateur.EGAL);
-            
+            imbrZone.setSelect("z.idZone");
+            imbrZone.addCondition("z.nom", zone, HQLRecherche.Operateur.LIKE);            
             q.addCondition("vc.zone", imbrZone.toString(), HQLRecherche.Operateur.IN);
         }
         //autres conditions
@@ -559,10 +556,10 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
      * La zone et l'édition ne sont pas suffisantes pour lancer une recherche.
      */
     private Vector<VersionJeu> chercherVersionsJeu(String cb, String edition, String zone,
-            String plateforme, String nom, String editeur, Vector<String> tags)
+            String plateforme, String nom, String editeur/*, Vector<String> tags*/)
             throws DonneesInsuffisantesException
     {
-        if ("".equals(cb) && "".equals(plateforme) && "".equals(nom) && "".equals(editeur) && tags.isEmpty())
+        if ("".equals(cb) && "".equals(plateforme) && "".equals(nom) && "".equals(editeur) /*&& tags.isEmpty()*/)
             throw new DonneesInsuffisantesException("Erreur lors de la recherche des produits de type jeu : il faut renseigner un code barre, une plateforme, un nom, un éditeur ou au moins un tag.");
         
         Vector<VersionJeu> ret = new Vector<VersionJeu>();
@@ -747,6 +744,10 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
     }
     /**
      * Recherche les éditeurs dont le nom contient la chaîne renseignée.
+     * 
+     *   - param : une chaine caractere renseigné comme Nom
+     *   - return : un vecteur contenant tous les enregistrements ayant le nom renseigné
+     * 
      */
     private Vector<Editeur> chercherEditeurs(String nomEdit) throws DonneesInsuffisantesException
     {
@@ -836,7 +837,7 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
     {
         Vector<String> ret = new Vector();
         
-        List zones = modele.createQuery("from Zone").list();
+        List zones = modele.createQuery("from LOREntities.Zone").list();
         for (Object z : zones)
             ret.add(((Zone) z).getNom());
         
@@ -849,7 +850,7 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
     {
         Vector<String> ret = new Vector();
         
-        List consoles = modele.createQuery("from Zone").list();
+        List consoles = modele.createQuery("from LOREntities.Console").list();
         for (Object c : consoles)
             ret.add(((Console) c).getNom());
         

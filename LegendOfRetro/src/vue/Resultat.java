@@ -8,6 +8,7 @@ package vue;
 import bean.Form;
 import bean.ProduitForm;
 import controleur.Rapport;
+import java.util.Arrays;
 import java.util.Vector;
 import javax.swing.JPanel;
 
@@ -113,9 +114,10 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
     //si une ligne est sélectionnée, ce produit sera affiché dans les critères (avec ses autres champs).
     //si plusieurs lignes sont sélectionnées, on affiche la première ligne.
     private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
-        int index = table.getSelectedRow();
-        if (0 <= index && index < this.res.size()) //this.res n'est normalement pas nul
-            this.parent.selectionnerResultat(res.elementAt(index));
+        int rowIndex = table.getSelectedRow();
+        rowIndex = table.convertRowIndexToModel(rowIndex);  // Cette opération sert à fait la correspondance entre la view et le model de table
+        if (0 <= rowIndex && rowIndex < this.res.size()) //this.res n'est normalement pas nul
+            this.parent.selectionnerResultat(res.elementAt(rowIndex));
     }//GEN-LAST:event_tableMouseClicked
 
     private void tableKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableKeyTyped
@@ -126,17 +128,17 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
     public void afficherRes(Vector<F> res)
     {
         this.res = res;
-        
         //Affichage du nombre de résultats
         if (this.res.size() == 0)
             afficherErreur("Aucun résultat.");
-        else if (this.res.size() > 1)
+        else if (this.res.size() > 0)
         {
             afficherMessage(this.res.size() + " résultats.");
             
             //On recrée le tableau
             String[] nomsChamps = null;
             Object[][] donnees = new Object[this.res.size()][];
+                      
             int rowIndex = 0;
             Form test = this.res.iterator().next(); //on commence par déterminer le type de données avec un test. TODO: plus propre ?
             if (test instanceof ProduitForm)
@@ -146,6 +148,8 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
                     nomsChamps = typeJeu;
                 else //if ("console".equals(((ProduitForm) test).getType()))
                     nomsChamps = typeConsole;
+                
+                rowIndex = 0;
                 
                 //on remplit le tableau ligne à ligne
                 for (Form f : this.res)
@@ -164,21 +168,8 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
             }
             else
                 throw new UnsupportedOperationException("Erreur lors de l'affichage du résultat : le type du formulaire est inconnu");
-            
-            this.table.setModel(
-                    new javax.swing.table.DefaultTableModel(donnees,nomsChamps));
-        }
-        else //if (res.size() == 1)
-        {
-            //verbose
-            afficherMessage("1 résultat.");
-            //destruction du tableau
-            this.table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {},
-                new String [] {}
-            ));
-            //sélection du résultat
-            this.parent.selectionnerResultat(res.elementAt(0));
+            // Affectation les resultats au Jtable
+            this.table.setModel(new javax.swing.table.DefaultTableModel(donnees,nomsChamps));
         }
     }
     public void afficherErreur(String error)

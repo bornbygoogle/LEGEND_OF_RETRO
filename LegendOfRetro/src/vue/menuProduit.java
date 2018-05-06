@@ -13,6 +13,8 @@ import controleur.DonneesInsuffisantesException;
 import controleur.ResultatInvalideException;
 import java.awt.BorderLayout;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -65,20 +67,16 @@ public class menuProduit extends JPanel implements Chercheur
     public void lancerRecherche(Form form)
     {
         try {
+            // Affectuer la recherche avec fonction RECHERCHE dans CONTROLEUR
             Vector<ProduitForm> resultatsRecherche = this.controleur.chercher(form);
-            
-            System.out.println("Affiché à des fins de test dans menuProduit > lancerRecherche(Form)");
-            resultatsRecherche.addElement(new ProduitForm(0,0,0,0,0,"jeu", "123456", "zelda", "edition", "FR", "Nintendo", "joli"/*, ""*/, "nintendo", 0.5f, 12));
-            resultatsRecherche.addElement(new ProduitForm(0,0,0,0,0,"console", "43", "Un super nain tend dos", "gold", "FR", "Nintendo", "joli",/* "",*/ "nintendo", 100000f, 1));
-            resultatsRecherche.addElement(new ProduitForm(0,0,0,0,0,"jeu", "09876543", "Mario", "edition", "IT", "Sony", "moche",/* "",*/ "PSX", 5000f, 1));
-            
+            // Afficher les résultats avec fonction AFFICHERES dans RESULTAT
             this.Resultats.afficherRes(resultatsRecherche); }
         catch (DonneeInvalideException e) {
             afficherErreur(e);}
         catch (ResultatInvalideException e) {
-            afficherErreur(e);}
-        /*catch (DonneesInsuffisantesException e) {
-            afficherErreur(e);}*/
+            afficherErreur(e);} catch (DonneesInsuffisantesException ex) {
+            Logger.getLogger(menuProduit.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override

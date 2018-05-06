@@ -1,5 +1,5 @@
 package LOREntities;
-// Generated May 4, 2018 8:34:43 PM by Hibernate Tools 4.3.1
+// Generated May 4, 2018 10:53:06 PM by Hibernate Tools 4.3.1
 
 
 
@@ -9,29 +9,29 @@ package LOREntities;
 public class DecrireId  implements java.io.Serializable {
 
 
-     private String idTag;
-     private String idJeu;
+     private int idTag;
+     private int idJeu;
 
     public DecrireId() {
     }
 
-    public DecrireId(String idTag, String idJeu) {
+    public DecrireId(int idTag, int idJeu) {
        this.idTag = idTag;
        this.idJeu = idJeu;
     }
    
-    public String getIdTag() {
+    public int getIdTag() {
         return this.idTag;
     }
     
-    public void setIdTag(String idTag) {
+    public void setIdTag(int idTag) {
         this.idTag = idTag;
     }
-    public String getIdJeu() {
+    public int getIdJeu() {
         return this.idJeu;
     }
     
-    public void setIdJeu(String idJeu) {
+    public void setIdJeu(int idJeu) {
         this.idJeu = idJeu;
     }
 
@@ -42,15 +42,15 @@ public class DecrireId  implements java.io.Serializable {
 		 if ( !(other instanceof DecrireId) ) return false;
 		 DecrireId castOther = ( DecrireId ) other; 
          
-		 return ( (this.getIdTag()==castOther.getIdTag()) || ( this.getIdTag()!=null && castOther.getIdTag()!=null && this.getIdTag().equals(castOther.getIdTag()) ) )
- && ( (this.getIdJeu()==castOther.getIdJeu()) || ( this.getIdJeu()!=null && castOther.getIdJeu()!=null && this.getIdJeu().equals(castOther.getIdJeu()) ) );
+		 return (this.getIdTag()==castOther.getIdTag())
+ && (this.getIdJeu()==castOther.getIdJeu());
    }
    
    public int hashCode() {
          int result = 17;
          
-         result = 37 * result + ( getIdTag() == null ? 0 : this.getIdTag().hashCode() );
-         result = 37 * result + ( getIdJeu() == null ? 0 : this.getIdJeu().hashCode() );
+         result = 37 * result + this.getIdTag();
+         result = 37 * result + this.getIdJeu();
          return result;
    }   
 

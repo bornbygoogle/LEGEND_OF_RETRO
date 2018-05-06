@@ -73,6 +73,10 @@ public class ProduitForm extends Form
         this.prix = prix;
         this.stock = stock;
     }
+
+    public ProduitForm(Integer idConsole, Integer idConsole0, Integer idJeu, Integer idVersionJeu, Integer idEditeur, String jeu, String codeBarre, String nom, String edition, String nom0, String nom1, String description, float prix, int stock) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     public int getIdConsole()      {return this.idConsole;}
     public int getIdVersionConsole()      {return this.idVersionConsole;}

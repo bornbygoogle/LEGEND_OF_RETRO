@@ -34,9 +34,10 @@ public class critResultat extends javax.swing.JPanel
         this.parent = parent;
         this.selectedForm = null;
         initComponents();
-        
-        listeZone.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "TODO", "intialiser les zones", "Autre" }));
-        listePlateforme.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "PC", "PS", "TODO", "etc."}));
+        listeZone.setModel(new javax.swing.DefaultComboBoxModel<>(controleur.listeZones()));
+        //listeZone.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "TODO", "intialiser les zones", "Autre" }));
+        listePlateforme.setModel(new javax.swing.DefaultComboBoxModel<>(controleur.listeConsoles()));
+        //listePlateforme.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "PC", "PS", "TODO", "etc."}));
     }
     
     /**

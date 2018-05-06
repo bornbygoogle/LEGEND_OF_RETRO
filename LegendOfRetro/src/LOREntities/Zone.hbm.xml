@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated May 4, 2018 8:34:46 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated May 4, 2018 10:53:06 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="LOREntities.Zone" table="Zone" catalog="p1514527" optimistic-lock="version">
         <id name="idZone" type="java.lang.Integer">
