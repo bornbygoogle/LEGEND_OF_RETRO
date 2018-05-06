@@ -111,7 +111,7 @@ public class Controleur
             
         //création du fabricant
         Fabricant fabr = new Fabricant();
-        fabr.setNom(nomFabr);
+        fabr.setNomFabricant(nomFabr);
         
         //sauvegarde dans la base de données
         this.modele.beginTransaction();
@@ -137,7 +137,7 @@ public class Controleur
             
         //création de l'éditeur
         Editeur ed = new Editeur();
-        ed.setNom(nomEditeur);
+        ed.setNomEditeur(nomEditeur);
         
         //sauvegarde dans la base de données
         this.modele.beginTransaction();
@@ -164,7 +164,7 @@ public class Controleur
         
         //création du tag
         Tag t = new Tag();
-        t.setLibelle(tag);
+        t.setLabelTag(tag);
         
         //sauvegarde dans la base de données
         this.modele.beginTransaction();
@@ -213,9 +213,9 @@ public class Controleur
 
             //création de la console
             Jeu jeu = new Jeu();
-            jeu.setNom(nomJeu);
-            jeu.setEditeur(editeur);
-            jeu.setDescription(description);
+            jeu.setNomJeu(nomJeu);
+            //jeu.setEditeur(editeur);
+            jeu.setDescriptionJeu(description);
 
             //traitement des tags
             for (String tag : tags)
@@ -319,7 +319,7 @@ public class Controleur
             
             //on vérifie que la version de console n'existe pas déjà !
             Vector<VersionConsole> existe = chercherVersionsConsole(cb, edition,
-                    zone.getNom(), console.getNom(), console.getFabricant().getNom());
+                    zone.getNomZone(), console.getNom(), console.getFabricant().getNomFabricant());
             if (!(existe == null) && !existe.isEmpty())
                 throw new EnregistrementExistantException("Impossible de créer la version de console : cette dernière existe déjà.");
             
@@ -391,7 +391,7 @@ public class Controleur
                 throw new DonneeInvalideException("Impossible de créer la version de jeu : le jeu renseigné n'existe pas.");
             
             //on vérifie que la version de jeu n'existe pas déjà !
-            Vector<VersionJeu> existante = chercherVersionsJeu(cb, edition, zone.getNom(), console.getNom(), nomJeu, nomEditeur/*, tags*/);
+            Vector<VersionJeu> existante = chercherVersionsJeu(cb, edition, zone.getNomZone(), console.getNom(), nomJeu, nomEditeur/*, tags*/);
             if (!(existante == null) && !existante.isEmpty())
                 throw new EnregistrementExistantException("Impossible de créer la version de jeu : cette dernière existe déjà.");
             
@@ -400,7 +400,7 @@ public class Controleur
             vj.setCodeBarre(cb);
             vj.setEdition(edition);
             vj.setZone(zone);
-            vj.setConsole(console);
+            //vj.setConsole(console);
             vj.setJeu(jeu);
             vj.setPrix(prix);
             vj.setStock(stock);
@@ -427,24 +427,23 @@ public class Controleur
         if (form instanceof CodeBarreForm) //recherche rapide par code barre
         {
             String cb = codeBarreValide(((CodeBarreForm) form).getCodeBarre());
-System.out.println("Codebarreform CB : " + cb);
-            /*for (VersionConsole enr : chercherVersionsConsole(cb, "", "", "", ""))
+            for (VersionConsole enr : chercherVersionsConsole(cb, "", "", "", ""))
                 ret.add(new ProduitForm(
                         enr.getConsole().getIdConsole(), enr.getIdVersionConsole(), -1, -1,
                         enr.getConsole().getFabricant().getIdFabricant(), "Console",
                         enr.getCodeBarre(), enr.getConsole().getNom(),
-                        enr.getEdition(), enr.getZone().getNom(),
-                        enr.getConsole().getFabricant().getNom(), "", "", "",
-                        enr.getPrix(), enr.getStock()));//*/
-            /*for (VersionJeu enr : chercherVersionsJeu(cb, "", "", "", "", "", new Vector<String>()))
+                        enr.getEdition(), enr.getZone().getNomZone(),
+                        enr.getConsole().getFabricant().getNomFabricant(), "", "",
+                        enr.getPrix(), enr.getStock()));
+            for (VersionJeu enr : chercherVersionsJeu(cb, "", "", "", "", ""/*new Vector<String>()*/))
                 ret.add(new ProduitForm(
-                        enr.getConsole().getIdConsole(), -1,
+                        /*enr.getConsole().getIdConsole(),*/1, -1,
                         enr.getJeu().getIdJeu(), enr.getIdVersionJeu(),
                         enr.getJeu().getEditeur().getIdEditeur(), "Jeu",
-                        enr.getCodeBarre(), enr.getJeu().getNom(), enr.getEdition(), enr.getZone().getNom(),
-                        enr.getJeu().getEditeur().getNom(), enr.getJeu().getDescription(),
-                        tagsToString(enr.getJeu().getTags(), ','), enr.getConsole().getNom(),
-                        enr.getPrix(), enr.getStock()));*/
+                        enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
+                        enr.getJeu().getNomJeu(), enr.getJeu().getDescriptionJeu(),
+                        /*tagsToString(enr.getJeu().getTags(), ','),*/ enr.getConsole().getNom(),
+                        enr.getPrix(), enr.getStock()));
             if (ret.size() > 1)
                 throw new ResultatInvalideException("Erreur : la recherche du code barre " + cb
                         + " renvoie plus d'un résultat", ret);
@@ -461,7 +460,7 @@ System.out.println("Codebarreform CB : " + cb);
             String edition = f.getEdition();
             String zone = f.getZone();
             String editeur = f.getEditeur();
-            //String description = f.getDescription();      La description n'est pas un critère de recherche viable.
+            String description = f.getDescription();      //La description n'est pas un critère de recherche viable.
             //Vector<String> tags = stringToVector(f.getTags(), ',');
             String plateforme = f.getPlateforme();
             //Pas besoin de récupérer les identifiants, la description de jeu, le prix et le stock.
@@ -474,8 +473,8 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
                     ret.add(new ProduitForm(
                             enr.getConsole().getIdConsole(), enr.getIdVersionConsole(), -1, -1,
                             enr.getConsole().getFabricant().getIdFabricant(), "Console",
-                            enr.getCodeBarre(), enr.getConsole().getNom(), enr.getEdition(), enr.getZone().getNom(),
-                            enr.getConsole().getFabricant().getNom(), "", "",
+                            enr.getCodeBarre(), enr.getConsole().getNom(), enr.getEdition(), enr.getZone().getNomZone(),
+                            enr.getConsole().getFabricant().getNomFabricant(), "", "",
                             enr.getPrix(), enr.getStock()));
                 else
                     throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
@@ -488,8 +487,8 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
                                 enr.getConsole().getIdConsole(), enr.getConsole().getIdConsole(),
                                 enr.getJeu().getIdJeu(), enr.getIdVersionJeu(),
                                 enr.getJeu().getEditeur().getIdEditeur(), "Jeu",
-                                enr.getCodeBarre(), enr.getJeu().getNom(), enr.getEdition(), enr.getZone().getNom(),
-                                enr.getJeu().getEditeur().getNom(), enr.getJeu().getDescription(),
+                                enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
+                                enr.getJeu().getNomJeu(), enr.getJeu().getDescriptionJeu(),
                                 //tagsToString(enr.getJeu().getTags(), ','), enr.getConsole().getNom(),
                                 enr.getPrix(), enr.getStock()));
                 else
@@ -524,7 +523,7 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
             {
                 HQLRecherche imbrFabr = new HQLRecherche("LOREntities.Fabricant f");
                 imbrFabr.setImbriquee(true);
-                imbrFabr.addCondition("f.nom", fabricant, HQLRecherche.Operateur.LIKE);                
+                imbrFabr.addCondition("f.nomFabricant", fabricant, HQLRecherche.Operateur.LIKE);                
                 imbrCons.addCondition("c.fabricant", imbrFabr.toString(), HQLRecherche.Operateur.IN);
             }
             q.addCondition("vc.console", imbrCons.toString(), HQLRecherche.Operateur.IN);
@@ -535,7 +534,7 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
             HQLRecherche imbrZone = new HQLRecherche("LOREntities.Zone z");
             imbrZone.setImbriquee(true);
             imbrZone.setSelect("z.idZone");
-            imbrZone.addCondition("z.nom", zone, HQLRecherche.Operateur.LIKE);            
+            imbrZone.addCondition("z.nomZone", zone, HQLRecherche.Operateur.LIKE);            
             q.addCondition("vc.zone", imbrZone.toString(), HQLRecherche.Operateur.IN);
         }
         //autres conditions
@@ -559,12 +558,43 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
             String plateforme, String nom, String editeur/*, Vector<String> tags*/)
             throws DonneesInsuffisantesException
     {
+         //from LOREntities.VersionConsole vc where vc.console in (select c.idConsole from LOREntities.Console c where c.nom LIKE '%%' and c.fabricant in ( from LOREntities.Fabricant f where f.nom LIKE '%nintendo%' )  )  and vc.zone in (select z.idZone from LOREntities.Zone z where z.nom LIKE '%EU%' ) 
+
         if ("".equals(cb) && "".equals(plateforme) && "".equals(nom) && "".equals(editeur) /*&& tags.isEmpty()*/)
             throw new DonneesInsuffisantesException("Erreur lors de la recherche des produits de type jeu : il faut renseigner un code barre, une plateforme, un nom, un éditeur ou au moins un tag.");
         
         Vector<VersionJeu> ret = new Vector<VersionJeu>();
         
         //TODO: la recherche à proprement parler.
+                HQLRecherche q = new HQLRecherche("LOREntities.VersionJeu vj"); //TODO: requête imbriquée imbrCons
+        //rédaction de la requête imbriquée pour console
+        if (!"".equals(nom) || !"".equals(plateforme)) //si la console est renseignée (et/ou son fabricant)
+        {
+            HQLRecherche imbrCons = new HQLRecherche("LOREntities.Console c");
+            imbrCons.setImbriquee(true);
+            imbrCons.setSelect("c.idConsole");
+            imbrCons.addCondition("c.nom", nom, HQLRecherche.Operateur.LIKE);
+            q.addCondition("vj.console", imbrCons.toString(), HQLRecherche.Operateur.IN);
+        }
+
+        //rédaction des requêtes imbriquées pour zone
+        if (!"".equals(zone)) //si la zone est renseignée
+        {
+            HQLRecherche imbrZone = new HQLRecherche("LOREntities.Zone z");
+            imbrZone.setImbriquee(true);
+            imbrZone.setSelect("z.idZone");
+            imbrZone.addCondition("z.nom", zone, HQLRecherche.Operateur.LIKE);            
+            q.addCondition("vj.zone", imbrZone.toString(), HQLRecherche.Operateur.IN);
+        }
+        //autres conditions
+        if (!"".equals(cb))
+            q.addCondition("vj.codeBarre", cb, HQLRecherche.Operateur.EGAL);
+        if (!"".equals(edition))
+            q.addCondition("vj.edition", edition, HQLRecherche.Operateur.LIKE);
+        
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
+        ret.addAll(resultats);
         
         return ret;
     }
@@ -819,7 +849,7 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
         
         //création de la zone
         Zone z = new Zone();
-        z.setNom(zone);
+        z.setNomZone(zone);
         
         //sauvegarde dans la base de données
         this.modele.beginTransaction();
@@ -839,7 +869,7 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
         
         List zones = modele.createQuery("from LOREntities.Zone").list();
         for (Object z : zones)
-            ret.add(((Zone) z).getNom());
+            ret.add(((Zone) z).getNomZone());
         
         return ret;
     }
@@ -893,7 +923,7 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
     {
         Vector <String> vect = new Vector<String>();
         for (Tag t : tags)
-            vect.add(t.getLibelle());
+            vect.add(t.getLabelTag());
         return vectorToString(vect, separator);
     }
     protected static final Vector<String> stringToVector(String s, char separator)

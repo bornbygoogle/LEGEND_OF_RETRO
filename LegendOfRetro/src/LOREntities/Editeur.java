@@ -1,5 +1,5 @@
 package LOREntities;
-// Generated May 4, 2018 10:53:06 PM by Hibernate Tools 4.3.1
+// Generated May 6, 2018 10:51:49 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -12,18 +12,18 @@ public class Editeur  implements java.io.Serializable {
 
 
      private Integer idEditeur;
-     private String nom;
+     private String nomEditeur;
      private Set jeus = new HashSet(0);
 
     public Editeur() {
     }
 
 	
-    public Editeur(String nom) {
-        this.nom = nom;
+    public Editeur(String nomEditeur) {
+        this.nomEditeur = nomEditeur;
     }
-    public Editeur(String nom, Set jeus) {
-       this.nom = nom;
+    public Editeur(String nomEditeur, Set jeus) {
+       this.nomEditeur = nomEditeur;
        this.jeus = jeus;
     }
    
@@ -34,12 +34,12 @@ public class Editeur  implements java.io.Serializable {
     public void setIdEditeur(Integer idEditeur) {
         this.idEditeur = idEditeur;
     }
-    public String getNom() {
-        return this.nom;
+    public String getNomEditeur() {
+        return this.nomEditeur;
     }
     
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setNomEditeur(String nomEditeur) {
+        this.nomEditeur = nomEditeur;
     }
     public Set getJeus() {
         return this.jeus;

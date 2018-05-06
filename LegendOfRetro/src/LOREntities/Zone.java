@@ -1,5 +1,5 @@
 package LOREntities;
-// Generated May 4, 2018 10:53:06 PM by Hibernate Tools 4.3.1
+// Generated May 6, 2018 10:51:49 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -11,8 +11,8 @@ import java.util.Set;
 public class Zone  implements java.io.Serializable {
 
 
-     private Integer idZone;
-     private String nom;
+     private int idZone;
+     private String nomZone;
      private Set versionConsoles = new HashSet(0);
      private Set versionJeus = new HashSet(0);
 
@@ -20,28 +20,30 @@ public class Zone  implements java.io.Serializable {
     }
 
 	
-    public Zone(String nom) {
-        this.nom = nom;
+    public Zone(int idZone, String nomZone) {
+        this.idZone = idZone;
+        this.nomZone = nomZone;
     }
-    public Zone(String nom, Set versionConsoles, Set versionJeus) {
-       this.nom = nom;
+    public Zone(int idZone, String nomZone, Set versionConsoles, Set versionJeus) {
+       this.idZone = idZone;
+       this.nomZone = nomZone;
        this.versionConsoles = versionConsoles;
        this.versionJeus = versionJeus;
     }
    
-    public Integer getIdZone() {
+    public int getIdZone() {
         return this.idZone;
     }
     
-    public void setIdZone(Integer idZone) {
+    public void setIdZone(int idZone) {
         this.idZone = idZone;
     }
-    public String getNom() {
-        return this.nom;
+    public String getNomZone() {
+        return this.nomZone;
     }
     
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setNomZone(String nomZone) {
+        this.nomZone = nomZone;
     }
     public Set getVersionConsoles() {
         return this.versionConsoles;

@@ -1,5 +1,5 @@
 package LOREntities;
-// Generated May 4, 2018 10:53:06 PM by Hibernate Tools 4.3.1
+// Generated May 6, 2018 10:51:49 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -21,8 +21,9 @@ public class Console  implements java.io.Serializable {
     }
 
 	
-    public Console(Fabricant fabricant) {
+    public Console(Fabricant fabricant, String nom) {
         this.fabricant = fabricant;
+        this.nom = nom;
     }
     public Console(Fabricant fabricant, String nom, Set versionConsoles, Set versionJeus) {
        this.fabricant = fabricant;

@@ -1,5 +1,5 @@
 package LOREntities;
-// Generated May 4, 2018 10:53:06 PM by Hibernate Tools 4.3.1
+// Generated May 6, 2018 10:51:49 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -13,21 +13,25 @@ public class Jeu  implements java.io.Serializable {
 
      private Integer idJeu;
      private Editeur editeur;
-     private String nom;
-     private String description;
+     private String nomJeu;
+     private String descriptionJeu;
+     private Set decrires = new HashSet(0);
      private Set versionJeus = new HashSet(0);
 
     public Jeu() {
     }
 
 	
-    public Jeu(Editeur editeur) {
+    public Jeu(Editeur editeur, String nomJeu, String descriptionJeu) {
         this.editeur = editeur;
+        this.nomJeu = nomJeu;
+        this.descriptionJeu = descriptionJeu;
     }
-    public Jeu(Editeur editeur, String nom, String description, Set versionJeus) {
+    public Jeu(Editeur editeur, String nomJeu, String descriptionJeu, Set decrires, Set versionJeus) {
        this.editeur = editeur;
-       this.nom = nom;
-       this.description = description;
+       this.nomJeu = nomJeu;
+       this.descriptionJeu = descriptionJeu;
+       this.decrires = decrires;
        this.versionJeus = versionJeus;
     }
    
@@ -45,19 +49,26 @@ public class Jeu  implements java.io.Serializable {
     public void setEditeur(Editeur editeur) {
         this.editeur = editeur;
     }
-    public String getNom() {
-        return this.nom;
+    public String getNomJeu() {
+        return this.nomJeu;
     }
     
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setNomJeu(String nomJeu) {
+        this.nomJeu = nomJeu;
     }
-    public String getDescription() {
-        return this.description;
+    public String getDescriptionJeu() {
+        return this.descriptionJeu;
     }
     
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescriptionJeu(String descriptionJeu) {
+        this.descriptionJeu = descriptionJeu;
+    }
+    public Set getDecrires() {
+        return this.decrires;
+    }
+    
+    public void setDecrires(Set decrires) {
+        this.decrires = decrires;
     }
     public Set getVersionJeus() {
         return this.versionJeus;

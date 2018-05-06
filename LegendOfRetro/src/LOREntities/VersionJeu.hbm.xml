@@ -1,27 +1,27 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated May 4, 2018 10:53:06 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated May 6, 2018 10:51:49 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="LOREntities.VersionJeu" table="VersionJeu" catalog="p1514527" optimistic-lock="version">
         <id name="idVersionJeu" type="java.lang.Integer">
-            <column name="id_version_jeu" />
+            <column name="idVersionJeu" />
             <generator class="identity" />
         </id>
         <many-to-one name="console" class="LOREntities.Console" fetch="select">
-            <column name="id_plateforme" not-null="true" />
+            <column name="idConsole_fk" not-null="true" />
         </many-to-one>
         <many-to-one name="jeu" class="LOREntities.Jeu" fetch="select">
-            <column name="id_jeu" not-null="true" />
+            <column name="idJeu_fk" not-null="true" />
         </many-to-one>
         <many-to-one name="zone" class="LOREntities.Zone" fetch="select">
-            <column name="id_zone" not-null="true" />
+            <column name="idZone_fk" not-null="true" />
         </many-to-one>
         <property name="codeBarre" type="string">
-            <column name="code_barre" length="13" not-null="true" />
+            <column name="codeBarre" length="13" not-null="true" />
         </property>
         <property name="edition" type="string">
-            <column name="edition" length="50" not-null="true" />
+            <column name="edition" length="100" not-null="true" />
         </property>
         <property name="prix" type="float">
             <column name="prix" precision="12" scale="0" not-null="true" />
