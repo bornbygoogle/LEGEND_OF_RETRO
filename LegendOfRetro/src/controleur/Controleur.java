@@ -437,7 +437,7 @@ public class Controleur
                         enr.getPrix(), enr.getStock()));
             for (VersionJeu enr : chercherVersionsJeu(cb, "", "", "", "", ""/*new Vector<String>()*/))
                 ret.add(new ProduitForm(
-                        /*enr.getConsole().getIdConsole(),*/1, -1,
+                        enr.getConsole().getIdConsole(), -1,
                         enr.getJeu().getIdJeu(), enr.getIdVersionJeu(),
                         enr.getJeu().getEditeur().getIdEditeur(), "Jeu",
                         enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
@@ -489,7 +489,7 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
                                 enr.getJeu().getEditeur().getIdEditeur(), "Jeu",
                                 enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
                                 enr.getJeu().getNomJeu(), enr.getJeu().getDescriptionJeu(),
-                                //tagsToString(enr.getJeu().getTags(), ','), enr.getConsole().getNom(),
+                                /*tagsToString(enr.getJeu().getTags(), ','),*/ enr.getConsole().getNom(),
                                 enr.getPrix(), enr.getStock()));
                 else
                     throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
@@ -574,6 +574,14 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
             imbrCons.setImbriquee(true);
             imbrCons.setSelect("c.idConsole");
             imbrCons.addCondition("c.nom", nom, HQLRecherche.Operateur.LIKE);
+            //rédaction de la requête imbriquée pour fabricant
+            if (!"".equals(editeur)) //si le fabricant est renseigné
+            {
+                HQLRecherche imbrFabr = new HQLRecherche("LOREntities.Editeur e");
+                imbrFabr.setImbriquee(true);
+                imbrFabr.addCondition("e.nomEditeur", editeur, HQLRecherche.Operateur.LIKE);                
+                imbrCons.addCondition("c.fabricant", imbrFabr.toString(), HQLRecherche.Operateur.IN);
+            }
             q.addCondition("vj.console", imbrCons.toString(), HQLRecherche.Operateur.IN);
         }
 
@@ -583,7 +591,7 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
             HQLRecherche imbrZone = new HQLRecherche("LOREntities.Zone z");
             imbrZone.setImbriquee(true);
             imbrZone.setSelect("z.idZone");
-            imbrZone.addCondition("z.nom", zone, HQLRecherche.Operateur.LIKE);            
+            imbrZone.addCondition("z.nomZone", zone, HQLRecherche.Operateur.LIKE);            
             q.addCondition("vj.zone", imbrZone.toString(), HQLRecherche.Operateur.IN);
         }
         //autres conditions
