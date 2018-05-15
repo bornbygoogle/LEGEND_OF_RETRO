@@ -1,5 +1,5 @@
 package LOREntities;
-// Generated May 10, 2018 11:22:26 PM by Hibernate Tools 4.3.1
+// Generated May 15, 2018 6:35:24 PM by Hibernate Tools 4.3.1
 
 
 
@@ -9,30 +9,30 @@ package LOREntities;
 public class DecrireId  implements java.io.Serializable {
 
 
-     private int idTagFk;
-     private int idJeuFk;
+     private int idTag;
+     private int idJeu;
 
     public DecrireId() {
     }
 
-    public DecrireId(int idTagFk, int idJeuFk) {
-       this.idTagFk = idTagFk;
-       this.idJeuFk = idJeuFk;
+    public DecrireId(int idTag, int idJeu) {
+       this.idTag = idTag;
+       this.idJeu = idJeu;
     }
    
-    public int getIdTagFk() {
-        return this.idTagFk;
+    public int getIdTag() {
+        return this.idTag;
     }
     
-    public void setIdTagFk(int idTagFk) {
-        this.idTagFk = idTagFk;
+    public void setIdTag(int idTag) {
+        this.idTag = idTag;
     }
-    public int getIdJeuFk() {
-        return this.idJeuFk;
+    public int getIdJeu() {
+        return this.idJeu;
     }
     
-    public void setIdJeuFk(int idJeuFk) {
-        this.idJeuFk = idJeuFk;
+    public void setIdJeu(int idJeu) {
+        this.idJeu = idJeu;
     }
 
 
@@ -42,15 +42,15 @@ public class DecrireId  implements java.io.Serializable {
 		 if ( !(other instanceof DecrireId) ) return false;
 		 DecrireId castOther = ( DecrireId ) other; 
          
-		 return (this.getIdTagFk()==castOther.getIdTagFk())
- && (this.getIdJeuFk()==castOther.getIdJeuFk());
+		 return (this.getIdTag()==castOther.getIdTag())
+ && (this.getIdJeu()==castOther.getIdJeu());
    }
    
    public int hashCode() {
          int result = 17;
          
-         result = 37 * result + this.getIdTagFk();
-         result = 37 * result + this.getIdJeuFk();
+         result = 37 * result + this.getIdTag();
+         result = 37 * result + this.getIdJeu();
          return result;
    }   
 

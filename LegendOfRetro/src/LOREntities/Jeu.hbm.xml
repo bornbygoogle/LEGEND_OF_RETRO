@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated May 10, 2018 11:22:26 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated May 15, 2018 6:35:25 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="LOREntities.Jeu" table="Jeu" catalog="p1514527" optimistic-lock="version">
         <id name="idJeu" type="java.lang.Integer">
@@ -19,13 +19,13 @@
         </property>
         <set name="decrires" table="Decrire" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="idJeu_fk" not-null="true" />
+                <column name="idJeu" not-null="true" />
             </key>
             <one-to-many class="LOREntities.Decrire" />
         </set>
         <set name="versionJeus" table="VersionJeu" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="idJeu_fk" not-null="true" />
+                <column name="idJeu" not-null="true" />
             </key>
             <one-to-many class="LOREntities.VersionJeu" />
         </set>

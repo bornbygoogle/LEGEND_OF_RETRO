@@ -1,5 +1,5 @@
 package LOREntities;
-// Generated May 10, 2018 11:22:26 PM by Hibernate Tools 4.3.1
+// Generated May 15, 2018 6:35:24 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -13,7 +13,7 @@ public class Console  implements java.io.Serializable {
 
      private Integer idConsole;
      private Fabricant fabricant;
-     private String nom;
+     private String nomConsole;
      private Set versionConsoles = new HashSet(0);
      private Set versionJeus = new HashSet(0);
 
@@ -21,13 +21,13 @@ public class Console  implements java.io.Serializable {
     }
 
 	
-    public Console(Fabricant fabricant, String nom) {
+    public Console(Fabricant fabricant, String nomConsole) {
         this.fabricant = fabricant;
-        this.nom = nom;
+        this.nomConsole = nomConsole;
     }
-    public Console(Fabricant fabricant, String nom, Set versionConsoles, Set versionJeus) {
+    public Console(Fabricant fabricant, String nomConsole, Set versionConsoles, Set versionJeus) {
        this.fabricant = fabricant;
-       this.nom = nom;
+       this.nomConsole = nomConsole;
        this.versionConsoles = versionConsoles;
        this.versionJeus = versionJeus;
     }
@@ -46,12 +46,12 @@ public class Console  implements java.io.Serializable {
     public void setFabricant(Fabricant fabricant) {
         this.fabricant = fabricant;
     }
-    public String getNom() {
-        return this.nom;
+    public String getNomConsole() {
+        return this.nomConsole;
     }
     
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setNomConsole(String nomConsole) {
+        this.nomConsole = nomConsole;
     }
     public Set getVersionConsoles() {
         return this.versionConsoles;

@@ -269,7 +269,7 @@ public class Controleur
 
             //création de la console
             Console cons = new Console();
-            cons.setNom(nomConsole);
+            cons.setNomConsole(nomConsole);
             cons.setFabricant(fabricant);
 
             //sauvegarde dans la base de données
@@ -319,7 +319,7 @@ public class Controleur
             
             //on vérifie que la version de console n'existe pas déjà !
             Vector<VersionConsole> existe = chercherVersionsConsole(cb, edition,
-                    zone.getNomZone(), console.getNom(), console.getFabricant().getNomFabricant());
+                    zone.getNomZone(), console.getNomConsole(), console.getFabricant().getNomFabricant());
             if (!(existe == null) && !existe.isEmpty())
                 throw new EnregistrementExistantException("Impossible de créer la version de console : cette dernière existe déjà.");
             
@@ -391,7 +391,7 @@ public class Controleur
                 throw new DonneeInvalideException("Impossible de créer la version de jeu : le jeu renseigné n'existe pas.");
             
             //on vérifie que la version de jeu n'existe pas déjà !
-            Vector<VersionJeu> existante = chercherVersionsJeu(cb, edition, zone.getNomZone(), console.getNom(), nomJeu, nomEditeur/*, tags*/);
+            Vector<VersionJeu> existante = chercherVersionsJeu(cb, edition, zone.getNomZone(), console.getNomConsole(), nomJeu, nomEditeur/*, tags*/);
             if (!(existante == null) && !existante.isEmpty())
                 throw new EnregistrementExistantException("Impossible de créer la version de jeu : cette dernière existe déjà.");
             
@@ -431,7 +431,7 @@ public class Controleur
                 ret.add(new ProduitForm(
                         enr.getConsole().getIdConsole(), enr.getIdVersionConsole(), -1, -1,
                         enr.getConsole().getFabricant().getIdFabricant(), "Console",
-                        enr.getCodeBarre(), enr.getConsole().getNom(),
+                        enr.getCodeBarre(), enr.getConsole().getNomConsole(),
                         enr.getEdition(), enr.getZone().getNomZone(),
                         enr.getConsole().getFabricant().getNomFabricant(), "", "",
                         enr.getPrix(), enr.getStock()));
@@ -442,7 +442,7 @@ public class Controleur
                         enr.getJeu().getEditeur().getIdEditeur(), "Jeu",
                         enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
                         enr.getJeu().getNomJeu(), enr.getJeu().getDescriptionJeu(),
-                        /*tagsToString(enr.getJeu().getTags(), ','),*/ enr.getConsole().getNom(),
+                        /*tagsToString(enr.getJeu().getTags(), ','),*/ enr.getConsole().getNomConsole(),
                         enr.getPrix(), enr.getStock()));
             if (ret.size() > 1)
                 throw new ResultatInvalideException("Erreur : la recherche du code barre " + cb
@@ -473,7 +473,7 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
                     ret.add(new ProduitForm(
                             enr.getConsole().getIdConsole(), enr.getIdVersionConsole(), -1, -1,
                             enr.getConsole().getFabricant().getIdFabricant(), "Console",
-                            enr.getCodeBarre(), enr.getConsole().getNom(), enr.getEdition(), enr.getZone().getNomZone(),
+                            enr.getCodeBarre(), enr.getConsole().getNomConsole(), enr.getEdition(), enr.getZone().getNomZone(),
                             enr.getConsole().getFabricant().getNomFabricant(), "", "",
                             enr.getPrix(), enr.getStock()));
                 else
@@ -489,7 +489,7 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
                                 enr.getJeu().getEditeur().getIdEditeur(), "Jeu",
                                 enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
                                 enr.getJeu().getNomJeu(), enr.getJeu().getDescriptionJeu(),
-                                /*tagsToString(enr.getJeu().getTags(), ','),*/ enr.getConsole().getNom(),
+                                /*tagsToString(enr.getJeu().getTags(), ','),*/ enr.getConsole().getNomConsole(),
                                 enr.getPrix(), enr.getStock()));
                 else
                     throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
@@ -517,7 +517,7 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
             HQLRecherche imbrCons = new HQLRecherche("LOREntities.Console c");
             imbrCons.setImbriquee(true);
             imbrCons.setSelect("c.idConsole");
-            imbrCons.addCondition("c.nom", nom, HQLRecherche.Operateur.LIKE);
+            imbrCons.addCondition("c.nomConsole", nom, HQLRecherche.Operateur.LIKE);
             //rédaction de la requête imbriquée pour fabricant
             if (!"".equals(fabricant)) //si le fabricant est renseigné
             {
@@ -573,7 +573,7 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
             HQLRecherche imbrCons = new HQLRecherche("LOREntities.Console c");
             imbrCons.setImbriquee(true);
             imbrCons.setSelect("c.idConsole");
-            imbrCons.addCondition("c.nom", plateforme, HQLRecherche.Operateur.LIKE);
+            imbrCons.addCondition("c.nomConsole", plateforme, HQLRecherche.Operateur.LIKE);
             //rédaction de la requête imbriquée pour fabricant
             if (!"".equals(editeur)) //si le fabricant est renseigné
             {
@@ -890,7 +890,7 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
         
         List consoles = modele.createQuery("from LOREntities.Console").list();
         for (Object c : consoles)
-            ret.add(((Console) c).getNom());
+            ret.add(((Console) c).getNomConsole());
         
         return ret;
     }
