@@ -566,27 +566,27 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
         Vector<VersionJeu> ret = new Vector<VersionJeu>();
         
         //TODO: la recherche à proprement parler.
-                HQLRecherche q = new HQLRecherche("LOREntities.VersionJeu vj"); //TODO: requête imbriquée imbrCons
+        HQLRecherche q = new HQLRecherche("LOREntities.VersionJeu vj"); //TODO: requête imbriquée imbrCons
         //rédaction de la requête imbriquée pour console
         if (!"".equals(nom) || !"".equals(plateforme)) //si la console est renseignée (et/ou son fabricant)
         {
             HQLRecherche imbrCons = new HQLRecherche("LOREntities.Console c");
             imbrCons.setImbriquee(true);
             imbrCons.setSelect("c.idConsole");
-            imbrCons.addCondition("c.nom", nom, HQLRecherche.Operateur.LIKE);
+            imbrCons.addCondition("c.nom", plateforme, HQLRecherche.Operateur.LIKE);
             //rédaction de la requête imbriquée pour fabricant
             if (!"".equals(editeur)) //si le fabricant est renseigné
             {
-                HQLRecherche imbrFabr = new HQLRecherche("LOREntities.Editeur e");
-                imbrFabr.setImbriquee(true);
-                imbrFabr.addCondition("e.nomEditeur", editeur, HQLRecherche.Operateur.LIKE);                
-                imbrCons.addCondition("c.fabricant", imbrFabr.toString(), HQLRecherche.Operateur.IN);
+                HQLRecherche imbrJeu = new HQLRecherche("LOREntities.Jeu j");
+                imbrJeu.setImbriquee(true);
+                imbrJeu.addCondition("j.idEditeur", editeur, HQLRecherche.Operateur.LIKE);                
+                imbrCons.addCondition("c.fabricant", imbrJeu.toString(), HQLRecherche.Operateur.IN);
             }
             q.addCondition("vj.console", imbrCons.toString(), HQLRecherche.Operateur.IN);
-        }
+       }
 
         //rédaction des requêtes imbriquées pour zone
-        if (!"".equals(zone)) //si la zone est renseignée
+        /*if (!"".equals(zone)) //si la zone est renseignée
         {
             HQLRecherche imbrZone = new HQLRecherche("LOREntities.Zone z");
             imbrZone.setImbriquee(true);
@@ -598,7 +598,7 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
         if (!"".equals(cb))
             q.addCondition("vj.codeBarre", cb, HQLRecherche.Operateur.EGAL);
         if (!"".equals(edition))
-            q.addCondition("vj.edition", edition, HQLRecherche.Operateur.LIKE);
+            q.addCondition("vj.edition", edition, HQLRecherche.Operateur.LIKE);*/
         
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
