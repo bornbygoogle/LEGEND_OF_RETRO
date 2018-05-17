@@ -12,6 +12,7 @@ import controleur.Controleur;
 import controleur.DonneeInvalideException;
 import controleur.DonneesInsuffisantesException;
 import controleur.EnregistrementExistantException;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,6 +25,9 @@ public class critResultat extends javax.swing.JPanel
     private Form selectedForm;
     private Controleur controleur;
     private Chercheur parent;
+    
+    private int idVersionJeu;
+    private int idVersionConsole;
 
     /**
      * Creates new form Resultat
@@ -34,10 +38,18 @@ public class critResultat extends javax.swing.JPanel
         this.parent = parent;
         this.selectedForm = null;
         initComponents();
-        listeZone.setModel(new javax.swing.DefaultComboBoxModel<>(controleur.listeZones()));
-        //listeZone.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "TODO", "intialiser les zones", "Autre" }));
-        listePlateforme.setModel(new javax.swing.DefaultComboBoxModel<>(controleur.listeConsoles()));
-        //listePlateforme.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "PC", "PS", "TODO", "etc."}));
+        
+        Vector<String> zones = controleur.listeZones();
+        zones.add(0, "");
+        zones.add("Autre");
+        listeZone.setModel(new javax.swing.DefaultComboBoxModel<>(zones));
+
+        Vector<String> plateformes = controleur.listeConsoles();
+        plateformes.add(0, "");
+        listePlateforme.setModel(new javax.swing.DefaultComboBoxModel<>(plateformes));
+        
+        this.idVersionJeu = -1;
+        this.idVersionConsole = -1;
     }
     
     /**
@@ -419,9 +431,11 @@ public class critResultat extends javax.swing.JPanel
             // TODO add your handling code here:
             controleur.creerZone(fieldTxtAjoutZone.getText());
         } catch (EnregistrementExistantException ex) {
-            Logger.getLogger(critResultat.class.getName()).log(Level.SEVERE, null, ex);
+            this.parent.afficherErreur(ex);
         } catch (DonneesInsuffisantesException ex) {
-            Logger.getLogger(critResultat.class.getName()).log(Level.SEVERE, null, ex);
+            this.parent.afficherErreur(ex);
+        } catch (DonneeInvalideException ex) {
+            this.parent.afficherErreur(ex);
         }
     }//GEN-LAST:event_buttonAjoutZoneActionPerformed
 
@@ -480,6 +494,9 @@ public class critResultat extends javax.swing.JPanel
         this.fieldEditeur.setText(f.getEditeur());
         this.fieldEdition.setText(f.getEdition());
         
+        this.idVersionJeu = f.getIdVersionJeu();
+        this.idVersionConsole = f.getIdVersionConsole();
+        
         //TODO: à terminer (zones, plateformes... D'ailleurs, celles-ci doivent être initialisées proprement !)
     }
     private Form toForm() throws DonneeInvalideException
@@ -508,7 +525,7 @@ System.out.print("i");
 {System.out.print("c");
 System.out.println(fieldNom.getText()+fieldEditeur.getText()); //imprimé à des fins de test
             //return null;
-            return new ProduitForm(0, 0, 0, 0, 0, //TODO: gestion des identifiants.
+            return new ProduitForm(this.idVersionConsole, this.idVersionJeu,
                     (String) listeCategorie.getSelectedItem(), fieldCodeBarre.getText(),
                     fieldNom.getText(), fieldEdition.getText(),
                     (String) listeZone.getSelectedItem(),

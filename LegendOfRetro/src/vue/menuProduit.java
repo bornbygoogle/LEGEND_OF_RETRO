@@ -5,6 +5,7 @@
  */
 package vue;
 
+import bean.CodeBarreForm;
 import bean.Form;
 import bean.ProduitForm;
 import controleur.Controleur;
@@ -68,9 +69,14 @@ public class menuProduit extends JPanel implements Chercheur
     {
         try {
             // Affectuer la recherche avec fonction RECHERCHE dans CONTROLEUR
-            Vector<ProduitForm> resultatsRecherche = this.controleur.chercher(form);
+            Vector<ProduitForm> resultatsRecherche = null;
+            if (form instanceof CodeBarreForm)
+                resultatsRecherche = this.controleur.chercher((CodeBarreForm) form);
+            else if (form instanceof ProduitForm)
+                resultatsRecherche = this.controleur.chercher((ProduitForm) form);
             // Afficher les résultats avec fonction AFFICHERES dans RESULTAT
-            this.Resultats.afficherRes(resultatsRecherche); }
+            if (resultatsRecherche != null)
+                this.Resultats.afficherRes(resultatsRecherche); }
         catch (DonneeInvalideException e) {
             afficherErreur(e);}
         catch (ResultatInvalideException e) {

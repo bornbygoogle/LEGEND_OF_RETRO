@@ -13,11 +13,8 @@ import java.util.Vector;
  */
 public class ProduitForm extends Form
 {
-    private int idConsole;
     private int idVersionConsole;
-    private int idJeu;
     private int idVersionJeu;
-    private int idEditeur;
     
     private String type;
     private String codeBarre;
@@ -34,10 +31,7 @@ public class ProduitForm extends Form
     public ProduitForm()
     {
         this.idVersionConsole = -1;
-        this.idConsole = -1;
-        this.idJeu = -1;
         this.idVersionJeu = -1;
-        this.idEditeur = -1;
         this.type = "";
         this.codeBarre = "";
         this.nom = "";
@@ -50,17 +44,13 @@ public class ProduitForm extends Form
         this.stock = -1;
     }
     public ProduitForm(
-            int idConsole, int idVersionConsole,
-            int idJeu, int idVersionJeu, int idEditeur,
+            int idVersionConsole, int idVersionJeu,
             String type, String cb, String nom, String edition, String zone,
             String editeur, String description, /*String tags,*/ String plateforme,
             float prix, int stock)
     {
-        this.idConsole = idConsole;
         this.idVersionConsole = idVersionConsole;
-        this.idJeu = idJeu;
         this.idVersionJeu = idVersionJeu;
-        this.idEditeur = idEditeur;
         this.type = type;
         this.codeBarre = cb;
         this.nom = nom;
@@ -73,16 +63,9 @@ public class ProduitForm extends Form
         this.prix = prix;
         this.stock = stock;
     }
-
-    public ProduitForm(Integer idConsole, Integer idConsole0, Integer idJeu, Integer idVersionJeu, Integer idEditeur, String jeu, String codeBarre, String nom, String edition, String nom0, String nom1, String description, float prix, int stock) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
-    public int getIdConsole()      {return this.idConsole;}
     public int getIdVersionConsole()      {return this.idVersionConsole;}
-    public int getIdJeu()      {return this.idJeu;}
     public int getIdVersionJeu()      {return this.idVersionJeu;}
-    public int getIdEditeur()      {return this.idEditeur;}
     public String getType()      {return this.type;}
     public String getCodeBarre()      {return this.codeBarre;}
     public String getNom()      {return this.nom;}
@@ -95,11 +78,8 @@ public class ProduitForm extends Form
     public float getPrix()      {return this.prix;}
     public int getStock()      {return this.stock;}
     
-    public void setIdConsole(int id)      {this.idConsole = id;}
     public void setIdVersionConsole(int id)      {this.idVersionConsole = id;}
-    public void setIdJeu(int id)      {this.idJeu = id;}
     public void setIdVersionJeu(int id)      {this.idVersionJeu = id;}
-    public void setIdEditeur(int id)      {this.idEditeur = id;}
     public void setType(String type)      {this.type = type;}
     public void setCodeBarre(String cb)      {this.codeBarre = cb;}
     public void setNom(String nom)      {this.nom = nom;}
