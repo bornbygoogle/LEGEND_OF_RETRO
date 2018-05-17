@@ -383,7 +383,7 @@ public class Controleur
                 throw new DonneeInvalideException("Impossible de créer la version de jeu : le jeu renseigné n'existe pas.");
             
             //on vérifie que la version de jeu n'existe pas déjà !
-            Vector<VersionJeu> existante = chercherVersionsJeu(cb, edition, zone.getNomZone(), console.getNomConsole(), nomJeu, nomEditeur/*, tags*/);
+            Vector<VersionJeu> existante = chercherVersionsJeu(cb, edition, zone.getNomZone(), console.getNomConsole(), nomJeu, nomEditeur, tags);
             if (!(existante == null) && !existante.isEmpty())
                 throw new EnregistrementExistantException("Impossible de créer la version de jeu : cette dernière existe déjà.");
             
@@ -536,7 +536,7 @@ public class Controleur
      * La zone et l'édition ne sont pas suffisantes pour lancer une recherche.
      */
     private Vector<VersionJeu> chercherVersionsJeu(String cb, String edition, String zone,
-            String plateforme, String nom, String editeur/*, Vector<String> tags*/)
+            String plateforme, String nom, String editeur, Vector<String> tags)
             throws DonneesInsuffisantesException
     {
         if ("".equals(cb) && "".equals(plateforme) && "".equals(nom) && "".equals(editeur) /*&& tags.isEmpty()*/)
@@ -739,7 +739,7 @@ public class Controleur
             throw new DonneesInsuffisantesException("Erreur lors de la recherche du tag : nom du tag non renseigné.");
         
         HQLRecherche q = new HQLRecherche("Tag t");
-        q.addCondition("t.libelle", tag, HQLRecherche.Operateur.EGAL);
+        q.addCondition("t.labelTag", tag, HQLRecherche.Operateur.EGAL);
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         
@@ -789,8 +789,7 @@ public class Controleur
         
         List zones = modele.createQuery("from LOREntities.Zone").list();
         for (Object z : zones)
-            ret.add(((Zone) z).getNomZone());
-        
+            ret.add(((Zone) z).getNomZone());       
         return ret;
     }
     /**
@@ -838,8 +837,11 @@ public class Controleur
     }
     /**
      * Transforme un vecteur de tags en un vecteur de strings pour l'affichage.
+     * @param tags
+     * @param separator
+     * @return 
      */
-    protected static final String tagsToString(Set<Tag> tags, char separator)
+    protected static final String tagsToString(Vector<Tag> tags, char separator)
     {
         Vector <String> vect = new Vector<String>();
         for (Tag t : tags)
