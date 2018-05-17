@@ -430,6 +430,7 @@ public class critResultat extends javax.swing.JPanel
         try {
             // TODO add your handling code here:
             controleur.creerZone(fieldTxtAjoutZone.getText());
+            controleur.listeZones();
         } catch (EnregistrementExistantException ex) {
             this.parent.afficherErreur(ex);
         } catch (DonneesInsuffisantesException ex) {
@@ -528,8 +529,8 @@ public class critResultat extends javax.swing.JPanel
                     (String) listeCategorie.getSelectedItem(), fieldCodeBarre.getText(),
                     fieldNom.getText(), fieldEdition.getText(),
                     (String) listeZone.getSelectedItem(),
-                    fieldEditeur.getText(), jTextAreaDescription.getText()/*,
-                    fieldTag.getText()*/, (String) listePlateforme.getSelectedItem(),
+                    fieldEditeur.getText(), jTextAreaDescription.getText(),
+                    fieldTag.getText(), (String) listePlateforme.getSelectedItem(),
                     prix, stock);
     }
     
