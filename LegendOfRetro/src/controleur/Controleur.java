@@ -574,7 +574,9 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
             imbrCons.addCondition("c.nomConsole", plateforme, HQLRecherche.Operateur.LIKE);
             
             // requete imbriquée pour chercher nom de Jeu
-            if (!"".equals(nom)) //si la zone est renseignée
+            // Requete SQL :
+            // from LOREntities.VersionJeu vj where vj.jeu IN ( select j.idJeu from LOREntities.Jeu j where j.nomJeu LIKE '% nom %' )
+            if (!"".equals(nom)) //si le nom du jeu est renseignée
             {
                 HQLRecherche imbrJeu = new HQLRecherche("LOREntities.Jeu j");
                 imbrJeu.setImbriquee(true);
