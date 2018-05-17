@@ -386,15 +386,12 @@
     </Component>
     <Component class="javax.swing.JComboBox" name="listeZone">
       <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="3">
-            <StringItem index="0" value="Console"/>
-            <StringItem index="1" value="Jeu"/>
-            <StringItem index="2" value="Autre"/>
-          </StringArray>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection component="listeZone" name="model" type="property"/>
         </Property>
       </Properties>
       <Events>
+        <EventHandler event="componentAdded" listener="java.awt.event.ContainerListener" parameters="java.awt.event.ContainerEvent" handler="listeZoneComponentAdded"/>
         <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="listeZoneItemStateChanged"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="listeZoneActionPerformed"/>
       </Events>

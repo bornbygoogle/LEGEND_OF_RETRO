@@ -558,8 +558,6 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
             String plateforme, String nom, String editeur/*, Vector<String> tags*/)
             throws DonneesInsuffisantesException
     {
-         //from LOREntities.VersionConsole vc where vc.console in (select c.idConsole from LOREntities.Console c where c.nom LIKE '%%' and c.fabricant in ( from LOREntities.Fabricant f where f.nom LIKE '%nintendo%' )  )  and vc.zone in (select z.idZone from LOREntities.Zone z where z.nom LIKE '%EU%' ) 
-
         if ("".equals(cb) && "".equals(plateforme) && "".equals(nom) && "".equals(editeur) /*&& tags.isEmpty()*/)
             throw new DonneesInsuffisantesException("Erreur lors de la recherche des produits de type jeu : il faut renseigner un code barre, une plateforme, un nom, un éditeur ou au moins un tag.");
         
@@ -574,19 +572,41 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
             imbrCons.setImbriquee(true);
             imbrCons.setSelect("c.idConsole");
             imbrCons.addCondition("c.nomConsole", plateforme, HQLRecherche.Operateur.LIKE);
-            //rédaction de la requête imbriquée pour fabricant
-            if (!"".equals(editeur)) //si le fabricant est renseigné
+            
+            // requete imbriquée pour chercher nom de Jeu
+            if (!"".equals(nom)) //si la zone est renseignée
             {
                 HQLRecherche imbrJeu = new HQLRecherche("LOREntities.Jeu j");
                 imbrJeu.setImbriquee(true);
-                imbrJeu.addCondition("j.idEditeur", editeur, HQLRecherche.Operateur.LIKE);                
-                imbrCons.addCondition("c.fabricant", imbrJeu.toString(), HQLRecherche.Operateur.IN);
+                imbrJeu.setSelect("j.idJeu");
+                imbrJeu.addCondition("j.nomJeu", nom, HQLRecherche.Operateur.LIKE);            
+                q.addCondition("vj.jeu", imbrJeu.toString(), HQLRecherche.Operateur.IN);
+            } 
+            //rédaction de la requête imbriquée pour fabricant
+            if (!"".equals(editeur)) //si l'Editeur est renseigné
+            {              
+                // Partie imbriquée pour chercher Editeur
+                // Requete SQL :
+                // select e.idEditeur from LOREntities.Editeur e where e.nomEditeur LIKE '% editeur %'
+                HQLRecherche imbrEditeur = new HQLRecherche("LOREntities.Editeur e");
+                imbrEditeur.setImbriquee(true);
+                imbrEditeur.setSelect("e.idEditeur");
+                imbrEditeur.addCondition("e.nomEditeur", editeur, HQLRecherche.Operateur.LIKE);
+                // Partie imbriquée pour chercher Jeu avec editeur
+                // Requete SQL :
+                // from LOREntities.Jeu j where j.editeur IN ( select e.idEditeur from LOREntities.Editeur e where e.nomEditeur LIKE '% editeur %' )
+                HQLRecherche imbrJeu = new HQLRecherche("LOREntities.Jeu j");
+                imbrJeu.setImbriquee(true);
+                imbrJeu.setSelect("j.idJeu");
+                imbrJeu.addCondition("j.editeur", imbrEditeur.toString(), HQLRecherche.Operateur.IN);
+
+                q.addCondition("vj.jeu", imbrJeu.toString(), HQLRecherche.Operateur.IN);
             }
             q.addCondition("vj.console", imbrCons.toString(), HQLRecherche.Operateur.IN);
        }
 
         //rédaction des requêtes imbriquées pour zone
-        /*if (!"".equals(zone)) //si la zone est renseignée
+        if (!"".equals(zone)) //si la zone est renseignée
         {
             HQLRecherche imbrZone = new HQLRecherche("LOREntities.Zone z");
             imbrZone.setImbriquee(true);
@@ -597,8 +617,12 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
         //autres conditions
         if (!"".equals(cb))
             q.addCondition("vj.codeBarre", cb, HQLRecherche.Operateur.EGAL);
+        
+        //from LOREntities.VersionJeu vj where vj.jeu in (select j.idJeu from LOREntities.Jeu j where j.nomJeu LIKE '%jeu001%' )
+       
+
         if (!"".equals(edition))
-            q.addCondition("vj.edition", edition, HQLRecherche.Operateur.LIKE);*/
+            q.addCondition("vj.edition", edition, HQLRecherche.Operateur.LIKE);
         
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
@@ -811,7 +835,7 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
             throw new DonneesInsuffisantesException("Erreur lors de la recherche de la zone : nom de la zone non renseigné.");
         
         HQLRecherche q = new HQLRecherche("Zone z");
-        q.addCondition("z.nom", zone, HQLRecherche.Operateur.EGAL);
+        q.addCondition("z.nomZone", zone, HQLRecherche.Operateur.EGAL);
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         

@@ -165,7 +165,12 @@ public class critResultat extends javax.swing.JPanel
 
         fieldCasse.setText("1000");
 
-        listeZone.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Console", "Jeu", "Autre" }));
+        listeZone.setModel(listeZone.getModel());
+        listeZone.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentAdded(java.awt.event.ContainerEvent evt) {
+                listeZoneComponentAdded(evt);
+            }
+        });
         listeZone.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 listeZoneItemStateChanged(evt);
@@ -410,7 +415,14 @@ public class critResultat extends javax.swing.JPanel
     }//GEN-LAST:event_fieldEditeurActionPerformed
 
     private void buttonAjoutZoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAjoutZoneActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            controleur.creerZone(fieldTxtAjoutZone.getText());
+        } catch (EnregistrementExistantException ex) {
+            Logger.getLogger(critResultat.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DonneesInsuffisantesException ex) {
+            Logger.getLogger(critResultat.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_buttonAjoutZoneActionPerformed
 
     private void buttonChercherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChercherActionPerformed
@@ -445,6 +457,10 @@ public class critResultat extends javax.swing.JPanel
     private void listeZoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listeZoneActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_listeZoneActionPerformed
+
+    private void listeZoneComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_listeZoneComponentAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_listeZoneComponentAdded
 
     public void setForm(ProduitForm f)
     {
