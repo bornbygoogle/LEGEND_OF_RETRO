@@ -65,7 +65,7 @@ public class HQLRecherche
     {
         if (operateur.equals(Operateur.LIKE))
             membreDroite = "'%".concat(membreDroite).concat("%'");
-        String[] c = {membreGauche, "" + membreDroite + "", operateur.toString()};
+        String[] c = {membreGauche, "'" + membreDroite + "'", operateur.toString()};
         this.conditions.add(c);
     }
     public void addCondition(String membreGauche, int membreDroite, Operateur operateur)

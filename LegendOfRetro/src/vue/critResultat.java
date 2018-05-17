@@ -178,19 +178,9 @@ public class critResultat extends javax.swing.JPanel
         fieldCasse.setText("1000");
 
         listeZone.setModel(listeZone.getModel());
-        listeZone.addContainerListener(new java.awt.event.ContainerAdapter() {
-            public void componentAdded(java.awt.event.ContainerEvent evt) {
-                listeZoneComponentAdded(evt);
-            }
-        });
         listeZone.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 listeZoneItemStateChanged(evt);
-            }
-        });
-        listeZone.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                listeZoneActionPerformed(evt);
             }
         });
 
@@ -404,20 +394,6 @@ public class critResultat extends javax.swing.JPanel
         // TODO add your handling code here:
     }//GEN-LAST:event_listePlateformeItemStateChanged
 
-    private void listeZoneItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listeZoneItemStateChanged
-        // TODO add your handling code here:
-        if ("Autre".equals((String)listeZone.getSelectedItem())) 
-        {
-            fieldTxtAjoutZone.setVisible(true); 
-            buttonAjoutZone.setVisible(true);
-        }
-        else 
-        {
-            fieldTxtAjoutZone.setVisible(false); 
-            buttonAjoutZone.setVisible(false);
-        }
-    }//GEN-LAST:event_listeZoneItemStateChanged
-
     private void listePlateformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listePlateformeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_listePlateformeActionPerformed
@@ -430,7 +406,15 @@ public class critResultat extends javax.swing.JPanel
         try {
             // TODO add your handling code here:
             controleur.creerZone(fieldTxtAjoutZone.getText());
-            controleur.listeZones();
+            
+            /*
+            *  Refresh la liste des Zones après Ajout
+            */
+            listeZone.removeAllItems();
+            Vector<String> zones = controleur.listeZones();
+            zones.add(0, "");
+            zones.add("Autre");
+            listeZone.setModel(new javax.swing.DefaultComboBoxModel<>(zones));
         } catch (EnregistrementExistantException ex) {
             this.parent.afficherErreur(ex);
         } catch (DonneesInsuffisantesException ex) {
@@ -469,13 +453,19 @@ public class critResultat extends javax.swing.JPanel
         // TODO add your handling code here:
     }//GEN-LAST:event_fieldCodeBarreActionPerformed
 
-    private void listeZoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listeZoneActionPerformed
+    private void listeZoneItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listeZoneItemStateChanged
         // TODO add your handling code here:
-    }//GEN-LAST:event_listeZoneActionPerformed
-
-    private void listeZoneComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_listeZoneComponentAdded
-        // TODO add your handling code here:
-    }//GEN-LAST:event_listeZoneComponentAdded
+        if ("Autre".equals((String)listeZone.getSelectedItem())) 
+        {
+            fieldTxtAjoutZone.setVisible(true); 
+            buttonAjoutZone.setVisible(true);
+        }
+        else 
+        {
+            fieldTxtAjoutZone.setVisible(false); 
+            buttonAjoutZone.setVisible(false);
+        }
+    }//GEN-LAST:event_listeZoneItemStateChanged
 
     public void setForm(ProduitForm f)
     {
