@@ -5,7 +5,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>130</x>
-      <y>70</y>
+      <y>40</y>
       <w>210</w>
       <h>40</h>
     </coordinates>
@@ -17,7 +17,7 @@
     <id>UMLPackage</id>
     <coordinates>
       <x>0</x>
-      <y>30</y>
+      <y>0</y>
       <w>570</w>
       <h>480</h>
     </coordinates>
@@ -30,111 +30,56 @@ layer=-1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>600</x>
-      <y>440</y>
-      <w>340</w>
-      <h>520</h>
+      <x>620</x>
+      <y>660</y>
+      <w>750</w>
+      <h>590</h>
     </coordinates>
     <panel_attributes>Controleur
---
--BDD: java.sql.Connection
---
-_+main(): void_
+-
+-
 +init(): void
 
-+chercher(bean.Form): Vector&lt;ProduitForm&gt;
--chercherCodeBarre(String): ProduitForm
--chercherVersion(bean.Form): Vector&lt;VersioJeun&gt;
--chercherConsole(bean.Form): Vector&lt;Console&gt;
--chercherJeu(bean.Form): Vector&lt;Jeu&gt;
--chercherEditeur(bean.Form): Vector&lt;Editeur&gt;
--chercherFabricant(bean.Form): Vector&lt;Editeur&gt;
++creer(Form): Rapport
+-creerVersionJeu(Rapport, cd, edition, zone, prix, stock, nomJeu, desc, tags, nomCons, nomEd): VersionJeu
+-creerVersionConsole(Rapport, cd, edition, zone, prix, stock, nomCons, nomFabr): VersionConsole
+-creerConsole(Rapport, nomCons, nomFabr): Console
+-creerJeu(Rapport, nomJeu, desc, tags, nomEd): Jeu
+-creerEditeur(Rapport, nomEd): Editeur
+-creerFabricant(Rapport, nomFabr): Fabricant
++creerZone(String): Rapport
 
-+modifier(bean.Form ancien,
-    bean.Form nouveau): Rapport
--modifierVersion(bean.Form ancien,
-    bean.Form nouveau): Rapport
--modifierConsole(bean.Form ancien,
-    bean.Form nouveau): Rapport
--modifierJeu(bean.Form ancien,
-    bean.Form nouveau): Rapport
--modifierEditeur(bean.Form ancien,
-    bean.Form nouveau): Rapport
--modifierFabricant(bean.Form ancien,
-    bean.Form nouveau): Rapport
+-chercherFabricant(nomFabr): Fabricant
+-chercherEditeur(nomEd): Editeur
+-chercherTag(nomTag): Tag
+-chercherZone(nomZone): Zone
+-chercherConsole(nomCons, nomFabr): Console
+-chercherJeu(nomJeu, tags, nomEd): Jeu
 
-+creer(bean.Form): Rapport
--creerVersionJeu(bean.Form): Rapport
--creerVersionConsole(bean.Form): Rapport
--creerConsole(bean.Form): Rapport
--creerJeu(bean.Form): Rapport
--creerEditeur(bean.Form): Rapport
--creerFabricant(bean.Form): Rapport
-+creerZone(String zone): Rapport</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>600</x>
-      <y>260</y>
-      <w>160</w>
-      <h>150</h>
-    </coordinates>
-    <panel_attributes>/Modele/
--
-DRIVER: String
-SERVER: String
-DBNAME: String
-PORT: String
-USR: String
-PWD: String
--
-+getDerbyURL(): String</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLNote</id>
-    <coordinates>
-      <x>360</x>
-      <y>510</y>
-      <w>220</w>
-      <h>200</h>
-    </coordinates>
-    <panel_attributes>Les méthodes chercher,
-creer et modifier
-déterminent ce qu'il faut
-ch/cr/mod d'après le type
-et les paramètres du bean.
 
-S'il n'y a pas d'exception
-les fonctions de recherche renvoient
-un vecteur à l'affichage.
-bg=blue</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLNote</id>
-    <coordinates>
-      <x>360</x>
-      <y>720</y>
-      <w>220</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>Enfin, les fonctions les plus
-spécialisées génèrent
-et exécutent la/les requête(s)
-SQL nécessaires.
-bg=blue</panel_attributes>
++chercher(Form): Vector&lt;ProduitForm&gt;
+-chercherVersionsConsole(cb, edition, zone, nomCons, nomFabr): Vector&lt;VersionConsole&gt;
+-chercherVersionsJeu(cb, edition, zone, nomCons, nomJeu, nomEd, tags): Vector&lt;VersionJeu&gt;
+
++listeZones(): Vector&lt;String&gt;
++listeConsoles(): Vector&lt;String&gt;
+
+-codeBarreValide(cb): String
+-tagsToString(tags, separator): String
+-stringToVector(string, separator): Vector&lt;String&gt;
+-vectorToString(vector, separator): String
+_-normalize(string): String_
+
+_+main(): void_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLPackage</id>
     <coordinates>
       <x>590</x>
-      <y>220</y>
+      <y>190</y>
       <w>800</w>
-      <h>1050</h>
+      <h>1080</h>
     </coordinates>
     <panel_attributes>controleur
 --
@@ -145,25 +90,8 @@ layer=-1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>210</x>
-      <y>810</y>
-      <w>370</w>
-      <h>150</h>
-    </coordinates>
-    <panel_attributes>Interface
-Vue
--
-+setContoleur(Controleur): void
-+resultatsConsole(Vector&lt;bean.Console&gt;): void
-+resultatsVersionJeu(Vector&lt;bean.VersionJeu&gt;):void
-+resultatsJeu(Vector&lt;bean.Jeu&gt;): void</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
       <x>260</x>
-      <y>140</y>
+      <y>110</y>
       <w>210</w>
       <h>360</h>
     </coordinates>
@@ -196,7 +124,7 @@ Vue
     <id>Relation</id>
     <coordinates>
       <x>330</x>
-      <y>100</y>
+      <y>70</y>
       <w>30</w>
       <h>60</h>
     </coordinates>
@@ -206,25 +134,21 @@ Vue
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>480</x>
-      <y>0</y>
+      <x>50</x>
+      <y>220</y>
       <w>200</w>
-      <h>110</h>
+      <h>50</h>
     </coordinates>
     <panel_attributes>Attention : le label peut être
-le nom de la console,
-qui est un produit,
-ou le nom du JEU
-(table Jeu dans la BDD),
-qui n'est pas un produit.
+un nom de console ou de jeu.
 bg=blue</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>480</x>
-      <y>120</y>
+      <x>50</x>
+      <y>280</y>
       <w>200</w>
       <h>80</h>
     </coordinates>
@@ -238,26 +162,32 @@ bg=blue</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>900</x>
-      <y>260</y>
-      <w>210</w>
-      <h>130</h>
+      <x>630</x>
+      <y>220</y>
+      <w>270</w>
+      <h>210</h>
     </coordinates>
     <panel_attributes>Rapport
 -
+-idDerniereOperation: int
 -ids: Vector&lt;Integer&gt;
 -tables: Vector&lt;Table&gt;
 -operations: Vector&lt;Operation&gt;
 -
--concatener(Rapport): void
--getId(Table, Operation): int</panel_attributes>
++concatener(Rapport): void
++addOperation(id, Table, Operation): void
++getIdDerniereOperation(): int
++getIds(): Vector&lt;Integer&gt;
++getTables(): Vector&lt;Table&gt;
++getOperations(): Vector&lt;Operation&gt;
++toString(): String</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1130</x>
-      <y>260</y>
+      <x>1030</x>
+      <y>220</y>
       <w>100</w>
       <h>130</h>
     </coordinates>
@@ -274,8 +204,8 @@ EDITEUR</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1130</x>
-      <y>410</y>
+      <x>920</x>
+      <y>270</y>
       <w>100</w>
       <h>80</h>
     </coordinates>
@@ -289,19 +219,8 @@ MODIFIER</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1100</x>
-      <y>380</y>
-      <w>50</w>
-      <h>50</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;30.0;30.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1100</x>
-      <y>290</y>
+      <x>890</x>
+      <y>270</y>
       <w>50</w>
       <h>30</h>
     </coordinates>
@@ -309,99 +228,21 @@ MODIFIER</panel_attributes>
     <additional_attributes>10.0;10.0;30.0;10.0</additional_attributes>
   </element>
   <element>
-    <id>UMLClass</id>
+    <id>Relation</id>
     <coordinates>
-      <x>990</x>
-      <y>770</y>
-      <w>210</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>Jeu
--
--description: String
--tags: Vector&lt;String&gt;
--idEditeur: int</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1100</x>
-      <y>690</y>
-      <w>100</w>
+      <x>890</x>
+      <y>230</y>
+      <w>160</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>VersionJeu</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1070</x>
-      <y>630</y>
-      <w>110</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;50.0;90.0;50.0;90.0;60.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>960</x>
-      <y>690</y>
-      <w>110</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>Console
--
--idFabricant: int</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>980</x>
-      <y>530</y>
-      <w>210</w>
-      <h>110</h>
-    </coordinates>
-    <panel_attributes>/Produit/
---
--id: int
--codeBarre: String
--label: String
--edition: String
--zone: String</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1010</x>
-      <y>630</y>
-      <w>90</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>70.0;10.0;70.0;50.0;10.0;50.0;10.0;60.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1150</x>
-      <y>710</y>
-      <w>30</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;140.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>120</x>
-      <y>100</y>
+      <y>70</y>
       <w>30</w>
       <h>60</h>
     </coordinates>
@@ -412,7 +253,7 @@ MODIFIER</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>50</x>
-      <y>140</y>
+      <y>110</y>
       <w>160</w>
       <h>90</h>
     </coordinates>
@@ -422,6 +263,279 @@ MODIFIER</panel_attributes>
 --
 +getters
 +setters</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1420</x>
+      <y>650</y>
+      <w>120</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Vue
+--
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1430</x>
+      <y>680</y>
+      <w>100</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>GUI</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1360</x>
+      <y>680</y>
+      <w>90</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;70.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1430</x>
+      <y>770</y>
+      <w>100</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>Session</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1420</x>
+      <y>740</y>
+      <w>120</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>hibernate
+--
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1360</x>
+      <y>680</y>
+      <w>80</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;40.0;10.0;40.0;100.0;60.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1030</x>
+      <y>390</y>
+      <w>110</w>
+      <h>250</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;énumération&gt;&gt;
+Operateur
+-
+EGAL
+INF
+INFOUEGAL
+SUP
+SUPOUEGAL
+DIFF
+LIKE
+IN
+NOTIN
+ISNULL
+ISNOTNULL
+-
++toString: String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>970</x>
+      <y>470</y>
+      <w>80</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;60.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>630</x>
+      <y>450</y>
+      <w>350</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>HQLRecherche
+-
+-imbriquee: boolean
+-select: String
+-classe: String
+-conditions: Vector&lt;String&gt;
+-
++addCondition(membreG, membreD, Operateur): void
++setSelect(String): void
++setImbriquee(boolean): void
++toString(): String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1160</x>
+      <y>220</y>
+      <w>210</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>InitException</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1160</x>
+      <y>260</y>
+      <w>210</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>DonneeInvalideException</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1160</x>
+      <y>300</y>
+      <w>210</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>DonneesIsuffisantesException</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1160</x>
+      <y>340</y>
+      <w>210</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>EnregistrementExistantException</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1160</x>
+      <y>380</y>
+      <w>210</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>ResultatInvalideException</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1430</x>
+      <y>300</y>
+      <w>100</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>Exception</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1360</x>
+      <y>220</y>
+      <w>90</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>70.0;90.0;50.0;90.0;50.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1360</x>
+      <y>260</y>
+      <w>90</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>70.0;50.0;50.0;50.0;50.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1360</x>
+      <y>300</y>
+      <w>90</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>70.0;10.0;50.0;10.0;50.0;50.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1360</x>
+      <y>300</y>
+      <w>90</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>70.0;10.0;50.0;10.0;50.0;90.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1360</x>
+      <y>300</y>
+      <w>90</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>70.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1020</x>
+      <y>780</y>
+      <w>340</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>La fonction "creer" délègue la création des objets
+selon l'arbre suivant :
+0                                      creer
+1 VersionConsole                               VersionJeu
+2      Console                                           Jeu
+3      Fabricant                               Editeur         Tag
+
+Avant toute création, on vérifie la non-existence
+de l'objet à l'aide d'une recherche dans la BDD.
+bg=blue</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>
