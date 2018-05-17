@@ -448,16 +448,20 @@ public class critResultat extends javax.swing.JPanel
     }//GEN-LAST:event_buttonChercherActionPerformed
 
     private void buttonNouveauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNouveauActionPerformed
-        /*try {
-            this.parent.afficherLog(this.controleur.creer(toForm()).toString());
+        try {
+            Form f = this.toForm();
+            if (f instanceof CodeBarreForm)
+                this.parent.afficherLog(this.controleur.creer((CodeBarreForm) f).toString());
+            else if (f instanceof ProduitForm)
+                this.parent.afficherLog(this.controleur.creer((ProduitForm) f).toString());
         }
         catch (DonneeInvalideException ex) {
             this.parent.afficherErreur(ex);}
-        /*catch (DonneesInsuffisantesException ex) {
+        catch (DonneesInsuffisantesException ex) {
             this.parent.afficherErreur(ex);}
         catch (EnregistrementExistantException ex) {
             this.parent.afficherErreur(ex);
-        }*/
+        }
     }//GEN-LAST:event_buttonNouveauActionPerformed
 
     private void buttonModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonModifierActionPerformed
@@ -501,7 +505,6 @@ public class critResultat extends javax.swing.JPanel
     }
     private Form toForm() throws DonneeInvalideException
     {
-System.out.print("toform");
         float prix;
         int stock;
         try {
@@ -515,16 +518,12 @@ System.out.print("toform");
             prix = 0f;
             stock = 0;
         }
-System.out.print("i");
+            
         if("".equals(fieldNom.getText()) && "".equals(fieldEditeur.getText())
                 && "".equals(listeZone.getSelectedItem())  && "".equals(listePlateforme.getSelectedItem())
                 && "".equals(fieldEdition.getText()) && "".equals(fieldTag.getText()))
             return new CodeBarreForm(fieldCodeBarre.getText());
         else
-            
-{System.out.print("c");
-System.out.println(fieldNom.getText()+fieldEditeur.getText()); //imprimé à des fins de test
-            //return null;
             return new ProduitForm(this.idVersionConsole, this.idVersionJeu,
                     (String) listeCategorie.getSelectedItem(), fieldCodeBarre.getText(),
                     fieldNom.getText(), fieldEdition.getText(),
@@ -532,7 +531,6 @@ System.out.println(fieldNom.getText()+fieldEditeur.getText()); //imprimé à des
                     fieldEditeur.getText(), jTextAreaDescription.getText()/*,
                     fieldTag.getText()*/, (String) listePlateforme.getSelectedItem(),
                     prix, stock);
-}
     }
     
 
