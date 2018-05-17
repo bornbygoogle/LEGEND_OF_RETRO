@@ -6,17 +6,9 @@
 package controleur;
 
 //Imports pour version temporaire ? Voir fonctionalités de Hibernate.
-    import LOREntities.VersionJeu;
-    import LOREntities.VersionConsole;
-    import LOREntities.Jeu;
-    import LOREntities.Console;
-    import LOREntities.Editeur;
-    import LOREntities.Fabricant;
-    import LOREntities.Tag;
-    import LOREntities.Zone;
+    import LOREntities.*;
 //Fin imports pour version temporaire
 import bean.CodeBarreForm;
-import bean.Form;
 import bean.ProduitForm;
 import hibernateConfig.HibernateUtil;
 import java.util.List;
@@ -421,13 +413,13 @@ public class Controleur
             ret.add(new ProduitForm(enr.getIdVersionConsole(), -1, "Console",
                     enr.getCodeBarre(), enr.getConsole().getNomConsole(),
                     enr.getEdition(), enr.getZone().getNomZone(),
-                    enr.getConsole().getFabricant().getNomFabricant(), "", "",
+                    enr.getConsole().getFabricant().getNomFabricant(), "", "", "",
                     enr.getPrix(), enr.getStock()));
-        for (VersionJeu enr : chercherVersionsJeu(cb, "", "", "", "", ""/*new Vector<String>()*/))
+        for (VersionJeu enr : chercherVersionsJeu(cb, "", "", "", "","", new Vector<String>()))
             ret.add(new ProduitForm(-1, enr.getIdVersionJeu(), "Jeu",
                     enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
                     enr.getJeu().getNomJeu(), enr.getJeu().getDescriptionJeu(),
-                    /*tagsToString(enr.getJeu().getTags(), ','),*/ enr.getConsole().getNomConsole(),
+                    decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
                     enr.getPrix(), enr.getStock()));
         if (ret.size() > 1)
             throw new ResultatInvalideException("Erreur : la recherche du code barre " + cb
@@ -449,7 +441,7 @@ public class Controleur
         String zone = form.getZone();
         String editeur = form.getEditeur();
         String description = form.getDescription();      //La description n'est pas un critère de recherche viable.
-        //Vector<String> tags = stringToVector(f.getTags(), ',');
+        Vector<String> tags = stringToVector(form.getTags(), ',');
         String plateforme = form.getPlateforme();
         //Pas besoin de récupérer les identifiants, la description de jeu, le prix et le stock.
 
@@ -459,7 +451,7 @@ public class Controleur
             for (VersionConsole enr : chercherVersionsConsole(cb, edition, zone, nom, editeur))
                 ret.add(new ProduitForm(enr.getIdVersionConsole(), -1, "Console",
                         enr.getCodeBarre(), enr.getConsole().getNomConsole(), enr.getEdition(), enr.getZone().getNomZone(),
-                        enr.getConsole().getFabricant().getNomFabricant(), "", "",
+                        enr.getConsole().getFabricant().getNomFabricant(), "", "", "",
                         enr.getPrix(), enr.getStock()));
             else
                 throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
@@ -467,11 +459,11 @@ public class Controleur
         else if ("Jeu".equals(type))
         {
             if (!"".equals(cb) || !"".equals(nom) || !"".equals(editeur) /*|| !tags.isEmpty()*/)
-                for (VersionJeu enr : chercherVersionsJeu(cb, edition, zone, plateforme, nom, editeur/*, tags*/))
+                for (VersionJeu enr : chercherVersionsJeu(cb, edition, zone, plateforme, nom, editeur, tags))
                     ret.add(new ProduitForm(-1, enr.getIdVersionJeu(), "Jeu",
                             enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
                             enr.getJeu().getNomJeu(), enr.getJeu().getDescriptionJeu(),
-                            /*tagsToString(enr.getJeu().getTags(), ','),*/ enr.getConsole().getNomConsole(),
+                            decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
                             enr.getPrix(), enr.getStock()));
             else
                 throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
@@ -841,11 +833,11 @@ public class Controleur
      * @param separator
      * @return 
      */
-    protected static final String tagsToString(Vector<Tag> tags, char separator)
+    protected static final String decriresToString(Set<Decrire> decrires, char separator)
     {
         Vector <String> vect = new Vector<String>();
-        for (Tag t : tags)
-            vect.add(t.getLabelTag());
+        for (Decrire d : decrires)
+            vect.add(d.getTag().getLabelTag());
         return vectorToString(vect, separator);
     }
     protected static final Vector<String> stringToVector(String s, char separator)
