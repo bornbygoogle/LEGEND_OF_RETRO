@@ -391,7 +391,7 @@ public class Controleur
                 throw new DonneeInvalideException("Impossible de créer la version de jeu : le jeu renseigné n'existe pas.");
             
             //on vérifie que la version de jeu n'existe pas déjà !
-            Vector<VersionJeu> existante = chercherVersionsJeu(cb, edition, zone.getNomZone(), console.getNomConsole(), nomJeu, nomEditeur/*, tags*/);
+            Vector<VersionJeu> existante = chercherVersionsJeu(cb, edition, zone.getNomZone(), console.getNomConsole(), nomJeu, nomEditeur, tags);
             if (!(existante == null) && !existante.isEmpty())
                 throw new EnregistrementExistantException("Impossible de créer la version de jeu : cette dernière existe déjà.");
             
@@ -433,16 +433,16 @@ public class Controleur
                         enr.getConsole().getFabricant().getIdFabricant(), "Console",
                         enr.getCodeBarre(), enr.getConsole().getNomConsole(),
                         enr.getEdition(), enr.getZone().getNomZone(),
-                        enr.getConsole().getFabricant().getNomFabricant(), "", "",
+                        enr.getConsole().getFabricant().getNomFabricant(), "", "", "",
                         enr.getPrix(), enr.getStock()));
-            for (VersionJeu enr : chercherVersionsJeu(cb, "", "", "", "", ""/*new Vector<String>()*/))
+            for (VersionJeu enr : chercherVersionsJeu(cb, "", "", "", "","", new Vector<String>()))
                 ret.add(new ProduitForm(
                         enr.getConsole().getIdConsole(), -1,
                         enr.getJeu().getIdJeu(), enr.getIdVersionJeu(),
                         enr.getJeu().getEditeur().getIdEditeur(), "Jeu",
                         enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
                         enr.getJeu().getNomJeu(), enr.getJeu().getDescriptionJeu(),
-                        /*tagsToString(enr.getJeu().getTags(), ','),*/ enr.getConsole().getNomConsole(),
+                        tagsToString(enr.getJeu().getDecrires()., ','), enr.getConsole().getNomConsole(),
                         enr.getPrix(), enr.getStock()));
             if (ret.size() > 1)
                 throw new ResultatInvalideException("Erreur : la recherche du code barre " + cb
@@ -461,7 +461,7 @@ public class Controleur
             String zone = f.getZone();
             String editeur = f.getEditeur();
             String description = f.getDescription();      //La description n'est pas un critère de recherche viable.
-            //Vector<String> tags = stringToVector(f.getTags(), ',');
+            Vector<String> tags = stringToVector(f.getTags(), ',');
             String plateforme = f.getPlateforme();
             //Pas besoin de récupérer les identifiants, la description de jeu, le prix et le stock.
 System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + nom + " EDITION : " + edition + " EDITEUR : " + editeur + " ZONE : " + zone + " PF : " + plateforme);
@@ -474,22 +474,22 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
                             enr.getConsole().getIdConsole(), enr.getIdVersionConsole(), -1, -1,
                             enr.getConsole().getFabricant().getIdFabricant(), "Console",
                             enr.getCodeBarre(), enr.getConsole().getNomConsole(), enr.getEdition(), enr.getZone().getNomZone(),
-                            enr.getConsole().getFabricant().getNomFabricant(), "", "",
+                            enr.getConsole().getFabricant().getNomFabricant(), "", "", "",
                             enr.getPrix(), enr.getStock()));
                 else
                     throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
             }
             else if ("Jeu".equals(type))
             {
-                if (!"".equals(cb) || !"".equals(nom) || !"".equals(editeur) /*|| !tags.isEmpty()*/)
-                    for (VersionJeu enr : chercherVersionsJeu(cb, edition, zone, plateforme, nom, editeur/*, tags*/))
+                if (!"".equals(cb) || !"".equals(nom) || !"".equals(editeur) || !tags.isEmpty())
+                    for (VersionJeu enr : chercherVersionsJeu(cb, edition, zone, plateforme, nom, editeur, tags))
                         ret.add(new ProduitForm(
                                 enr.getConsole().getIdConsole(), enr.getConsole().getIdConsole(),
                                 enr.getJeu().getIdJeu(), enr.getIdVersionJeu(),
                                 enr.getJeu().getEditeur().getIdEditeur(), "Jeu",
                                 enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
                                 enr.getJeu().getNomJeu(), enr.getJeu().getDescriptionJeu(),
-                                /*tagsToString(enr.getJeu().getTags(), ','),*/ enr.getConsole().getNomConsole(),
+                                tagsToString(enr.getJeu().getTags(), ','), enr.getConsole().getNomConsole(),
                                 enr.getPrix(), enr.getStock()));
                 else
                     throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
@@ -555,7 +555,7 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
      * La zone et l'édition ne sont pas suffisantes pour lancer une recherche.
      */
     private Vector<VersionJeu> chercherVersionsJeu(String cb, String edition, String zone,
-            String plateforme, String nom, String editeur/*, Vector<String> tags*/)
+            String plateforme, String nom, String editeur, Vector<String> tags)
             throws DonneesInsuffisantesException
     {
         if ("".equals(cb) && "".equals(plateforme) && "".equals(nom) && "".equals(editeur) /*&& tags.isEmpty()*/)
@@ -855,7 +855,7 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
             throw new DonneesInsuffisantesException("Erreur lors de la recherche du tag : nom du tag non renseigné.");
         
         HQLRecherche q = new HQLRecherche("Tag t");
-        q.addCondition("t.libelle", tag, HQLRecherche.Operateur.EGAL);
+        q.addCondition("t.labelTag", tag, HQLRecherche.Operateur.EGAL);
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         
@@ -903,8 +903,7 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
         
         List zones = modele.createQuery("from LOREntities.Zone").list();
         for (Object z : zones)
-            ret.add(((Zone) z).getNomZone());
-        
+            ret.add(((Zone) z).getNomZone());       
         return ret;
     }
     /**
@@ -952,8 +951,11 @@ System.out.println("ProduitForm TYPE : " + type + " CB : " + cb + " NOM : " + no
     }
     /**
      * Transforme un vecteur de tags en un vecteur de strings pour l'affichage.
+     * @param tags
+     * @param separator
+     * @return 
      */
-    protected static final String tagsToString(Set<Tag> tags, char separator)
+    protected static final String tagsToString(Vector<Tag> tags, char separator)
     {
         Vector <String> vect = new Vector<String>();
         for (Tag t : tags)
