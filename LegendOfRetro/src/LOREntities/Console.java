@@ -1,5 +1,5 @@
 package LOREntities;
-// Generated 19 avr. 2018 21:09:00 by Hibernate Tools 4.3.1
+// Generated May 17, 2018 9:28:25 AM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -10,24 +10,26 @@ import java.util.Set;
  */
 public class Console  implements java.io.Serializable {
 
+
      private Integer idConsole;
      private Fabricant fabricant;
-     private String nom;
-     private Set versionJeus = new HashSet(0);
+     private String nomConsole;
      private Set versionConsoles = new HashSet(0);
+     private Set versionJeus = new HashSet(0);
 
     public Console() {
     }
 
 	
-    public Console(Fabricant fabricant) {
+    public Console(Fabricant fabricant, String nomConsole) {
         this.fabricant = fabricant;
+        this.nomConsole = nomConsole;
     }
-    public Console(Fabricant fabricant, String nom, Set versionJeus, Set versionConsoles) {
+    public Console(Fabricant fabricant, String nomConsole, Set versionConsoles, Set versionJeus) {
        this.fabricant = fabricant;
-       this.nom = nom;
-       this.versionJeus = versionJeus;
+       this.nomConsole = nomConsole;
        this.versionConsoles = versionConsoles;
+       this.versionJeus = versionJeus;
     }
    
     public Integer getIdConsole() {
@@ -44,19 +46,12 @@ public class Console  implements java.io.Serializable {
     public void setFabricant(Fabricant fabricant) {
         this.fabricant = fabricant;
     }
-    public String getNom() {
-        return this.nom;
+    public String getNomConsole() {
+        return this.nomConsole;
     }
     
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-    public Set getVersionJeus() {
-        return this.versionJeus;
-    }
-    
-    public void setVersionJeus(Set versionJeus) {
-        this.versionJeus = versionJeus;
+    public void setNomConsole(String nomConsole) {
+        this.nomConsole = nomConsole;
     }
     public Set getVersionConsoles() {
         return this.versionConsoles;
@@ -64,6 +59,13 @@ public class Console  implements java.io.Serializable {
     
     public void setVersionConsoles(Set versionConsoles) {
         this.versionConsoles = versionConsoles;
+    }
+    public Set getVersionJeus() {
+        return this.versionJeus;
+    }
+    
+    public void setVersionJeus(Set versionJeus) {
+        this.versionJeus = versionJeus;
     }
 
 

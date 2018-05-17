@@ -1,5 +1,5 @@
 package LOREntities;
-// Generated 19 avr. 2018 21:09:00 by Hibernate Tools 4.3.1
+// Generated May 17, 2018 9:28:25 AM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -10,26 +10,29 @@ import java.util.Set;
  */
 public class Jeu  implements java.io.Serializable {
 
+
      private Integer idJeu;
      private Editeur editeur;
-     private String nom;
-     private String description;
+     private String nomJeu;
+     private String descriptionJeu;
+     private Set decrires = new HashSet(0);
      private Set versionJeus = new HashSet(0);
-     private Set tags = new HashSet(0);
 
     public Jeu() {
     }
 
 	
-    public Jeu(Editeur editeur) {
+    public Jeu(Editeur editeur, String nomJeu, String descriptionJeu) {
         this.editeur = editeur;
+        this.nomJeu = nomJeu;
+        this.descriptionJeu = descriptionJeu;
     }
-    public Jeu(Editeur editeur, String nom, String description, Set versionJeus, Set tags) {
+    public Jeu(Editeur editeur, String nomJeu, String descriptionJeu, Set decrires, Set versionJeus) {
        this.editeur = editeur;
-       this.nom = nom;
-       this.description = description;
+       this.nomJeu = nomJeu;
+       this.descriptionJeu = descriptionJeu;
+       this.decrires = decrires;
        this.versionJeus = versionJeus;
-       this.tags = tags;
     }
    
     public Integer getIdJeu() {
@@ -46,19 +49,26 @@ public class Jeu  implements java.io.Serializable {
     public void setEditeur(Editeur editeur) {
         this.editeur = editeur;
     }
-    public String getNom() {
-        return this.nom;
+    public String getNomJeu() {
+        return this.nomJeu;
     }
     
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setNomJeu(String nomJeu) {
+        this.nomJeu = nomJeu;
     }
-    public String getDescription() {
-        return this.description;
+    public String getDescriptionJeu() {
+        return this.descriptionJeu;
     }
     
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescriptionJeu(String descriptionJeu) {
+        this.descriptionJeu = descriptionJeu;
+    }
+    public Set getDecrires() {
+        return this.decrires;
+    }
+    
+    public void setDecrires(Set decrires) {
+        this.decrires = decrires;
     }
     public Set getVersionJeus() {
         return this.versionJeus;
@@ -66,13 +76,6 @@ public class Jeu  implements java.io.Serializable {
     
     public void setVersionJeus(Set versionJeus) {
         this.versionJeus = versionJeus;
-    }
-    public Set getTags() {
-        return this.tags;
-    }
-    
-    public void setTags(Set tags) {
-        this.tags = tags;
     }
 
 

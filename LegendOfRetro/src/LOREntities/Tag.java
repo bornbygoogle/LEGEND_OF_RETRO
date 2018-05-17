@@ -1,5 +1,5 @@
 package LOREntities;
-// Generated 19 avr. 2018 21:09:00 by Hibernate Tools 4.3.1
+// Generated May 17, 2018 9:28:25 AM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -10,42 +10,45 @@ import java.util.Set;
  */
 public class Tag  implements java.io.Serializable {
 
-     private Integer idTag;
-     private String libelle;
-     private Set jeus = new HashSet(0);
+
+     private int idTag;
+     private String labelTag;
+     private Set decrires = new HashSet(0);
 
     public Tag() {
     }
 
 	
-    public Tag(String libelle) {
-        this.libelle = libelle;
+    public Tag(int idTag, String labelTag) {
+        this.idTag = idTag;
+        this.labelTag = labelTag;
     }
-    public Tag(String libelle, Set jeus) {
-       this.libelle = libelle;
-       this.jeus = jeus;
+    public Tag(int idTag, String labelTag, Set decrires) {
+       this.idTag = idTag;
+       this.labelTag = labelTag;
+       this.decrires = decrires;
     }
    
-    public Integer getIdTag() {
+    public int getIdTag() {
         return this.idTag;
     }
     
-    public void setIdTag(Integer idTag) {
+    public void setIdTag(int idTag) {
         this.idTag = idTag;
     }
-    public String getLibelle() {
-        return this.libelle;
+    public String getLabelTag() {
+        return this.labelTag;
     }
     
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
+    public void setLabelTag(String labelTag) {
+        this.labelTag = labelTag;
     }
-    public Set getJeus() {
-        return this.jeus;
+    public Set getDecrires() {
+        return this.decrires;
     }
     
-    public void setJeus(Set jeus) {
-        this.jeus = jeus;
+    public void setDecrires(Set decrires) {
+        this.decrires = decrires;
     }
 
 

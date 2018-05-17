@@ -26,7 +26,7 @@ public class ProduitForm extends Form
     private String zone;
     private String editeur;
     private String description;
-    private String tags;
+    //private String tags;
     private String plateforme;
     private float prix;
     private int stock;
@@ -45,14 +45,15 @@ public class ProduitForm extends Form
         this.zone = "";
         this.editeur = "";
         this.description = "";
-        this.tags = "";
+        //this.tags = "";
         this.prix = -1;
         this.stock = -1;
     }
-    public ProduitForm(int idConsole, int idVersionConsole,
+    public ProduitForm(
+            int idConsole, int idVersionConsole,
             int idJeu, int idVersionJeu, int idEditeur,
             String type, String cb, String nom, String edition, String zone,
-            String editeur, String description, String tags, String plateforme,
+            String editeur, String description, /*String tags,*/ String plateforme,
             float prix, int stock)
     {
         this.idConsole = idConsole;
@@ -68,9 +69,13 @@ public class ProduitForm extends Form
         this.editeur = editeur;
         this.description = description;
         this.plateforme = plateforme;
-        this.tags = tags;
+        //this.tags = tags;
         this.prix = prix;
         this.stock = stock;
+    }
+
+    public ProduitForm(Integer idConsole, Integer idConsole0, Integer idJeu, Integer idVersionJeu, Integer idEditeur, String jeu, String codeBarre, String nom, String edition, String nom0, String nom1, String description, float prix, int stock) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     public int getIdConsole()      {return this.idConsole;}
@@ -85,7 +90,7 @@ public class ProduitForm extends Form
     public String getZone()      {return this.zone;}
     public String getEditeur()      {return this.editeur;}
     public String getDescription()      {return this.description;}
-    public String getTags()      {return this.tags;}
+    //public String getTags()      {return this.tags;}
     public String getPlateforme()      {return this.plateforme;}
     public float getPrix()      {return this.prix;}
     public int getStock()      {return this.stock;}
@@ -102,7 +107,7 @@ public class ProduitForm extends Form
     public void setZone(String zone)      {this.zone = zone;}
     public void setEditeur(String editeur)      {this.editeur = editeur;}
     public void setDescription(String descr)      {this.description = descr;}
-    public void setTags(String tags)      {this.tags = tags;}
+   // public void setTags(String tags)      {this.tags = tags;}
     public void setPlateforme(String pf)      {this.plateforme = pf;}
     public void setPrix(float p)      {this.prix = p;}
     public void setStock(int n)      {this.stock = n;}
