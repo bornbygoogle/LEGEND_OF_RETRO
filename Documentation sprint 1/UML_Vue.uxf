@@ -4,8 +4,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>0</x>
-      <y>360</y>
+      <x>18</x>
+      <y>414</y>
       <w>90</w>
       <h>27</h>
     </coordinates>
@@ -16,342 +16,67 @@
     <id>UMLClass</id>
     <coordinates>
       <x>243</x>
-      <y>288</y>
-      <w>513</w>
-      <h>189</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;EventListener&gt;&gt;
-MenuProduit
---
--eventListener: EventListener
---
-+MenuProduit(EventListener listener)
-+getSaisieProduit(): beans.Produit
-+getSaisieProduit(): beans.Jeu
-+getSaisieProduit(): beans.Editeur
-+setProduit(Vector&lt;beans.Produit&gt;): void
-+setJeu(Vector&lt;beans.Jeu&gt;): void
-+setEditeur(Vector&lt;beans.Editeur&gt;): void
--setFlag(int): void</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>648</x>
-      <y>171</y>
-      <w>108</w>
-      <h>99</h>
-    </coordinates>
-    <panel_attributes>FlagModuleActif
-" énumération"
---
-CONSOLE
-VERSION
-JEU
-EDITEUR</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>684</x>
-      <y>261</y>
-      <w>27</w>
-      <h>45</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;30.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>243</x>
-      <y>234</y>
-      <w>99</w>
-      <h>45</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;ActionListener&gt;&gt;
-Menu</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>252</x>
-      <y>468</y>
-      <w>27</w>
-      <h>144</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m1=1
-m2=1</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>81</x>
-      <y>369</y>
-      <w>180</w>
-      <h>27</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;180.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>81</x>
-      <y>261</y>
-      <w>180</w>
-      <h>135</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;130.0;80.0;130.0;80.0;10.0;180.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>243</x>
-      <y>594</y>
-      <w>189</w>
-      <h>279</h>
-    </coordinates>
-    <panel_attributes>VueProduit
---
--int: idJeu
--type: JComboBox
--codeBarre: JTextField
--jeu: JTextField
--label: JTextField
--prix: JTextField
--stock: SpinnerNumberModel
--casse: SpinnerNumberModel
--selectionnerJeu: JButton
--erreurCodeBarre: JLabel
--erreurPrix: JLabel
---
-+getBean(): beans.SaisieProduit
-+setResultats(Vector&lt;beans.
-        SaisieProduit&gt;):void
-+setResultat(beans.
-        SaisieProduit):void
--setFlagType(int): void</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>81</x>
-      <y>369</y>
-      <w>450</w>
-      <h>594</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;80.0;10.0;70.0;640.0;480.0;640.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>324</x>
-      <y>504</y>
-      <w>108</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>FlagType
-" énumération"
---
-CONSOLE
-VERSION</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>369</x>
-      <y>567</y>
-      <w>27</w>
-      <h>63</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>423</x>
-      <y>567</y>
-      <w>90</w>
-      <h>180</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m1=1
-m2=0..1</panel_attributes>
-    <additional_attributes>10.0;170.0;60.0;170.0;60.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>441</x>
-      <y>504</y>
-      <w>126</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>ListeResultats
---
--Liste: JList
---
-+setResultats(Vector
-        &lt;String&gt;):void</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>0</x>
-      <y>576</y>
-      <w>90</w>
-      <h>27</h>
-    </coordinates>
-    <panel_attributes>JScrollPane</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>81</x>
-      <y>486</y>
-      <w>414</w>
-      <h>126</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-fg=blue</panel_attributes>
-    <additional_attributes>10.0;120.0;40.0;120.0;40.0;10.0;440.0;10.0;440.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>567</x>
-      <y>468</y>
-      <w>45</w>
-      <h>144</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m1=1
-m2=0..1</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>513</x>
-      <y>594</y>
-      <w>189</w>
-      <h>279</h>
-    </coordinates>
-    <panel_attributes>VueJeu
---
--int: idEditeur
--label: JTextField
--editeur: JTextField
--tags: JTextField
--selectionnerEditeur: JButton
--erreurTagsInconus: JLabel
---
-+getBean(): beans.SaisieJeu
-+setResultats(Vector&lt;beans.
-        SaisieJeu&gt;):void</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>468</x>
-      <y>567</y>
-      <w>63</w>
-      <h>180</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m1=1
-m2=0..1</panel_attributes>
-    <additional_attributes>50.0;170.0;10.0;170.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>720</x>
-      <y>594</y>
-      <w>189</w>
-      <h>279</h>
-    </coordinates>
-    <panel_attributes>VueEditeur
---
--label: JTextField
---
-+getBean(): beans.SaisieEditeur
-+setResultats(Vector&lt;beans.
-        SaisieEditeur&gt;):void</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>729</x>
-      <y>468</y>
-      <w>45</w>
-      <h>144</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m1=1
-m2=0..1</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>243</x>
-      <y>99</y>
-      <w>153</w>
+      <y>414</y>
+      <w>144</w>
       <h>54</h>
+    </coordinates>
+    <panel_attributes>MenuProduit
+-
+-
+-initComponents(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>99</x>
+      <y>423</y>
+      <w>162</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;160.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>396</x>
+      <y>117</y>
+      <w>234</w>
+      <h>162</h>
     </coordinates>
     <panel_attributes>&lt;&lt;EventListener&gt;&gt;
 GUI
---
--controleur: EventListener</panel_attributes>
+-
+-boutonProduit: JButton
+-boutonAcaht: JButton
+-boutonVente: JButton
+-boutonClient: JButton
+-boutonPromo: JButton
+-
++actionPerformed(ActionEvent): void
++ouvrirMenu(MenuActif)
++fermerMenu(): void</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>306</x>
-      <y>144</y>
-      <w>180</w>
+      <y>270</y>
+      <w>225</w>
       <h>162</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 m1=1
-m2=1</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;90.0;180.0;90.0;180.0;160.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>270</x>
-      <y>144</y>
-      <w>27</w>
-      <h>108</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m1=1
-m2=1</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+m2=0..1</panel_attributes>
+    <additional_attributes>230.0;10.0;230.0;50.0;10.0;50.0;10.0;160.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>0</x>
-      <y>99</y>
+      <x>540</x>
+      <y>0</y>
       <w>90</w>
       <h>27</h>
     </coordinates>
@@ -361,164 +86,235 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>81</x>
-      <y>108</y>
-      <w>180</w>
-      <h>27</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;180.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>513</x>
-      <y>936</y>
-      <w>189</w>
-      <h>180</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;ActionListener&gt;&gt;
-/ChercherCreerModifier/
---
--eventListener: EventListener
--chercher: JButton
--enregistrer: JButton
--annuler: JButton
--aucunResultat: JLabel
--erreurInconue: JLabel
---
-+ChercherCreerModifier
-        (EventListener listener)
-+afficherErreur(Exception): void</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>594</x>
-      <y>864</y>
+      <x>567</x>
+      <y>18</y>
       <w>27</w>
-      <h>90</h>
+      <h>117</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>594</x>
-      <y>864</y>
-      <w>234</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;80.0;10.0;50.0;240.0;50.0;240.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>315</x>
-      <y>864</y>
-      <w>306</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>320.0;80.0;320.0;50.0;10.0;50.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>720</x>
-      <y>936</y>
-      <w>117</w>
+      <x>342</x>
+      <y>63</y>
+      <w>198</w>
       <h>72</h>
     </coordinates>
-    <panel_attributes>FlagAnnulable
-" énumération"
---
-ANNULABLE
-NON_ANNULABLE</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>693</x>
-      <y>936</y>
-      <w>45</w>
-      <h>27</h>
-    </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>30.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>270</x>
-      <y>72</y>
-      <w>27</w>
-      <h>45</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;30.0</additional_attributes>
+    <additional_attributes>10.0;10.0;200.0;10.0;200.0;60.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>234</x>
-      <y>27</y>
+      <x>243</x>
+      <y>54</y>
       <w>108</w>
-      <h>54</h>
+      <h>126</h>
     </coordinates>
-    <panel_attributes>FlagMenuActif
+    <panel_attributes>MenuActif
 " énumération"
 --
-PRODUIT</panel_attributes>
+AUCUN
+PRODUIT
+ACHAT
+VENTE
+CLIENT
+PROMO</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>180</x>
-      <y>0</y>
+      <x>189</x>
+      <y>18</y>
       <w>819</w>
-      <h>1161</h>
+      <h>864</h>
     </coordinates>
     <panel_attributes>vue
+--
+bg=orange
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>99</x>
+      <y>180</y>
+      <w>315</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>330.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>9</x>
+      <y>153</y>
+      <w>108</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>Controleur
 --
 bg=orange</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLNote</id>
+    <id>UMLClass</id>
     <coordinates>
-      <x>783</x>
-      <y>45</y>
+      <x>18</x>
+      <y>180</y>
+      <w>90</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>Controleur</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>729</x>
+      <y>54</y>
+      <w>225</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>Chercheur
+"interface"
+-
++selectionnerResultat(formulaire):void
++lancerRecherche(formulaire):void
++afficherErreur(exception):void
++afficherLog(log):void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>108</y>
+      <w>396</w>
+      <h>324</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+"implémente"</panel_attributes>
+    <additional_attributes>420.0;10.0;330.0;10.0;330.0;260.0;10.0;260.0;10.0;340.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>99</x>
+      <y>180</y>
       <w>216</w>
+      <h>252</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>220.0;260.0;220.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>207</x>
+      <y>504</y>
+      <w>243</w>
       <h>351</h>
     </coordinates>
-    <panel_attributes>EVENEMENTS
-
-Le GUI, MenuProduit et
-/ChercherCreerModifier/
-écoutent leurs subordonnés
-(événements indiquant qu'il
-faut afficher un autre composant,
-OU que l'utilisateur a saisi qqch
-à transmettre au contrôleur).
-
-Le GUI est capable d'envoyer
-des events au contrôleur car il
-se souvient de son adresse.
-Il écoute aussi les events envoyés
-par le contrôleur (une classe du
-contrôleur censée fire ce genre
-d'events en tous cas)
-et réagit en conséquence.
-
-Les classes contenant des boutons
-implémentent ActionListener.
-Logique.</panel_attributes>
+    <panel_attributes>criteresProduit
+-
+-ajoutZone: JButton
+-nouveau: JButton
+-chercher: JButton
+-modifier: JButton
+-listeCategorie: JComboBox
+-listeZone: JComboBox
+-listePlateforme: JComboBox
+-codeBarre: JTextField
+-nom: JTextField
+-editeur: JTextField
+-edition: JTextField
+-nouvelleZone: JTextField
+-tags: JTextField
+-description: JTextArea
+-ajoutCasse: JSpinner
+-
+-listeCategorieItemStateChanged(): void
+-listeZoneItemStateChanged(): void
+-buttonChercherActionPerformed(): void
+-buttonNouveauActionPerformed(): void
+-buttonModifierActionPerformed(): void
++setForm(Form): void
+-toForm():Form</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>306</x>
+      <y>459</y>
+      <w>27</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>378</x>
+      <y>639</y>
+      <w>153</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>Remarque : Mofification
+non implémentée.
+Suppression à
+prévoir ?
+bg=blue
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>891</x>
+      <y>144</y>
+      <w>27</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>729</x>
+      <y>189</y>
+      <w>270</w>
+      <h>198</h>
+    </coordinates>
+    <panel_attributes>Resulat &lt;F étend Form&gt;
+--
+-table: JTable
+-jScrollPane: jScrollPane
+-verbose: JLabel
+-res: Vector &lt;F&gt;
+_-typeJeu: String[]_
+_-typeConsole: String[]_
+--
+-tableMouseClicked(): void
++afficherRes(Vector &lt;F&gt; resultats): void
++afficherMessage(): void
++afficherErreur(): void</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>
