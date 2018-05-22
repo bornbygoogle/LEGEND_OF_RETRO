@@ -1,5 +1,5 @@
 package LOREntities;
-// Generated May 19, 2018 7:05:14 AM by Hibernate Tools 4.3.1
+// Generated May 23, 2018 12:38:35 AM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
