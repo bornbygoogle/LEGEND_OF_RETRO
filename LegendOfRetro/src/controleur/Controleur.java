@@ -384,7 +384,7 @@ public class Controleur
             vj.setCodeBarre(cb);
             vj.setEdition(edition);
             vj.setZone(zone);
-            //vj.setConsole(console);
+            vj.setConsole(console);
             vj.setJeu(jeu);
             vj.setPrix(prix);
             vj.setStock(stock);
@@ -614,9 +614,9 @@ public class Controleur
             throw new DonneesInsuffisantesException("Erreur lors de la recherche de la console : nom de la console non renseigné.");
 
         HQLRecherche q = new HQLRecherche("LOREntities.Console c");
-        q.addCondition("c.nom", nomCons, HQLRecherche.Operateur.EGAL);
+        q.addCondition("c.nomConsole", nomCons, HQLRecherche.Operateur.EGAL);
         if (!"".equals(nomFabr))
-            q.addCondition("c.fabricant.nom", nomFabr, HQLRecherche.Operateur.EGAL);
+            q.addCondition("c.fabricant.nomFabricant", nomFabr, HQLRecherche.Operateur.EGAL);
         System.out.println("Recherche Console"); //imprimé à des fins de test
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
@@ -677,7 +677,7 @@ public class Controleur
             throw new DonneesInsuffisantesException("Erreur lors de la recherche du fabricant : nom du fabricant non renseigné.");
         
         HQLRecherche q = new HQLRecherche("Fabricant f");
-        q.addCondition("f.nom", nomFabr, HQLRecherche.Operateur.EGAL);
+        q.addCondition("f.nomFabricant", nomFabr, HQLRecherche.Operateur.EGAL);
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         
@@ -695,7 +695,7 @@ public class Controleur
             throw new DonneesInsuffisantesException("Erreur lors de la recherche de l'éditeur : nom de l'éditeur non renseigné.");
         
         HQLRecherche q = new HQLRecherche("Editeur e");
-        q.addCondition("e.nom", nomEdit, HQLRecherche.Operateur.EGAL);
+        q.addCondition("e.nomEditeur", nomEdit, HQLRecherche.Operateur.EGAL);
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         
