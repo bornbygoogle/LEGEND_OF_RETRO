@@ -68,13 +68,15 @@ public class Rapport
                 ret = ret.concat("Ajout");
             else if (this.operations.elementAt(i) == Operation.MODIFIER)
                 ret = ret.concat("Modification");
-            
+            System.out.println(this.tables.elementAt(i));
             if (this.tables.elementAt(i) == Table.DESCRIPTION)
                 ret = ret.concat(" d'un lien entre un jeu et le tag ");
             else
             {
                 if (this.tables.elementAt(i) == Table.CONSOLE)
                     ret = ret.concat(" de la console ");
+                else if (this.tables.elementAt(i) == Table.VERSIONCONSOLE)
+                    ret = ret.concat(" de la version de console ");
                 else if (this.tables.elementAt(i) == Table.VERSIONJEU)
                     ret = ret.concat(" de la version de jeu ");
                 else if (this.tables.elementAt(i) == Table.EDITEUR)
@@ -88,7 +90,7 @@ public class Rapport
                 else if (this.tables.elementAt(i) == Table.ZONE)
                     ret = ret.concat(" de la zone ");
             }
-            ret = ret.concat(this.ids.elementAt(i) + ".\n");
+            ret = ret.concat("id "+this.ids.elementAt(i) + ".\n");
         }
         
         return ret;
