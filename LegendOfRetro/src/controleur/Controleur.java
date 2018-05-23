@@ -202,11 +202,11 @@ public class Controleur
             //création de la console
             Jeu jeu = new Jeu();
             jeu.setNomJeu(nomJeu);
-            //jeu.setEditeur(editeur);
+            jeu.setEditeur(editeur);
             jeu.setDescriptionJeu(description);
 
             //traitement des tags
-            for (String tag : tags)
+            /*for (String tag : tags)
             {
                 //on vérifie l'existence du tag et, au besoin, on le crée.
                 Tag t = chercherTag(tag);
@@ -216,7 +216,7 @@ public class Controleur
                 //jeu.getTags().add(t);
                 
                 rapport.addOperation(t.getIdTag(), Rapport.Table.DESCRIPTION, Rapport.Operation.CREER);
-            }
+            }*/
 
             //sauvegarde dans la base de données
             this.modele.beginTransaction();
