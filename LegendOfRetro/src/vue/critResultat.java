@@ -439,6 +439,14 @@ public class critResultat extends javax.swing.JPanel
                 this.parent.afficherLog(this.controleur.creer((CodeBarreForm) f).toString());
             else if (f instanceof ProduitForm)
                 this.parent.afficherLog(this.controleur.creer((ProduitForm) f).toString());
+            
+            /*
+            *  Refresh la liste Platforme après Ajout
+            */
+            listePlateforme.removeAllItems();
+            Vector<String> plateformes = controleur.listeConsoles();
+            plateformes.add(0, "");
+            listePlateforme.setModel(new javax.swing.DefaultComboBoxModel<>(plateformes));
         }
         catch (DonneeInvalideException ex) {
             this.parent.afficherErreur(ex);}

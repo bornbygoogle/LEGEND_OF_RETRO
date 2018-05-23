@@ -631,9 +631,10 @@ public class Controleur
     /**
      * Recherche le jeu dont le nom correspond parfaitement à la chaîne renseignée et ayant l'éditeur et les tags renseignés.
      */
-    private Jeu chercherJeu(String nomJeu,
-            Vector<String> tags, String nomEditeur) throws DonneesInsuffisantesException
+    private Jeu chercherJeu(String nomJeu, Vector<String> tags, String nomEditeur) 
+            throws DonneesInsuffisantesException
     {
+        int idEditeur = 0;
         if (nomJeu == null || "".equals(nomJeu))
             throw new DonneesInsuffisantesException("Erreur lors de la recherche du jeu : nom du jeu non renseigné.");
         
@@ -643,10 +644,18 @@ public class Controleur
             if (edtr == null)
                 return null;
             //else
-            int idEditeur = edtr.getIdEditeur();
+            idEditeur = edtr.getIdEditeur();
         }
         
         //!à implémenter; (voir chercher console, encore que, y'a les tags...');
+        
+        HQLRecherche q = new HQLRecherche("LOREntities.Jeu j");
+        q.addCondition("j.nomJeu", nomJeu, HQLRecherche.Operateur.EGAL);
+        if (!"".equals(nomEditeur))
+            q.addCondition("j.editeur.idEditeur", idEditeur , HQLRecherche.Operateur.EGAL);
+        System.out.println("Recherche Jeu"); //imprimé à des fins de test
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
         
         /* Attention
         Il est possible qu'une recherche renvoie plusieurs résultats. Par exemple, si deux jeux produits par des éditeurs
@@ -654,7 +663,7 @@ public class Controleur
         on commence par stocker les résultats de la requête dans un vecteur ; puis, si le vecteur n'a pas une taille de 1,
         on renvoie null ou on lance une exception.
         */
-        Vector<Jeu> resultat;
+        //Vector<Jeu> resultat;
         
         //TODO: la recherche à proprement parler. On ne réutilise pas chercherVersionsJeu car la correspondance demandée par chercherJeu est parfaite.
         //Attention, pour l'éditeur, si le nom est renseigné, on demande une correspondance parfaite.
@@ -666,7 +675,14 @@ public class Controleur
             throw new  DonneesInsuffisantesException("Erreur lors de la recherche du jeu : plusieurs résultats obtenus. Veuillez renseigner l'éditeur du jeu.");
         
         return resultat.firstElement();*/
-        return null;
+        
+        if (resultats.isEmpty())
+            return null;
+        else if (resultats.size() != 1)
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche de la console : plusieurs résultats sont retournés.");
+        else
+            return (Jeu) resultats.get(0);
+        //return null;
     }
     /**
      * Recherche les fabricants dont le nom contient la chaîne renseignée.
