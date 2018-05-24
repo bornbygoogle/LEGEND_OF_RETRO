@@ -33,7 +33,7 @@ layer=-1</panel_attributes>
       <x>620</x>
       <y>660</y>
       <w>750</w>
-      <h>590</h>
+      <h>600</h>
     </coordinates>
     <panel_attributes>Controleur
 -
@@ -41,8 +41,8 @@ layer=-1</panel_attributes>
 +init(): void
 
 +creer(Form): Rapport
--creerVersionJeu(Rapport, cd, edition, zone, prix, stock, nomJeu, desc, tags, nomCons, nomEd): VersionJeu
--creerVersionConsole(Rapport, cd, edition, zone, prix, stock, nomCons, nomFabr): VersionConsole
+-creerVersionJeu(Rapport, cd, edition, zone, prix, stock, nomJeu, desc, tags, nomCons, nomEd): int identifiant
+-creerVersionConsole(Rapport, cd, edition, zone, prix, stock, nomCons, nomFabr): int identifiant
 -creerConsole(Rapport, nomCons, nomFabr): Console
 -creerJeu(Rapport, nomJeu, desc, tags, nomEd): Jeu
 -creerEditeur(Rapport, nomEd): Editeur
@@ -55,6 +55,8 @@ layer=-1</panel_attributes>
 -chercherZone(nomZone): Zone
 -chercherConsole(nomCons, nomFabr): Console
 -chercherJeu(nomJeu, tags, nomEd): Jeu
+-chercherVersionsConsole(id): VersionConsole
+-chercherVersionsJeu(id): VersionVersionJeu
 
 
 +chercher(Form): Vector&lt;ProduitForm&gt;
