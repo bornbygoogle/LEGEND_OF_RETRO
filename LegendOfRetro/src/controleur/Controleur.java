@@ -5,9 +5,8 @@
  */
 package controleur;
 
-//Imports pour version temporaire ? Voir fonctionalités de Hibernate.
-    import LOREntities.*;
-//Fin imports pour version temporaire
+import LOREntities.*;
+
 import bean.CodeBarreForm;
 import bean.ProduitForm;
 import hibernateConfig.HibernateUtil;
@@ -51,32 +50,39 @@ public class Controleur
     public Rapport creer(ProduitForm f)
             throws DonneesInsuffisantesException, DonneeInvalideException, EnregistrementExistantException
         {
-        Rapport ret = null;
+        Rapport rapport = new Rapport();
         
         String type = f.getType();
 
         if ("Console".equals(type))
-            ret = creerVersionConsole(
+        {
+            f.setIdVersionJeu(-1);
+            f.setIdVersionConsole(
+                    creerVersionConsole(rapport,
                     f.getCodeBarre(), 
                     f.getEdition(), 
                     f.getZone(),
                     f.getPrix(), 
                     f.getStock(),
-                    f.getNom(),       //getNom() renvoie le nom de la CONSOLE, pas de la Version de la console
-                    f.getEditeur());
+                    f.getNom(),
+                    f.getEditeur()));
+        }
         else if ("Jeu".equals(type))
-            ret = creerVersionJeu(
+        {
+            f.setIdVersionConsole(-1);
+            f.setIdVersionJeu(creerVersionJeu(rapport,
                     f.getCodeBarre(),
                     f.getEdition(), 
                     f.getZone(),
                     f.getPrix(), 
                     f.getStock(),
                     f.getNom(),       //getNom() renvoie le nom du JEU, pas de la Version du jeu
-                    f.getDescription(), stringToVector(/*f.getTags(),*/ "some string" ,','),
+                    f.getDescription(), stringToVector(f.getTags() ,','),
                     f.getPlateforme(),
-                    f.getEditeur());
+                    f.getEditeur()));
+        }
         
-        return ret;
+        return rapport;
     }
     public Rapport creer(CodeBarreForm form)
             throws DonneesInsuffisantesException, DonneeInvalideException, EnregistrementExistantException
@@ -275,12 +281,10 @@ public class Controleur
      * Si la console est inexistante dans la base de données, une nouvelle console est ajoutée à la volée. Par transitivité, cela s'applique au fabricant. Ne met pas à jour le fabricant d'une console existante.
      * La zone renseignée doit déjà exister dans la base de données.
     */
-    protected Rapport creerVersionConsole(String cb, String edition, String nomZone,
+    protected int creerVersionConsole(Rapport rapport, String cb, String edition, String nomZone,
             float prix, int stock, String nomConsole, String nomFabr)
             throws DonneesInsuffisantesException, DonneeInvalideException, EnregistrementExistantException
     {
-        Rapport rapport = new Rapport();
-        
         if ("".equals(edition) && "".equals(nomZone)) //si on ne crée pas une version de console.
         {
             try {
@@ -324,9 +328,12 @@ public class Controleur
             this.modele.getTransaction().commit();
             
             rapport.addOperation(vc.getIdVersionConsole(), Rapport.Table.VERSIONCONSOLE, Rapport.Operation.CREER);
+            
+            return vc.getIdVersionConsole();
         }
         
-        return rapport;
+        //si aucun produit n'a été créé
+        return -1;
     }
     /**
      * Crée une version d'un jeu et/ou le jeu lui-même et/ou son éditeur et/ou ses tags.
@@ -335,13 +342,11 @@ public class Controleur
      * La zone renseignée doit déjà exister dans la base de données.
      * La console renseignée doit déjà exister dans la base de données.
     */
-    protected Rapport creerVersionJeu(String cb, String edition, String nomZone,
+    protected int creerVersionJeu(Rapport rapport, String cb, String edition, String nomZone,
             float prix, int stock, String nomJeu, String description, Vector<String> tags,
             String nomConsole, String nomEditeur)
             throws DonneesInsuffisantesException, DonneeInvalideException, EnregistrementExistantException
     {
-        Rapport rapport = new Rapport();
-        
         if ("".equals(edition) && "".equals(nomZone) && "".equals(nomConsole)) //si on ne crée pas une version de jeu.
         {
             try {
@@ -394,10 +399,13 @@ public class Controleur
             this.modele.save(vj);
             this.modele.getTransaction().commit();
             
-            rapport.addOperation(vj.getIdVersionJeu(), Rapport.Table.VERSIONCONSOLE, Rapport.Operation.CREER);
+            rapport.addOperation(vj.getIdVersionJeu(), Rapport.Table.VERSIONJEU, Rapport.Operation.CREER);
+            
+            return vj.getIdVersionJeu();
         }
         
-        return rapport;
+        //si aucun produit n'a été créé
+        return -1;
     }
     
     /**
@@ -522,6 +530,21 @@ public class Controleur
         
         return ret;
     }
+    private VersionConsole chercherVersionConsole(int id) throws DonneeInvalideException
+    {
+        if (id < 0)
+            throw new DonneeInvalideException("Impossible de chercher un produit (console) : aucun identifiant n'a été renseigné.");
+        
+        HQLRecherche q = new HQLRecherche("VersionConsole vc");
+        q.addCondition("vc.idVersionConsole", id, HQLRecherche.Operateur.EGAL);
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
+        
+        if (resultats.isEmpty())
+            return null;
+        else //on suppose qu'il n'y a qu'un seul résultat !
+            return (VersionConsole) resultats.get(0);
+    }
     /**
      * Recherche les versions de consoles dont le code barre, l'édition, la zone et le fabricant correspondent parfaitement aux données renseignées,
      * et dont le nom contient la chaîne renseignée.
@@ -604,6 +627,21 @@ public class Controleur
         ret.addAll(resultats);
         
         return ret;
+    }
+    private VersionJeu chercherVersionJeu(int id) throws DonneeInvalideException
+    {
+        if (id < 0)
+            throw new DonneeInvalideException("Impossible de chercher un produit (jeu) : aucun identifiant n'a été renseigné.");
+        
+        HQLRecherche q = new HQLRecherche("VersionJeu vj");
+        q.addCondition("vj.idVersionJeu", id, HQLRecherche.Operateur.EGAL);
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
+        
+        if (resultats.isEmpty())
+            return null;
+        else //on suppose qu'il n'y a qu'un seul résultat !
+            return (VersionJeu) resultats.get(0);
     }
     /**
      * Recherche les consoles dont le nom correspond parfaitement à la chaîne renseignée et ayant le fabricant désigné.
