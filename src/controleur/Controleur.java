@@ -52,8 +52,7 @@ public class Controleur
     
     /**
      * Détermine, à partir d'un bean, quelle(s) requête(s) d'INSERT va générer et va exécuter.
-     * @param f est un objet de type ProduitForm (package bean) ce objet est
-     * utilisé pour de efectuer l'operation de cast:
+     * @param f est un objet de type ProduitForm (package bean) ce objet est utilisé pour de efectuer l'operation de cast:
      * @see bean.ProduitForm
      * @throws DonneesInsuffisantesException si l'utilisateur rentre des données insufisantes
      * @throws DonneeInvalideException si l'utilisateur n'utilise le type de variable requise
