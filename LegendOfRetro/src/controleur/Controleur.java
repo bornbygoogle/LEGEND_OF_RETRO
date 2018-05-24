@@ -434,7 +434,7 @@ public class Controleur
         for (VersionJeu enr : chercherVersionsJeu(cb, "", "", "", "","", new Vector<String>()))
             ret.add(new ProduitForm(-1, enr.getIdVersionJeu(), "Jeu",
                     enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
-                    enr.getJeu().getNomJeu(), enr.getJeu().getDescriptionJeu(),
+                    enr.getJeu().getEditeur().getNomEditeur(), enr.getJeu().getDescriptionJeu(),
                     decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
                     enr.getPrix(), enr.getStock()));
         if (ret.size() > 1)
@@ -460,8 +460,6 @@ public class Controleur
         Vector<String> tags = stringToVector(form.getTags().replace(" ", ""), ',');
         String plateforme = form.getPlateforme();
         //Pas besoin de récupérer les identifiants, la description de jeu, le prix et le stock.
-
-System.out.println(tags);
         
         if ("Console".equals(type))
         {
@@ -480,7 +478,7 @@ System.out.println(tags);
                 for (VersionJeu enr : chercherVersionsJeu(cb, edition, zone, plateforme, nom, editeur, tags))
                     ret.add(new ProduitForm(-1, enr.getIdVersionJeu(), "Jeu",
                             enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
-                            enr.getJeu().getNomJeu(), enr.getJeu().getDescriptionJeu(),
+                            enr.getJeu().getEditeur().getNomEditeur(), enr.getJeu().getDescriptionJeu(),
                             decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
                             enr.getPrix(), enr.getStock()));
             else

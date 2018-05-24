@@ -500,15 +500,31 @@ public class critResultat extends javax.swing.JPanel
     public void setForm(ProduitForm f)
     {
         this.selectedForm = f;
+System.out.println("pl" + f.getType());
         
-        if ("jeu".equals(f.getType()))
+        if ("Jeu".equals(f.getType()))
         {
-            this.listeCategorie.setSelectedIndex(1); //type Jeu
-            //this.fieldTag.setText(f.getTags());
+            this.listeCategorie.getModel().setSelectedItem(listeCategorie.getItemAt(1)); //type Jeu
+            this.fieldTag.setText(f.getTags());
             this.jTextAreaDescription.setText(f.getDescription());
+            
+            //sélection de la plateforme dans la liste déroulante
+            int i = 0;
+            String found = null;
+            while (found == null && i < listePlateforme.getSize().height)
+            {
+                if (f.getPlateforme().equals(listePlateforme.getItemAt(i)))
+                    found = listePlateforme.getItemAt(i);
+                else
+                    i++;
+            }
+            if (found != null)
+                listePlateforme.getModel().setSelectedItem(found);
+            else
+                listePlateforme.getModel().setSelectedItem(listeZone.getItemAt(0)); //chaîne vide sélectionnée
         }
-        else if ("console".equals(f.getType()))
-            this.listeCategorie.setSelectedIndex(0); //type Console
+        else if ("Console".equals(f.getType()))
+            this.listeCategorie.getModel().setSelectedItem(listeCategorie.getItemAt(0)); //type Console
         
         this.fieldCodeBarre.setText(f.getCodeBarre());
         this.fieldNom.setText(f.getNom());
@@ -518,7 +534,20 @@ public class critResultat extends javax.swing.JPanel
         this.idVersionJeu = f.getIdVersionJeu();
         this.idVersionConsole = f.getIdVersionConsole();
         
-        //TODO: à terminer (zones, plateformes... D'ailleurs, celles-ci doivent être initialisées proprement !)
+        //sélection de la zone dans la liste déroulante
+        int i = 0;
+        String found = null;
+        while (found == null && i < listeZone.getSize().height)
+        {
+            if (f.getZone().equals(listeZone.getItemAt(i)))
+                found = listeZone.getItemAt(i);
+            else
+                i++;
+        }
+        if (found != null)
+            listeZone.getModel().setSelectedItem(found);
+        else
+            listeZone.getModel().setSelectedItem(listeZone.getItemAt(0)); //chaîne vide sélectionnée
     }
     private Form toForm() throws DonneeInvalideException
     {
