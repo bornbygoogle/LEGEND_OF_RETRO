@@ -104,6 +104,11 @@ public class critResultat extends javax.swing.JPanel
         labelZone.setText("Zone : ");
 
         fieldNom.setToolTipText("Nom");
+        fieldNom.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                fieldNomKeyPressed(evt);
+            }
+        });
 
         fieldEditeur.setToolTipText("Developpeur / Fabricant");
         fieldEditeur.addActionListener(new java.awt.event.ActionListener() {
@@ -478,6 +483,10 @@ public class critResultat extends javax.swing.JPanel
             buttonAjoutZone.setVisible(false);
         }
     }//GEN-LAST:event_listeZoneItemStateChanged
+
+    private void fieldNomKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldNomKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fieldNomKeyPressed
 
     public void setForm(ProduitForm f)
     {
