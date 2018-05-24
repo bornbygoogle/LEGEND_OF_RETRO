@@ -591,10 +591,12 @@ System.out.println(tags);
                 imbrJeu.addCondition("j.nomJeu", nom, HQLRecherche.Operateur.LIKE);
             if (!"".equals(editeur)) //condition sur le développeur
             {
-                HQLRecherche imbrEditeur = new HQLRecherche("LOREntities.Jeu j");
+                HQLRecherche imbrEditeur = new HQLRecherche("LOREntities.Editeur e");
                 imbrEditeur.setImbriquee(true);
-                imbrEditeur.setSelect("j.editeur.idEditeur");
-                imbrEditeur.addCondition("j.nomJeu", nom, HQLRecherche.Operateur.LIKE);            
+                imbrEditeur.setSelect("e.idEditeur");
+                imbrEditeur.addCondition("e.nomEditeur", editeur, HQLRecherche.Operateur.LIKE);   
+                
+                imbrJeu.addCondition("j.editeur.idEditeur", imbrEditeur.toString(), HQLRecherche.Operateur.IN);
             }
             if (!tags.isEmpty())
             {
