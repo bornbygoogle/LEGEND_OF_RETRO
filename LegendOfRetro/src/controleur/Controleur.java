@@ -8,6 +8,7 @@ package controleur;
 import LOREntities.*;
 
 import bean.CodeBarreForm;
+import bean.Form;
 import bean.ProduitForm;
 import hibernateConfig.HibernateUtil;
 import java.util.List;
@@ -412,6 +413,13 @@ public class Controleur
      * Détermine, à partir d'un bean, quelle(s) requête(s) de recherche générer et exécuter. Transforme les résultats en formulaires.
      * Les formulaires renvoyés correspondront à des produits : nommément, soit à une version de jeu, soit à une version de console.
     */
+    public Vector<ProduitForm> chercher(Form form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
+    {
+        if (form instanceof CodeBarreForm)
+            return chercher((CodeBarreForm) form);
+        else //if (form instanceof ProduitForm)
+            return chercher((ProduitForm) form);
+    }
     public Vector<ProduitForm> chercher(CodeBarreForm form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
     {
         Vector<ProduitForm> ret = new Vector<ProduitForm>();
@@ -449,10 +457,12 @@ public class Controleur
         String zone = form.getZone();
         String editeur = form.getEditeur();
         String description = form.getDescription();      //La description n'est pas un critère de recherche viable.
-        Vector<String> tags = stringToVector(form.getTags(), ',');
+        Vector<String> tags = stringToVector(form.getTags().replace(" ", ""), ',');
         String plateforme = form.getPlateforme();
         //Pas besoin de récupérer les identifiants, la description de jeu, le prix et le stock.
 
+System.out.println(tags);
+        
         if ("Console".equals(type))
         {
             if (!"".equals(cb) || !"".equals(edition) || !"".equals(zone) || !"".equals(nom) || !"".equals(editeur))
@@ -559,49 +569,56 @@ public class Controleur
         
         Vector<VersionJeu> ret = new Vector<VersionJeu>();
         
-        //TODO: la recherche à proprement parler.
         HQLRecherche q = new HQLRecherche("LOREntities.VersionJeu vj"); //TODO: requête imbriquée imbrCons
         //rédaction de la requête imbriquée pour console
-        if (!"".equals(nom) || !"".equals(plateforme)) //si la console est renseignée (et/ou son fabricant)
+        if (!"".equals(plateforme)) //si la console est renseignée
         {
             HQLRecherche imbrCons = new HQLRecherche("LOREntities.Console c");
             imbrCons.setImbriquee(true);
             imbrCons.setSelect("c.idConsole");
-            imbrCons.addCondition("c.nomConsole", plateforme, HQLRecherche.Operateur.LIKE);
+            imbrCons.addCondition("c.nomConsole", plateforme, HQLRecherche.Operateur.EGAL);
             
-            // requete imbriquée pour chercher nom de Jeu
-            // Requete SQL :
-            // from LOREntities.VersionJeu vj where vj.jeu IN ( select j.idJeu from LOREntities.Jeu j where j.nomJeu LIKE '% nom %' )
-            if (!"".equals(nom)) //si le nom du jeu est renseignée
-            {
-                HQLRecherche imbrJeu = new HQLRecherche("LOREntities.Jeu j");
-                imbrJeu.setImbriquee(true);
-                imbrJeu.setSelect("j.idJeu");
-                imbrJeu.addCondition("j.nomJeu", nom, HQLRecherche.Operateur.LIKE);            
-                q.addCondition("vj.jeu", imbrJeu.toString(), HQLRecherche.Operateur.IN);
-            } 
-            //rédaction de la requête imbriquée pour fabricant
-            if (!"".equals(editeur)) //si l'Editeur est renseigné
-            {              
-                // Partie imbriquée pour chercher Editeur
-                // Requete SQL :
-                // select e.idEditeur from LOREntities.Editeur e where e.nomEditeur LIKE '% editeur %'
-                HQLRecherche imbrEditeur = new HQLRecherche("LOREntities.Editeur e");
-                imbrEditeur.setImbriquee(true);
-                imbrEditeur.setSelect("e.idEditeur");
-                imbrEditeur.addCondition("e.nomEditeur", editeur, HQLRecherche.Operateur.LIKE);
-                // Partie imbriquée pour chercher Jeu avec editeur
-                // Requete SQL :
-                // from LOREntities.Jeu j where j.editeur IN ( select e.idEditeur from LOREntities.Editeur e where e.nomEditeur LIKE '% editeur %' )
-                HQLRecherche imbrJeu = new HQLRecherche("LOREntities.Jeu j");
-                imbrJeu.setImbriquee(true);
-                imbrJeu.setSelect("j.idJeu");
-                imbrJeu.addCondition("j.editeur", imbrEditeur.toString(), HQLRecherche.Operateur.IN);
+            q.addCondition("vj.console.idConsole", imbrCons.toString(), HQLRecherche.Operateur.IN);
+        }
 
-                q.addCondition("vj.jeu", imbrJeu.toString(), HQLRecherche.Operateur.IN);
+        // rédaction de la requete imbriquée Jeu
+        if (!"".equals(nom) || !"".equals(editeur) || !tags.isEmpty()) //si le nom du jeu est renseignée
+        {
+            HQLRecherche imbrJeu = new HQLRecherche("LOREntities.Jeu j");
+            imbrJeu.setImbriquee(true);
+            
+            if (!"".equals(nom)) //condition sur le nom
+                imbrJeu.addCondition("j.nomJeu", nom, HQLRecherche.Operateur.LIKE);
+            if (!"".equals(editeur)) //condition sur le développeur
+            {
+                HQLRecherche imbrEditeur = new HQLRecherche("LOREntities.Jeu j");
+                imbrEditeur.setImbriquee(true);
+                imbrEditeur.setSelect("j.editeur.idEditeur");
+                imbrEditeur.addCondition("j.nomJeu", nom, HQLRecherche.Operateur.LIKE);            
             }
-            q.addCondition("vj.console", imbrCons.toString(), HQLRecherche.Operateur.IN);
-       }
+            if (!tags.isEmpty())
+            {
+                for (String tag : tags)
+                {
+                    //on sélectionne le tag
+                    HQLRecherche imbrTag = new HQLRecherche("LOREntities.Tag t");
+                    imbrTag.setImbriquee(true);
+                    imbrTag.setSelect("t.idTag");
+                    imbrTag.addCondition("t.labelTag", tag, HQLRecherche.Operateur.EGAL);   
+                    
+                    //on liste les jeux des relations "décrire" correspondant à ce tag (identifiants seulement)
+                    HQLRecherche imbrDecr = new HQLRecherche("LOREntities.Decrire d");
+                    imbrDecr.setImbriquee(true);
+                    imbrDecr.setSelect("d.jeu.idJeu");
+                    imbrDecr.addCondition("d.tag.dTag", imbrTag.toString(), HQLRecherche.Operateur.IN);   
+                    
+                    //la requête qui recherche le jeu sélectionne parmi les jeux qui ont tous ces tags
+                    imbrJeu.addCondition("j.idJeu", imbrDecr.toString(), HQLRecherche.Operateur.IN);
+                }
+            }
+            
+            q.addCondition("vj.jeu", imbrJeu.toString(), HQLRecherche.Operateur.IN);
+        } 
 
         //rédaction des requêtes imbriquées pour zone
         if (!"".equals(zone)) //si la zone est renseignée
@@ -613,13 +630,9 @@ public class Controleur
             q.addCondition("vj.zone", imbrZone.toString(), HQLRecherche.Operateur.IN);
         }
         //autres conditions
-        if (!"".equals(cb))
+        if (!"".equals(cb)) //code barre
             q.addCondition("vj.codeBarre", cb, HQLRecherche.Operateur.EGAL);
-        
-        //from LOREntities.VersionJeu vj where vj.jeu in (select j.idJeu from LOREntities.Jeu j where j.nomJeu LIKE '%jeu001%' )
-       
-
-        if (!"".equals(edition))
+        if (!"".equals(edition)) //edition
             q.addCondition("vj.edition", edition, HQLRecherche.Operateur.LIKE);
         
         System.out.println(q.toString()); //imprimé à des fins de test
@@ -899,7 +912,8 @@ public class Controleur
         Vector<String> ret = new Vector();
         String[] tab = s.split(Character.toString(separator));
         for (String str : tab)
-            ret.add(str);
+            if (!"".equals(str)) //Cela arrive si le paramètre s est une chaîne vide.
+                ret.add(str);
         return ret;
     }
     protected static final String vectorToString(Vector<String> v, char separator)
