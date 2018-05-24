@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>18</x>
+      <y>414</y>
+      <w>90</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>JPanel</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>243</x>
+      <y>414</y>
+      <w>144</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>MenuProduit
+-
+-
+-initComponents(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>99</x>
+      <y>423</y>
+      <w>162</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;160.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>396</x>
+      <y>117</y>
+      <w>234</w>
+      <h>162</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;EventListener&gt;&gt;
+GUI
+-
+-boutonProduit: JButton
+-boutonAcaht: JButton
+-boutonVente: JButton
+-boutonClient: JButton
+-boutonPromo: JButton
+-
++actionPerformed(ActionEvent): void
++ouvrirMenu(MenuActif)
++fermerMenu(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>306</x>
+      <y>270</y>
+      <w>225</w>
+      <h>162</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=0..1</panel_attributes>
+    <additional_attributes>230.0;10.0;230.0;50.0;10.0;50.0;10.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>540</x>
+      <y>0</y>
+      <w>90</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>JFrame</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>567</x>
+      <y>18</y>
+      <w>27</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>342</x>
+      <y>63</y>
+      <w>198</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;200.0;10.0;200.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>243</x>
+      <y>54</y>
+      <w>108</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>MenuActif
+" énumération"
+--
+AUCUN
+PRODUIT
+ACHAT
+VENTE
+CLIENT
+PROMO</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>189</x>
+      <y>18</y>
+      <w>819</w>
+      <h>864</h>
+    </coordinates>
+    <panel_attributes>vue
+--
+bg=orange
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>99</x>
+      <y>180</y>
+      <w>315</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>330.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>9</x>
+      <y>153</y>
+      <w>108</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>Controleur
+--
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>18</x>
+      <y>180</y>
+      <w>90</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>Controleur</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>729</x>
+      <y>54</y>
+      <w>225</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>Chercheur
+"interface"
+-
++selectionnerResultat(formulaire):void
++lancerRecherche(formulaire):void
++afficherErreur(exception):void
++afficherLog(log):void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>108</y>
+      <w>396</w>
+      <h>324</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+"implémente"</panel_attributes>
+    <additional_attributes>420.0;10.0;330.0;10.0;330.0;260.0;10.0;260.0;10.0;340.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>99</x>
+      <y>180</y>
+      <w>216</w>
+      <h>252</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>220.0;260.0;220.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>207</x>
+      <y>504</y>
+      <w>243</w>
+      <h>351</h>
+    </coordinates>
+    <panel_attributes>criteresProduit
+-
+-ajoutZone: JButton
+-nouveau: JButton
+-chercher: JButton
+-modifier: JButton
+-listeCategorie: JComboBox
+-listeZone: JComboBox
+-listePlateforme: JComboBox
+-codeBarre: JTextField
+-nom: JTextField
+-editeur: JTextField
+-edition: JTextField
+-nouvelleZone: JTextField
+-tags: JTextField
+-description: JTextArea
+-ajoutCasse: JSpinner
+-
+-listeCategorieItemStateChanged(): void
+-listeZoneItemStateChanged(): void
+-buttonChercherActionPerformed(): void
+-buttonNouveauActionPerformed(): void
+-buttonModifierActionPerformed(): void
++setForm(Form): void
+-toForm():Form</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>306</x>
+      <y>459</y>
+      <w>27</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>378</x>
+      <y>639</y>
+      <w>153</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>Remarque : Mofification
+non implémentée.
+Suppression à
+prévoir ?
+bg=blue
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>891</x>
+      <y>144</y>
+      <w>27</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>729</x>
+      <y>189</y>
+      <w>270</w>
+      <h>198</h>
+    </coordinates>
+    <panel_attributes>Resulat &lt;F étend Form&gt;
+--
+-table: JTable
+-jScrollPane: jScrollPane
+-verbose: JLabel
+-res: Vector &lt;F&gt;
+_-typeJeu: String[]_
+_-typeConsole: String[]_
+--
+-tableMouseClicked(): void
++afficherRes(Vector &lt;F&gt; resultats): void
++afficherMessage(): void
++afficherErreur(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
