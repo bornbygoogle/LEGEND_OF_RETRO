@@ -80,9 +80,11 @@ public class critResultat extends javax.swing.JPanel
         labelCasse = new javax.swing.JLabel();
         fieldCasse1 = new javax.swing.JLabel();
         fieldCasse2 = new javax.swing.JLabel();
+        fieldPrix = new javax.swing.JLabel();
         labelCurrency = new javax.swing.JLabel();
         labelCote = new javax.swing.JLabel();
         fieldCote = new javax.swing.JLabel();
+        fieldStock = new javax.swing.JLabel();
         fieldCasse = new javax.swing.JLabel();
         listeZone = new javax.swing.JComboBox<>();
         fieldAjoutCasse = new javax.swing.JSpinner();
@@ -94,8 +96,6 @@ public class critResultat extends javax.swing.JPanel
         buttonModifier = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaDescription = new javax.swing.JTextArea();
-        fieldPrix = new javax.swing.JFormattedTextField();
-        fieldStock = new javax.swing.JFormattedTextField();
 
         setName("critResultat"); // NOI18N
 
@@ -104,6 +104,11 @@ public class critResultat extends javax.swing.JPanel
         labelZone.setText("Zone : ");
 
         fieldNom.setToolTipText("Nom");
+        fieldNom.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                fieldNomKeyPressed(evt);
+            }
+        });
 
         fieldEditeur.setToolTipText("Developpeur / Fabricant");
         fieldEditeur.addActionListener(new java.awt.event.ActionListener() {
@@ -165,11 +170,15 @@ public class critResultat extends javax.swing.JPanel
         fieldCasse2.setEnabled(false);
         fieldCasse2.setFocusable(false);
 
+        fieldPrix.setText("0");
+
         labelCurrency.setText("€");
 
         labelCote.setText("Cote :");
 
         fieldCote.setText("0");
+
+        fieldStock.setText("0");
 
         fieldCasse.setText("1000");
 
@@ -227,18 +236,6 @@ public class critResultat extends javax.swing.JPanel
         jTextAreaDescription.setRows(5);
         jScrollPane1.setViewportView(jTextAreaDescription);
 
-        fieldPrix.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldPrixActionPerformed(evt);
-            }
-        });
-
-        fieldStock.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldStockActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -272,6 +269,26 @@ public class critResultat extends javax.swing.JPanel
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(labelCasse)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(labelPrix)
+                                        .addComponent(labelStock)
+                                        .addComponent(labelCote)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(fieldStock)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(fieldCasse)
+                                        .addGap(43, 43, 43)
+                                        .addComponent(fieldAjoutCasse, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(fieldPrix, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(labelCurrency, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(fieldCote)))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(labelTag)
@@ -281,27 +298,8 @@ public class critResultat extends javax.swing.JPanel
                                         .addComponent(fieldTxtAjoutZone, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(buttonAjoutZone)))
-                                .addGap(0, 121, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(labelCasse)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(labelPrix)
-                                        .addComponent(labelStock)
-                                        .addComponent(labelCote)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(fieldCasse)
-                                        .addGap(43, 43, 43)
-                                        .addComponent(fieldAjoutCasse, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(fieldPrix, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(labelCurrency, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(fieldCote)
-                                    .addComponent(fieldStock, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGap(0, 64, Short.MAX_VALUE)))
+                        .addGap(56, 56, 56))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(buttonChercher)
                         .addGap(18, 18, 18)
@@ -324,6 +322,27 @@ public class critResultat extends javax.swing.JPanel
                         .addComponent(fieldCasse2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
+                            .addGap(15, 15, 15)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(labelCote)
+                                .addComponent(fieldCote)
+                                .addComponent(listeCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(labelCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(labelPrix)
+                                .addComponent(fieldPrix)
+                                .addComponent(labelCurrency))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(labelStock)
+                                .addComponent(fieldStock))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(labelCasse)
+                                .addComponent(fieldCasse)
+                                .addComponent(fieldAjoutCasse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createSequentialGroup()
                             .addGap(46, 46, 46)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(fieldCodeBarre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -335,31 +354,7 @@ public class critResultat extends javax.swing.JPanel
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(fieldEditeur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(fieldDevFab)))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(15, 15, 15)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(labelCote)
-                                        .addComponent(fieldCote))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(labelPrix)
-                                        .addComponent(labelCurrency)
-                                        .addComponent(fieldPrix, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(labelStock)
-                                        .addComponent(fieldStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(labelCasse)
-                                        .addComponent(fieldCasse)
-                                        .addComponent(fieldAjoutCasse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(listeCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(labelCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addComponent(fieldDevFab)))))
                 .addGap(7, 7, 7)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
@@ -489,42 +484,22 @@ public class critResultat extends javax.swing.JPanel
         }
     }//GEN-LAST:event_listeZoneItemStateChanged
 
-    private void fieldPrixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldPrixActionPerformed
+    private void fieldNomKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldNomKeyPressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_fieldPrixActionPerformed
-
-    private void fieldStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldStockActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldStockActionPerformed
+    }//GEN-LAST:event_fieldNomKeyPressed
 
     public void setForm(ProduitForm f)
     {
         this.selectedForm = f;
-System.out.println("pl" + f.getType());
         
-        if ("Jeu".equals(f.getType()))
+        if ("jeu".equals(f.getType()))
         {
-            this.listeCategorie.getModel().setSelectedItem(listeCategorie.getItemAt(1)); //type Jeu
-            this.fieldTag.setText(f.getTags());
+            this.listeCategorie.setSelectedIndex(1); //type Jeu
+            //this.fieldTag.setText(f.getTags());
             this.jTextAreaDescription.setText(f.getDescription());
-            
-            //sélection de la plateforme dans la liste déroulante
-            int i = 0;
-            String found = null;
-            while (found == null && i < listePlateforme.getSize().height)
-            {
-                if (f.getPlateforme().equals(listePlateforme.getItemAt(i)))
-                    found = listePlateforme.getItemAt(i);
-                else
-                    i++;
-            }
-            if (found != null)
-                listePlateforme.getModel().setSelectedItem(found);
-            else
-                listePlateforme.getModel().setSelectedItem(listeZone.getItemAt(0)); //chaîne vide sélectionnée
         }
-        else if ("Console".equals(f.getType()))
-            this.listeCategorie.getModel().setSelectedItem(listeCategorie.getItemAt(0)); //type Console
+        else if ("console".equals(f.getType()))
+            this.listeCategorie.setSelectedIndex(0); //type Console
         
         this.fieldCodeBarre.setText(f.getCodeBarre());
         this.fieldNom.setText(f.getNom());
@@ -534,40 +509,22 @@ System.out.println("pl" + f.getType());
         this.idVersionJeu = f.getIdVersionJeu();
         this.idVersionConsole = f.getIdVersionConsole();
         
-        //sélection de la zone dans la liste déroulante
-        int i = 0;
-        String found = null;
-        while (found == null && i < listeZone.getSize().height)
-        {
-            if (f.getZone().equals(listeZone.getItemAt(i)))
-                found = listeZone.getItemAt(i);
-            else
-                i++;
-        }
-        if (found != null)
-            listeZone.getModel().setSelectedItem(found);
-        else
-            listeZone.getModel().setSelectedItem(listeZone.getItemAt(0)); //chaîne vide sélectionnée
+        //TODO: à terminer (zones, plateformes... D'ailleurs, celles-ci doivent être initialisées proprement !)
     }
     private Form toForm() throws DonneeInvalideException
     {
         float prix;
         int stock;
-        {
-            try {
-                if (!"".equals(fieldPrix.getText()))
-                    prix = Float.valueOf(fieldPrix.getText());
-                else
-                    prix = 0f;}
-            catch (NumberFormatException nfe) {
-                    throw new DonneeInvalideException("Erreur : veuillez saisir le 'prix' en notation anglo-saxonne (par exemple : 2.5");}
-            try {
-                if (!"".equals(fieldStock.getText()))
-                    stock = Integer.valueOf(fieldStock.getText());
-                else
-                    stock = 0;}
-            catch (NumberFormatException nfe) {
-                    throw new DonneeInvalideException("Erreur : veuillez saisir un entier dans le champ 'stock'");}
+        try {
+            prix = Float.valueOf(fieldPrix.getText());
+            stock = Integer.valueOf(fieldStock.getText());}
+        catch (NumberFormatException nfe) {
+            if (!"".equals(fieldPrix.getText()))
+                throw new DonneeInvalideException("Erreur : veuillez saisir le 'prix' en notation anglo-saxonne (par exemple : 2.5");
+            if (!"".equals(Integer.valueOf(fieldStock.getText())))
+                throw new DonneeInvalideException("Erreur : veuillez saisir un entier dans le champ 'stock'");
+            prix = 0f;
+            stock = 0;
         }
             
         if("".equals(fieldNom.getText()) && "".equals(fieldEditeur.getText())
@@ -600,8 +557,8 @@ System.out.println("pl" + f.getType());
     public static javax.swing.JTextField fieldEditeur;
     public static javax.swing.JTextField fieldEdition;
     public static javax.swing.JTextField fieldNom;
-    public static javax.swing.JFormattedTextField fieldPrix;
-    public static javax.swing.JFormattedTextField fieldStock;
+    public static javax.swing.JLabel fieldPrix;
+    public static javax.swing.JLabel fieldStock;
     public static javax.swing.JTextField fieldTag;
     public static javax.swing.JTextField fieldTxtAjoutZone;
     public static javax.swing.JScrollPane jScrollPane1;
