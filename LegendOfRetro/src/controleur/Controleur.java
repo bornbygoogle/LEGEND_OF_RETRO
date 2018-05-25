@@ -20,8 +20,8 @@ import vue.GUI;
 //import vue.Vue;
 
 /**
- *
  * @author Adrien Marchand
+ * La classe controleur contien:  1.Controleur() throws InitException-un contructeur qui initialise la Vue et le Modele et 2.Des methode qui vont faire l'aiguillage entre Vue-Modele
  */
 public class Controleur
 {
@@ -33,7 +33,9 @@ public class Controleur
         init();
     }
     /**
-     * Crée la vue et initialise la connection avec la base de données.
+     * la vue sera utilisé pour communiquer avec l'affichage
+     * le modele va preparer la sesion hibernate
+     * @throws InitException va etre lancér si un fichier de confiquration requis n'est pas trouvé
      */
     public void init() throws InitException
     {
@@ -46,7 +48,14 @@ public class Controleur
     }
     
     /**
-     * Détermine, à partir d'un bean, quelle(s) requête(s) d'INSERT générer et exécuter.
+     * Détermine, à partir d'un bean, quelle(s) requête(s) d'INSERT va générer et va exécuter.
+     * @param f est un objet de type ProduitForm-(voir See Also), ce objet est utilisé pour de efectuer l'operation de cast  et a l'intérieur de cette méthode il y a appelé une autre méthode (voir See Also):
+     * @see bean.ProduitForm
+     * @see #creerVersionConsole(controleur.Rapport, java.lang.String, java.lang.String, java.lang.String, float, int, java.lang.String, java.lang.String) 
+     * @throws DonneesInsuffisantesException si l'utilisateur rentre des données insufisantes
+     * @throws DonneeInvalideException si l'utilisateur n'utilise le type de variable requise
+     * @throws EnregistrementExistantException si la valeur entrée existe déja dans la base de données
+     * @return Rapport donc va etre utiliseé pour HQLRecherche,voir le constructeur Rapport
     */
     public Rapport creer(ProduitForm f)
             throws DonneesInsuffisantesException, DonneeInvalideException, EnregistrementExistantException
@@ -90,8 +99,17 @@ public class Controleur
     {
             throw new DonneesInsuffisantesException("Impossible de créer le produit : le code barre n'est pas une donnée suffisante.");
     }
-    /**
-     * Crée un fabricant. Assure l'unicité de l'enregistrement.
+     /**
+     * Crée un fabricant. Assure l'unicité de l'enregistrement dans l'intérieur de cette méthode sont appelées les méthodes-voir See Also.
+     * @see #chercherFabricant(String nomFabr) dans cette methode s'effectue un traitement qui appelle:
+     * @see HQLRecherche#addCondition(String membreGauche, String membreDroite, Operateur operateur)
+     * @see Fabricant#getNomFabricant() 
+     * @see Rapport#idDerniereOperation
+     * @param rapport est une variable objet de type Rapport pour afficher un retour dans l'interface graphique voir {@link vue.Resultat}
+     * @param nomFabr met en parametre une variable de type String
+     * @throws DonneesInsuffisantesException si l'utilisateur rentre de données insufisantes
+     * @throws EnregistrementExistantException si la valeur entrée existe deja dans la base de données
+     * @return Fabricant va retourner un objet de type Fabricant (voir See Also)
     */
     protected Fabricant creerFabricant(Rapport rapport, String nomFabr)
             throws DonneesInsuffisantesException, EnregistrementExistantException
@@ -116,9 +134,17 @@ public class Controleur
         rapport.addOperation(fabr.getIdFabricant(), Rapport.Table.FABRICANT, Rapport.Operation.CREER);
         return fabr;
     }
+   
     /**
      * Crée un éditeur. Assure l'unicité de l'enregistrement.
-    */
+     * @param rapport-une variable de type Rapport(voir See Also) qui est utilisé pour retourner une reponse dans l'interface graphique-(voir See Also).
+     * @see Rapport
+     * @param nomEditeur-est utilisé pour appeller la méthode setNomEditeur(nomEditeur)-voir See Also
+     * @see LOREntities.Editeur#setNomEditeur(String nomEditeur)
+     * @throws DonneesInsuffisantesException si l'utilisateur rentre de données insufisantes
+     * @throws EnregistrementExistantException si la valeur entrée existe deja dans la base de données
+     * @return Editeur va retourner un objet de type Editeur (voir See Also)
+    */    
     protected Editeur creerEditeur(Rapport rapport, String nomEditeur)
             throws DonneesInsuffisantesException, EnregistrementExistantException
     {
@@ -144,6 +170,12 @@ public class Controleur
     }
     /**
      * Crée un tag. Assure l'unicité de l'enregistrement.
+     * @param rapport met en parametre une variable de type Rapport qui est utilisé pour retourner une réponse dans l'interface graphique
+     * @param tag-une variable de type String qui est utilise pour appeller la methode setLabelTag - (pour détail voir-See Also)  et après de sauvegarde dans la base de données
+     * @see  LOREntities.Tag#setLabelTag(java.lang.String) 
+     * @throws DonneesInsuffisantesException si l'utilisateur rentre des données insufisantes
+     * @throws EnregistrementExistantException si la valeur entrée existe deja dans la base de données
+     * @return Tag va retourner un objet de type Tag,voir la classe Tag situé dans le package LOREntities-(voir  See Also)
     */
     protected Tag creerTag(Rapport rapport, String tag)
             throws DonneesInsuffisantesException, EnregistrementExistantException
@@ -179,8 +211,17 @@ public class Controleur
 //        rapport.addOperation(desc., Rapport.Table.DESCRIPTION, Rapport.Operation.CREER);
 //    }
     /**
-     * Crée un jeu et/ou son éditeur. Assure l'unicité de l'enregistrement.
-     * Si l'éditeur est inexistant dans la base de données, un nouvel éditeur est ajouté à la volée. De même pour les tags.
+     * Crée un jeu et/ou son éditeur. Assure l'unicité de l'enregistrement.Si l'éditeur est inexistant dans la base de données, un nouvel éditeur est ajouté à la volée. De même pour les tags.
+     * @param  rapport-une variable de type Rapport qui est utilisé pour retourner une réponse dans l'interface graphique
+     * @param  nomJeu est utilisé pour etre mis en parametre dans la methode creerEditeur (voir See Also)pour créer un Editeur de jeu,soit pour un Jeu
+     * @see  #creerEditeur(controleur.Rapport, java.lang.String) 
+     * @param  description est utilisé pour etre mis en parametre dans la methode creerEditeur (voir See Also)pour créer un Editeur de jeu,soit pour un Jeu
+     * @param  tags est utilisé dans la methode creerEditeur (voir See Also)pour créer un Editeur de jeu,soit pour un Jeu
+     * @param  nomEditeur est dans la methode creerEditeur (voir See Also)pour créer un Editeur de jeu,soit pour un Jeu
+     * @throws DonneesInsuffisantesException si l'utilisateur rentre des données insufisantes
+     * @throws EnregistrementExistantException si la valeur entrée existe deja dans la base de données
+     * @return un objet de type jeu qui contien des attributs qui appartient à la classe Jeu (voir See Also)
+     * @see LOREntities.Jeu
      */
     protected Jeu creerJeu(Rapport rapport, String nomJeu, String description, Vector<String> tags,
             String nomEditeur) throws DonneesInsuffisantesException, EnregistrementExistantException
@@ -236,7 +277,20 @@ public class Controleur
     }
     /**
      * Crée une console et/ou son fabricant.
-     * Si le fabricant est renseigné par un label inexistant dans la base de données, un nouveau fabricant est ajouté à la volée.
+     * Si le fabricant est renseigné par un label inexistant dans la base de données, un nouveau fabricant est ajouté à la volée voir les methodées qui existe dans l'interioeur de cette methode -voir SeeAlso.
+     * @see #creerFabricant(controleur.Rapport, java.lang.String) 
+     * @see #chercherFabricant(java.lang.String) 
+     * @see #chercherConsole(java.lang.String, java.lang.String) 
+     * @see LOREntities.Console#setNomConsole(java.lang.String) 
+     * @see LOREntities.Fabricant#setNomFabricant(java.lang.String) 
+     * @param  rapport-met en parametre une variable de type Rapport qui est utilisé
+     * pour retourner une réponse dans l'interface graphique
+     * @param   nomConsole une variable qui represente le nom de la console
+     * @param   nomFabr une variable qui represente le nom de fabricant pour ces deux variable on effectue des traitement si le nom de fabricant existe:
+     * @see #chercherConsole(java.lang.String, java.lang.String)
+     * @throws DonneesInsuffisantesException si l'utilisateur rentre de données insufisantes
+     * @throws EnregistrementExistantException si la valeur entre existe deja dans la base de données
+     * @return  Console va retourner un objet de type Console
     */
     protected Console creerConsole(Rapport rapport, String nomConsole, String nomFabr)
             throws DonneesInsuffisantesException, EnregistrementExistantException
@@ -276,11 +330,29 @@ public class Controleur
             return cons;
         }
     }
-    /**
+   /**
      * Crée une version d'une console et/ou la console elle-même et/ou son fabricant.
-     * Si un produit est créé, assure la validité du code barre ainsi que l'unicité de l'enregistrement.
+     * Si un produit est créé, il assure la validité du code barre ainsi que l'unicité de l'enregistrement.
      * Si la console est inexistante dans la base de données, une nouvelle console est ajoutée à la volée. Par transitivité, cela s'applique au fabricant. Ne met pas à jour le fabricant d'une console existante.
      * La zone renseignée doit déjà exister dans la base de données.
+     * Dans l'intérieur de cette méthode sont appelées les méthodes-voir See Also.
+     * @see #codeBarreValide(java.lang.String) 
+     * @see #creerConsole(controleur.Rapport, java.lang.String, java.lang.String) 
+     * @see #chercherConsole(java.lang.String, java.lang.String) 
+     * @see #chercherZone(java.lang.String) 
+     * @see #chercherVersionsConsole(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String) 
+     * @param rapport utilisé pour afficher le resultat 
+     * @param cb met une variable de type String représente le code de barre"
+     * @param edition met en parametre variable de type String représente l'editeur
+     * @param nomZone met en parametre variable de type String représente la nom de Zone
+     * @param prix met en parametre variable de type float représente le prix d'une version de console
+     * @param stock met en parametre variable de type integer représente le stock d'un certaine version console
+     * @param nomConsole met en parametre variable de type String représente le nome de la console
+     * @param nomFabr met en parametre variable de type String représente le nom de fabricant
+     * @throws DonneesInsuffisantesException si l'utilisateur rentre de données insufisantes
+     * @throws EnregistrementExistantException si la valeur entre existe dejq dans la base de données
+     * @throws DonneeInvalideException si l'utilisateur va rentrer des variables non conformes comme type
+     * @return Rapport une variable objet de type Rapport
     */
     protected int creerVersionConsole(Rapport rapport, String cb, String edition, String nomZone,
             float prix, int stock, String nomConsole, String nomFabr)
@@ -336,12 +408,33 @@ public class Controleur
         //si aucun produit n'a été créé
         return -1;
     }
-    /**
+     /**
      * Crée une version d'un jeu et/ou le jeu lui-même et/ou son éditeur et/ou ses tags.
-     * Si un produit est créé, assure la validité du code barre ainsi que l'unicité de l'enregistrement.
+     * Si un produit est créé, il assure la validité du code barre ainsi que l'unicité de l'enregistrement.
      * Si le jeu est inexistant dans la base de données, un nouveau jeu est ajouté à la volée. Par transitivité, cela s'applique à l'éditeur et aux tags de ce nouveau jeu. Ne met pas à jour les tags et l'éditeur d'un jeu existant.
-     * La zone renseignée doit déjà exister dans la base de données.
+     * La zone renseignée doit déjà exister dans la base de données {@link #chercherZone(java.lang.String) }
      * La console renseignée doit déjà exister dans la base de données.
+     * Dans l'intérieur de cette méthode sont appelées les méthodes-voir See Also.
+     * @see #creerJeu(controleur.Rapport, java.lang.String, java.lang.String, java.util.Vector, java.lang.String) 
+     * @see #codeBarreValide(java.lang.String) 
+     * @see #chercherJeu(java.lang.String, java.util.Vector, java.lang.String) 
+     * @see #chercherVersionsJeu(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.util.Vector) 
+     * @see #chercherConsole(java.lang.String, java.lang.String) 
+     * @param rapport utilisé pour afficher le resultat 
+     * @param cb variable de type String qui represente le code barre
+     * @param edition met en parametre une variable de type String qui represente l'editeur
+     * @param nomZone met en parametre une variable de type String qui represente le nome de la zone
+     * @param prix met en parametre une variable de type float qui reprente le prix d'un versione jeu
+     * @param stock met en parametre une variable de type integer qui represente le stock d'un cetain jeu
+     * @param nomJeu met en parametre une variable de type String qui represente le nome de jeu
+     * @param description met en parametre une variable de type String qui represent unde description d'un jeu
+     * @param tags met en parametre un vecteur de type String qui represent des tags
+     * @param nomConsole met en parametre une variable de type String qui represente le nome de la console
+     * @param nomEditeur met en parametre une variable de type String qui represente le nome d'editeur
+     * @throws DonneesInsuffisantesException si l'utilisateur rentre des données insufisantes
+     * @throws EnregistrementExistantException si la valeur entre existe deja dans la base de données
+     * @throws DonneeInvalideException si l'utilisateur va entrer des variables non conformes comme type
+     * @return Rapport un objet de type Rapport pour etre afficher dand l'interface graphque
     */
     protected int creerVersionJeu(Rapport rapport, String cb, String edition, String nomZone,
             float prix, int stock, String nomJeu, String description, Vector<String> tags,
@@ -412,6 +505,12 @@ public class Controleur
     /**
      * Détermine, à partir d'un bean, quelle(s) requête(s) de recherche générer et exécuter. Transforme les résultats en formulaires.
      * Les formulaires renvoyés correspondront à des produits : nommément, soit à une version de jeu, soit à une version de console.
+     * @throws DonneesInsuffisantesException si l'utilisateur rentre de donnes insufisantes
+     * @throws ResultatInvalideException si le resultat affiché n'est pas conforme
+     * @throws DonneeInvalideException si l'utilisateur va entrer des variables non conformes comme type
+     * @param  form met en parametre une variable objet de type Form ce objet contien des attributs qui vont etre decharger dans un vecteur de type generique
+     * le but est de chercher une version de console ou une verion de jeu dans la base de données
+     * @return Vecteur( un vecteur de type  générique)retourne un vecteur des objets de type ProduitForm le but est
     */
     public Vector<ProduitForm> chercher(Form form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
     {
@@ -486,10 +585,19 @@ public class Controleur
         }
         return ret;
     }
-    /**
+   /**
      * Recherche les versions de consoles dont le code barre, l'édition, la zone et le fabricant correspondent parfaitement aux données renseignées,
      * et dont le nom contient la chaîne renseignée.
      * La zone et l'édition ne sont pas suffisantes pour lancer une recherche.
+     * @param cb met en parametre une variable String qui represente le code barre
+     * @param edition met en parametre une variable String qui represente l'editeur
+     * @param zone met en parametre une variable String qui represente la zone
+     * @param nome en parametre une variable String qui represente de la console
+     * @param fabricant met en parametre une variable String qui represente le nome de fabricante de la console
+     * @throws DonneesInsuffisantesException si l'utilisateur rentre de données insufisantes
+     * @throws EnregistrementExistantException si la valeur entre existe deja dans la base de données
+     * @throws DonneeInvalideException si l'utilisateur va rentrer des variable non conformes comme type
+     * @return Vector retourne un vecteur generique des objets de type VersionConsole pour afficher dans l'interface
      */
     private Vector<VersionConsole> chercherVersionsConsole(String cb, String edition, String zone, String nom, String fabricant)
             throws DonneesInsuffisantesException, DonneeInvalideException
@@ -554,9 +662,19 @@ public class Controleur
             return (VersionConsole) resultats.get(0);
     }
     /**
-     * Recherche les versions de consoles dont le code barre, l'édition, la zone et le fabricant correspondent parfaitement aux données renseignées,
-     * et dont le nom contient la chaîne renseignée.
+     * Recherche les versions de jeux dont le code barre, l'édition, la zone et le fabricant correspondent parfaitement aux données renseignées,et dont le nom contient la chaîne renseignée.
      * La zone et l'édition ne sont pas suffisantes pour lancer une recherche.
+     * A l'intérieur de cette méthode il y a appelé des méthodes de la classe -voir See Also
+     * @see HQLRecherche 
+     * @param cb met en parametre une variable String qui represente le code barre
+     * @param edition met en parametre une variable String qui represente l'editeur
+     * @param zone met en parametre une variable String qui represente la zone
+     * @param nome en parametre une variable String qui represente de la console
+     * @param fabricant met en parametre une variable String qui represente le nome de fabricante de la console
+     * @throws DonneesInsuffisantesException si l'utilisateur rentre de données insufisantes
+     * @throws EnregistrementExistantException si la valeur entre existe deja dans la base de données
+     * @throws DonneeInvalideException si l'utilisateur va rentrer des variable non conformes comme type
+     * @return Vector retourne un vecteur generique des objets de type VersionConsole pour afficher dans l'interface
      */
     private Vector<VersionJeu> chercherVersionsJeu(String cb, String edition, String zone,
             String plateforme, String nom, String editeur, Vector<String> tags)
@@ -658,6 +776,11 @@ public class Controleur
     }
     /**
      * Recherche les consoles dont le nom correspond parfaitement à la chaîne renseignée et ayant le fabricant désigné.
+     *@param nomCons une variable de type String utilisé dans la methode addCondition("c.nomConsole", nomCons, HQLRecherche.Operateur.EGAL) pour la recherche d'une console ou le nom correspond
+     *@param nomFabr une variable de type String utilisé dans la methode addCondition("c.fabricant.nomFabricant", nomFabr, HQLRecherche.Operateur.EGAL) pour la recherche d'une console ou le nome est désigné
+     *@return un objet de type Console,(voir See Also) qui est une classe.
+     * @see  HQLRecherche#addCondition(java.lang.String, java.lang.String, controleur.HQLRecherche.Operateur) 
+     * @see  LOREntities.Console
      */
     private Console chercherConsole(String nomCons, String nomFabr) throws DonneesInsuffisantesException
     {
@@ -681,6 +804,12 @@ public class Controleur
     }
     /**
      * Recherche le jeu dont le nom correspond parfaitement à la chaîne renseignée et ayant l'éditeur et les tags renseignés.
+     * @param nomJeu est ultilisé pour la methode faire declanché la methode DonneesInsuffisantesException
+     * @param tags-n'est pas utilisé
+     * @param  nomEditeur-une variable de type String utilisé dans la methode appelé chercherEditeur(nomEditeur)-voir SeeAlso
+     * @return un objet de type Jeu(voir See Also) qui est une classe
+     * @see LOREntities.Jeu
+     * @see #chercherEditeur(java.lang.String) 
      */
     private Jeu chercherJeu(String nomJeu, Vector<String> tags, String nomEditeur) 
             throws DonneesInsuffisantesException
@@ -737,6 +866,10 @@ public class Controleur
     }
     /**
      * Recherche les fabricants dont le nom contient la chaîne renseignée.
+     * @param nomFabr une variable utilisé pour declancher eventuelment DonneesInsuffisantesException Exception et dans la methode addCondition-voir See Also
+     * @return Fabricant un objet de type Fabricant qui est une classe voir See Also
+     * @see HQLRecherche#addCondition(java.lang.String, java.lang.String, controleur.HQLRecherche.Operateur) 
+     * @see LOREntities.Fabricant 
      */
     private Fabricant chercherFabricant(String nomFabr) throws DonneesInsuffisantesException
     {
@@ -807,10 +940,18 @@ public class Controleur
         else //on suppose qu'il n'y a qu'un seul résultat !
             return (Tag) resultats.get(0);
     }
-    
-    /**
-     * Crée une zone dans la table des zones.
-    */
+       
+     /**
+     * Crée une zone dans la table des zones. Si la zone renseignée est trouvé, un objet Zone est renvoyé. Sinon, la méthode renvoie null.
+     * On trouve des methodés a l'interioeur de cette methode voir See Also.
+     * @see #chercherZone(java.lang.String) 
+     * @see LOREntities.Zone#setNomZone(java.lang.String) 
+     * @param zone mettre un parametre un String qui est utilisé d'abord pour verifier si on vérifie si la zone n'existe pas déjà aprés pour sauvegarde dans la base de données
+     * @throws DonneesInsuffisantesException si l'utilisateur rentre de données insufisantes
+     * @throws EnregistrementExistantException si la valeur entre existe deja dans la base de données
+     * @throws DonneeInvalideException si l'utilisateur va rentrer des variable non conformes comme type
+     * @return  Zone après le traitement returne un objet de type Zone
+     */
     public Rapport creerZone(String zone)
             throws EnregistrementExistantException, DonneesInsuffisantesException, DonneeInvalideException
     {
@@ -841,6 +982,7 @@ public class Controleur
     }
     /**
      * Renvoie la liste des zones.
+     * @return  un vecteur de type generique qui retourne la liste des zones.
      */
     public Vector<String> listeZones()
     {
@@ -853,6 +995,7 @@ public class Controleur
     }
     /**
      * Renvoie la liste des consoles.
+     * @return un vecteur de type generique qui retourne la liste des consoles.
      */
     public Vector<String> listeConsoles()
     {
@@ -896,9 +1039,9 @@ public class Controleur
     }
     /**
      * Transforme un vecteur de tags en un vecteur de strings pour l'affichage.
-     * @param tags
-     * @param separator
-     * @return 
+     * @param decrires un objet de type Decrire dans une colection,il est utilisé pour l'intération
+     * @param separator est utilisé pour l'iterateur 
+     * @return return un String re resultat d'itération voir la classe Decrire (See Also)
      */
     protected static final String decriresToString(Set<Decrire> decrires, char separator)
     {
@@ -942,6 +1085,7 @@ public class Controleur
     
     /**
      * Démarre l'application
+     * args x
      */
     public static void main(String[] args)
     {
