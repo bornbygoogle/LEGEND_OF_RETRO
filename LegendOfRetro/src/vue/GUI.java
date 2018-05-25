@@ -24,7 +24,7 @@ public class GUI extends JFrame implements ActionListener
 {
     private Controleur controleur;
     
-    private enum Menu {AUCUN, PRODUIT, ACHAT, VENTE, CLIENT, PROMO};
+    private enum Menu {AUCUN, PRODUIT, ACHAT, VENTE, PERSONNE, PROMO};
     private Menu FLAG_menuOuvert; // à fixer (voir ouvrirMenu. Et oui, à fixer quand même, car on en a besoin !)
     private JPanel menuOuvert;
     private JPanel menuPanel;
@@ -113,7 +113,7 @@ public class GUI extends JFrame implements ActionListener
         else if (e.getSource() == buttonVente)
             ouvrirMenu(Menu.VENTE);
         else if (e.getSource() == buttonClient)
-            ouvrirMenu(Menu.CLIENT);
+            ouvrirMenu(Menu.PERSONNE);
         else if (e.getSource() == buttonProduit)
             ouvrirMenu(Menu.PRODUIT);
         else if (e.getSource() == buttonPromo)
@@ -135,6 +135,14 @@ public class GUI extends JFrame implements ActionListener
         {
             fermerMenu();
             this.menuOuvert = new menuProduit(this.controleur);
+            Container c = this.getContentPane();
+            c.add(this.menuOuvert, BorderLayout.CENTER);
+            this.setContentPane(c);
+        }
+        else if (m == Menu.PERSONNE)
+        {
+            fermerMenu();
+            this.menuOuvert = new menuPersonne(this.controleur);
             Container c = this.getContentPane();
             c.add(this.menuOuvert, BorderLayout.CENTER);
             this.setContentPane(c);

@@ -5,17 +5,14 @@
  */
 package vue;
 
-import bean.CodeBarreForm;
 import bean.Form;
-import bean.ProduitForm;
+import bean.PersonneForm;
 import controleur.Controleur;
 import controleur.DonneeInvalideException;
 import controleur.DonneesInsuffisantesException;
 import controleur.ResultatInvalideException;
 import java.awt.BorderLayout;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -23,17 +20,17 @@ import javax.swing.JPanel;
  *
  * @author Home
  */
-public class menuProduit extends JPanel implements Chercheur
+public class menuPromo extends JPanel implements Chercheur
 {
     private Controleur controleur;
 
-    private critProduit Criteres;
-    private Resultat<ProduitForm> Resultats;
+    //private critPersonne Criteres;
+    private Resultat<PersonneForm> Resultats;
 
     /**
      * Creates new form menuProduit
      */
-    public menuProduit(Controleur c)
+    public menuPromo(Controleur c)
     {
         super();
         this.controleur = c;
@@ -48,38 +45,38 @@ public class menuProduit extends JPanel implements Chercheur
     {
         this.setSize(500, 560);
 
-        this.Criteres = new critProduit(this.controleur, this);
-        this.Resultats = new Resultat<ProduitForm>(this);
+        //this.Criteres = new critPersonne(this.controleur, this);
+        this.Resultats = new Resultat<PersonneForm>(this);
         
         this.setLayout(new BorderLayout());
-        this.add(this.Criteres, BorderLayout.CENTER);
+        //this.add(this.Criteres, BorderLayout.CENTER);
         this.add(this.Resultats, BorderLayout.SOUTH);
     }
     
     @Override
     public void selectionnerResultat(Form res)
     {
-        if (!(res instanceof ProduitForm))
+        if (!(res instanceof PersonneForm))
             throw new IllegalArgumentException("Erreur dans menuProduit: le formulaire à sélectionner n'est pas un ProduitForm.");
-        this.Criteres.setForm((ProduitForm) res);
+        //this.Criteres.setForm((PersonneForm) res);
     }
 
     @Override
     public void lancerRecherche(Form form)
     {
-        try {
-            // Affectuer la recherche avec fonction RECHERCHE dans CONTROLEUR
-            Vector<ProduitForm> resultatsRecherche = null;
-            resultatsRecherche = this.controleur.chercher(form);
-            // Afficher les résultats avec fonction AFFICHERES dans RESULTAT
-            if (resultatsRecherche != null)
-                this.Resultats.afficherRes(resultatsRecherche); }
-        catch (DonneeInvalideException e) {
-            afficherErreur(e);}
-        catch (controleur.DonneesInsuffisantesException e) {
-            afficherErreur(e);}
-        catch (ResultatInvalideException e) {
-            afficherErreur(e);}
+//        try {
+//            // Affectuer la recherche avec fonction RECHERCHE dans CONTROLEUR
+//            Vector<PersonneForm> resultatsRecherche = null;
+//     !       resultatsRecherche = this.controleur.chercher(form); //! TODO: attention, dans le contrôleur, à ce que renvoie chercherform() !
+//            // Afficher les résultats avec fonction AFFICHERES dans RESULTAT
+//            if (resultatsRecherche != null)
+//                this.Resultats.afficherRes(resultatsRecherche); }
+//        catch (DonneeInvalideException e) {
+//            afficherErreur(e);}
+//        catch (controleur.DonneesInsuffisantesException e) {
+//            afficherErreur(e);}
+//        catch (ResultatInvalideException e) {
+//            afficherErreur(e);}
     }
 
     @Override

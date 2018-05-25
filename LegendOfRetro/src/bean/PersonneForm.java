@@ -9,7 +9,7 @@ package bean;
  *
  * @author Home
  */
-public class PersonneForm
+public class PersonneForm extends Form
 {
     private int idPersonne;
     
