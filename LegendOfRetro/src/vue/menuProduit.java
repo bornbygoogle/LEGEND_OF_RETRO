@@ -70,19 +70,16 @@ public class menuProduit extends JPanel implements Chercheur
         try {
             // Affectuer la recherche avec fonction RECHERCHE dans CONTROLEUR
             Vector<ProduitForm> resultatsRecherche = null;
-            if (form instanceof CodeBarreForm)
-                resultatsRecherche = this.controleur.chercher((CodeBarreForm) form);
-            else if (form instanceof ProduitForm)
-                resultatsRecherche = this.controleur.chercher((ProduitForm) form);
+            resultatsRecherche = this.controleur.chercher(form);
             // Afficher les résultats avec fonction AFFICHERES dans RESULTAT
             if (resultatsRecherche != null)
                 this.Resultats.afficherRes(resultatsRecherche); }
         catch (DonneeInvalideException e) {
             afficherErreur(e);}
+        catch (controleur.DonneesInsuffisantesException e) {
+            afficherErreur(e);}
         catch (ResultatInvalideException e) {
-            afficherErreur(e);} catch (DonneesInsuffisantesException ex) {
-            Logger.getLogger(menuProduit.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            afficherErreur(e);}
     }
 
     @Override
