@@ -27,7 +27,7 @@ public class menuProduit extends JPanel implements Chercheur
 {
     private Controleur controleur;
 
-    private critResultat Criteres;
+    private critProduit Criteres;
     private Resultat<ProduitForm> Resultats;
 
     /**
@@ -48,7 +48,7 @@ public class menuProduit extends JPanel implements Chercheur
     {
         this.setSize(500, 560);
 
-        this.Criteres = new critResultat(this.controleur, this);
+        this.Criteres = new critProduit(this.controleur, this);
         this.Resultats = new Resultat<ProduitForm>(this);
         
         this.setLayout(new BorderLayout());

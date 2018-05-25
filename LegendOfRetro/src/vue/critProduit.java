@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  *
  * @author bornbygoogle
  */
-public class critResultat extends javax.swing.JPanel
+public class critProduit extends javax.swing.JPanel
 {
     private Form selectedForm;
     private Controleur controleur;
@@ -32,7 +32,7 @@ public class critResultat extends javax.swing.JPanel
     /**
      * Creates new form Resultat
      */
-    public critResultat(Controleur controleur, Chercheur parent)
+    public critProduit(Controleur controleur, Chercheur parent)
     {
         this.controleur = controleur;
         this.parent = parent;
