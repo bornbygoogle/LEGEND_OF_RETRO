@@ -31,6 +31,8 @@ public class critProduit extends javax.swing.JPanel
 
     /**
      * Creates new form Resultat
+     * @param controleur x
+     * @param parent x
      */
     public critProduit(Controleur controleur, Chercheur parent)
     {
