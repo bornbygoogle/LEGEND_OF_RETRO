@@ -21,13 +21,21 @@ import vue.GUI;
 
 /**
  * @author Adrien Marchand
+<<<<<<< HEAD
  * La classe controleur contien:  1.Controleur() throws InitException-un contructeur qui initialise la Vue et le Modele et 2.Des methode qui vont faire l'aiguillage entre Vue-Modele.ok12
+=======
+ * La classe controleur contien:  1.Controleur() throws InitException-un contructeur qui initialise la Vue et le Modele et 2.Des methode qui vont faire l'aiguillage entre Vue-Modele.ok222      
+>>>>>>> origin/Iulianbranch
  */
 public class Controleur
 {
     private GUI vue; //utilisé pour communiquer avec l'affichage
     private Session modele; //session hibernate
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/Iulianbranch
     public Controleur() throws InitException
     {
         init();
@@ -46,12 +54,20 @@ public class Controleur
         catch (ExceptionInInitializerError eiie)    {System.out.println("Erreur lors de l'initialisation du modèle.\n"
                 + eiie.getMessage());}
     }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/Iulianbranch
     /**
      * Détermine, à partir d'un bean, quelle(s) requête(s) d'INSERT va générer et va exécuter.
      * @param f est un objet de type ProduitForm-(voir See Also), ce objet est utilisé pour de efectuer l'operation de cast  et a l'intérieur de cette méthode il y a appelé une autre méthode (voir See Also):
      * @see bean.ProduitForm
+<<<<<<< HEAD
      * @see #creerVersionConsole(controleur.Rapport, java.lang.String, java.lang.String, java.lang.String, float, int, java.lang.String, java.lang.String)
+=======
+     * @see #creerVersionConsole(controleur.Rapport, java.lang.String, java.lang.String, java.lang.String, float, int, java.lang.String, java.lang.String) 
+>>>>>>> origin/Iulianbranch
      * @throws DonneesInsuffisantesException si l'utilisateur rentre des données insufisantes
      * @throws DonneeInvalideException si l'utilisateur n'utilise le type de variable requise
      * @throws EnregistrementExistantException si la valeur entrée existe déja dans la base de données
@@ -61,7 +77,11 @@ public class Controleur
             throws DonneesInsuffisantesException, DonneeInvalideException, EnregistrementExistantException
         {
         Rapport rapport = new Rapport();
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         String type = f.getType();
 
         if ("Console".equals(type))
@@ -69,10 +89,17 @@ public class Controleur
             f.setIdVersionJeu(-1);
             f.setIdVersionConsole(
                     creerVersionConsole(rapport,
+<<<<<<< HEAD
                     f.getCodeBarre(),
                     f.getEdition(),
                     f.getZone(),
                     f.getPrix(),
+=======
+                    f.getCodeBarre(), 
+                    f.getEdition(), 
+                    f.getZone(),
+                    f.getPrix(), 
+>>>>>>> origin/Iulianbranch
                     f.getStock(),
                     f.getNom(),
                     f.getEditeur()));
@@ -82,16 +109,26 @@ public class Controleur
             f.setIdVersionConsole(-1);
             f.setIdVersionJeu(creerVersionJeu(rapport,
                     f.getCodeBarre(),
+<<<<<<< HEAD
                     f.getEdition(),
                     f.getZone(),
                     f.getPrix(),
+=======
+                    f.getEdition(), 
+                    f.getZone(),
+                    f.getPrix(), 
+>>>>>>> origin/Iulianbranch
                     f.getStock(),
                     f.getNom(),       //getNom() renvoie le nom du JEU, pas de la Version du jeu
                     f.getDescription(), stringToVector(f.getTags() ,','),
                     f.getPlateforme(),
                     f.getEditeur()));
         }
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         return rapport;
     }
     public Rapport creer(CodeBarreForm form)
@@ -103,7 +140,11 @@ public class Controleur
      * Crée un fabricant. Assure l'unicité de l'enregistrement dans l'intérieur de cette méthode sont appelées les méthodes-voir See Also.
      * @see #chercherFabricant(String nomFabr) dans cette methode s'effectue un traitement qui appelle:
      * @see HQLRecherche#addCondition(String membreGauche, String membreDroite, Operateur operateur)
+<<<<<<< HEAD
      * @see Fabricant#getNomFabricant()
+=======
+     * @see Fabricant#getNomFabricant() 
+>>>>>>> origin/Iulianbranch
      * @see Rapport#idDerniereOperation
      * @param rapport est une variable objet de type Rapport pour afficher un retour dans l'interface graphique voir {@link vue.Resultat}
      * @param nomFabr met en parametre une variable de type String
@@ -116,25 +157,45 @@ public class Controleur
     {
         if ("".equals(nomFabr)) //si le nom du fabricant n'est pas saisi
             throw new DonneesInsuffisantesException("Impossible de créer le fabricant : un nom est requis.");
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         //on vérifie que le fabricant n'existe pas déjà !
         Fabricant existant = chercherFabricant(nomFabr);
         if (existant != null)
             throw new EnregistrementExistantException("Impossible de créer le fabricant : ce fabricant existe déjà.");
+<<<<<<< HEAD
 
         //création du fabricant
         Fabricant fabr = new Fabricant();
         fabr.setNomFabricant(nomFabr);
 
+=======
+            
+        //création du fabricant
+        Fabricant fabr = new Fabricant();
+        fabr.setNomFabricant(nomFabr);
+        
+>>>>>>> origin/Iulianbranch
         //sauvegarde dans la base de données
         this.modele.beginTransaction();
         this.modele.save(fabr);
         this.modele.getTransaction().commit();
+<<<<<<< HEAD
 
         rapport.addOperation(fabr.getIdFabricant(), Rapport.Table.FABRICANT, Rapport.Operation.CREER);
         return fabr;
     }
 
+=======
+        
+        rapport.addOperation(fabr.getIdFabricant(), Rapport.Table.FABRICANT, Rapport.Operation.CREER);
+        return fabr;
+    }
+   
+>>>>>>> origin/Iulianbranch
     /**
      * Crée un éditeur. Assure l'unicité de l'enregistrement.
      * @param rapport-une variable de type Rapport(voir See Also) qui est utilisé pour retourner une reponse dans l'interface graphique-(voir See Also).
@@ -144,27 +205,47 @@ public class Controleur
      * @throws DonneesInsuffisantesException si l'utilisateur rentre de données insufisantes
      * @throws EnregistrementExistantException si la valeur entrée existe deja dans la base de données
      * @return Editeur va retourner un objet de type Editeur (voir See Also)
+<<<<<<< HEAD
     */
+=======
+    */    
+>>>>>>> origin/Iulianbranch
     protected Editeur creerEditeur(Rapport rapport, String nomEditeur)
             throws DonneesInsuffisantesException, EnregistrementExistantException
     {
         if ("".equals(nomEditeur)) //si le nom de l'éditeur n'est pas saisi
             throw new DonneesInsuffisantesException("Impossible de créer l'éditeur : un nom est requis.");
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         //on vérifie que l'éditeur n'existe pas déjà !
         Editeur existant = chercherEditeur(nomEditeur);
         if (existant != null)
             throw new EnregistrementExistantException("Impossible de créer l'éditeur : cet éditeur existe déjà.");
+<<<<<<< HEAD
 
         //création de l'éditeur
         Editeur ed = new Editeur();
         ed.setNomEditeur(nomEditeur);
 
+=======
+            
+        //création de l'éditeur
+        Editeur ed = new Editeur();
+        ed.setNomEditeur(nomEditeur);
+        
+>>>>>>> origin/Iulianbranch
         //sauvegarde dans la base de données
         this.modele.beginTransaction();
         this.modele.save(ed);
         this.modele.getTransaction().commit();
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         rapport.addOperation(ed.getIdEditeur(), Rapport.Table.EDITEUR, Rapport.Operation.CREER);
         return ed;
     }
@@ -172,7 +253,11 @@ public class Controleur
      * Crée un tag. Assure l'unicité de l'enregistrement.
      * @param rapport met en parametre une variable de type Rapport qui est utilisé pour retourner une réponse dans l'interface graphique
      * @param tag-une variable de type String qui est utilise pour appeller la methode setLabelTag - (pour détail voir-See Also)  et après de sauvegarde dans la base de données
+<<<<<<< HEAD
      * @see  LOREntities.Tag#setLabelTag(java.lang.String)
+=======
+     * @see  LOREntities.Tag#setLabelTag(java.lang.String) 
+>>>>>>> origin/Iulianbranch
      * @throws DonneesInsuffisantesException si l'utilisateur rentre des données insufisantes
      * @throws EnregistrementExistantException si la valeur entrée existe deja dans la base de données
      * @return Tag va retourner un objet de type Tag,voir la classe Tag situé dans le package LOREntities-(voir  See Also)
@@ -183,21 +268,37 @@ public class Controleur
     {
         if ("".equals(tag)) //si le nom de l'éditeur n'est pas saisi
             throw new DonneesInsuffisantesException("Impossible de créer le tag : un libellé est requis."); //vérifier le code appelant.
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         //on vérifie que le tag n'existe pas déjà !
         Tag existant = chercherTag(tag);
         if (existant != null)
             throw new EnregistrementExistantException("Impossible de créer le tag : ce tag existe déjà."); //vérifier le code appelant.
+<<<<<<< HEAD
 
         //création du tag
         Tag t = new Tag();
         t.setLabelTag(tag);
 
+=======
+        
+        //création du tag
+        Tag t = new Tag();
+        t.setLabelTag(tag);
+        
+>>>>>>> origin/Iulianbranch
         //sauvegarde dans la base de données
         this.modele.beginTransaction();
         this.modele.save(t);
         this.modele.getTransaction().commit();
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         rapport.addOperation(t.getIdTag(), Rapport.Table.TAG, Rapport.Operation.CREER);
         return t;
     }
@@ -214,7 +315,11 @@ public class Controleur
      * Crée un jeu et/ou son éditeur. Assure l'unicité de l'enregistrement.Si l'éditeur est inexistant dans la base de données, un nouvel éditeur est ajouté à la volée. De même pour les tags.
      * @param  rapport-une variable de type Rapport qui est utilisé pour retourner une réponse dans l'interface graphique
      * @param  nomJeu est utilisé pour etre mis en parametre dans la methode creerEditeur (voir See Also)pour créer un Editeur de jeu,soit pour un Jeu
+<<<<<<< HEAD
      * @see  #creerEditeur(controleur.Rapport, java.lang.String)
+=======
+     * @see  #creerEditeur(controleur.Rapport, java.lang.String) 
+>>>>>>> origin/Iulianbranch
      * @param  description est utilisé pour etre mis en parametre dans la methode creerEditeur (voir See Also)pour créer un Editeur de jeu,soit pour un Jeu
      * @param  tags est utilisé dans la methode creerEditeur (voir See Also)pour créer un Editeur de jeu,soit pour un Jeu
      * @param  nomEditeur est dans la methode creerEditeur (voir See Also)pour créer un Editeur de jeu,soit pour un Jeu
@@ -262,7 +367,11 @@ public class Controleur
                     t = creerTag(rapport, tag);
 
                 //jeu.getTags().add(t);
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> origin/Iulianbranch
                 rapport.addOperation(t.getIdTag(), Rapport.Table.DESCRIPTION, Rapport.Operation.CREER);
             }*/
 
@@ -278,11 +387,19 @@ public class Controleur
     /**
      * Crée une console et/ou son fabricant.
      * Si le fabricant est renseigné par un label inexistant dans la base de données, un nouveau fabricant est ajouté à la volée voir les methodées qui existe dans l'interioeur de cette methode -voir SeeAlso.
+<<<<<<< HEAD
      * @see #creerFabricant(controleur.Rapport, java.lang.String)
      * @see #chercherFabricant(java.lang.String)
      * @see #chercherConsole(java.lang.String, java.lang.String)
      * @see LOREntities.Console#setNomConsole(java.lang.String)
      * @see LOREntities.Fabricant#setNomFabricant(java.lang.String)
+=======
+     * @see #creerFabricant(controleur.Rapport, java.lang.String) 
+     * @see #chercherFabricant(java.lang.String) 
+     * @see #chercherConsole(java.lang.String, java.lang.String) 
+     * @see LOREntities.Console#setNomConsole(java.lang.String) 
+     * @see LOREntities.Fabricant#setNomFabricant(java.lang.String) 
+>>>>>>> origin/Iulianbranch
      * @param  rapport-met en parametre une variable de type Rapport qui est utilisé
      * pour retourner une réponse dans l'interface graphique
      * @param   nomConsole une variable qui represente le nom de la console
@@ -336,12 +453,21 @@ public class Controleur
      * Si la console est inexistante dans la base de données, une nouvelle console est ajoutée à la volée. Par transitivité, cela s'applique au fabricant. Ne met pas à jour le fabricant d'une console existante.
      * La zone renseignée doit déjà exister dans la base de données.
      * Dans l'intérieur de cette méthode sont appelées les méthodes-voir See Also.
+<<<<<<< HEAD
      * @see #codeBarreValide(java.lang.String)
      * @see #creerConsole(controleur.Rapport, java.lang.String, java.lang.String)
      * @see #chercherConsole(java.lang.String, java.lang.String)
      * @see #chercherZone(java.lang.String)
      * @see #chercherVersionsConsole(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      * @param rapport utilisé pour afficher le resultat
+=======
+     * @see #codeBarreValide(java.lang.String) 
+     * @see #creerConsole(controleur.Rapport, java.lang.String, java.lang.String) 
+     * @see #chercherConsole(java.lang.String, java.lang.String) 
+     * @see #chercherZone(java.lang.String) 
+     * @see #chercherVersionsConsole(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String) 
+     * @param rapport utilisé pour afficher le resultat 
+>>>>>>> origin/Iulianbranch
      * @param cb met une variable de type String représente le code de barre"
      * @param edition met en parametre variable de type String représente l'editeur
      * @param nomZone met en parametre variable de type String représente la nom de Zone
@@ -369,23 +495,39 @@ public class Controleur
         else //si on crée une version de console
         {
             cb = codeBarreValide(cb); //on vérifie le code barre
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> origin/Iulianbranch
             //on détermine l'identifiant de la console
             Console console = chercherConsole(nomConsole, nomFabr);
             if (console == null)
                 console = creerConsole(rapport, nomConsole, nomFabr); //si elle n'existe pas, on la crée à la volée.
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> origin/Iulianbranch
             //on détermine l'identifiant de la zone
             Zone zone = chercherZone(nomZone);
             if (zone == null)
                 throw new DonneeInvalideException("Impossible de créer la version de console : la zone renseignée n'existe pas.");
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> origin/Iulianbranch
             //on vérifie que la version de console n'existe pas déjà !
             Vector<VersionConsole> existe = chercherVersionsConsole(cb, edition,
                     zone.getNomZone(), console.getNomConsole(), console.getFabricant().getNomFabricant());
             if (!(existe == null) && !existe.isEmpty())
                 throw new EnregistrementExistantException("Impossible de créer la version de console : cette dernière existe déjà.");
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> origin/Iulianbranch
             //création de la version de console
             VersionConsole vc = new VersionConsole();
             vc.setCodeBarre(cb);
@@ -399,12 +541,21 @@ public class Controleur
             this.modele.beginTransaction();
             this.modele.save(vc);
             this.modele.getTransaction().commit();
+<<<<<<< HEAD
 
             rapport.addOperation(vc.getIdVersionConsole(), Rapport.Table.VERSIONCONSOLE, Rapport.Operation.CREER);
 
             return vc.getIdVersionConsole();
         }
 
+=======
+            
+            rapport.addOperation(vc.getIdVersionConsole(), Rapport.Table.VERSIONCONSOLE, Rapport.Operation.CREER);
+            
+            return vc.getIdVersionConsole();
+        }
+        
+>>>>>>> origin/Iulianbranch
         //si aucun produit n'a été créé
         return -1;
     }
@@ -415,12 +566,21 @@ public class Controleur
      * La zone renseignée doit déjà exister dans la base de données {@link #chercherZone(java.lang.String) }
      * La console renseignée doit déjà exister dans la base de données.
      * Dans l'intérieur de cette méthode sont appelées les méthodes-voir See Also.
+<<<<<<< HEAD
      * @see #creerJeu(controleur.Rapport, java.lang.String, java.lang.String, java.util.Vector, java.lang.String)
      * @see #codeBarreValide(java.lang.String)
      * @see #chercherJeu(java.lang.String, java.util.Vector, java.lang.String)
      * @see #chercherVersionsJeu(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.util.Vector)
      * @see #chercherConsole(java.lang.String, java.lang.String)
      * @param rapport utilisé pour afficher le resultat
+=======
+     * @see #creerJeu(controleur.Rapport, java.lang.String, java.lang.String, java.util.Vector, java.lang.String) 
+     * @see #codeBarreValide(java.lang.String) 
+     * @see #chercherJeu(java.lang.String, java.util.Vector, java.lang.String) 
+     * @see #chercherVersionsJeu(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.util.Vector) 
+     * @see #chercherConsole(java.lang.String, java.lang.String) 
+     * @param rapport utilisé pour afficher le resultat 
+>>>>>>> origin/Iulianbranch
      * @param cb variable de type String qui represente le code barre
      * @param edition met en parametre une variable de type String qui represente l'editeur
      * @param nomZone met en parametre une variable de type String qui represente le nome de la zone
@@ -452,32 +612,56 @@ public class Controleur
         else //si on crée une version de jeu
         {
             cb = codeBarreValide(cb); //on vérifie le code barre
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> origin/Iulianbranch
             //on détermine l'identifiant du jeu
             Jeu existant = chercherJeu(nomJeu, tags, nomEditeur);
             if (existant == null)
                 creerJeu(rapport, nomJeu, description, tags, nomEditeur); //s'il n'existe pas, on le crée à la volée.
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> origin/Iulianbranch
             //on détermine l'identifiant de la zone
             Zone zone = chercherZone(nomZone);
             if (zone == null)
                 throw new DonneeInvalideException("Impossible de créer la version de console : la zone renseignée n'existe pas.");
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> origin/Iulianbranch
             //on détermine l'identifiant de la plateforme
             Console console = chercherConsole(nomConsole, "");
             if (console == null)
                 throw new DonneeInvalideException("Impossible de créer la version de jeu : la plateforme renseignée n'existe pas.");
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> origin/Iulianbranch
             //on détermine l'identifiant du jeu
             Jeu jeu = chercherJeu(nomJeu, tags, nomEditeur);
             if (jeu == null)
                 throw new DonneeInvalideException("Impossible de créer la version de jeu : le jeu renseigné n'existe pas.");
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> origin/Iulianbranch
             //on vérifie que la version de jeu n'existe pas déjà !
             Vector<VersionJeu> existante = chercherVersionsJeu(cb, edition, zone.getNomZone(), console.getNomConsole(), nomJeu, nomEditeur, tags);
             if (!(existante == null) && !existante.isEmpty())
                 throw new EnregistrementExistantException("Impossible de créer la version de jeu : cette dernière existe déjà.");
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> origin/Iulianbranch
             //création de la version de console
             VersionJeu vj = new VersionJeu();
             vj.setCodeBarre(cb);
@@ -492,6 +676,7 @@ public class Controleur
             this.modele.beginTransaction();
             this.modele.save(vj);
             this.modele.getTransaction().commit();
+<<<<<<< HEAD
 
             rapport.addOperation(vj.getIdVersionJeu(), Rapport.Table.VERSIONJEU, Rapport.Operation.CREER);
 
@@ -502,6 +687,18 @@ public class Controleur
         return -1;
     }
 
+=======
+            
+            rapport.addOperation(vj.getIdVersionJeu(), Rapport.Table.VERSIONJEU, Rapport.Operation.CREER);
+            
+            return vj.getIdVersionJeu();
+        }
+        
+        //si aucun produit n'a été créé
+        return -1;
+    }
+    
+>>>>>>> origin/Iulianbranch
     /**
      * Détermine, à partir d'un bean, quelle(s) requête(s) de recherche générer et exécuter. Transforme les résultats en formulaires.
      * Les formulaires renvoyés correspondront à des produits : nommément, soit à une version de jeu, soit à une version de console.
@@ -522,7 +719,11 @@ public class Controleur
     public Vector<ProduitForm> chercher(CodeBarreForm form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
     {
         Vector<ProduitForm> ret = new Vector<ProduitForm>();
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         String cb = codeBarreValide(form.getCodeBarre());
         for (VersionConsole enr : chercherVersionsConsole(cb, "", "", "", ""))
             ret.add(new ProduitForm(enr.getIdVersionConsole(), -1, "Console",
@@ -539,7 +740,11 @@ public class Controleur
         if (ret.size() > 1)
             throw new ResultatInvalideException("Erreur : la recherche du code barre " + cb
                     + " renvoie plus d'un résultat", ret);
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         return ret;
     }
     public Vector<ProduitForm> chercher(ProduitForm form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
@@ -559,7 +764,11 @@ public class Controleur
         Vector<String> tags = stringToVector(form.getTags().replace(" ", ""), ',');
         String plateforme = form.getPlateforme();
         //Pas besoin de récupérer les identifiants, la description de jeu, le prix et le stock.
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         if ("Console".equals(type))
         {
             if (!"".equals(cb) || !"".equals(edition) || !"".equals(zone) || !"".equals(nom) || !"".equals(editeur))
@@ -601,12 +810,21 @@ public class Controleur
      */
     private Vector<VersionConsole> chercherVersionsConsole(String cb, String edition, String zone, String nom, String fabricant)
             throws DonneesInsuffisantesException, DonneeInvalideException
+<<<<<<< HEAD
     {
         if ("".equals(cb) && "".equals(nom) && "".equals(fabricant))
             throw new DonneesInsuffisantesException("Erreur lors de la recherche des produits de type console : il faut renseigner un code barre, un nom, ou un fabricant.");
 
         Vector<VersionConsole> ret = new Vector<VersionConsole>();
 
+=======
+    {        
+        if ("".equals(cb) && "".equals(nom) && "".equals(fabricant))
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche des produits de type console : il faut renseigner un code barre, un nom, ou un fabricant.");
+        
+        Vector<VersionConsole> ret = new Vector<VersionConsole>();
+        
+>>>>>>> origin/Iulianbranch
         HQLRecherche q = new HQLRecherche("LOREntities.VersionConsole vc"); //TODO: requête imbriquée imbrCons
         //rédaction de la requête imbriquée pour console
         if (!"".equals(nom) || !"".equals(fabricant)) //si la console est renseignée (et/ou son fabricant)
@@ -620,7 +838,11 @@ public class Controleur
             {
                 HQLRecherche imbrFabr = new HQLRecherche("LOREntities.Fabricant f");
                 imbrFabr.setImbriquee(true);
+<<<<<<< HEAD
                 imbrFabr.addCondition("f.nomFabricant", fabricant, HQLRecherche.Operateur.LIKE);
+=======
+                imbrFabr.addCondition("f.nomFabricant", fabricant, HQLRecherche.Operateur.LIKE);                
+>>>>>>> origin/Iulianbranch
                 imbrCons.addCondition("c.fabricant", imbrFabr.toString(), HQLRecherche.Operateur.IN);
             }
             q.addCondition("vc.console", imbrCons.toString(), HQLRecherche.Operateur.IN);
@@ -631,7 +853,11 @@ public class Controleur
             HQLRecherche imbrZone = new HQLRecherche("LOREntities.Zone z");
             imbrZone.setImbriquee(true);
             imbrZone.setSelect("z.idZone");
+<<<<<<< HEAD
             imbrZone.addCondition("z.nomZone", zone, HQLRecherche.Operateur.LIKE);
+=======
+            imbrZone.addCondition("z.nomZone", zone, HQLRecherche.Operateur.LIKE);            
+>>>>>>> origin/Iulianbranch
             q.addCondition("vc.zone", imbrZone.toString(), HQLRecherche.Operateur.IN);
         }
         //autres conditions
@@ -639,23 +865,39 @@ public class Controleur
             q.addCondition("vc.codeBarre", cb, HQLRecherche.Operateur.EGAL);
         if (!"".equals(edition))
             q.addCondition("vc.edition", edition, HQLRecherche.Operateur.LIKE);
+<<<<<<< HEAD
 
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         ret.addAll(resultats);
 
+=======
+        
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
+        ret.addAll(resultats);
+        
+>>>>>>> origin/Iulianbranch
         return ret;
     }
     private VersionConsole chercherVersionConsole(int id) throws DonneeInvalideException
     {
         if (id < 0)
             throw new DonneeInvalideException("Impossible de chercher un produit (console) : aucun identifiant n'a été renseigné.");
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         HQLRecherche q = new HQLRecherche("VersionConsole vc");
         q.addCondition("vc.idVersionConsole", id, HQLRecherche.Operateur.EGAL);
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         if (resultats.isEmpty())
             return null;
         else //on suppose qu'il n'y a qu'un seul résultat !
@@ -665,7 +907,11 @@ public class Controleur
      * Recherche les versions de jeux dont le code barre, l'édition, la zone et le fabricant correspondent parfaitement aux données renseignées,et dont le nom contient la chaîne renseignée.
      * La zone et l'édition ne sont pas suffisantes pour lancer une recherche.
      * A l'intérieur de cette méthode il y a appelé des méthodes de la classe -voir See Also
+<<<<<<< HEAD
      * @see HQLRecherche
+=======
+     * @see HQLRecherche 
+>>>>>>> origin/Iulianbranch
      * @param cb met en parametre une variable String qui represente le code barre
      * @param edition met en parametre une variable String qui represente l'editeur
      * @param zone met en parametre une variable String qui represente la zone
@@ -682,9 +928,15 @@ public class Controleur
     {
         if ("".equals(cb) && "".equals(plateforme) && "".equals(nom) && "".equals(editeur) /*&& tags.isEmpty()*/)
             throw new DonneesInsuffisantesException("Erreur lors de la recherche des produits de type jeu : il faut renseigner un code barre, une plateforme, un nom, un éditeur ou au moins un tag.");
+<<<<<<< HEAD
 
         Vector<VersionJeu> ret = new Vector<VersionJeu>();
 
+=======
+        
+        Vector<VersionJeu> ret = new Vector<VersionJeu>();
+        
+>>>>>>> origin/Iulianbranch
         HQLRecherche q = new HQLRecherche("LOREntities.VersionJeu vj"); //TODO: requête imbriquée imbrCons
         //rédaction de la requête imbriquée pour console
         if (!"".equals(plateforme)) //si la console est renseignée
@@ -693,7 +945,11 @@ public class Controleur
             imbrCons.setImbriquee(true);
             imbrCons.setSelect("c.idConsole");
             imbrCons.addCondition("c.nomConsole", plateforme, HQLRecherche.Operateur.EGAL);
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> origin/Iulianbranch
             q.addCondition("vj.console.idConsole", imbrCons.toString(), HQLRecherche.Operateur.IN);
         }
 
@@ -702,7 +958,11 @@ public class Controleur
         {
             HQLRecherche imbrJeu = new HQLRecherche("LOREntities.Jeu j");
             imbrJeu.setImbriquee(true);
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> origin/Iulianbranch
             if (!"".equals(nom)) //condition sur le nom
                 imbrJeu.addCondition("j.nomJeu", nom, HQLRecherche.Operateur.LIKE);
             if (!"".equals(editeur)) //condition sur le développeur
@@ -710,8 +970,13 @@ public class Controleur
                 HQLRecherche imbrEditeur = new HQLRecherche("LOREntities.Editeur e");
                 imbrEditeur.setImbriquee(true);
                 imbrEditeur.setSelect("e.idEditeur");
+<<<<<<< HEAD
                 imbrEditeur.addCondition("e.nomEditeur", editeur, HQLRecherche.Operateur.LIKE);
 
+=======
+                imbrEditeur.addCondition("e.nomEditeur", editeur, HQLRecherche.Operateur.LIKE);   
+                
+>>>>>>> origin/Iulianbranch
                 imbrJeu.addCondition("j.editeur.idEditeur", imbrEditeur.toString(), HQLRecherche.Operateur.IN);
             }
             if (!tags.isEmpty())
@@ -722,21 +987,37 @@ public class Controleur
                     HQLRecherche imbrTag = new HQLRecherche("LOREntities.Tag t");
                     imbrTag.setImbriquee(true);
                     imbrTag.setSelect("t.idTag");
+<<<<<<< HEAD
                     imbrTag.addCondition("t.labelTag", tag, HQLRecherche.Operateur.EGAL);
 
+=======
+                    imbrTag.addCondition("t.labelTag", tag, HQLRecherche.Operateur.EGAL);   
+                    
+>>>>>>> origin/Iulianbranch
                     //on liste les jeux des relations "décrire" correspondant à ce tag (identifiants seulement)
                     HQLRecherche imbrDecr = new HQLRecherche("LOREntities.Decrire d");
                     imbrDecr.setImbriquee(true);
                     imbrDecr.setSelect("d.jeu.idJeu");
+<<<<<<< HEAD
                     imbrDecr.addCondition("d.tag.dTag", imbrTag.toString(), HQLRecherche.Operateur.IN);
 
+=======
+                    imbrDecr.addCondition("d.tag.dTag", imbrTag.toString(), HQLRecherche.Operateur.IN);   
+                    
+>>>>>>> origin/Iulianbranch
                     //la requête qui recherche le jeu sélectionne parmi les jeux qui ont tous ces tags
                     imbrJeu.addCondition("j.idJeu", imbrDecr.toString(), HQLRecherche.Operateur.IN);
                 }
             }
+<<<<<<< HEAD
 
             q.addCondition("vj.jeu", imbrJeu.toString(), HQLRecherche.Operateur.IN);
         }
+=======
+            
+            q.addCondition("vj.jeu", imbrJeu.toString(), HQLRecherche.Operateur.IN);
+        } 
+>>>>>>> origin/Iulianbranch
 
         //rédaction des requêtes imbriquées pour zone
         if (!"".equals(zone)) //si la zone est renseignée
@@ -744,7 +1025,11 @@ public class Controleur
             HQLRecherche imbrZone = new HQLRecherche("LOREntities.Zone z");
             imbrZone.setImbriquee(true);
             imbrZone.setSelect("z.idZone");
+<<<<<<< HEAD
             imbrZone.addCondition("z.nomZone", zone, HQLRecherche.Operateur.LIKE);
+=======
+            imbrZone.addCondition("z.nomZone", zone, HQLRecherche.Operateur.LIKE);            
+>>>>>>> origin/Iulianbranch
             q.addCondition("vj.zone", imbrZone.toString(), HQLRecherche.Operateur.IN);
         }
         //autres conditions
@@ -752,23 +1037,39 @@ public class Controleur
             q.addCondition("vj.codeBarre", cb, HQLRecherche.Operateur.EGAL);
         if (!"".equals(edition)) //edition
             q.addCondition("vj.edition", edition, HQLRecherche.Operateur.LIKE);
+<<<<<<< HEAD
 
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         ret.addAll(resultats);
 
+=======
+        
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
+        ret.addAll(resultats);
+        
+>>>>>>> origin/Iulianbranch
         return ret;
     }
     private VersionJeu chercherVersionJeu(int id) throws DonneeInvalideException
     {
         if (id < 0)
             throw new DonneeInvalideException("Impossible de chercher un produit (jeu) : aucun identifiant n'a été renseigné.");
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         HQLRecherche q = new HQLRecherche("VersionJeu vj");
         q.addCondition("vj.idVersionJeu", id, HQLRecherche.Operateur.EGAL);
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         if (resultats.isEmpty())
             return null;
         else //on suppose qu'il n'y a qu'un seul résultat !
@@ -779,7 +1080,11 @@ public class Controleur
      *@param nomCons une variable de type String utilisé dans la methode addCondition("c.nomConsole", nomCons, HQLRecherche.Operateur.EGAL) pour la recherche d'une console ou le nom correspond
      *@param nomFabr une variable de type String utilisé dans la methode addCondition("c.fabricant.nomFabricant", nomFabr, HQLRecherche.Operateur.EGAL) pour la recherche d'une console ou le nome est désigné
      *@return un objet de type Console,(voir See Also) qui est une classe.
+<<<<<<< HEAD
      * @see  HQLRecherche#addCondition(java.lang.String, java.lang.String, controleur.HQLRecherche.Operateur)
+=======
+     * @see  HQLRecherche#addCondition(java.lang.String, java.lang.String, controleur.HQLRecherche.Operateur) 
+>>>>>>> origin/Iulianbranch
      * @see  LOREntities.Console
      */
     private Console chercherConsole(String nomCons, String nomFabr) throws DonneesInsuffisantesException
@@ -794,7 +1099,11 @@ public class Controleur
         System.out.println("Recherche Console"); //imprimé à des fins de test
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         if (resultats.isEmpty())
             return null;
         else if (resultats.size() != 1)
@@ -809,15 +1118,25 @@ public class Controleur
      * @param  nomEditeur-une variable de type String utilisé dans la methode appelé chercherEditeur(nomEditeur)-voir SeeAlso
      * @return un objet de type Jeu(voir See Also) qui est une classe
      * @see LOREntities.Jeu
+<<<<<<< HEAD
      * @see #chercherEditeur(java.lang.String)
      */
     private Jeu chercherJeu(String nomJeu, Vector<String> tags, String nomEditeur)
+=======
+     * @see #chercherEditeur(java.lang.String) 
+     */
+    private Jeu chercherJeu(String nomJeu, Vector<String> tags, String nomEditeur) 
+>>>>>>> origin/Iulianbranch
             throws DonneesInsuffisantesException
     {
         int idEditeur = 0;
         if (nomJeu == null || "".equals(nomJeu))
             throw new DonneesInsuffisantesException("Erreur lors de la recherche du jeu : nom du jeu non renseigné.");
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         if (nomEditeur != null && !"".equals(nomEditeur))
         {
             Editeur edtr = chercherEditeur(nomEditeur);
@@ -826,9 +1145,15 @@ public class Controleur
             //else
             idEditeur = edtr.getIdEditeur();
         }
+<<<<<<< HEAD
 
         //!à implémenter; (voir chercher console, encore que, y'a les tags...');
 
+=======
+        
+        //!à implémenter; (voir chercher console, encore que, y'a les tags...');
+        
+>>>>>>> origin/Iulianbranch
         HQLRecherche q = new HQLRecherche("LOREntities.Jeu j");
         q.addCondition("j.nomJeu", nomJeu, HQLRecherche.Operateur.EGAL);
         if (!"".equals(nomEditeur))
@@ -836,7 +1161,11 @@ public class Controleur
         System.out.println("Recherche Jeu"); //imprimé à des fins de test
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         /* Attention
         Il est possible qu'une recherche renvoie plusieurs résultats. Par exemple, si deux jeux produits par des éditeurs
         différents ont le même nom et que l'éditeur n'a pas été renseigné. Pour traiter ce type d'erreur,
@@ -844,18 +1173,32 @@ public class Controleur
         on renvoie null ou on lance une exception.
         */
         //Vector<Jeu> resultat;
+<<<<<<< HEAD
 
         //TODO: la recherche à proprement parler. On ne réutilise pas chercherVersionsJeu car la correspondance demandée par chercherJeu est parfaite.
         //Attention, pour l'éditeur, si le nom est renseigné, on demande une correspondance parfaite.
         //Penser à traiter les tags avec une requête imbriquée
 
+=======
+        
+        //TODO: la recherche à proprement parler. On ne réutilise pas chercherVersionsJeu car la correspondance demandée par chercherJeu est parfaite.
+        //Attention, pour l'éditeur, si le nom est renseigné, on demande une correspondance parfaite.
+        //Penser à traiter les tags avec une requête imbriquée
+        
+>>>>>>> origin/Iulianbranch
         /*if (resultat.isEmpty())
             return null;
         else if (resultat.size() > 1)
             throw new  DonneesInsuffisantesException("Erreur lors de la recherche du jeu : plusieurs résultats obtenus. Veuillez renseigner l'éditeur du jeu.");
+<<<<<<< HEAD
 
         return resultat.firstElement();*/
 
+=======
+        
+        return resultat.firstElement();*/
+        
+>>>>>>> origin/Iulianbranch
         if (resultats.isEmpty())
             return null;
         else if (resultats.size() != 1)
@@ -868,19 +1211,32 @@ public class Controleur
      * Recherche les fabricants dont le nom contient la chaîne renseignée.
      * @param nomFabr une variable utilisé pour declancher eventuelment DonneesInsuffisantesException Exception et dans la methode addCondition-voir See Also
      * @return Fabricant un objet de type Fabricant qui est une classe voir See Also
+<<<<<<< HEAD
      * @see HQLRecherche#addCondition(java.lang.String, java.lang.String, controleur.HQLRecherche.Operateur)
      * @see LOREntities.Fabricant
+=======
+     * @see HQLRecherche#addCondition(java.lang.String, java.lang.String, controleur.HQLRecherche.Operateur) 
+     * @see LOREntities.Fabricant 
+>>>>>>> origin/Iulianbranch
      */
     private Fabricant chercherFabricant(String nomFabr) throws DonneesInsuffisantesException
     {
         if (nomFabr == null || "".equals(nomFabr))
             throw new DonneesInsuffisantesException("Erreur lors de la recherche du fabricant : nom du fabricant non renseigné.");
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         HQLRecherche q = new HQLRecherche("Fabricant f");
         q.addCondition("f.nomFabricant", nomFabr, HQLRecherche.Operateur.EGAL);
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         if (resultats.isEmpty())
             return null;
         else //on suppose qu'il n'y a qu'un seul résultat !
@@ -893,12 +1249,20 @@ public class Controleur
     {
         if (nomEdit == null || "".equals(nomEdit))
             throw new DonneesInsuffisantesException("Erreur lors de la recherche de l'éditeur : nom de l'éditeur non renseigné.");
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         HQLRecherche q = new HQLRecherche("Editeur e");
         q.addCondition("e.nomEditeur", nomEdit, HQLRecherche.Operateur.EGAL);
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         if (resultats.isEmpty())
             return null;
         else //on suppose qu'il n'y a qu'un seul résultat !
@@ -911,12 +1275,20 @@ public class Controleur
     {
         if (zone == null || "".equals(zone))
             throw new DonneesInsuffisantesException("Erreur lors de la recherche de la zone : nom de la zone non renseigné.");
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         HQLRecherche q = new HQLRecherche("Zone z");
         q.addCondition("z.nomZone", zone, HQLRecherche.Operateur.EGAL);
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         if (resultats.isEmpty())
             return null;
         else //on suppose qu'il n'y a qu'un seul résultat !
@@ -929,23 +1301,40 @@ public class Controleur
     {
         if (tag == null || "".equals(tag))
             throw new DonneesInsuffisantesException("Erreur lors de la recherche du tag : nom du tag non renseigné.");
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         HQLRecherche q = new HQLRecherche("Tag t");
         q.addCondition("t.labelTag", tag, HQLRecherche.Operateur.EGAL);
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         if (resultats.isEmpty())
             return null;
         else //on suppose qu'il n'y a qu'un seul résultat !
             return (Tag) resultats.get(0);
     }
+<<<<<<< HEAD
 
      /**
      * Crée une zone dans la table des zones. Si la zone renseignée est trouvé, un objet Zone est renvoyé. Sinon, la méthode renvoie null.
      * On trouve des methodés a l'interioeur de cette methode voir See Also.
      * @see #chercherZone(java.lang.String)
      * @see LOREntities.Zone#setNomZone(java.lang.String)
+=======
+       
+     /**
+     * Crée une zone dans la table des zones. Si la zone renseignée est trouvé, un objet Zone est renvoyé. Sinon, la méthode renvoie null.
+     * On trouve des methodés a l'interioeur de cette methode voir See Also.
+     * @see #chercherZone(java.lang.String) 
+     * @see LOREntities.Zone#setNomZone(java.lang.String) 
+>>>>>>> origin/Iulianbranch
      * @param zone mettre un parametre un String qui est utilisé d'abord pour verifier si on vérifie si la zone n'existe pas déjà aprés pour sauvegarde dans la base de données
      * @throws DonneesInsuffisantesException si l'utilisateur rentre de données insufisantes
      * @throws EnregistrementExistantException si la valeur entre existe deja dans la base de données
@@ -956,28 +1345,50 @@ public class Controleur
             throws EnregistrementExistantException, DonneesInsuffisantesException, DonneeInvalideException
     {
         Rapport rapport = new Rapport();
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         if (zone == null || "".equals(zone))
             throw new DonneesInsuffisantesException("Erreur lors de la création de la zone : nom de la zone non renseigné.");
         else if ("Autre".equals(zone))
             throw new DonneesInsuffisantesException("Erreur lors de la création de la zone : on ne peut pas nommer une zone 'Autre'.");
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> origin/Iulianbranch
         //on vérifie que la zone n'existe pas déjà !
         Zone existante = chercherZone(zone);
         if (existante != null)
             throw new EnregistrementExistantException("Impossible de créer la zone : cette zone existe déjà.");
+<<<<<<< HEAD
 
         //création de la zone
         Zone z = new Zone();
         z.setNomZone(zone);
 
+=======
+        
+        //création de la zone
+        Zone z = new Zone();
+        z.setNomZone(zone);
+        
+>>>>>>> origin/Iulianbranch
         //sauvegarde dans la base de données
         this.modele.beginTransaction();
         this.modele.save(z);
         this.modele.getTransaction().commit();
+<<<<<<< HEAD
 
         rapport.addOperation(z.getIdZone(), Rapport.Table.ZONE, Rapport.Operation.CREER);
 
+=======
+        
+        rapport.addOperation(z.getIdZone(), Rapport.Table.ZONE, Rapport.Operation.CREER);
+        
+>>>>>>> origin/Iulianbranch
         return rapport;
     }
     /**
@@ -987,10 +1398,17 @@ public class Controleur
     public Vector<String> listeZones()
     {
         Vector<String> ret = new Vector();
+<<<<<<< HEAD
 
         List zones = modele.createQuery("from LOREntities.Zone").list();
         for (Object z : zones)
             ret.add(((Zone) z).getNomZone());
+=======
+        
+        List zones = modele.createQuery("from LOREntities.Zone").list();
+        for (Object z : zones)
+            ret.add(((Zone) z).getNomZone());       
+>>>>>>> origin/Iulianbranch
         return ret;
     }
     /**
@@ -1000,6 +1418,7 @@ public class Controleur
     public Vector<String> listeConsoles()
     {
         Vector<String> ret = new Vector();
+<<<<<<< HEAD
 
         List consoles = modele.createQuery("from LOREntities.Console").list();
         for (Object c : consoles)
@@ -1008,6 +1427,16 @@ public class Controleur
         return ret;
     }
 
+=======
+        
+        List consoles = modele.createQuery("from LOREntities.Console").list();
+        for (Object c : consoles)
+            ret.add(((Console) c).getNomConsole());
+        
+        return ret;
+    }
+    
+>>>>>>> origin/Iulianbranch
     /**
      * Convertit une chaîne de 1 à 13 chiffres en code barre valides. Si le code barre fait moins de 13 chiffres, il est complété par des 0 à gauche.
      * @param cb le code barre à vérifier.
@@ -1020,7 +1449,11 @@ public class Controleur
         //si le code barre n'est pas renseigné, il n'y a rien à faire
         if (cb == null || "".equals(cb))
             return cb;
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/Iulianbranch
         //on vérifie que l'entrée est légale
         String ret = "";
         if (cb.length() > 13)
@@ -1040,7 +1473,11 @@ public class Controleur
     /**
      * Transforme un vecteur de tags en un vecteur de strings pour l'affichage.
      * @param decrires un objet de type Decrire dans une colection,il est utilisé pour l'intération
+<<<<<<< HEAD
      * @param separator est utilisé pour l'iterateur
+=======
+     * @param separator est utilisé pour l'iterateur 
+>>>>>>> origin/Iulianbranch
      * @return return un String re resultat d'itération voir la classe Decrire (See Also)
      */
     protected static final String decriresToString(Set<Decrire> decrires, char separator)
@@ -1082,7 +1519,11 @@ public class Controleur
         s = s.toUpperCase(new Locale("FRENCH", "FRANCE"));
         return s;
     }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/Iulianbranch
     /**
      * Démarre l'application
      * args x
