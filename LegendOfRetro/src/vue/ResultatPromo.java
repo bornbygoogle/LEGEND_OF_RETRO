@@ -35,10 +35,46 @@ public class ResultatPromo <F extends Form> extends javax.swing.JPanel
 
     /**
      * Creates new form Resultat
-<<<<<<< HEAD
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package vue;
+
+import bean.Form;
+import bean.ProduitForm;
+import controleur.Rapport;
+import java.util.Arrays;
+import java.util.Vector;
+import javax.swing.JPanel;
+
+/**
+ *
+ * @author bornbygoogle
+ */
+public class ResultatPromo <F extends Form> extends javax.swing.JPanel
+{
+    protected Chercheur parent;
+    protected Vector<F> res;
+    protected static String [] typeJeu = {
+        "Code Barre",
+        "Nom",
+        "Edition",
+        "Zone",
+        "Développeur"};
+    protected static String [] typeConsole = {
+        "Code Barre",
+        "Nom",
+        "Edition",
+        "Zone",
+        "Fabricant"};
+
+    /**
+     * Creates new form Resultat
+
      * @param parent x
 =======
->>>>>>> origin/Iulianbranch
      */
     public ResultatPromo(Chercheur parent)
     {
@@ -100,7 +136,7 @@ public class ResultatPromo <F extends Form> extends javax.swing.JPanel
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 976, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 776, Short.MAX_VALUE)
                     .addComponent(verbose, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );

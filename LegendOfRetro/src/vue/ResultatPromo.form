@@ -19,7 +19,7 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="jScrollPane1" pref="976" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="776" max="32767" attributes="0"/>
                   <Component id="verbose" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>

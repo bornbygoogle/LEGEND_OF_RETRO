@@ -6,6 +6,7 @@
 package vue;
 
 import bean.Form;
+import bean.PersonneForm;
 import bean.ProduitForm;
 import controleur.Controleur;
 import controleur.DonneeInvalideException;
@@ -58,25 +59,25 @@ public class menuPromo extends JPanel implements Chercheur
     {
         if (!(res instanceof ProduitForm))
             throw new IllegalArgumentException("Erreur dans menuProduit: le formulaire à sélectionner n'est pas un ProduitForm.");
-        //this.Criteres.setForm((PersonneForm) res);
+        this.Criteres.setForm((ProduitForm) res);
     }
 
     @Override
     public void lancerRecherche(Form form)
     {
-//        try {
-//            // Affectuer la recherche avec fonction RECHERCHE dans CONTROLEUR
-//            Vector<PersonneForm> resultatsRecherche = null;
-//     !       resultatsRecherche = this.controleur.chercher(form); //! TODO: attention, dans le contrôleur, à ce que renvoie chercherform() !
-//            // Afficher les résultats avec fonction AFFICHERES dans RESULTAT
-//            if (resultatsRecherche != null)
-//                this.Resultats.afficherRes(resultatsRecherche); }
-//        catch (DonneeInvalideException e) {
-//            afficherErreur(e);}
-//        catch (controleur.DonneesInsuffisantesException e) {
-//            afficherErreur(e);}
-//        catch (ResultatInvalideException e) {
-//            afficherErreur(e);}
+        try {
+            // Affectuer la recherche avec fonction RECHERCHE dans CONTROLEUR
+            Vector<ProduitForm> resultatsRecherche = null;
+            resultatsRecherche = this.controleur.chercher(form); //! TODO: attention, dans le contrôleur, à ce que renvoie chercherform() !
+            // Afficher les résultats avec fonction AFFICHERES dans RESULTAT
+            if (resultatsRecherche != null)
+                this.Resultats.afficherRes(resultatsRecherche); }
+        catch (DonneeInvalideException e) {
+            afficherErreur(e);}
+        catch (controleur.DonneesInsuffisantesException e) {
+            afficherErreur(e);}
+        catch (ResultatInvalideException e) {
+            afficherErreur(e);}
     }
 
     @Override
