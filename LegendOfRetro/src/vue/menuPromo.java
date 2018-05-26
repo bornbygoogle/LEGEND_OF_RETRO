@@ -24,7 +24,7 @@ public class menuPromo extends JPanel implements Chercheur
 {
     private Controleur controleur;
 
-    //private critPersonne Criteres;
+    private critPromo Criteres;
     private Resultat<PersonneForm> Resultats;
 
     /**
@@ -45,11 +45,11 @@ public class menuPromo extends JPanel implements Chercheur
     {
         this.setSize(500, 560);
 
-        //this.Criteres = new critPersonne(this.controleur, this);
+        this.Criteres = new critPromo(this.controleur, this);
         this.Resultats = new Resultat<PersonneForm>(this);
         
         this.setLayout(new BorderLayout());
-        //this.add(this.Criteres, BorderLayout.CENTER);
+        this.add(this.Criteres, BorderLayout.CENTER);
         this.add(this.Resultats, BorderLayout.SOUTH);
     }
     
