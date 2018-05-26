@@ -21,7 +21,11 @@ import vue.GUI;
 
 /**
  * @author Adrien Marchand
+<<<<<<< HEAD
  * La classe controleur contien:  1.Controleur() throws InitException-un contructeur qui initialise la Vue et le Modele et 2.Des methode qui vont faire l'aiguillage entre Vue-Modele 26:05:2018
+=======
+ * La classe controleur contien:  1.Controleur() throws InitException-un contructeur qui initialise la Vue et le Modele et 2.Des methode qui vont faire l'aiguillage entre Vue-Modele.ok000     
+>>>>>>> 412787c733119379e1ed3e9ed2daf0d3de51b87a
  */
 public class Controleur
 {
@@ -101,7 +105,7 @@ public class Controleur
     }
      /**
      * Crée un fabricant. Assure l'unicité de l'enregistrement dans l'intérieur de cette méthode sont appelées les méthodes-voir See Also.
-     * @see #chercherFabricant(String nomFabr) dans cette methode s'effectue un traitement qui appelle:
+     * @see #chercherFabricant(String nomFabr) dans cette methode s'effectue un traitement qui appelle voir See Also
      * @see HQLRecherche#addCondition(String membreGauche, String membreDroite, Operateur operateur)
      * @see Fabricant#getNomFabricant()
      * @see Rapport#idDerniereOperation
@@ -277,12 +281,21 @@ public class Controleur
     }
     /**
      * Crée une console et/ou son fabricant.
+<<<<<<< HEAD
      * Si le fabricant est renseigné par un label inexistant dans la base de données, un nouveau fabricant est ajouté à la volée voir les methodées qui existe dans l'interioeur de cette methode -voir SeeAlso.
      * @see #creerFabricant(controleur.Rapport, java.lang.String)
      * @see #chercherFabricant(java.lang.String)
      * @see #chercherConsole(java.lang.String, java.lang.String)
      * @see LOREntities.Console#setNomConsole(java.lang.String)
      * @see LOREntities.Fabricant#setNomFabricant(java.lang.String)
+=======
+     * Si le fabricant est renseigné par un label inexistant dans la base de données, un nou
+     * @see #creerFabricant(controleur.Rapport, java.lang.String) 
+     * @see #chercherFabricant(java.lang.String) 
+     * @see #chercherConsole(java.lang.String, java.lang.String) 
+     * @see LOREntities.Console#setNomConsole(java.lang.String) 
+     * @see LOREntities.Fabricant#setNomFabricant(java.lang.String) 
+>>>>>>> 412787c733119379e1ed3e9ed2daf0d3de51b87a
      * @param  rapport-met en parametre une variable de type Rapport qui est utilisé
      * pour retourner une réponse dans l'interface graphique
      * @param   nomConsole une variable qui represente le nom de la console
