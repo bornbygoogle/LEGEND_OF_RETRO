@@ -21,7 +21,7 @@ import vue.GUI;
 
 /**
  * @author Adrien Marchand
- * La classe controleur contien:  1.Controleur() throws InitException-un contructeur qui initialise la Vue et le Modele et 2.Des methode qui vont faire l'aiguillage entre Vue-Modele.ok1
+ * La classe controleur contien:  1.Controleur() throws InitException-un contructeur qui initialise la Vue et le Modele et 2.Des methode qui vont faire l'aiguillage entre Vue-Modele.ok12
  */
 public class Controleur
 {
