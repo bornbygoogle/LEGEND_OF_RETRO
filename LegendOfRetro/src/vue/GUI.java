@@ -147,6 +147,14 @@ public class GUI extends JFrame implements ActionListener
             c.add(this.menuOuvert, BorderLayout.CENTER);
             this.setContentPane(c);
         }
+        else if (m == Menu.PROMO)
+        {
+            fermerMenu();
+            this.menuOuvert = new menuPromo(this.controleur);
+            Container c = this.getContentPane();
+            c.add(this.menuOuvert, BorderLayout.CENTER);
+            this.setContentPane(c);
+        }
         else
             throw new UnsupportedOperationException("Le programme ne gère pas encore ce menu.");
     }

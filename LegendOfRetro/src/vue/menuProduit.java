@@ -32,6 +32,7 @@ public class menuProduit extends JPanel implements Chercheur
 
     /**
      * Creates new form menuProduit
+     * @param c x
      */
     public menuProduit(Controleur c)
     {

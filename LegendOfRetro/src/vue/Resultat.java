@@ -35,6 +35,10 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
 
     /**
      * Creates new form Resultat
+<<<<<<< HEAD
+     * @param parent x
+=======
+>>>>>>> origin/Iulianbranch
      */
     public Resultat(Chercheur parent)
     {
