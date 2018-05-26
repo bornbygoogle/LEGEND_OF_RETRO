@@ -21,7 +21,7 @@ import vue.GUI;
 
 /**
  * @author Adrien Marchand
- * La classe controleur contien:  1.Controleur() throws InitException-un contructeur qui initialise la Vue et le Modele et 2.Des methode qui vont faire l'aiguillage entre Vue-Modele.ok222      
+ * La classe controleur contien:  1.Controleur() throws InitException-un contructeur qui initialise la Vue et le Modele et 2.Des methode qui vont faire l'aiguillage entre Vue-Modele.ok000     
  */
 public class Controleur
 {
@@ -49,7 +49,7 @@ public class Controleur
     
     /**
      * Détermine, à partir d'un bean, quelle(s) requête(s) d'INSERT va générer et va exécuter.
-     * @param f est un objet de type ProduitForm-(voir See Also), ce objet est utilisé pour de efectuer l'operation de cast  et a l'intérieur de cette méthode il y a appelé une autre méthode (voir See Also):
+     * @param f est un objet de type ProduitForm-(voir See Also), ce objet est utilisé pour de efectuer l'operation de cast  et a l'intérieur de cette méthode il y a appelé une autre méthode (voir See Also)
      * @see bean.ProduitForm
      * @see #creerVersionConsole(controleur.Rapport, java.lang.String, java.lang.String, java.lang.String, float, int, java.lang.String, java.lang.String) 
      * @throws DonneesInsuffisantesException si l'utilisateur rentre des données insufisantes
@@ -101,7 +101,7 @@ public class Controleur
     }
      /**
      * Crée un fabricant. Assure l'unicité de l'enregistrement dans l'intérieur de cette méthode sont appelées les méthodes-voir See Also.
-     * @see #chercherFabricant(String nomFabr) dans cette methode s'effectue un traitement qui appelle:
+     * @see #chercherFabricant(String nomFabr) dans cette methode s'effectue un traitement qui appelle voir See Also
      * @see HQLRecherche#addCondition(String membreGauche, String membreDroite, Operateur operateur)
      * @see Fabricant#getNomFabricant() 
      * @see Rapport#idDerniereOperation
@@ -277,7 +277,7 @@ public class Controleur
     }
     /**
      * Crée une console et/ou son fabricant.
-     * Si le fabricant est renseigné par un label inexistant dans la base de données, un nouveau fabricant est ajouté à la volée voir les methodées qui existe dans l'interioeur de cette methode -voir SeeAlso.
+     * Si le fabricant est renseigné par un label inexistant dans la base de données, un nou
      * @see #creerFabricant(controleur.Rapport, java.lang.String) 
      * @see #chercherFabricant(java.lang.String) 
      * @see #chercherConsole(java.lang.String, java.lang.String) 
