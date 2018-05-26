@@ -20,19 +20,17 @@ import javax.swing.JPanel;
  *
  * @author Home
  */
-public class menuPersonne extends JPanel implements Chercheur
+public class menuAchat extends JPanel implements Chercheur
 {
     private Controleur controleur;
 
     //private critPersonne Criteres;
-
     private Resultat<PersonneForm> Resultats;
 
     /**
      * Creates new form menuProduit
-     * @param c x
      */
-    public menuPersonne(Controleur c)
+    public menuAchat(Controleur c)
     {
         super();
         this.controleur = c;
