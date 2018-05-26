@@ -6,7 +6,7 @@
 package vue;
 
 import bean.Form;
-import bean.PersonneForm;
+import bean.ProduitForm;
 import controleur.Controleur;
 import controleur.DonneeInvalideException;
 import controleur.DonneesInsuffisantesException;
@@ -25,7 +25,7 @@ public class menuPromo extends JPanel implements Chercheur
     private Controleur controleur;
 
     private critPromo Criteres;
-    private Resultat<PersonneForm> Resultats;
+    private ResultatPromo<ProduitForm> Resultats;
 
     /**
      * Creates new form menuProduit
@@ -46,7 +46,7 @@ public class menuPromo extends JPanel implements Chercheur
         this.setSize(500, 560);
 
         this.Criteres = new critPromo(this.controleur, this);
-        this.Resultats = new Resultat<PersonneForm>(this);
+        this.Resultats = new ResultatPromo<ProduitForm>(this);
         
         this.setLayout(new BorderLayout());
         this.add(this.Criteres, BorderLayout.CENTER);
@@ -56,7 +56,7 @@ public class menuPromo extends JPanel implements Chercheur
     @Override
     public void selectionnerResultat(Form res)
     {
-        if (!(res instanceof PersonneForm))
+        if (!(res instanceof ProduitForm))
             throw new IllegalArgumentException("Erreur dans menuProduit: le formulaire à sélectionner n'est pas un ProduitForm.");
         //this.Criteres.setForm((PersonneForm) res);
     }
