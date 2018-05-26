@@ -25,10 +25,12 @@ public class menuPersonne extends JPanel implements Chercheur
     private Controleur controleur;
 
     //private critPersonne Criteres;
+
     private Resultat<PersonneForm> Resultats;
 
     /**
      * Creates new form menuProduit
+     * @param c x
      */
     public menuPersonne(Controleur c)
     {
