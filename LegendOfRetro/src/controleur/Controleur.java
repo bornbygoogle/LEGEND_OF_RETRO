@@ -57,11 +57,14 @@ public class Controleur
      * @throws EnregistrementExistantException si la valeur entrée existe déja dans la base de données
      * @return Rapport donc va etre utiliseé pour HQLRecherche,voir le constructeur Rapport
     */
-    public Rapport creer(ProduitForm f)
+    public Rapport creer(CodeBarreForm form)
             throws DonneesInsuffisantesException, DonneeInvalideException, EnregistrementExistantException
-        {
+    {
+        if (!(form instanceof ProduitForm))
+            throw new DonneesInsuffisantesException("Impossible de créer le produit : le code barre n'est pas une donnée suffisante.");
+        
+        ProduitForm f = (ProduitForm) form;
         Rapport rapport = new Rapport();
-
         String type = f.getType();
 
         if ("Console".equals(type))
@@ -93,11 +96,6 @@ public class Controleur
         }
 
         return rapport;
-    }
-    public Rapport creer(CodeBarreForm form)
-            throws DonneesInsuffisantesException, DonneeInvalideException, EnregistrementExistantException
-    {
-            throw new DonneesInsuffisantesException("Impossible de créer le produit : le code barre n'est pas une donnée suffisante.");
     }
      /**
      * Crée un fabricant. Assure l'unicité de l'enregistrement dans l'intérieur de cette méthode sont appelées les méthodes-voir See Also.
@@ -514,10 +512,12 @@ public class Controleur
     */
     public Vector<ProduitForm> chercher(Form form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
     {
-        if (form instanceof CodeBarreForm)
-            return chercher((CodeBarreForm) form);
-        else //if (form instanceof ProduitForm)
+        if (form instanceof ProduitForm)
             return chercher((ProduitForm) form);
+        else if (form instanceof CodeBarreForm)
+            return chercher((CodeBarreForm) form);
+        else
+            throw new UnsupportedOperationException("On ne sait pas rechercher les Form de type " + form.getClass());
     }
     public Vector<ProduitForm> chercher(CodeBarreForm form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
     {

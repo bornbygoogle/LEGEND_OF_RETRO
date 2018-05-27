@@ -11,13 +11,12 @@ import java.util.Vector;
  *
  * @author Adrien Marchand
  */
-public class ProduitForm extends Form
+public class ProduitForm extends CodeBarreForm
 {
     private int idVersionConsole;
     private int idVersionJeu;
     
     private String type;
-    private String codeBarre;
     private String nom;
     private String edition;
     private String zone;
@@ -33,7 +32,6 @@ public class ProduitForm extends Form
         this.idVersionConsole = -1;
         this.idVersionJeu = -1;
         this.type = "";
-        this.codeBarre = "";
         this.nom = "";
         this.edition = "";
         this.zone = "";
@@ -49,10 +47,10 @@ public class ProduitForm extends Form
             String editeur, String description, String tags, String plateforme,
             float prix, int stock)
     {
+        super(cb);
         this.idVersionConsole = idVersionConsole;
         this.idVersionJeu = idVersionJeu;
         this.type = type;
-        this.codeBarre = cb;
         this.nom = nom;
         this.edition = edition;
         this.zone = zone;
@@ -67,7 +65,6 @@ public class ProduitForm extends Form
     public int getIdVersionConsole()      {return this.idVersionConsole;}
     public int getIdVersionJeu()      {return this.idVersionJeu;}
     public String getType()      {return this.type;}
-    public String getCodeBarre()      {return this.codeBarre;}
     public String getNom()      {return this.nom;}
     public String getEdition()      {return this.edition;}
     public String getZone()      {return this.zone;}
@@ -81,7 +78,6 @@ public class ProduitForm extends Form
     public void setIdVersionConsole(int id)      {this.idVersionConsole = id;}
     public void setIdVersionJeu(int id)      {this.idVersionJeu = id;}
     public void setType(String type)      {this.type = type;}
-    public void setCodeBarre(String cb)      {this.codeBarre = cb;}
     public void setNom(String nom)      {this.nom = nom;}
     public void setEdition(String edition)      {this.edition = edition;}
     public void setZone(String zone)      {this.zone = zone;}
