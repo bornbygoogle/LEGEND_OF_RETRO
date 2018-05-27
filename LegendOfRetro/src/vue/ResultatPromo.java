@@ -35,46 +35,7 @@ public class ResultatPromo <F extends Form> extends javax.swing.JPanel
 
     /**
      * Creates new form Resultat
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package vue;
-
-import bean.Form;
-import bean.ProduitForm;
-import controleur.Rapport;
-import java.util.Arrays;
-import java.util.Vector;
-import javax.swing.JPanel;
-
-/**
- *
- * @author bornbygoogle
- */
-public class ResultatPromo <F extends Form> extends javax.swing.JPanel
-{
-    protected Chercheur parent;
-    protected Vector<F> res;
-    protected static String [] typeJeu = {
-        "Code Barre",
-        "Nom",
-        "Edition",
-        "Zone",
-        "Développeur"};
-    protected static String [] typeConsole = {
-        "Code Barre",
-        "Nom",
-        "Edition",
-        "Zone",
-        "Fabricant"};
-
-    /**
-     * Creates new form Resultat
-
      * @param parent x
-=======
      */
     public ResultatPromo(Chercheur parent)
     {
