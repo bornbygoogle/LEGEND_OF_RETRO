@@ -982,7 +982,8 @@ public class Controleur
     }
     /**
      * Renvoie la liste des zones.
-     * @return  un vecteur de type generique qui retourne la liste des zones.
+     * @param : void
+     * @return : un vecteur/liste de resultat de type Zone
      */
     public Vector<String> listeZones()
     {
@@ -995,7 +996,8 @@ public class Controleur
     }
     /**
      * Renvoie la liste des consoles.
-     * @return un vecteur de type generique qui retourne la liste des consoles.
+     * @param : void
+     * @return : un vecteur/liste de resultat de type Console
      */
     public Vector<String> listeConsoles()
     {
@@ -1008,6 +1010,22 @@ public class Controleur
         return ret;
     }
 
+    /**
+     * Renvoie la liste des Tags.
+     * @param : void
+     * @return : un vecteur/liste de resultat de type Tags
+     */
+    public Vector<String> listeTags()
+    {
+        Vector<String> ret = new Vector();
+        
+        List tags = modele.createQuery("from LOREntities.Tag").list();
+        for (Object t : tags)
+            ret.add(((Tag) t).getLabelTag());
+        
+        return ret;
+    }
+    
     /**
      * Convertit une chaîne de 1 à 13 chiffres en code barre valides. Si le code barre fait moins de 13 chiffres, il est complété par des 0 à gauche.
      * @param cb le code barre à vérifier.
