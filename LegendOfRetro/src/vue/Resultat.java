@@ -66,7 +66,7 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
         table = new javax.swing.JTable();
 
         verbose.setForeground(new java.awt.Color(255, 3, 0));
-        verbose.setText("Aucun résultat ne correspond à votre recherche");
+        verbose.setText(" ");
 
         table.setAutoCreateRowSorter(true);
         table.setModel(new javax.swing.table.DefaultTableModel(

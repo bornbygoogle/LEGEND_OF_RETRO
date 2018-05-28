@@ -44,7 +44,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="3" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Aucun r&#xe9;sultat ne correspond &#xe0; votre recherche"/>
+        <Property name="text" type="java.lang.String" value=" "/>
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
