@@ -21,7 +21,7 @@ import vue.GUI;
 
 /**
  * @author Adrien Marchand
- * La classe controleur contien:  1.Controleur() throws InitException-un contructeur qui initialise la Vue et le Modele et 2.Des methode qui vont faire l'aiguillage entre Vue-Modele
+ * La classe controleur contien:  1.Controleur() throws InitException-un contructeur qui initialise la Vue et le Modele et 2.Des methode qui vont faire l'aiguillage entre Vue-Modele 26:05:2018
  */
 public class Controleur
 {
@@ -57,11 +57,14 @@ public class Controleur
      * @throws EnregistrementExistantException si la valeur entrée existe déja dans la base de données
      * @return Rapport donc va etre utiliseé pour HQLRecherche,voir le constructeur Rapport
     */
-    public Rapport creer(ProduitForm f)
+    public Rapport creer(CodeBarreForm form)
             throws DonneesInsuffisantesException, DonneeInvalideException, EnregistrementExistantException
-        {
+    {
+        if (!(form instanceof ProduitForm))
+            throw new DonneesInsuffisantesException("Impossible de créer le produit : le code barre n'est pas une donnée suffisante.");
+        
+        ProduitForm f = (ProduitForm) form;
         Rapport rapport = new Rapport();
-
         String type = f.getType();
 
         if ("Console".equals(type))
@@ -93,11 +96,6 @@ public class Controleur
         }
 
         return rapport;
-    }
-    public Rapport creer(CodeBarreForm form)
-            throws DonneesInsuffisantesException, DonneeInvalideException, EnregistrementExistantException
-    {
-            throw new DonneesInsuffisantesException("Impossible de créer le produit : le code barre n'est pas une donnée suffisante.");
     }
      /**
      * Crée un fabricant. Assure l'unicité de l'enregistrement dans l'intérieur de cette méthode sont appelées les méthodes-voir See Also.
@@ -514,10 +512,12 @@ public class Controleur
     */
     public Vector<ProduitForm> chercher(Form form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
     {
-        if (form instanceof CodeBarreForm)
-            return chercher((CodeBarreForm) form);
-        else //if (form instanceof ProduitForm)
+        if (form instanceof ProduitForm)
             return chercher((ProduitForm) form);
+        else if (form instanceof CodeBarreForm)
+            return chercher((CodeBarreForm) form);
+        else
+            throw new UnsupportedOperationException("On ne sait pas rechercher les Form de type " + form.getClass());
     }
     public Vector<ProduitForm> chercher(CodeBarreForm form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
     {
@@ -982,7 +982,8 @@ public class Controleur
     }
     /**
      * Renvoie la liste des zones.
-     * @return  un vecteur de type generique qui retourne la liste des zones.
+     * @param : void
+     * @return : un vecteur/liste de resultat de type Zone
      */
     public Vector<String> listeZones()
     {
@@ -995,7 +996,8 @@ public class Controleur
     }
     /**
      * Renvoie la liste des consoles.
-     * @return un vecteur de type generique qui retourne la liste des consoles.
+     * @param : void
+     * @return : un vecteur/liste de resultat de type Console
      */
     public Vector<String> listeConsoles()
     {
@@ -1008,6 +1010,22 @@ public class Controleur
         return ret;
     }
 
+    /**
+     * Renvoie la liste des Tags.
+     * @param : void
+     * @return : un vecteur/liste de resultat de type Tags
+     */
+    public Vector<String> listeTags()
+    {
+        Vector<String> ret = new Vector();
+        
+        List tags = modele.createQuery("from LOREntities.Tag").list();
+        for (Object t : tags)
+            ret.add(((Tag) t).getLabelTag());
+        
+        return ret;
+    }
+    
     /**
      * Convertit une chaîne de 1 à 13 chiffres en code barre valides. Si le code barre fait moins de 13 chiffres, il est complété par des 0 à gauche.
      * @param cb le code barre à vérifier.
