@@ -6,7 +6,7 @@
 package vue;
 
 import bean.CodeBarreForm;
-import bean.FactureLigneForm;
+//import bean.FactureLigneForm;
 import bean.Form;
 import bean.PersonneForm;
 import bean.ProduitForm;
@@ -61,8 +61,8 @@ public class menuAchat extends JPanel implements Chercheur
     {
         if (res instanceof ProduitForm) 
             this.Criteres.setForm((ProduitForm) res);
-        else if (res instanceof FactureLigneForm)
-            this.Criteres.setForm(res);
+/*        else if (res instanceof FactureLigneForm)
+            this.Criteres.setForm(res);*/
         else
             throw new IllegalArgumentException("Erreur dans menuProduit: le formulaire à sélectionner n'est pas un ProduitForm ou un FactureLigneForm.");
     }
