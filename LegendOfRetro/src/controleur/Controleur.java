@@ -980,6 +980,39 @@ public class Controleur
 
         return rapport;
     }
+    
+    /**
+     * Renvoie la liste des Editions.
+     * @param : void
+     * @return : un vecteur/liste de resultat de type Edition
+     */
+    public Vector<String> listeEdition()
+    {
+        Vector<String> ret = new Vector();
+
+        List editions = modele.createQuery("select vj.edition from LOREntities.VersionJeu vj").list();
+        for (Object e : editions)
+            ret.add((String) e);
+            
+        return ret;
+    }
+
+    /**
+     * Renvoie la liste des Editions.
+     * @param : void
+     * @return : un vecteur/liste de resultat de type Edition
+     */
+    public Vector<String> listeFabricant()
+    {
+        Vector<String> ret = new Vector();
+
+        List fabricants = modele.createQuery("from LOREntities.Fabricant").list();
+        for (Object f : fabricants)
+            ret.add(((Fabricant) f).getNomFabricant());
+
+        return ret;
+    }    
+    
     /**
      * Renvoie la liste des zones.
      * @param : void

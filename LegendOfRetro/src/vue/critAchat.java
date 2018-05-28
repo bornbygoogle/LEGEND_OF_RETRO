@@ -6,8 +6,8 @@
 package vue;
 
 import bean.CodeBarreForm;
-import bean.FactureForm;
-import bean.FactureLigneForm;
+//import bean.FactureForm;
+//import bean.FactureLigneForm;
 import bean.Form;
 import bean.ProduitForm;
 import bean.PersonneForm;
@@ -24,7 +24,7 @@ public class critAchat extends javax.swing.JPanel {
     private Controleur controleur;
     private Chercheur parent;
     
-    private FactureLigneForm ligneFacture; //si une ligne est en train d'être modifiée
+//    private FactureLigneForm ligneFacture; //si une ligne est en train d'être modifiée
     private ProduitForm produitExamine;
     
     /**
@@ -211,7 +211,7 @@ public class critAchat extends javax.swing.JPanel {
     
     public void clean()
     {
-        this.ligneFacture = null;
+        //this.ligneFacture = null;
         this.labelDevFab.setVisible(false);
         this.labelNom.setVisible(false);
         this.labelPlateforme.setVisible(false);
@@ -226,14 +226,14 @@ public class critAchat extends javax.swing.JPanel {
         String typeDev;
         
         if (f instanceof ProduitForm) {
-            this.ligneFacture = null;
+            //this.ligneFacture = null;
             this.produitExamine = (ProduitForm) f;
             
         }
-        else if (f instanceof FactureLigneForm) {
-            this.ligneFacture = (FactureLigneForm) f;
-            this.produitExamine = this.ligneFacture.getProduit();
-        }
+//        else if (f instanceof FactureLigneForm) {
+//            this.ligneFacture = (FactureLigneForm) f;
+//            this.produitExamine = this.ligneFacture.getProduit();
+//        }
         else
             throw new IllegalArgumentException("Erreur dans menuProduit: le formulaire à sélectionner n'est pas un ProduitForm ou un FactureLigneForm.");
         
@@ -259,7 +259,7 @@ public class critAchat extends javax.swing.JPanel {
             this.labelPrix.setVisible(true);
             this.labelStock.setVisible(true);
     }
-    private FactureForm toForm()
+/*    private FactureForm toForm()
     {
         FactureForm retour = new FactureForm();
         retour.setNature(true);
@@ -268,7 +268,7 @@ public class critAchat extends javax.swing.JPanel {
         //TODO: setIdClient !
         
         return retour;
-    }
+    }*/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAjouter;
