@@ -5,8 +5,11 @@
  */
 package vue;
 
+import bean.CodeBarreForm;
+import bean.FactureLigneForm;
 import bean.Form;
 import bean.PersonneForm;
+import bean.ProduitForm;
 import controleur.Controleur;
 import controleur.DonneeInvalideException;
 import controleur.DonneesInsuffisantesException;
@@ -24,8 +27,8 @@ public class menuAchat extends JPanel implements Chercheur
 {
     private Controleur controleur;
 
-    //private critPersonne Criteres;
-    private Resultat<PersonneForm> Resultats;
+    private critAchat Criteres;
+    private Resultat<ProduitForm> Resultats;
 
     /**
      * Creates new form menuProduit
@@ -45,38 +48,43 @@ public class menuAchat extends JPanel implements Chercheur
     {
         this.setSize(500, 560);
 
-        //this.Criteres = new critPersonne(this.controleur, this);
-        this.Resultats = new Resultat<PersonneForm>(this);
+        this.Criteres = new critAchat(this.controleur, this);
+        this.Resultats = new Resultat<ProduitForm>(this);
         
         this.setLayout(new BorderLayout());
-        //this.add(this.Criteres, BorderLayout.CENTER);
+        this.add(this.Criteres, BorderLayout.CENTER);
         this.add(this.Resultats, BorderLayout.SOUTH);
     }
     
     @Override
     public void selectionnerResultat(Form res)
     {
-        if (!(res instanceof PersonneForm))
-            throw new IllegalArgumentException("Erreur dans menuProduit: le formulaire à sélectionner n'est pas un ProduitForm.");
-        //this.Criteres.setForm((PersonneForm) res);
+        if (res instanceof ProduitForm) 
+            this.Criteres.setForm((ProduitForm) res);
+        else if (res instanceof FactureLigneForm)
+            this.Criteres.setForm(res);
+        else
+            throw new IllegalArgumentException("Erreur dans menuProduit: le formulaire à sélectionner n'est pas un ProduitForm ou un FactureLigneForm.");
     }
 
     @Override
     public void lancerRecherche(Form form)
     {
-//        try {
-//            // Affectuer la recherche avec fonction RECHERCHE dans CONTROLEUR
-//            Vector<PersonneForm> resultatsRecherche = null;
-//     !       resultatsRecherche = this.controleur.chercher(form); //! TODO: attention, dans le contrôleur, à ce que renvoie chercherform() !
-//            // Afficher les résultats avec fonction AFFICHERES dans RESULTAT
-//            if (resultatsRecherche != null)
-//                this.Resultats.afficherRes(resultatsRecherche); }
-//        catch (DonneeInvalideException e) {
-//            afficherErreur(e);}
-//        catch (controleur.DonneesInsuffisantesException e) {
-//            afficherErreur(e);}
-//        catch (ResultatInvalideException e) {
-//            afficherErreur(e);}
+        if (!(form instanceof CodeBarreForm))
+            throw new IllegalArgumentException("Erreur dans menuAchat: le formulaire à rechercher n'est pas un CodeBarreForm.");
+        try {
+            // Affectuer la recherche avec fonction RECHERCHE dans CONTROLEUR
+            Vector<ProduitForm> resultatsRecherche = null;
+            resultatsRecherche = this.controleur.chercher(form); //! TODO: attention, dans le contrôleur, à ce que renvoie chercherform()
+            // Afficher les résultats avec fonction AFFICHERES dans RESULTAT
+            if (resultatsRecherche != null)
+                this.Resultats.afficherRes(resultatsRecherche); }
+        catch (DonneeInvalideException e) {
+            afficherErreur(e);}
+        catch (controleur.DonneesInsuffisantesException e) {
+            afficherErreur(e);}
+        catch (ResultatInvalideException e) {
+            afficherErreur(e);}
     }
 
     @Override

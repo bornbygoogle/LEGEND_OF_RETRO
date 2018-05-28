@@ -13,8 +13,12 @@ import java.util.Vector;
  */
 public class CodeBarreForm extends Form
 {
-    private String codeBarre;
+    protected String codeBarre;
     
+    public CodeBarreForm()
+    {
+        this.codeBarre = "";
+    }
     public CodeBarreForm(String cb)
     {
         this.codeBarre = cb;
