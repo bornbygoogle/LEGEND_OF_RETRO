@@ -1,3 +1,4 @@
-/Maquette/nbproject/private/
 /LegendOfRetro/nbproject/private/
-/LegendOfRetro/src/hibernateConfig/*
+/LegendOfRetro/src/hibernateConfig/hibernate.cfg.xml
+/LegendOfRetro/build/*
+/LegendOfRetro/dist/
