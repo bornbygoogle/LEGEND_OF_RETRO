@@ -252,7 +252,7 @@ public class Controleur
             jeu.setDescriptionJeu(description);
 
             //traitement des tags
-            /*for (String tag : tags)
+            for (String tag : tags)
             {
                 //on vérifie l'existence du tag et, au besoin, on le crée.
                 Tag t = chercherTag(tag);
@@ -260,9 +260,10 @@ public class Controleur
                     t = creerTag(rapport, tag);
 
                 //jeu.getTags().add(t);
+                //TODO: refaire une fonction lierTag() ajouter tag entre un jeu (déjà créé) et un tag (à créer ou pas)
 
                 rapport.addOperation(t.getIdTag(), Rapport.Table.DESCRIPTION, Rapport.Operation.CREER);
-            }*/
+            }
 
             //sauvegarde dans la base de données
             this.modele.beginTransaction();
@@ -573,7 +574,7 @@ public class Controleur
         }
         else if ("Jeu".equals(type))
         {
-            if (!"".equals(cb) || !"".equals(nom) || !"".equals(editeur) /*|| !tags.isEmpty()*/)
+            if (!"".equals(cb) || !"".equals(nom) || !"".equals(editeur) || !tags.isEmpty())
                 for (VersionJeu enr : chercherVersionsJeu(cb, edition, zone, plateforme, nom, editeur, tags))
                     ret.add(new ProduitForm(-1, enr.getIdVersionJeu(), "Jeu",
                             enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
@@ -680,7 +681,7 @@ public class Controleur
             String plateforme, String nom, String editeur, Vector<String> tags)
             throws DonneesInsuffisantesException
     {
-        if ("".equals(cb) && "".equals(plateforme) && "".equals(nom) && "".equals(editeur) /*&& tags.isEmpty()*/)
+        if ("".equals(cb) && "".equals(plateforme) && "".equals(nom) && "".equals(editeur) && tags.isEmpty())
             throw new DonneesInsuffisantesException("Erreur lors de la recherche des produits de type jeu : il faut renseigner un code barre, une plateforme, un nom, un éditeur ou au moins un tag.");
 
         Vector<VersionJeu> ret = new Vector<VersionJeu>();
@@ -728,7 +729,7 @@ public class Controleur
                     HQLRecherche imbrDecr = new HQLRecherche("LOREntities.Decrire d");
                     imbrDecr.setImbriquee(true);
                     imbrDecr.setSelect("d.jeu.idJeu");
-                    imbrDecr.addCondition("d.tag.dTag", imbrTag.toString(), HQLRecherche.Operateur.IN);
+                    imbrDecr.addCondition("d.tag.idTag", imbrTag.toString(), HQLRecherche.Operateur.IN);
 
                     //la requête qui recherche le jeu sélectionne parmi les jeux qui ont tous ces tags
                     imbrJeu.addCondition("j.idJeu", imbrDecr.toString(), HQLRecherche.Operateur.IN);
