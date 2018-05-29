@@ -251,6 +251,13 @@ public class Controleur
             jeu.setEditeur(editeur);
             jeu.setDescriptionJeu(description);
 
+            //sauvegarde dans la base de données
+            this.modele.beginTransaction();
+            this.modele.save(jeu);
+            this.modele.getTransaction().commit();
+
+            rapport.addOperation(jeu.getIdJeu(), Rapport.Table.JEU, Rapport.Operation.CREER);
+            
             //traitement des tags
             for (String tag : tags)
             {
@@ -258,19 +265,17 @@ public class Controleur
                 Tag t = chercherTag(tag);
                 if (t == null)
                     t = creerTag(rapport, tag);
-
-                //jeu.getTags().add(t);
-                //TODO: refaire une fonction lierTag() ajouter tag entre un jeu (déjà créé) et un tag (à créer ou pas)
+                
+                jeu.getDecrires().add(new Decrire(new DecrireId(t.getIdTag(), jeu.getIdJeu()), jeu, t));
 
                 rapport.addOperation(t.getIdTag(), Rapport.Table.DESCRIPTION, Rapport.Operation.CREER);
+                
             }
-
-            //sauvegarde dans la base de données
+            
             this.modele.beginTransaction();
-            this.modele.save(jeu);
+            this.modele.update(jeu);
             this.modele.getTransaction().commit();
-
-            rapport.addOperation(jeu.getIdJeu(), Rapport.Table.JEU, Rapport.Operation.CREER);
+            
             return jeu;
         }
     }
