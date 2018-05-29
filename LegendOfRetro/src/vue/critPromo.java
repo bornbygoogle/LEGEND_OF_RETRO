@@ -39,14 +39,26 @@ public class critPromo extends javax.swing.JPanel
         this.selectedForm = null;
         initComponents();
         
+        
+       // Initialisation la modele pour listeEdition
+        Vector<String> editions = controleur.listeEdition();
+        editions.add(0, "");
+        listeEdition.setModel(new javax.swing.DefaultComboBoxModel<>(editions));
+
+       // Initialisation la modele pour listeZone        
         Vector<String> zones = controleur.listeZones();
         zones.add(0, "");
-        zones.add("Autre");
         listeZone.setModel(new javax.swing.DefaultComboBoxModel<>(zones));
 
+       // Initialisation la modele pour listeConsoles
         Vector<String> plateformes = controleur.listeConsoles();
         plateformes.add(0, "");
         listePlateforme.setModel(new javax.swing.DefaultComboBoxModel<>(plateformes));
+        
+       // Initialisation la modele pour listeFabricant
+        Vector<String> fabricants = controleur.listeFabricant();
+        fabricants.add(0, "");
+        listeFabricant.setModel(new javax.swing.DefaultComboBoxModel<>(fabricants));        
         
         this.idVersionJeu = -1;
         this.idVersionConsole = -1;
@@ -66,7 +78,7 @@ public class critPromo extends javax.swing.JPanel
         labelPlateforme = new javax.swing.JLabel();
         labelEdition = new javax.swing.JLabel();
         labelCategorie = new javax.swing.JLabel();
-        listeTag = new javax.swing.JComboBox<>();
+        listeCategorie = new javax.swing.JComboBox<>();
         labelTag = new javax.swing.JLabel();
         listePlateforme = new javax.swing.JComboBox<>();
         labelPrix = new javax.swing.JLabel();
@@ -75,10 +87,9 @@ public class critPromo extends javax.swing.JPanel
         labelCote = new javax.swing.JLabel();
         fieldCote = new javax.swing.JLabel();
         listeZone = new javax.swing.JComboBox<>();
-        buttonChercher = new javax.swing.JButton();
         buttonModifier = new javax.swing.JButton();
         fieldPrix = new javax.swing.JFormattedTextField();
-        listeEditeur = new javax.swing.JComboBox<>();
+        listeFabricant = new javax.swing.JComboBox<>();
         listeEdition = new javax.swing.JComboBox<>();
         listeTags = new javax.swing.JComboBox<>();
         fieldStock = new javax.swing.JLabel();
@@ -96,24 +107,19 @@ public class critPromo extends javax.swing.JPanel
         labelCategorie.setForeground(new java.awt.Color(248, 7, 7));
         labelCategorie.setText("Categorie * :");
 
-        listeTag.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Console", "Jeu" }));
-        listeTag.addItemListener(new java.awt.event.ItemListener() {
+        listeCategorie.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Console", "Jeu" }));
+        listeCategorie.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                listeTagItemStateChanged(evt);
+                listeCategorieItemStateChanged(evt);
             }
         });
 
         labelTag.setText("Tags : ");
 
-        listePlateforme.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PC", "PS", " " }));
+        listePlateforme.setModel(listePlateforme.getModel());
         listePlateforme.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 listePlateformeItemStateChanged(evt);
-            }
-        });
-        listePlateforme.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                listePlateformeActionPerformed(evt);
             }
         });
 
@@ -134,13 +140,6 @@ public class critPromo extends javax.swing.JPanel
             }
         });
 
-        buttonChercher.setText("Chercher");
-        buttonChercher.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonChercherActionPerformed(evt);
-            }
-        });
-
         buttonModifier.setText("Modifier");
         buttonModifier.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -148,39 +147,24 @@ public class critPromo extends javax.swing.JPanel
             }
         });
 
-        listeEditeur.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PC", "PS", " " }));
-        listeEditeur.addItemListener(new java.awt.event.ItemListener() {
+        listeFabricant.setModel(listeFabricant.getModel());
+        listeFabricant.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                listeEditeurItemStateChanged(evt);
-            }
-        });
-        listeEditeur.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                listeEditeurActionPerformed(evt);
+                listeFabricantItemStateChanged(evt);
             }
         });
 
-        listeEdition.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PC", "PS", " " }));
+        listeEdition.setModel(listeEdition.getModel());
         listeEdition.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 listeEditionItemStateChanged(evt);
             }
         });
-        listeEdition.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                listeEditionActionPerformed(evt);
-            }
-        });
 
-        listeTags.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PC", "PS", " " }));
+        listeTags.setModel(listeTags.getModel());
         listeTags.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 listeTagsItemStateChanged(evt);
-            }
-        });
-        listeTags.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                listeTagsActionPerformed(evt);
             }
         });
 
@@ -191,60 +175,62 @@ public class critPromo extends javax.swing.JPanel
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(buttonModifier, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(36, 36, 36)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(labelEdition)
-                                    .addComponent(labelZone)))
-                            .addGroup(layout.createSequentialGroup()
+                                    .addComponent(labelZone)
+                                    .addComponent(labelEdition))
+                                .addGap(27, 27, 27))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(labelCategorie)))
-                        .addGap(27, 27, 27)
+                                .addComponent(labelCategorie)
+                                .addGap(18, 18, 18)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(listeZone, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(listeTag, 0, 150, Short.MAX_VALUE))
-                            .addComponent(listeEdition, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(110, 110, 110)
-                        .addComponent(buttonChercher, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fieldDevFab, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(labelTag, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(labelPlateforme, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(listeTags, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(listeEditeur, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(listePlateforme, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonModifier, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(41, 41, 41)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelPrix)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fieldPrix, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(labelCurrency, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelCote)
-                        .addGap(10, 10, 10)
-                        .addComponent(fieldCote)
-                        .addGap(40, 40, 40)
-                        .addComponent(labelStock)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(fieldStock)))
-                .addContainerGap(21, Short.MAX_VALUE))
+                            .addComponent(listeCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(listeEdition, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(listeZone, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(fieldDevFab, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(labelTag, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(labelPlateforme, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(listeTags, javax.swing.GroupLayout.Alignment.LEADING, 0, 150, Short.MAX_VALUE)
+                            .addComponent(listeFabricant, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(listePlateforme, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(41, 41, 41)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(labelPrix)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(fieldPrix, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(labelCurrency, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(labelCote)
+                                .addGap(10, 10, 10)
+                                .addComponent(fieldCote)
+                                .addGap(40, 40, 40)
+                                .addComponent(labelStock)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(fieldStock)))))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(10, 10, 10)
+                .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(listeCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -253,8 +239,10 @@ public class critPromo extends javax.swing.JPanel
                                     .addComponent(labelPlateforme))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(listeEditeur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(fieldDevFab)))
+                                    .addComponent(listeFabricant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(fieldDevFab)
+                                    .addComponent(labelEdition)
+                                    .addComponent(listeEdition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(labelCote)
@@ -267,52 +255,32 @@ public class critPromo extends javax.swing.JPanel
                                     .addComponent(fieldPrix, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(labelCurrency))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(listeTags, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelTag))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonModifier))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(listeTag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(listeZone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelZone))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(listeEdition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelEdition))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonChercher)))
-                .addContainerGap())
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(listeTags, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(labelTag)
+                                .addComponent(listeZone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(labelZone))
+                            .addComponent(buttonModifier)))))
         );
 
         getAccessibleContext().setAccessibleName("critResultat");
     }// </editor-fold>//GEN-END:initComponents
 
-    private void listeTagItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listeTagItemStateChanged
+    private void listeCategorieItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listeCategorieItemStateChanged
         // TODO add your handling code here:
-        if ("Jeu".equals((String)listeTag.getSelectedItem())) { fieldDevFab.setText("Développeur :"); }
+        if ("Jeu".equals((String)listeCategorie.getSelectedItem())) { fieldDevFab.setText("Développeur :"); }
             else { fieldDevFab.setText("Fabricant : "); }
-    }//GEN-LAST:event_listeTagItemStateChanged
-
-    private void listePlateformeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listePlateformeItemStateChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_listePlateformeItemStateChanged
-
-    private void listePlateformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listePlateformeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_listePlateformeActionPerformed
-
-    private void buttonChercherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChercherActionPerformed
         try {
             this.parent.lancerRecherche(toForm());}
         catch (DonneeInvalideException ex) {
             this.parent.afficherErreur(ex);
         }
-    }//GEN-LAST:event_buttonChercherActionPerformed
+    }//GEN-LAST:event_listeCategorieItemStateChanged
+
+    private void listePlateformeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listePlateformeItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_listePlateformeItemStateChanged
 
     private void buttonModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonModifierActionPerformed
         throw new UnsupportedOperationException("La modification de produit n'a pas encore été implémentée.");
@@ -327,29 +295,17 @@ public class critPromo extends javax.swing.JPanel
         }
     }//GEN-LAST:event_listeZoneItemStateChanged
 
-    private void listeEditeurItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listeEditeurItemStateChanged
+    private void listeFabricantItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listeFabricantItemStateChanged
         // TODO add your handling code here:
-    }//GEN-LAST:event_listeEditeurItemStateChanged
-
-    private void listeEditeurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listeEditeurActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_listeEditeurActionPerformed
+    }//GEN-LAST:event_listeFabricantItemStateChanged
 
     private void listeEditionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listeEditionItemStateChanged
         // TODO add your handling code here:
     }//GEN-LAST:event_listeEditionItemStateChanged
 
-    private void listeEditionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listeEditionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_listeEditionActionPerformed
-
     private void listeTagsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listeTagsItemStateChanged
         // TODO add your handling code here:
     }//GEN-LAST:event_listeTagsItemStateChanged
-
-    private void listeTagsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listeTagsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_listeTagsActionPerformed
 
     public void setForm(ProduitForm f)
     {
@@ -357,11 +313,11 @@ public class critPromo extends javax.swing.JPanel
         
         if ("jeu".equals(f.getType()))
         {
-            this.listeTag.setSelectedIndex(1); //type Jeu
+            this.listeCategorie.setSelectedIndex(1); //type Jeu
             //this.fieldTag.setText(f.getTags());
         }
         else if ("console".equals(f.getType()))
-            this.listeTag.setSelectedIndex(0); //type Console
+            this.listeCategorie.setSelectedIndex(0); //type Console
              
         this.idVersionJeu = f.getIdVersionJeu();
         this.idVersionConsole = f.getIdVersionConsole();
@@ -381,17 +337,16 @@ public class critPromo extends javax.swing.JPanel
         }
             
         return new ProduitForm(this.idVersionConsole, this.idVersionJeu,
-                    (String) listeTag.getSelectedItem(), ""/*CodeBarre*/,
-                    ""/*Nom*/, ""/*Edition*/,
+                    (String) listeCategorie.getSelectedItem(), ""/*CodeBarre*/,
+                    ""/*Nom*/, (String) listeEdition.getSelectedItem(),
                     (String) listeZone.getSelectedItem(),
-                    "",""/*fieldEditeur.getText(), jTextAreaDescription.getText()*/,
+                    "",(String) listeFabricant.getSelectedItem()/*, jTextAreaDescription.getText()*/,
                     ""/*Tags*/, (String) listePlateforme.getSelectedItem(),
                     prix, stock);
     }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public static javax.swing.JButton buttonChercher;
     public static javax.swing.JButton buttonModifier;
     public static javax.swing.JLabel fieldCote;
     public static javax.swing.JLabel fieldDevFab;
@@ -406,10 +361,10 @@ public class critPromo extends javax.swing.JPanel
     public static javax.swing.JLabel labelStock;
     public static javax.swing.JLabel labelTag;
     public static javax.swing.JLabel labelZone;
-    public static javax.swing.JComboBox<String> listeEditeur;
+    public static javax.swing.JComboBox<String> listeCategorie;
     public static javax.swing.JComboBox<String> listeEdition;
+    public static javax.swing.JComboBox<String> listeFabricant;
     public static javax.swing.JComboBox<String> listePlateforme;
-    public static javax.swing.JComboBox<String> listeTag;
     public static javax.swing.JComboBox<String> listeTags;
     public static javax.swing.JComboBox<String> listeZone;
     // End of variables declaration//GEN-END:variables
