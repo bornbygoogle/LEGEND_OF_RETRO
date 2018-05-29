@@ -1,4 +1,10 @@
 /LegendOfRetro/nbproject/private/
+<<<<<<< HEAD
 /LegendOfRetro/src/hibernateConfig/*
 /LegendOfRetro/build/*
 /LegendOfRetro/build/built-jar.properties
+=======
+/LegendOfRetro/src/hibernateConfig/hibernate.cfg.xml
+/LegendOfRetro/build/*
+/LegendOfRetro/dist/
+>>>>>>> steoni
