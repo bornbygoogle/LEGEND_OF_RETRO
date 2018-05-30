@@ -1,2 +1,0 @@
-Drive: https://drive.google.com/drive/folders/1sO1shotCREFbiduHtExW82ZGlsC2tpgT
-Base de données : https://iutdoua-web.univ-lyon1.fr/phpMyAdmin (pour id et mdp, me demander)
