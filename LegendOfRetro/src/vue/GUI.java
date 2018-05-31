@@ -7,6 +7,7 @@ package vue;
 
 import controleur.Controleur;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
@@ -138,6 +139,11 @@ public class GUI extends JFrame implements ActionListener
             Container c = this.getContentPane();
             c.add(this.menuOuvert, BorderLayout.CENTER);
             this.setContentPane(c);
+            buttonVente.setBackground(null);
+            buttonClient.setBackground(null);
+            buttonPromo.setBackground(null);
+            buttonAchat.setBackground(null);
+            buttonProduit.setBackground(Color.GREEN);
         }
         else if (m == Menu.PERSONNE)
         {
@@ -146,6 +152,13 @@ public class GUI extends JFrame implements ActionListener
             Container c = this.getContentPane();
             c.add(this.menuOuvert, BorderLayout.CENTER);
             this.setContentPane(c);
+            buttonVente.setBackground(null);
+            buttonPromo.setBackground(null);
+            buttonProduit.setBackground(null);
+            buttonAchat.setBackground(null);
+            buttonClient.setBackground(Color.GREEN);
+            
+            
         }
         else if (m == Menu.ACHAT)
         {
@@ -154,7 +167,29 @@ public class GUI extends JFrame implements ActionListener
             Container c = this.getContentPane();
             c.add(this.menuOuvert, BorderLayout.CENTER);
             this.setContentPane(c);
+            buttonVente.setBackground(null);
+            buttonClient.setBackground(null);
+            buttonPromo.setBackground(null);
+            buttonProduit.setBackground(null);
+            buttonAchat.setBackground(Color.GREEN);
         }
+        else if (m == Menu.VENTE)
+        {
+            fermerMenu();
+            this.menuOuvert = new menuVente(this.controleur);
+            Container c = this.getContentPane();
+            c.add(this.menuOuvert, BorderLayout.CENTER);
+            this.setContentPane(c);
+            buttonClient.setBackground(null);
+            buttonPromo.setBackground(null);
+            buttonProduit.setBackground(null);
+            buttonAchat.setBackground(null);
+            buttonPromo.setBackground(null);
+            buttonVente.setBackground(Color.GREEN);
+           
+            
+        }
+        
         else if (m == Menu.PROMO)
         {
             fermerMenu();
@@ -162,6 +197,13 @@ public class GUI extends JFrame implements ActionListener
             Container c = this.getContentPane();
             c.add(this.menuOuvert, BorderLayout.CENTER);
             this.setContentPane(c);
+            buttonVente.setBackground(null);
+            buttonClient.setBackground(null);
+            buttonClient.setBackground(null);
+            buttonPromo.setBackground(null);
+            buttonAchat.setBackground(null);
+            buttonProduit.setBackground(null);
+            buttonPromo.setBackground(Color.GREEN);
         }
         else
             throw new UnsupportedOperationException("Le programme ne gère pas encore ce menu.");
