@@ -72,26 +72,26 @@ public class Controleur
             f.setIdVersionConsole(
                     creerVersionConsole(rapport,
                     f.getCodeBarre(),
-                    f.getEdition(),
+                    normalize(f.getEdition()),
                     f.getZone(),
                     f.getPrix(),
                     f.getStock(),
-                    f.getNom(),
-                    f.getEditeur()));
+                    normalize(f.getNom()),
+                    normalize(f.getEditeur())));
         }
         else if ("Jeu".equals(type))
         {
             f.setIdVersionConsole(-1);
             f.setIdVersionJeu(creerVersionJeu(rapport,
                     f.getCodeBarre(),
-                    f.getEdition(),
+                    normalize(f.getEdition()),
                     f.getZone(),
                     f.getPrix(),
                     f.getStock(),
-                    f.getNom(),       //getNom() renvoie le nom du JEU, pas de la Version du jeu
-                    f.getDescription(), stringToVector(f.getTags() ,','),
+                    normalize(f.getNom()),       //getNom() renvoie le nom du JEU, pas de la Version du jeu
+                    f.getDescription(), stringToVector(normalize(f.getTags()) ,','),
                     f.getPlateforme(),
-                    f.getEditeur()));
+                    normalize(f.getEditeur())));
         }
 
         return rapport;
@@ -250,18 +250,6 @@ public class Controleur
             jeu.setEditeur(editeur);
             jeu.setDescriptionJeu(description);
 
-            //sauvegarde dans la base de données
-            this.modele.beginTransaction();
-            this.modele.save(jeu);
-            this.modele.getTransaction().commit();
-
-            
-            //mise à jour du fabricant
-            editeur.getJeus().add(jeu);
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(editeur);
-            this.modele.getTransaction().commit();
-
             //création de l'enregistrement dans la table Jeu
             this.modele.beginTransaction();
             this.modele.save(jeu);
@@ -348,7 +336,7 @@ System.out.println("décrire ");
             Fabricant fabricant = chercherFabricant(nomFabr);
             if (fabricant == null)
                 fabricant = creerFabricant(rapport, nomFabr); //s'il n'existe pas, on le crée à la volée.
-
+            
             //on vérifie que la console n'existe pas déjà !
             Console existante = chercherConsole(nomConsole, nomFabr);
             if (existante != null)
@@ -358,12 +346,6 @@ System.out.println("décrire ");
             Console cons = new Console();
             cons.setNomConsole(nomConsole);
             cons.setFabricant(fabricant);
-            
-            //mise à jour du fabricant
-            fabricant.getConsoles().add(cons);
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(fabricant);
-            this.modele.getTransaction().commit();
 
             //sauvegarde dans la base de données
             this.modele.beginTransaction();
@@ -438,17 +420,6 @@ System.out.println("décrire ");
             vc.setConsole(console);
             vc.setPrix(prix);
             vc.setStock(stock);
-            
-            //mise à jour de la console
-            console.getVersionConsoles().add(vc);
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(console);
-            this.modele.getTransaction().commit();
-            //mise à jour de la zone
-            zone.getVersionConsoles().add(vc);
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(zone);
-            this.modele.getTransaction().commit();
 
             //sauvegarde dans la base de données
             this.modele.beginTransaction();
@@ -537,22 +508,6 @@ System.out.println("décrire ");
             vj.setJeu(jeu);
             vj.setPrix(prix);
             vj.setStock(stock);
-            
-            //mise à jour du jeu
-            jeu.getVersionJeus().add(vj);
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(jeu);
-            this.modele.getTransaction().commit();
-            //mise à jour de la zone
-            zone.getVersionJeus().add(vj);
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(zone);
-            this.modele.getTransaction().commit();
-            //mise à jour de la console
-            console.getVersionJeus().add(vj);
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(console);
-            this.modele.getTransaction().commit();
 
             //sauvegarde dans la base de données
             this.modele.beginTransaction();
@@ -619,12 +574,12 @@ System.out.println("décrire ");
         String cb = form.getCodeBarre();
         if (!"".equals(cb))
             cb = codeBarreValide(cb);
-        String nom = form.getNom();
-        String edition = form.getEdition();
+        String nom = normalize(form.getNom());
+        String edition = normalize(form.getEdition());
         String zone = form.getZone();
-        String editeur = form.getEditeur();
+        String editeur = normalize(form.getEditeur());
         String description = form.getDescription();      //La description n'est pas un critère de recherche viable.
-        Vector<String> tags = stringToVector(form.getTags().replace(" ", ""), ',');
+        Vector<String> tags = stringToVector(normalize(form.getTags()).replace(" ", ""), ',');
         String plateforme = form.getPlateforme();
         //Pas besoin de récupérer les identifiants, la description de jeu, le prix et le stock.
 
@@ -1083,7 +1038,7 @@ System.out.println("décrire ");
     {
         Vector<String> ret = new Vector();
 
-        List zones = modele.createQuery("from LOREntities.Zone").list();
+        List zones = modele.createQuery("from LOREntities.Zone z order by z.nomZone").list();
         for (Object z : zones)
             ret.add(((Zone) z).getNomZone());
         this.modele.flush();
@@ -1099,7 +1054,7 @@ System.out.println("décrire ");
     {
         Vector<String> ret = new Vector();
 
-        List consoles = modele.createQuery("from LOREntities.Console").list();
+        List consoles = modele.createQuery("from LOREntities.Console c order by c.nomConsole").list();
         for (Object c : consoles)
             ret.add(((Console) c).getNomConsole());
         this.modele.flush();
@@ -1116,7 +1071,7 @@ System.out.println("décrire ");
     {
         Vector<String> ret = new Vector();
         
-        List tags = modele.createQuery("from LOREntities.Tag").list();
+        List tags = modele.createQuery("from LOREntities.Tag t order by t.labelTag").list();
         for (Object t : tags)
             ret.add(((Tag) t).getLabelTag());
         this.modele.flush();
