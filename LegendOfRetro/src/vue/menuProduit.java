@@ -74,7 +74,13 @@ public class menuProduit extends JPanel implements Chercheur
             resultatsRecherche = this.controleur.chercher(form);
             // Afficher les résultats avec fonction AFFICHERES dans RESULTAT
             if (resultatsRecherche != null)
-                this.Resultats.afficherRes(resultatsRecherche); }
+            {
+                this.Resultats.afficherRes(resultatsRecherche); 
+            }
+            //this.Criteres.buttonNouveau.setVisible(false);
+            //this.Criteres.buttonModifier.setVisible(false);
+        }
+
         catch (DonneeInvalideException e) {
             afficherErreur(e);}
         catch (controleur.DonneesInsuffisantesException e) {
