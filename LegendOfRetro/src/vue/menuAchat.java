@@ -5,35 +5,32 @@
  */
 package vue;
 
-import bean.CodeBarreForm;
-//import bean.FactureLigneForm;
-import bean.Form;
-import bean.PersonneForm;
-import bean.ProduitForm;
+import bean.FactureLigneForm;
 import controleur.Controleur;
-import controleur.DonneeInvalideException;
-import controleur.DonneesInsuffisantesException;
-import controleur.ResultatInvalideException;
-import java.awt.BorderLayout;
-import java.util.Vector;
-import javax.swing.JButton;
-import javax.swing.JPanel;
 
 /**
  *
  * @author Home
  */
-public class menuAchat extends menuVente implements Chercheur
+public class menuAchat extends menuVente
 {
-    private Controleur controleur;
-
-    private Resultat<ProduitForm> Resultats;
-
     /**
      * Creates new form menuProduit
      */
     public menuAchat(Controleur c)
     {
         super(c);
+        
+        //TODO: vérifier sérialisation
+    }
+    
+    @Override
+    public boolean ajoutLigneLegal(FactureLigneForm ligne)
+    {
+        return true; //On peut toujours acheter, il n'y a pas de condition sur la quantité.
+    }
+    @Override
+    protected void traiterEchecRecherche(String codeBarre) {
+        ;//TODO !
     }
 }
