@@ -215,7 +215,6 @@ public class critProduit extends javax.swing.JPanel
         });
 
         buttonNouveau.setText("Nouveau");
-        buttonNouveau.setVisible(false);
         buttonNouveau.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonNouveauActionPerformed(evt);
@@ -223,7 +222,6 @@ public class critProduit extends javax.swing.JPanel
         });
 
         buttonModifier.setText("Modifier");
-        buttonModifier.setVisible(false);
         buttonModifier.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonModifierActionPerformed(evt);
@@ -435,8 +433,6 @@ public class critProduit extends javax.swing.JPanel
 
     private void buttonChercherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChercherActionPerformed
         try {
-            buttonNouveau.setVisible(false);
-            buttonModifier.setVisible(false);
             this.parent.lancerRecherche(toForm());
         }
         catch (DonneeInvalideException ex) {
