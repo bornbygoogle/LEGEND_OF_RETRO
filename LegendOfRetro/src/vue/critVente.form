@@ -19,50 +19,36 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                      <Component id="labelEdition" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="labelZone" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="labelDevFab" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="labelPlateforme" min="-2" pref="86" max="-2" attributes="0"/>
-                          <EmptySpace pref="819" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="labelPrix" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="880" max="32767" attributes="0"/>
-                      </Group>
+                  <Component id="labelEdition" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelZone" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelDevFab" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelPlateforme" alignment="0" min="-2" pref="86" max="-2" attributes="0"/>
+                  <Component id="labelPrix" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="buttonAjouter" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="buttonSupprimer" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+                      <Component id="buttonTerminer" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="buttonAjouter" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="buttonSupprimer" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
-                              <Component id="buttonTerminer" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="labelCodeBarre" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="labelNom" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                              <Component id="fieldCodeBarre" min="-2" pref="150" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                              <Component id="buttonChercher" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="labelQuantite" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="fieldQuantite" min="-2" pref="67" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="labelStock" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="labelCodeBarre" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelNom" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="551" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                      <Component id="fieldCodeBarre" min="-2" pref="150" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                      <Component id="buttonChercher" min="-2" max="-2" attributes="0"/>
                   </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="labelQuantite" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="fieldQuantite" min="-2" pref="67" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="labelStock" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace pref="551" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

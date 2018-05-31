@@ -6,6 +6,7 @@
 package vue;
 
 import bean.CodeBarreForm;
+import bean.FactureLigneForm;
 //import bean.FactureForm;
 //import bean.FactureLigneForm;
 import bean.Form;
@@ -15,6 +16,7 @@ import controleur.Controleur;
 import controleur.DonneeInvalideException;
 import java.awt.Color;
 import java.util.Vector;
+import javax.swing.SpinnerNumberModel;
 
 /**
  *
@@ -23,7 +25,7 @@ import java.util.Vector;
 public class critVente extends javax.swing.JPanel {
 
     private Controleur controleur;
-    private Chercheur parent;
+    private menuVente parent;
     
 //    private FactureLigneForm ligneFacture; //si une ligne est en train d'être modifiée
     private ProduitForm produitExamine;
@@ -31,7 +33,7 @@ public class critVente extends javax.swing.JPanel {
     /**
      * Creates new form critPersonne
      */
-    public critVente(Controleur controleur, Chercheur parent)
+    public critVente(Controleur controleur, menuVente parent)
     {
         this.controleur = controleur;
         this.parent = parent;
@@ -202,7 +204,8 @@ public class critVente extends javax.swing.JPanel {
     }//GEN-LAST:event_buttonChercherActionPerformed
 
     private void buttonAjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAjouterActionPerformed
-        // TODO add your handling code here:
+        this.parent.ajouterLigne(toForm());
+        clean();
         buttonAjouter.setBackground(Color.GREEN);
     }//GEN-LAST:event_buttonAjouterActionPerformed
 
@@ -243,45 +246,41 @@ public class critVente extends javax.swing.JPanel {
             this.produitExamine = (ProduitForm) f;
             
         }
-//        else if (f instanceof FactureLigneForm) {
-//            this.ligneFacture = (FactureLigneForm) f;
-//            this.produitExamine = this.ligneFacture.getProduit();
-//        }
         else
             throw new IllegalArgumentException("Erreur dans menuProduit: le formulaire à sélectionner n'est pas un ProduitForm ou un FactureLigneForm.");
         
-            typeJeu = ("Jeu".equals(this.produitExamine.getType()));
-            if (typeJeu) {
-                typeDev = "Développeur : ";
-                this.labelPlateforme.setText("Plateforme : " + this.produitExamine.getPlateforme());
-            }
-            else
-                typeDev = "Fabricant : ";
-            this.labelDevFab.setText(typeDev + this.produitExamine.getEditeur());
-            this.labelNom.setText("Nom : " + this.produitExamine.getNom());
-            this.labelEdition.setText("Edition : " + this.produitExamine.getEdition());
-            this.labelZone.setText("Zone : " + this.produitExamine.getZone());
-            this.labelPrix.setText("Prix : " + this.produitExamine.getPrix() + " €");
-            this.labelStock.setText("Stock : " + this.produitExamine.getStock());
-            
-            this.labelDevFab.setVisible(true);
-            this.labelNom.setVisible(true);
-            this.labelPlateforme.setVisible(typeJeu);
-            this.labelEdition.setVisible(true);
-            this.labelZone.setVisible(true);
-            this.labelPrix.setVisible(true);
-            this.labelStock.setVisible(true);
+        typeJeu = ("Jeu".equals(this.produitExamine.getType()));
+        if (typeJeu) {
+            typeDev = "Développeur : ";
+            this.labelPlateforme.setText("Plateforme : " + this.produitExamine.getPlateforme());
+        }
+        else
+            typeDev = "Fabricant : ";
+        this.labelDevFab.setText(typeDev + this.produitExamine.getEditeur());
+        this.labelNom.setText("Nom : " + this.produitExamine.getNom());
+        this.labelEdition.setText("Edition : " + this.produitExamine.getEdition());
+        this.labelZone.setText("Zone : " + this.produitExamine.getZone());
+        this.labelPrix.setText("Prix : " + this.produitExamine.getPrix() + " €");
+        this.labelStock.setText("Stock : " + this.produitExamine.getStock());
+
+        this.labelDevFab.setVisible(true);
+        this.labelNom.setVisible(true);
+        this.labelPlateforme.setVisible(typeJeu);
+        this.labelEdition.setVisible(true);
+        this.labelZone.setVisible(true);
+        this.labelPrix.setVisible(true);
+        this.labelStock.setVisible(true);
     }
-/*    private FactureForm toForm()
+    private FactureLigneForm toForm()
     {
-        FactureForm retour = new FactureForm();
-        retour.setNature(true);
-        retour.setLignes(this.parent.getLignesFacture());
-        
-        //TODO: setIdClient !
+        FactureLigneForm retour = new FactureLigneForm();
+        retour.setProduit(this.produitExamine);
+        int q = (((SpinnerNumberModel) this.fieldQuantite.getModel()).getNumber().intValue());
+        retour.setQuantite(q);
+        retour.setPrixLigne(q * this.produitExamine.getPrix());
         
         return retour;
-    }*/
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAjouter;

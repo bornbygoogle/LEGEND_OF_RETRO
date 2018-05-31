@@ -6,6 +6,8 @@
 package vue;
 
 import bean.CodeBarreForm;
+import bean.FactureForm;
+import bean.FactureLigneForm;
 //import bean.FactureLigneForm;
 import bean.Form;
 import bean.PersonneForm;
@@ -26,10 +28,11 @@ import javax.swing.JPanel;
  */
 public class menuVente extends JPanel implements Chercheur
 {
-    private Controleur controleur;
+    protected Controleur controleur;
 
-    private critVente Criteres;
-    private Resultat<ProduitForm> Resultats;
+    protected critVente selectionProduit;
+    protected Resultat<FactureForm> affichageFacture;
+    FactureForm facture;
 
     /**
      * Creates new form menuProduit
@@ -39,6 +42,7 @@ public class menuVente extends JPanel implements Chercheur
         super();
         this.controleur = c;
         initComponents();
+        this.facture = new FactureForm();
     }
 
     /**
@@ -49,20 +53,20 @@ public class menuVente extends JPanel implements Chercheur
     {
         this.setSize(500, 560);
 
-        this.Criteres = new critVente(this.controleur, this);
-        this.Resultats = new Resultat<ProduitForm>(this);
+        this.selectionProduit = new critVente(this.controleur, this);
+        this.affichageFacture = new Resultat<FactureForm>(this);
         
         
         this.setLayout(new BorderLayout());
-        this.add(this.Criteres, BorderLayout.CENTER);
-        this.add(this.Resultats, BorderLayout.SOUTH);
+        this.add(this.selectionProduit, BorderLayout.CENTER);
+        this.add(this.affichageFacture, BorderLayout.SOUTH);
     }
     
     @Override
     public void selectionnerResultat(Form res)
     {
         if (res instanceof ProduitForm) 
-            this.Criteres.setForm((ProduitForm) res);
+            this.selectionProduit.setForm((ProduitForm) res);
 /*        else if (res instanceof FactureLigneForm)
             this.Criteres.setForm(res);*/
         else
@@ -72,15 +76,18 @@ public class menuVente extends JPanel implements Chercheur
     @Override
     public void lancerRecherche(Form form)
     {
-        if (!(form instanceof CodeBarreForm))
+        if (!(form instanceof CodeBarreForm) || form instanceof ProduitForm)
             throw new IllegalArgumentException("Erreur dans menuVente: le formulaire à rechercher n'est pas un CodeBarreForm.");
         try {
-            // Affectuer la recherche avec fonction RECHERCHE dans CONTROLEUR
+            // Effectuer la recherche avec fonction RECHERCHE dans CONTROLEUR
             Vector<ProduitForm> resultatsRecherche = null;
-            resultatsRecherche = this.controleur.chercher(form); //! TODO: attention, dans le contrôleur, à ce que renvoie chercherform()
-            // Afficher les résultats avec fonction AFFICHERES dans RESULTAT
+            resultatsRecherche = this.controleur.chercher(form);
+            // Afficher le produit dans CRITERE
             if (resultatsRecherche != null)
-                this.Resultats.afficherRes(resultatsRecherche); }
+                this.selectionProduit.setForm(resultatsRecherche.elementAt(0)); //normalement, il n'y a qu'un produit
+            else
+                traiterEchecRecherche(((CodeBarreForm) form).getCodeBarre());
+        }
         catch (DonneeInvalideException e) {
             afficherErreur(e);}
         catch (controleur.DonneesInsuffisantesException e) {
@@ -92,13 +99,30 @@ public class menuVente extends JPanel implements Chercheur
     @Override
     public void afficherErreur(Exception e)
     {
-        this.Resultats.afficherErreur(e.getMessage());
+        this.affichageFacture.afficherErreur(e.getMessage());
     }
 
     @Override
     public void afficherLog(String log)
     {
-        this.Resultats.afficherMessage(log);
+        this.affichageFacture.afficherMessage(log);
+    }
+
+    public void ajouterLigne(FactureLigneForm ligne)
+    {
+        try {
+            if (!ajoutLigneLegal(ligne))
+                throw new Exception("La quantité excède les stocks disponibles.");
+            this.facture.getLignes().add(ligne);
+            this.affichageFacture.ajouter(ligne);}
+        catch (Exception e)     {afficherErreur(e);}
+    }
+    public boolean ajoutLigneLegal(FactureLigneForm ligne) {
+        return ligne.getProduit().getStock() < ligne.getQuantite();
+    }
+
+    protected void traiterEchecRecherche(String codeBarre) {
+        afficherErreur(new Exception("Aucun produit trouvé."));
     }
 
 

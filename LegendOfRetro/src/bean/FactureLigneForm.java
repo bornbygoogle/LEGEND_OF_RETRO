@@ -21,5 +21,5 @@ public class FactureLigneForm extends Form
     public int getQuantite()                    {return this.quantite;}
     public void setQuantite(int quantite)       {this.quantite = quantite;}
     public float getPrixLigne()                 {return this.prixLigne;}
-    public void setpPixLigne(float prixLigne)   {this.prixLigne = prixLigne;}
+    public void setPrixLigne(float prixLigne)   {this.prixLigne = prixLigne;}
 }
