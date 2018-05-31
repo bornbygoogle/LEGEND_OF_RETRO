@@ -663,6 +663,7 @@ public class Controleur
         List resultats = modele.createQuery(q.toString()).list();
 
         if (resultats.isEmpty())
+            
             return null;
         else //on suppose qu'il n'y a qu'un seul résultat !
             return (VersionConsole) resultats.get(0);
