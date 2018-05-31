@@ -17,7 +17,6 @@ import java.util.Set;
 import java.util.Vector;
 import org.hibernate.*;
 import vue.GUI;
-//import vue.Vue;
 
 /**
  * @author Adrien Marchand
@@ -245,7 +244,7 @@ public class Controleur
             if (jeuExistant != null)
                 throw new EnregistrementExistantException("Impossible de créer le jeu : ce jeu existe déjà.");
 
-            //création de la console
+            //création du jeu
             Jeu jeu = new Jeu();
             jeu.setNomJeu(nomJeu);
             jeu.setEditeur(editeur);
@@ -256,25 +255,60 @@ public class Controleur
             this.modele.save(jeu);
             this.modele.getTransaction().commit();
 
+            
+            //mise à jour du fabricant
+            editeur.getJeus().add(jeu);
+            this.modele.beginTransaction();
+            this.modele.saveOrUpdate(editeur);
+            this.modele.getTransaction().commit();
+
+            //création de l'enregistrement dans la table Jeu
+            this.modele.beginTransaction();
+            this.modele.save(jeu);
+            this.modele.getTransaction().commit();
+            
             rapport.addOperation(jeu.getIdJeu(), Rapport.Table.JEU, Rapport.Operation.CREER);
             
-            //traitement des tags
+            //traitement des tags (requiert enregistrement Jeu préalablement créé)
+System.out.println(tags);
             for (String tag : tags)
             {
+System.out.println("ligne " + tag);
                 //on vérifie l'existence du tag et, au besoin, on le crée.
                 Tag t = chercherTag(tag);
                 if (t == null)
                     t = creerTag(rapport, tag);
                 
-                jeu.getDecrires().add(new Decrire(new DecrireId(t.getIdTag(), jeu.getIdJeu()), jeu, t));
+                //on lie le jeu au tag dans la table DECRIRE
+                Decrire d = new Decrire();
+//                Decrire d = new Decrire(new DecrireId(t.getIdTag(), jeu.getIdJeu()), jeu, t);
+                d.setId(new DecrireId());
+//                d.getId().setIdJeu(jeu.getIdJeu());
+//                d.getId().setIdTag(t.getIdTag());
+                d.setTag(t);
+                d.setJeu(jeu);
+                jeu.getDecrires().add(d);
+                t.getDecrires().add(d);
+                
+System.out.println("jeu ");
+                //mise à jour jeu
+                this.modele.beginTransaction();
+                this.modele.saveOrUpdate(jeu);
+                this.modele.getTransaction().commit();
+System.out.println("tag ");
+                //mise à jour tag
+                this.modele.beginTransaction();
+                this.modele.saveOrUpdate(t);
+                this.modele.getTransaction().commit();
+System.out.println("décrire ");
+                //création de l'enregistrement "décrire"
+                this.modele.beginTransaction();
+                this.modele.save(d);
+                this.modele.getTransaction().commit();
 
                 rapport.addOperation(t.getIdTag(), Rapport.Table.DESCRIPTION, Rapport.Operation.CREER);
                 
             }
-            
-            this.modele.beginTransaction();
-            this.modele.update(jeu);
-            this.modele.getTransaction().commit();
             
             return jeu;
         }
@@ -324,6 +358,12 @@ public class Controleur
             Console cons = new Console();
             cons.setNomConsole(nomConsole);
             cons.setFabricant(fabricant);
+            
+            //mise à jour du fabricant
+            fabricant.getConsoles().add(cons);
+            this.modele.beginTransaction();
+            this.modele.saveOrUpdate(fabricant);
+            this.modele.getTransaction().commit();
 
             //sauvegarde dans la base de données
             this.modele.beginTransaction();
@@ -398,6 +438,17 @@ public class Controleur
             vc.setConsole(console);
             vc.setPrix(prix);
             vc.setStock(stock);
+            
+            //mise à jour de la console
+            console.getVersionConsoles().add(vc);
+            this.modele.beginTransaction();
+            this.modele.saveOrUpdate(console);
+            this.modele.getTransaction().commit();
+            //mise à jour de la zone
+            zone.getVersionConsoles().add(vc);
+            this.modele.beginTransaction();
+            this.modele.saveOrUpdate(zone);
+            this.modele.getTransaction().commit();
 
             //sauvegarde dans la base de données
             this.modele.beginTransaction();
@@ -458,9 +509,9 @@ public class Controleur
             cb = codeBarreValide(cb); //on vérifie le code barre
 
             //on détermine l'identifiant du jeu
-            Jeu existant = chercherJeu(nomJeu, tags, nomEditeur);
-            if (existant == null)
-                creerJeu(rapport, nomJeu, description, tags, nomEditeur); //s'il n'existe pas, on le crée à la volée.
+            Jeu jeu = chercherJeu(nomJeu, tags, nomEditeur);
+            if (jeu == null)
+                jeu = creerJeu(rapport, nomJeu, description, tags, nomEditeur); //s'il n'existe pas, on le crée à la volée.
 
             //on détermine l'identifiant de la zone
             Zone zone = chercherZone(nomZone);
@@ -471,11 +522,6 @@ public class Controleur
             Console console = chercherConsole(nomConsole, "");
             if (console == null)
                 throw new DonneeInvalideException("Impossible de créer la version de jeu : la plateforme renseignée n'existe pas.");
-
-            //on détermine l'identifiant du jeu
-            Jeu jeu = chercherJeu(nomJeu, tags, nomEditeur);
-            if (jeu == null)
-                throw new DonneeInvalideException("Impossible de créer la version de jeu : le jeu renseigné n'existe pas.");
 
             //on vérifie que la version de jeu n'existe pas déjà !
             Vector<VersionJeu> existante = chercherVersionsJeu(cb, edition, zone.getNomZone(), console.getNomConsole(), nomJeu, nomEditeur, tags);
@@ -491,6 +537,22 @@ public class Controleur
             vj.setJeu(jeu);
             vj.setPrix(prix);
             vj.setStock(stock);
+            
+            //mise à jour du jeu
+            jeu.getVersionJeus().add(vj);
+            this.modele.beginTransaction();
+            this.modele.saveOrUpdate(jeu);
+            this.modele.getTransaction().commit();
+            //mise à jour de la zone
+            zone.getVersionJeus().add(vj);
+            this.modele.beginTransaction();
+            this.modele.saveOrUpdate(zone);
+            this.modele.getTransaction().commit();
+            //mise à jour de la console
+            console.getVersionJeus().add(vj);
+            this.modele.beginTransaction();
+            this.modele.saveOrUpdate(console);
+            this.modele.getTransaction().commit();
 
             //sauvegarde dans la base de données
             this.modele.beginTransaction();
@@ -648,6 +710,7 @@ public class Controleur
 
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
+        this.modele.flush();
         ret.addAll(resultats);
 
         return ret;
@@ -661,6 +724,7 @@ public class Controleur
         q.addCondition("vc.idVersionConsole", id, HQLRecherche.Operateur.EGAL);
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
+        this.modele.flush();
 
         if (resultats.isEmpty())
             
@@ -762,6 +826,7 @@ public class Controleur
 
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
+        this.modele.flush();
         ret.addAll(resultats);
 
         return ret;
@@ -801,6 +866,7 @@ public class Controleur
         System.out.println("Recherche Console"); //imprimé à des fins de test
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
+        this.modele.flush();
 
         if (resultats.isEmpty())
             return null;
@@ -834,7 +900,7 @@ public class Controleur
             idEditeur = edtr.getIdEditeur();
         }
 
-        //!à implémenter; (voir chercher console, encore que, y'a les tags...');
+        //TODO !à implémenter; (voir chercher console, encore que, y'a les tags...');
 
         HQLRecherche q = new HQLRecherche("LOREntities.Jeu j");
         q.addCondition("j.nomJeu", nomJeu, HQLRecherche.Operateur.EGAL);
@@ -843,25 +909,7 @@ public class Controleur
         System.out.println("Recherche Jeu"); //imprimé à des fins de test
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
-
-        /* Attention
-        Il est possible qu'une recherche renvoie plusieurs résultats. Par exemple, si deux jeux produits par des éditeurs
-        différents ont le même nom et que l'éditeur n'a pas été renseigné. Pour traiter ce type d'erreur,
-        on commence par stocker les résultats de la requête dans un vecteur ; puis, si le vecteur n'a pas une taille de 1,
-        on renvoie null ou on lance une exception.
-        */
-        //Vector<Jeu> resultat;
-
-        //TODO: la recherche à proprement parler. On ne réutilise pas chercherVersionsJeu car la correspondance demandée par chercherJeu est parfaite.
-        //Attention, pour l'éditeur, si le nom est renseigné, on demande une correspondance parfaite.
-        //Penser à traiter les tags avec une requête imbriquée
-
-        /*if (resultat.isEmpty())
-            return null;
-        else if (resultat.size() > 1)
-            throw new  DonneesInsuffisantesException("Erreur lors de la recherche du jeu : plusieurs résultats obtenus. Veuillez renseigner l'éditeur du jeu.");
-
-        return resultat.firstElement();*/
+        this.modele.flush();
 
         if (resultats.isEmpty())
             return null;
@@ -887,6 +935,7 @@ public class Controleur
         q.addCondition("f.nomFabricant", nomFabr, HQLRecherche.Operateur.EGAL);
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
+        this.modele.flush();
 
         if (resultats.isEmpty())
             return null;
@@ -905,6 +954,7 @@ public class Controleur
         q.addCondition("e.nomEditeur", nomEdit, HQLRecherche.Operateur.EGAL);
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
+        this.modele.flush();
 
         if (resultats.isEmpty())
             return null;
@@ -923,6 +973,7 @@ public class Controleur
         q.addCondition("z.nomZone", zone, HQLRecherche.Operateur.EGAL);
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
+        this.modele.flush();
 
         if (resultats.isEmpty())
             return null;
@@ -941,6 +992,7 @@ public class Controleur
         q.addCondition("t.labelTag", tag, HQLRecherche.Operateur.EGAL);
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
+        this.modele.flush();
 
         if (resultats.isEmpty())
             return null;
@@ -1000,6 +1052,7 @@ public class Controleur
         List editions = modele.createQuery("select vj.edition from LOREntities.VersionJeu vj").list();
         for (Object e : editions)
             ret.add((String) e);
+        this.modele.flush();
             
         return ret;
     }
@@ -1016,6 +1069,7 @@ public class Controleur
         List fabricants = modele.createQuery("from LOREntities.Fabricant").list();
         for (Object f : fabricants)
             ret.add(((Fabricant) f).getNomFabricant());
+        this.modele.flush();
 
         return ret;
     }    
@@ -1032,6 +1086,8 @@ public class Controleur
         List zones = modele.createQuery("from LOREntities.Zone").list();
         for (Object z : zones)
             ret.add(((Zone) z).getNomZone());
+        this.modele.flush();
+
         return ret;
     }
     /**
@@ -1046,6 +1102,7 @@ public class Controleur
         List consoles = modele.createQuery("from LOREntities.Console").list();
         for (Object c : consoles)
             ret.add(((Console) c).getNomConsole());
+        this.modele.flush();
 
         return ret;
     }
@@ -1062,6 +1119,7 @@ public class Controleur
         List tags = modele.createQuery("from LOREntities.Tag").list();
         for (Object t : tags)
             ret.add(((Tag) t).getLabelTag());
+        this.modele.flush();
         
         return ret;
     }
