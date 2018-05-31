@@ -250,18 +250,6 @@ public class Controleur
             jeu.setEditeur(editeur);
             jeu.setDescriptionJeu(description);
 
-            //sauvegarde dans la base de données
-            this.modele.beginTransaction();
-            this.modele.save(jeu);
-            this.modele.getTransaction().commit();
-
-            
-            //mise à jour du fabricant
-            editeur.getJeus().add(jeu);
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(editeur);
-            this.modele.getTransaction().commit();
-
             //création de l'enregistrement dans la table Jeu
             this.modele.beginTransaction();
             this.modele.save(jeu);
@@ -348,7 +336,7 @@ System.out.println("décrire ");
             Fabricant fabricant = chercherFabricant(nomFabr);
             if (fabricant == null)
                 fabricant = creerFabricant(rapport, nomFabr); //s'il n'existe pas, on le crée à la volée.
-
+            
             //on vérifie que la console n'existe pas déjà !
             Console existante = chercherConsole(nomConsole, nomFabr);
             if (existante != null)
@@ -358,12 +346,6 @@ System.out.println("décrire ");
             Console cons = new Console();
             cons.setNomConsole(nomConsole);
             cons.setFabricant(fabricant);
-            
-            //mise à jour du fabricant
-            fabricant.getConsoles().add(cons);
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(fabricant);
-            this.modele.getTransaction().commit();
 
             //sauvegarde dans la base de données
             this.modele.beginTransaction();
@@ -438,17 +420,6 @@ System.out.println("décrire ");
             vc.setConsole(console);
             vc.setPrix(prix);
             vc.setStock(stock);
-            
-            //mise à jour de la console
-            console.getVersionConsoles().add(vc);
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(console);
-            this.modele.getTransaction().commit();
-            //mise à jour de la zone
-            zone.getVersionConsoles().add(vc);
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(zone);
-            this.modele.getTransaction().commit();
 
             //sauvegarde dans la base de données
             this.modele.beginTransaction();
@@ -537,22 +508,6 @@ System.out.println("décrire ");
             vj.setJeu(jeu);
             vj.setPrix(prix);
             vj.setStock(stock);
-            
-            //mise à jour du jeu
-            jeu.getVersionJeus().add(vj);
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(jeu);
-            this.modele.getTransaction().commit();
-            //mise à jour de la zone
-            zone.getVersionJeus().add(vj);
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(zone);
-            this.modele.getTransaction().commit();
-            //mise à jour de la console
-            console.getVersionJeus().add(vj);
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(console);
-            this.modele.getTransaction().commit();
 
             //sauvegarde dans la base de données
             this.modele.beginTransaction();
