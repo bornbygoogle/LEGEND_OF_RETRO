@@ -1,4 +1,3 @@
-/LegendOfRetro/nbproject/private/
-/LegendOfRetro/src/hibernateConfig/*
+/LegendOfRetro/nbproject/private/*
 /LegendOfRetro/build/*
-/LegendOfRetro/build/built-jar.properties
+/LegendOfRetro/src/hibernateConfig/hibernate.cfg.xml
