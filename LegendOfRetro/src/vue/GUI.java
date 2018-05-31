@@ -186,8 +186,6 @@ public class GUI extends JFrame implements ActionListener
             buttonAchat.setBackground(null);
             buttonPromo.setBackground(null);
             buttonVente.setBackground(Color.GREEN);
-           
-            
         }
         
         else if (m == Menu.PROMO)
@@ -206,7 +204,7 @@ public class GUI extends JFrame implements ActionListener
             buttonPromo.setBackground(Color.GREEN);
         }
         else
-            throw new UnsupportedOperationException("Le programme ne gère pas encore ce menu.");
+            throw new UnsupportedOperationException("Le programme ne gère pas ce menu.");
     }
     public void fermerMenu()
     {
