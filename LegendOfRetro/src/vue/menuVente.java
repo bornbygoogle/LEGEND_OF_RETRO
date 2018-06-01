@@ -114,7 +114,8 @@ public class menuVente extends JPanel implements Chercheur
             if (!ajoutLigneLegal(ligne))
                 throw new Exception("La quantité excède les stocks disponibles.");
             this.facture.getLignes().add(ligne);
-            this.affichageFacture.ajouter(ligne);}
+            //this.affichageFacture.ajouter(ligne);
+        }
         catch (Exception e)     {afficherErreur(e);}
     }
     public boolean ajoutLigneLegal(FactureLigneForm ligne) {
