@@ -25,7 +25,7 @@ public class GUI extends JFrame implements ActionListener
 {
     private Controleur controleur;
     
-    private enum Menu {AUCUN, PRODUIT, ACHAT, VENTE, PERSONNE, PROMO};
+    public enum Menu {AUCUN, PRODUIT, ACHAT, VENTE, PERSONNE, PROMO};
     private Menu FLAG_menuOuvert; // à fixer (voir ouvrirMenu. Et oui, à fixer quand même, car on en a besoin !)
     private JPanel menuOuvert;
     private JPanel menuPanel;
@@ -123,14 +123,26 @@ public class GUI extends JFrame implements ActionListener
             throw new UnsupportedOperationException("Erreur GUI : origine de l'action inconnue.");
     }
     
-    private void ouvrirMenu(Menu m)
+    public void ouvrirMenu(Menu m, String parametreDInitialisation)
     {
-        //si le menu est déjà ouvert, on ignore la commande.
-        //Un autre choix pourrait être de rouvrir le menu quand même, mais avec les champs vidés. A débattre.
-        //Remarque : cette portion du code NE MARCHE PAS !
-        if (this.FLAG_menuOuvert != null && (m.compareTo(this.FLAG_menuOuvert) == 0))
-            return;
-        //sinon
+        if (m == Menu.PRODUIT)
+        {
+            fermerMenu();
+            this.menuOuvert = new menuProduit(this.controleur, parametreDInitialisation);
+            Container c = this.getContentPane();
+            c.add(this.menuOuvert, BorderLayout.CENTER);
+            this.setContentPane(c);
+            buttonVente.setBackground(null);
+            buttonClient.setBackground(null);
+            buttonPromo.setBackground(null);
+            buttonAchat.setBackground(null);
+            buttonProduit.setBackground(Color.GREEN);
+        }
+        else //ignorer le second paramètre
+            ouvrirMenu(m);
+    }
+    public void ouvrirMenu(Menu m)
+    {
         this.FLAG_menuOuvert = m;
         if (m == Menu.PRODUIT)
         {
@@ -143,7 +155,7 @@ public class GUI extends JFrame implements ActionListener
             buttonClient.setBackground(null);
             buttonPromo.setBackground(null);
             buttonAchat.setBackground(null);
-            buttonProduit.setBackground(Color.GREEN);
+            buttonProduit.setBackground(Color.blue);
         }
         else if (m == Menu.PERSONNE)
         {
@@ -156,14 +168,14 @@ public class GUI extends JFrame implements ActionListener
             buttonPromo.setBackground(null);
             buttonProduit.setBackground(null);
             buttonAchat.setBackground(null);
-            buttonClient.setBackground(Color.GREEN);
+            buttonClient.setBackground(Color.blue);
             
             
         }
         else if (m == Menu.ACHAT)
         {
             fermerMenu();
-            this.menuOuvert = new menuAchat(this.controleur);
+            this.menuOuvert = new menuAchat(this.controleur, this);
             Container c = this.getContentPane();
             c.add(this.menuOuvert, BorderLayout.CENTER);
             this.setContentPane(c);
@@ -171,7 +183,7 @@ public class GUI extends JFrame implements ActionListener
             buttonClient.setBackground(null);
             buttonPromo.setBackground(null);
             buttonProduit.setBackground(null);
-            buttonAchat.setBackground(Color.GREEN);
+            buttonAchat.setBackground(Color.blue);
         }
         else if (m == Menu.VENTE)
         {
@@ -185,7 +197,7 @@ public class GUI extends JFrame implements ActionListener
             buttonProduit.setBackground(null);
             buttonAchat.setBackground(null);
             buttonPromo.setBackground(null);
-            buttonVente.setBackground(Color.GREEN);
+            buttonVente.setBackground(Color.blue);
         }
         
         else if (m == Menu.PROMO)
@@ -201,7 +213,7 @@ public class GUI extends JFrame implements ActionListener
             buttonPromo.setBackground(null);
             buttonAchat.setBackground(null);
             buttonProduit.setBackground(null);
-            buttonPromo.setBackground(Color.GREEN);
+            buttonPromo.setBackground(Color.blue);
         }
         else
             throw new UnsupportedOperationException("Le programme ne gère pas ce menu.");

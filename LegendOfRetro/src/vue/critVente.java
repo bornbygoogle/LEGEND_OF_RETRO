@@ -227,7 +227,7 @@ public class critVente extends javax.swing.JPanel {
     
     public void clean()
     {
-        //this.ligneFacture = null;
+        this.produitExamine = null;
         this.labelDevFab.setVisible(false);
         this.labelNom.setVisible(false);
         this.labelPlateforme.setVisible(false);

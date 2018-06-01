@@ -137,6 +137,11 @@ public class critProduit extends javax.swing.JPanel
                 listeCategorieItemStateChanged(evt);
             }
         });
+        listeCategorie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listeCategorieActionPerformed(evt);
+            }
+        });
 
         labelTag.setText("Tag : ");
 
@@ -491,6 +496,14 @@ public class critProduit extends javax.swing.JPanel
         // TODO add your handling code here:
     }//GEN-LAST:event_fieldNomKeyPressed
 
+    private void listeCategorieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listeCategorieActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_listeCategorieActionPerformed
+
+    public void setCodeBarre(String cb)
+    {
+        this.fieldCodeBarre.setText(cb);
+    }
     public void setForm(ProduitForm f)
     {
         this.selectedForm = f;

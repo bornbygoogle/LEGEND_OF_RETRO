@@ -83,9 +83,9 @@ public class menuVente extends JPanel implements Chercheur
             Vector<ProduitForm> resultatsRecherche = null;
             resultatsRecherche = this.controleur.chercher(form);
             // Afficher le produit dans CRITERE
-            if (resultatsRecherche != null)
+            if (resultatsRecherche != null && !resultatsRecherche.isEmpty())
                 this.selectionProduit.setForm(resultatsRecherche.elementAt(0)); //normalement, il n'y a qu'un produit
-            else
+            else //ou, si le produit n'a pas été trouvé :
                 traiterEchecRecherche(((CodeBarreForm) form).getCodeBarre());
         }
         catch (DonneeInvalideException e) {
@@ -114,7 +114,7 @@ public class menuVente extends JPanel implements Chercheur
             if (!ajoutLigneLegal(ligne))
                 throw new Exception("La quantité excède les stocks disponibles.");
             this.facture.getLignes().add(ligne);
-            this.affichageFacture.ajouter(ligne);}
+System.out.println("            this.affichageFacture.ajouter(ligne) //!TODO");}
         catch (Exception e)     {afficherErreur(e);}
     }
     public boolean ajoutLigneLegal(FactureLigneForm ligne) {
