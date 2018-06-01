@@ -10,6 +10,7 @@ import LOREntities.*;
 import bean.CodeBarreForm;
 import bean.Form;
 import bean.ProduitForm;
+import bean.PromoForm;
 import hibernateConfig.HibernateUtil;
 import java.util.List;
 import java.util.Locale;
@@ -618,6 +619,49 @@ System.out.println("décrire ");
         }
         return ret;
     }
+    public Vector<PromoForm> chercherPromo(PromoForm form) throws ResultatInvalideException, DonneeInvalideException, DonneesInsuffisantesException
+    {
+        Vector<PromoForm> ret = new Vector<PromoForm>();
+
+        //On récupère les variables du bean pour améliorer la lisibilité
+        String type = form.getType();
+        String cb = form.getCodeBarre();
+        if (!"".equals(cb))
+            cb = codeBarreValide(cb);
+        String nom = normalize(form.getNom());
+        String edition = normalize(form.getEdition());
+        String zone = form.getZone();
+        String editeur = normalize(form.getEditeur());
+        String description = form.getDescription();      //La description n'est pas un critère de recherche viable.
+        Vector<String> tags = stringToVector(normalize(form.getTags()).replace(" ", ""), ',');
+        String plateforme = form.getPlateforme();
+        //Pas besoin de récupérer les identifiants, la description de jeu, le prix et le stock.
+
+        if ("Console".equals(type))
+        {
+            if (!"".equals(edition) || !"".equals(zone) || !"".equals(editeur))
+            for (VersionConsole enr : chercherVersionsConsolePromo(edition, zone, editeur))
+                ret.add(new PromoForm(enr.getIdVersionConsole(), -1, "Console",
+                        enr.getCodeBarre(), enr.getConsole().getNomConsole(), enr.getEdition(), enr.getZone().getNomZone(),
+                        enr.getConsole().getFabricant().getNomFabricant(), "", "", "",
+                        enr.getPrix(), enr.getStock()));
+            else
+                throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
+        }
+        else if ("Jeu".equals(type))
+        {
+            if (!"".equals(cb) || !"".equals(nom) || !"".equals(editeur) || !tags.isEmpty())
+                for (VersionJeu enr : chercherVersionsJeu(cb, edition, zone, plateforme, nom, editeur, tags))
+                    ret.add(new PromoForm(-1, enr.getIdVersionJeu(), "Jeu",
+                            enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
+                            enr.getJeu().getEditeur().getNomEditeur(), enr.getJeu().getDescriptionJeu(),
+                            decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
+                            enr.getPrix(), enr.getStock()));
+            else
+                throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
+        }
+        return ret;
+    }
    /**
      * Recherche les versions de consoles dont le code barre, l'édition, la zone et le fabricant correspondent parfaitement aux données renseignées,
      * et dont le nom contient la chaîne renseignée.
@@ -670,6 +714,49 @@ System.out.println("décrire ");
         //autres conditions
         if (!"".equals(cb))
             q.addCondition("vc.codeBarre", cb, HQLRecherche.Operateur.EGAL);
+        if (!"".equals(edition))
+            q.addCondition("vc.edition", edition, HQLRecherche.Operateur.LIKE);
+
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
+        this.modele.flush();
+        ret.addAll(resultats);
+
+        return ret;
+    }
+    private Vector<VersionConsole> chercherVersionsConsolePromo(String edition, String zone, String fabricant)
+            throws DonneesInsuffisantesException, DonneeInvalideException
+    {
+        Vector<VersionConsole> ret = new Vector<VersionConsole>();
+
+        HQLRecherche q = new HQLRecherche("LOREntities.VersionConsole vc"); //TODO: requête imbriquée imbrCons
+        //rédaction de la requête imbriquée pour console
+        if (!"".equals(fabricant)) //si la console est renseignée (et/ou son fabricant)
+        {
+            HQLRecherche imbrCons = new HQLRecherche("LOREntities.Console c");
+            imbrCons.setImbriquee(true);
+            imbrCons.setSelect("c.idConsole");
+            //imbrCons.addCondition("c.nomConsole", nom, HQLRecherche.Operateur.LIKE);
+            //rédaction de la requête imbriquée pour fabricant
+            if (!"".equals(fabricant)) //si le fabricant est renseigné
+            {
+                HQLRecherche imbrFabr = new HQLRecherche("LOREntities.Fabricant f");
+                imbrFabr.setImbriquee(true);
+                imbrFabr.addCondition("f.nomFabricant", fabricant, HQLRecherche.Operateur.LIKE);
+                imbrCons.addCondition("c.fabricant", imbrFabr.toString(), HQLRecherche.Operateur.IN);
+            }
+            q.addCondition("vc.console", imbrCons.toString(), HQLRecherche.Operateur.IN);
+        }
+        //rédaction des requêtes imbriquées pour zone
+        if (!"".equals(zone)) //si la zone est renseignée
+        {
+            HQLRecherche imbrZone = new HQLRecherche("LOREntities.Zone z");
+            imbrZone.setImbriquee(true);
+            imbrZone.setSelect("z.idZone");
+            imbrZone.addCondition("z.nomZone", zone, HQLRecherche.Operateur.LIKE);
+            q.addCondition("vc.zone", imbrZone.toString(), HQLRecherche.Operateur.IN);
+        }
+        //autres conditions
         if (!"".equals(edition))
             q.addCondition("vc.edition", edition, HQLRecherche.Operateur.LIKE);
 
@@ -1008,14 +1095,18 @@ System.out.println("décrire ");
     
     /**
      * Renvoie la liste des Editions.
-     * @param : void
+     * @param : type Console / Jeu
      * @return : un vecteur/liste de resultat de type Edition
      */
-    public Vector<String> listeEdition()
+    public Vector<String> listeEdition(String type)
     {
         Vector<String> ret = new Vector();
+        List editions;
+        if (type=="Console")
+            { editions = modele.createQuery("select vc.edition from LOREntities.VersionConsole vc").list(); }
+        else
+            { editions = modele.createQuery("select vj.edition from LOREntities.VersionJeu vj").list(); }
 
-        List editions = modele.createQuery("select vj.edition from LOREntities.VersionJeu vj").list();
         for (Object e : editions)
             ret.add((String) e);
         this.modele.flush();
