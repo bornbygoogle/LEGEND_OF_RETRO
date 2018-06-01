@@ -127,6 +127,7 @@ public class Controleur
         this.modele.beginTransaction();
         this.modele.save(fabr);
         this.modele.getTransaction().commit();
+        this.modele.flush();
 
         rapport.addOperation(fabr.getIdFabricant(), Rapport.Table.FABRICANT, Rapport.Operation.CREER);
         return fabr;
@@ -161,6 +162,7 @@ public class Controleur
         this.modele.beginTransaction();
         this.modele.save(ed);
         this.modele.getTransaction().commit();
+        this.modele.flush();
 
         rapport.addOperation(ed.getIdEditeur(), Rapport.Table.EDITEUR, Rapport.Operation.CREER);
         return ed;
@@ -194,6 +196,7 @@ public class Controleur
         this.modele.beginTransaction();
         this.modele.save(t);
         this.modele.getTransaction().commit();
+        this.modele.flush();
 
         rapport.addOperation(t.getIdTag(), Rapport.Table.TAG, Rapport.Operation.CREER);
         return t;
@@ -254,6 +257,7 @@ public class Controleur
             this.modele.beginTransaction();
             this.modele.save(jeu);
             this.modele.getTransaction().commit();
+            this.modele.flush();
             
             rapport.addOperation(jeu.getIdJeu(), Rapport.Table.JEU, Rapport.Operation.CREER);
             
@@ -273,26 +277,29 @@ System.out.println("ligne " + tag);
                 d.setId(new DecrireId());
 //                d.getId().setIdJeu(jeu.getIdJeu());
 //                d.getId().setIdTag(t.getIdTag());
-                d.setTag(t);
-                d.setJeu(jeu);
-                jeu.getDecrires().add(d);
-                t.getDecrires().add(d);
+                d.getId().setIdTag(t.getIdTag());
+                d.getId().setIdJeu(jeu.getIdJeu());
+                //jeu.getDecrires().add(d);
+                //t.getDecrires().add(d);
                 
 System.out.println("jeu ");
                 //mise à jour jeu
                 this.modele.beginTransaction();
                 this.modele.saveOrUpdate(jeu);
                 this.modele.getTransaction().commit();
+                this.modele.flush();
 System.out.println("tag ");
                 //mise à jour tag
                 this.modele.beginTransaction();
                 this.modele.saveOrUpdate(t);
                 this.modele.getTransaction().commit();
+                this.modele.flush();
 System.out.println("décrire ");
                 //création de l'enregistrement "décrire"
                 this.modele.beginTransaction();
                 this.modele.save(d);
                 this.modele.getTransaction().commit();
+                this.modele.flush();
 
                 rapport.addOperation(t.getIdTag(), Rapport.Table.DESCRIPTION, Rapport.Operation.CREER);
                 
@@ -351,6 +358,7 @@ System.out.println("décrire ");
             this.modele.beginTransaction();
             this.modele.save(cons);
             this.modele.getTransaction().commit();
+            this.modele.flush();
 
             rapport.addOperation(cons.getIdConsole(), Rapport.Table.CONSOLE, Rapport.Operation.CREER);
             return cons;
@@ -425,6 +433,7 @@ System.out.println("décrire ");
             this.modele.beginTransaction();
             this.modele.save(vc);
             this.modele.getTransaction().commit();
+            this.modele.flush();
 
             rapport.addOperation(vc.getIdVersionConsole(), Rapport.Table.VERSIONCONSOLE, Rapport.Operation.CREER);
 
@@ -513,6 +522,7 @@ System.out.println("décrire ");
             this.modele.beginTransaction();
             this.modele.save(vj);
             this.modele.getTransaction().commit();
+            this.modele.flush();
 
             rapport.addOperation(vj.getIdVersionJeu(), Rapport.Table.VERSIONJEU, Rapport.Operation.CREER);
 
@@ -909,7 +919,7 @@ System.out.println("décrire ");
         q.addCondition("e.nomEditeur", nomEdit, HQLRecherche.Operateur.EGAL);
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
-        this.modele.flush();
+        //this.modele.flush();
 
         if (resultats.isEmpty())
             return null;
@@ -989,6 +999,7 @@ System.out.println("décrire ");
         this.modele.beginTransaction();
         this.modele.save(z);
         this.modele.getTransaction().commit();
+        this.modele.flush();
 
         rapport.addOperation(z.getIdZone(), Rapport.Table.ZONE, Rapport.Operation.CREER);
 
