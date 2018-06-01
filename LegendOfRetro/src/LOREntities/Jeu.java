@@ -1,5 +1,5 @@
 package LOREntities;
-// Generated Jun 1, 2018 6:08:48 PM by Hibernate Tools 4.3.1
+// Generated Jun 1, 2018 9:49:05 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -63,7 +63,7 @@ public class Jeu  implements java.io.Serializable {
     public void setDescriptionJeu(String descriptionJeu) {
         this.descriptionJeu = descriptionJeu;
     }
-    public Set<Decrire> getDecrires() {
+    public Set getDecrires() {
         return this.decrires;
     }
     

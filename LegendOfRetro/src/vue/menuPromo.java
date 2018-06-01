@@ -6,8 +6,7 @@
 package vue;
 
 import bean.Form;
-import bean.PersonneForm;
-import bean.ProduitForm;
+import bean.PromoForm;
 import controleur.Controleur;
 import controleur.DonneeInvalideException;
 import controleur.DonneesInsuffisantesException;
@@ -26,7 +25,7 @@ public class menuPromo extends JPanel implements Chercheur
     private Controleur controleur;
 
     private critPromo Criteres;
-    private ResultatPromo<ProduitForm> Resultats;
+    private ResultatPromo<PromoForm> Resultats;
 
     /**
      * Creates new form menuProduit
@@ -47,7 +46,7 @@ public class menuPromo extends JPanel implements Chercheur
         this.setSize(500, 560);
 
         this.Criteres = new critPromo(this.controleur, this);
-        this.Resultats = new ResultatPromo<ProduitForm>(this);
+        this.Resultats = new ResultatPromo<PromoForm>(this);
         
         this.setLayout(new BorderLayout());
         this.add(this.Criteres, BorderLayout.CENTER);
@@ -57,9 +56,9 @@ public class menuPromo extends JPanel implements Chercheur
     @Override
     public void selectionnerResultat(Form res)
     {
-        if (!(res instanceof ProduitForm))
+        if (!(res instanceof PromoForm))
             throw new IllegalArgumentException("Erreur dans menuProduit: le formulaire à sélectionner n'est pas un ProduitForm.");
-        this.Criteres.setForm((ProduitForm) res);
+        this.Criteres.setForm((PromoForm) res);
     }
 
     @Override
@@ -67,8 +66,8 @@ public class menuPromo extends JPanel implements Chercheur
     {
         try {
             // Affectuer la recherche avec fonction RECHERCHE dans CONTROLEUR
-            Vector<ProduitForm> resultatsRecherche = null;
-            resultatsRecherche = this.controleur.chercher(form); //! TODO: attention, dans le contrôleur, à ce que renvoie chercherform() !
+            Vector<PromoForm> resultatsRecherche = null;
+            resultatsRecherche = this.controleur.chercherPromo((PromoForm) form); //! TODO: attention, dans le contrôleur, à ce que renvoie chercherform() !
             // Afficher les résultats avec fonction AFFICHERES dans RESULTAT
             if (resultatsRecherche != null)
                 this.Resultats.afficherRes(resultatsRecherche); }
