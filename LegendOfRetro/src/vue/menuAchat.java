@@ -34,6 +34,7 @@ public class menuAchat extends menuVente
     {
         super(c);
         this.parent = parent;
+        this.facture.setNature(true);
         
         //chargement d'un éventuel fichier sérialisé (reprise d'une facture après création d'un produit)
         File serializedFile = new File("facture_achat_en_cours.ser");

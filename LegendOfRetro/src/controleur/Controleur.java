@@ -8,6 +8,7 @@ package controleur;
 import LOREntities.*;
 
 import bean.CodeBarreForm;
+import bean.FactureForm;
 import bean.Form;
 import bean.ProduitForm;
 import bean.PromoForm;
@@ -96,6 +97,10 @@ public class Controleur
         }
 
         return rapport;
+    }
+    public Rapport creer(FactureForm form)
+    {
+        throw new UnsupportedOperationException("On essaye de créer une facture !");
     }
      /**
      * Crée un fabricant. Assure l'unicité de l'enregistrement dans l'intérieur de cette méthode sont appelées les méthodes-voir See Also.

@@ -215,7 +215,9 @@ public class critVente extends javax.swing.JPanel {
     }//GEN-LAST:event_buttonSupprimerActionPerformed
 
     private void buttonTerminerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTerminerActionPerformed
-        // TODO add your handling code here:
+        this.parent.afficherLog(
+                this.controleur.creer(this.parent.getFacture())
+                .toString());
          buttonTerminer.setBackground(Color.GREEN);
          
     }//GEN-LAST:event_buttonTerminerActionPerformed

@@ -40,6 +40,7 @@ public class menuVente extends JPanel implements Chercheur
         this.controleur = c;
         initComponents();
         this.facture = new FactureForm();
+        this.facture.setNature(false);
     }
 
     /**
@@ -142,6 +143,8 @@ System.out.println("            this.affichageFacture.ajouter(ligne) //!TODO");}
     protected void traiterEchecRecherche(String codeBarre) {
         afficherErreur(new Exception("Aucun produit trouvé."));
     }
+    
+    public FactureForm getFacture()     {return this.facture;}
 
 
 }
