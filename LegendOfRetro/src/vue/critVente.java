@@ -210,7 +210,7 @@ public class critVente extends javax.swing.JPanel {
     }//GEN-LAST:event_buttonAjouterActionPerformed
 
     private void buttonSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSupprimerActionPerformed
-        // TODO add your handling code here:
+        this.parent.supprimerLigne(toForm());
          buttonSupprimer.setBackground(Color.GREEN);
     }//GEN-LAST:event_buttonSupprimerActionPerformed
 

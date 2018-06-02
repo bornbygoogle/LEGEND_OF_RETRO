@@ -5,12 +5,15 @@
  */
 package vue;
 
+import bean.FactureForm;
 import bean.FactureLigneForm;
 import controleur.Controleur;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,7 +35,33 @@ public class menuAchat extends menuVente
         super(c);
         this.parent = parent;
         
-        //TODO: vérifier sérialisation
+        //chargement d'un éventuel fichier sérialisé (reprise d'une facture après création d'un produit)
+        File serializedFile = new File("facture_achat_en_cours.ser");
+        if (serializedFile.exists())
+        {
+            //si un fichier .ser existe, on informe l'utilisateur
+            JOptionPane.showMessageDialog(this,
+                    "Une transaction en cours a été sauvegardée. Elle sera chargée automatiquement.",
+                    "Reprise d'une transaction.", JOptionPane.INFORMATION_MESSAGE);
+            //puis on le charge par défaut et on le supprime.
+            try {
+                FileInputStream fis = new FileInputStream(serializedFile);
+                ObjectInputStream ois = new ObjectInputStream(fis);
+
+                this.facture = (FactureForm) ois.readObject();
+                ois.close();
+                fis.close();
+            }
+            catch (FileNotFoundException ex)    {System.out.println(
+                    "Erreur lors de la désérialization : fichier non trouvé.");}
+            catch (IOException ex)              {System.out.println(
+                    "Erreur lors de la désérialization : entrée/sortie.");}
+            catch (ClassNotFoundException ex)   {System.out.println(
+                    "Erreur lors de la désérialization : classe FactureForm non trouvée.");}
+            finally {serializedFile.delete();}
+            
+            this.affichageFacture.afficherRes(this.facture.getLignes());
+        }
     }
     
     @Override

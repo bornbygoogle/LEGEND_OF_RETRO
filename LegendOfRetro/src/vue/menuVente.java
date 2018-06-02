@@ -10,16 +10,13 @@ import bean.FactureForm;
 import bean.FactureLigneForm;
 //import bean.FactureLigneForm;
 import bean.Form;
-import bean.PersonneForm;
 import bean.ProduitForm;
 import controleur.Controleur;
 import controleur.DonneeInvalideException;
-import controleur.DonneesInsuffisantesException;
 import controleur.ResultatInvalideException;
 import java.awt.BorderLayout;
-import java.awt.Color;
+import java.util.Iterator;
 import java.util.Vector;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /**
@@ -31,7 +28,7 @@ public class menuVente extends JPanel implements Chercheur
     protected Controleur controleur;
 
     protected critVente selectionProduit;
-    protected Resultat<FactureForm> affichageFacture;
+    protected Resultat<FactureLigneForm> affichageFacture;
     FactureForm facture;
 
     /**
@@ -54,7 +51,7 @@ public class menuVente extends JPanel implements Chercheur
         this.setSize(500, 560);
 
         this.selectionProduit = new critVente(this.controleur, this);
-        this.affichageFacture = new Resultat<FactureForm>(this);
+        this.affichageFacture = new Resultat<FactureLigneForm>(this);
         
         
         this.setLayout(new BorderLayout());
@@ -117,10 +114,31 @@ public class menuVente extends JPanel implements Chercheur
 System.out.println("            this.affichageFacture.ajouter(ligne) //!TODO");}
         catch (Exception e)     {afficherErreur(e);}
     }
+    void supprimerLigne(FactureLigneForm ligne)
+    {
+        //on commence par trouver, dans this.facture, une ligne qui a le même code barre que la ligne fournie en paramètre.
+        Iterator<FactureLigneForm> it = this.facture.getLignes().iterator();
+        String codeBarre = ligne.getProduit().getCodeBarre();
+        boolean ligneNonTrouvee = it.hasNext();
+        
+        while(ligneNonTrouvee)
+        {
+            ligneNonTrouvee = it.next().getProduit().getCodeBarre().equals(
+                    codeBarre);
+            if (!ligneNonTrouvee) //si la ligne a été trouvée, on l'enlève de la facture
+                it.remove();
+            else if (!it.hasNext()) //si la ligne n'est pas trouée à la fin de la boucle, on affiche l'erreur et on quitte la boucle
+            {
+                afficherErreur(new Exception(
+                        "Erreur: aucune ligne préalablement entrée ne correspond à ce code barre."));
+                ligneNonTrouvee = false; //on quitte la boucle
+            }
+        }
+    }
+    
     public boolean ajoutLigneLegal(FactureLigneForm ligne) {
         return ligne.getProduit().getStock() < ligne.getQuantite();
     }
-
     protected void traiterEchecRecherche(String codeBarre) {
         afficherErreur(new Exception("Aucun produit trouvé."));
     }
