@@ -10,16 +10,12 @@ import bean.FactureForm;
 import bean.FactureLigneForm;
 //import bean.FactureLigneForm;
 import bean.Form;
-import bean.PersonneForm;
 import bean.ProduitForm;
 import controleur.Controleur;
 import controleur.DonneeInvalideException;
-import controleur.DonneesInsuffisantesException;
 import controleur.ResultatInvalideException;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.util.Vector;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /**
