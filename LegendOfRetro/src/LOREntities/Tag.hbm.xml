@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated May 23, 2018 12:38:35 AM by Hibernate Tools 4.3.1 -->
+<!-- Generated Jun 1, 2018 9:49:05 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="LOREntities.Tag" table="Tag" catalog="p1514527" optimistic-lock="version">
-        <id name="idTag" type="int">
+        <id name="idTag" type="java.lang.Integer">
             <column name="idTag" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <property name="labelTag" type="string">
             <column name="labelTag" length="100" not-null="true" />

@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated May 23, 2018 12:38:35 AM by Hibernate Tools 4.3.1 -->
+<!-- Generated Jun 1, 2018 9:49:05 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="LOREntities.Decrire" table="Decrire" catalog="p1514527" optimistic-lock="version">
         <composite-id name="id" class="LOREntities.DecrireId">
-            <key-property name="idTag" type="int">
-                <column name="idTag" />
-            </key-property>
             <key-property name="idJeu" type="int">
                 <column name="idJeu" />
+            </key-property>
+            <key-property name="idTag" type="int">
+                <column name="idTag" />
             </key-property>
         </composite-id>
         <many-to-one name="jeu" class="LOREntities.Jeu" update="false" insert="false" fetch="select">

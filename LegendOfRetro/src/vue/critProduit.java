@@ -82,11 +82,9 @@ public class critProduit extends javax.swing.JPanel
         labelCasse = new javax.swing.JLabel();
         fieldCasse1 = new javax.swing.JLabel();
         fieldCasse2 = new javax.swing.JLabel();
-        fieldPrix = new javax.swing.JLabel();
         labelCurrency = new javax.swing.JLabel();
         labelCote = new javax.swing.JLabel();
         fieldCote = new javax.swing.JLabel();
-        fieldStock = new javax.swing.JLabel();
         fieldCasse = new javax.swing.JLabel();
         listeZone = new javax.swing.JComboBox<>();
         fieldAjoutCasse = new javax.swing.JSpinner();
@@ -98,6 +96,8 @@ public class critProduit extends javax.swing.JPanel
         buttonModifier = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaDescription = new javax.swing.JTextArea();
+        fieldPrix = new javax.swing.JFormattedTextField();
+        fieldStock = new javax.swing.JFormattedTextField();
 
         setName("critResultat"); // NOI18N
 
@@ -137,6 +137,11 @@ public class critProduit extends javax.swing.JPanel
                 listeCategorieItemStateChanged(evt);
             }
         });
+        listeCategorie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listeCategorieActionPerformed(evt);
+            }
+        });
 
         labelTag.setText("Tag : ");
 
@@ -172,15 +177,11 @@ public class critProduit extends javax.swing.JPanel
         fieldCasse2.setEnabled(false);
         fieldCasse2.setFocusable(false);
 
-        fieldPrix.setText("0");
-
         labelCurrency.setText("€");
 
         labelCote.setText("Cote :");
 
         fieldCote.setText("0");
-
-        fieldStock.setText("0");
 
         fieldCasse.setText("1000");
 
@@ -219,7 +220,6 @@ public class critProduit extends javax.swing.JPanel
         });
 
         buttonNouveau.setText("Nouveau");
-        buttonAjoutZone.setVisible(false);
         buttonNouveau.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonNouveauActionPerformed(evt);
@@ -227,7 +227,6 @@ public class critProduit extends javax.swing.JPanel
         });
 
         buttonModifier.setText("Modifier");
-        buttonAjoutZone.setVisible(false);
         buttonModifier.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonModifierActionPerformed(evt);
@@ -237,6 +236,10 @@ public class critProduit extends javax.swing.JPanel
         jTextAreaDescription.setColumns(20);
         jTextAreaDescription.setRows(5);
         jScrollPane1.setViewportView(jTextAreaDescription);
+
+        fieldPrix.setText("0");
+
+        fieldStock.setText("0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -271,26 +274,6 @@ public class critProduit extends javax.swing.JPanel
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(labelCasse)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(labelPrix)
-                                        .addComponent(labelStock)
-                                        .addComponent(labelCote)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(fieldStock)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(fieldCasse)
-                                        .addGap(43, 43, 43)
-                                        .addComponent(fieldAjoutCasse, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(fieldPrix, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(labelCurrency, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(fieldCote)))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(labelTag)
@@ -300,8 +283,27 @@ public class critProduit extends javax.swing.JPanel
                                         .addComponent(fieldTxtAjoutZone, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(buttonAjoutZone)))
-                                .addGap(0, 64, Short.MAX_VALUE)))
-                        .addGap(56, 56, 56))
+                                .addGap(0, 121, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(labelCasse)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(labelPrix)
+                                        .addComponent(labelStock)
+                                        .addComponent(labelCote)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(fieldCasse)
+                                        .addGap(43, 43, 43)
+                                        .addComponent(fieldAjoutCasse, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(fieldPrix, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(labelCurrency, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(fieldCote)
+                                    .addComponent(fieldStock, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(buttonChercher)
                         .addGap(18, 18, 18)
@@ -324,27 +326,6 @@ public class critProduit extends javax.swing.JPanel
                         .addComponent(fieldCasse2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                            .addGap(15, 15, 15)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(labelCote)
-                                .addComponent(fieldCote)
-                                .addComponent(listeCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(labelCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(labelPrix)
-                                .addComponent(fieldPrix)
-                                .addComponent(labelCurrency))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(labelStock)
-                                .addComponent(fieldStock))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(labelCasse)
-                                .addComponent(fieldCasse)
-                                .addComponent(fieldAjoutCasse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(layout.createSequentialGroup()
                             .addGap(46, 46, 46)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(fieldCodeBarre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -356,7 +337,31 @@ public class critProduit extends javax.swing.JPanel
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(fieldEditeur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(fieldDevFab)))))
+                                .addComponent(fieldDevFab)))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(15, 15, 15)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(labelCote)
+                                        .addComponent(fieldCote))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(labelPrix)
+                                        .addComponent(labelCurrency)
+                                        .addComponent(fieldPrix, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(labelStock)
+                                        .addComponent(fieldStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(labelCasse)
+                                        .addComponent(fieldCasse)
+                                        .addComponent(fieldAjoutCasse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(listeCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addGap(7, 7, 7)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
@@ -433,7 +438,8 @@ public class critProduit extends javax.swing.JPanel
 
     private void buttonChercherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChercherActionPerformed
         try {
-            this.parent.lancerRecherche(toForm());}
+            this.parent.lancerRecherche(toForm());
+        }
         catch (DonneeInvalideException ex) {
             this.parent.afficherErreur(ex);
         }
@@ -490,6 +496,14 @@ public class critProduit extends javax.swing.JPanel
         // TODO add your handling code here:
     }//GEN-LAST:event_fieldNomKeyPressed
 
+    private void listeCategorieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listeCategorieActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_listeCategorieActionPerformed
+
+    public void setCodeBarre(String cb)
+    {
+        this.fieldCodeBarre.setText(cb);
+    }
     public void setForm(ProduitForm f)
     {
         this.selectedForm = f;
@@ -497,7 +511,7 @@ public class critProduit extends javax.swing.JPanel
         if ("jeu".equals(f.getType()))
         {
             this.listeCategorie.setSelectedIndex(1); //type Jeu
-            //this.fieldTag.setText(f.getTags());
+            this.fieldTag.setText(f.getTags());
             this.jTextAreaDescription.setText(f.getDescription());
         }
         else if ("console".equals(f.getType()))
@@ -507,6 +521,9 @@ public class critProduit extends javax.swing.JPanel
         this.fieldNom.setText(f.getNom());
         this.fieldEditeur.setText(f.getEditeur());
         this.fieldEdition.setText(f.getEdition());
+        this.fieldPrix.setText(String.valueOf(f.getPrix()));
+        this.fieldStock.setText(String.valueOf(f.getStock()));
+                
         
         this.idVersionJeu = f.getIdVersionJeu();
         this.idVersionConsole = f.getIdVersionConsole();
@@ -515,8 +532,8 @@ public class critProduit extends javax.swing.JPanel
     }
     private Form toForm() throws DonneeInvalideException
     {
-        float prix;
-        int stock;
+        float prix = 0f;
+        int stock = 0;
         try {
             prix = Float.valueOf(fieldPrix.getText());
             stock = Integer.valueOf(fieldStock.getText());}
@@ -525,8 +542,8 @@ public class critProduit extends javax.swing.JPanel
                 throw new DonneeInvalideException("Erreur : veuillez saisir le 'prix' en notation anglo-saxonne (par exemple : 2.5");
             if (!"".equals(Integer.valueOf(fieldStock.getText())))
                 throw new DonneeInvalideException("Erreur : veuillez saisir un entier dans le champ 'stock'");
-            prix = 0f;
-            stock = 0;
+            //prix = 0f;
+            //stock = 0;
         }
             
         if("".equals(fieldNom.getText()) && "".equals(fieldEditeur.getText())
@@ -559,8 +576,8 @@ public class critProduit extends javax.swing.JPanel
     public static javax.swing.JTextField fieldEditeur;
     public static javax.swing.JTextField fieldEdition;
     public static javax.swing.JTextField fieldNom;
-    public static javax.swing.JLabel fieldPrix;
-    public static javax.swing.JLabel fieldStock;
+    public static javax.swing.JFormattedTextField fieldPrix;
+    public static javax.swing.JFormattedTextField fieldStock;
     public static javax.swing.JTextField fieldTag;
     public static javax.swing.JTextField fieldTxtAjoutZone;
     public static javax.swing.JScrollPane jScrollPane1;

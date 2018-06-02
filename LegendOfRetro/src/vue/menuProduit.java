@@ -5,18 +5,13 @@
  */
 package vue;
 
-import bean.CodeBarreForm;
 import bean.Form;
 import bean.ProduitForm;
 import controleur.Controleur;
 import controleur.DonneeInvalideException;
-import controleur.DonneesInsuffisantesException;
 import controleur.ResultatInvalideException;
 import java.awt.BorderLayout;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /**
@@ -39,6 +34,13 @@ public class menuProduit extends JPanel implements Chercheur
         super();
         this.controleur = c;
         initComponents();
+    }
+    public menuProduit(Controleur c, String cbInitial)
+    {
+        super();
+        this.controleur = c;
+        initComponents();
+        this.Criteres.setCodeBarre(cbInitial);
     }
 
     /**
@@ -74,7 +76,13 @@ public class menuProduit extends JPanel implements Chercheur
             resultatsRecherche = this.controleur.chercher(form);
             // Afficher les résultats avec fonction AFFICHERES dans RESULTAT
             if (resultatsRecherche != null)
-                this.Resultats.afficherRes(resultatsRecherche); }
+            {
+                this.Resultats.afficherRes(resultatsRecherche); 
+            }
+            //this.Criteres.buttonNouveau.setVisible(false);
+            //this.Criteres.buttonModifier.setVisible(false);
+        }
+
         catch (DonneeInvalideException e) {
             afficherErreur(e);}
         catch (controleur.DonneesInsuffisantesException e) {
