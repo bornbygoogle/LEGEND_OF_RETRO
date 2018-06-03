@@ -433,10 +433,8 @@ societé : String
 _idFacture: int_
 prixTTC :int
 type : char
-reduction : int
-dateFacrture : date
-nomConsole : string
-nomJeu : string</panel_attributes>
+reduction : float
+dateFacture : date</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -504,8 +502,7 @@ nomJeu : string</panel_attributes>
     </coordinates>
     <panel_attributes>ligneFactureJ
 -
-quantité: int
-prixHT: float</panel_attributes>
+quantité: int</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -598,8 +595,8 @@ nom : String
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>660</x>
-      <y>319</y>
+      <x>495</x>
+      <y>462</y>
       <w>154</w>
       <h>33</h>
     </coordinates>
@@ -610,13 +607,13 @@ bg=yellow</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>638</x>
-      <y>341</y>
+      <x>495</x>
+      <y>407</y>
       <w>121</w>
-      <h>121</h>
+      <h>77</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;90.0;90.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;90.0;10.0;90.0;50.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>
@@ -661,8 +658,7 @@ bg=yellow</panel_attributes>
     </coordinates>
     <panel_attributes>ligneFactureC
 -
-quantité: int
-prixHT: float</panel_attributes>
+quantité: int</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>
