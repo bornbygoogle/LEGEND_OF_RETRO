@@ -68,7 +68,7 @@ public class menuAchat extends menuVente
     @Override
     public boolean ajoutLigneLegal(FactureLigneForm ligne)
     {
-        return true; //On peut toujours acheter, il n'y a pas de condition sur la quantité.
+        return ligne.getQuantite() > 0; //On peut toujours acheter, il n'y a pas de condition sur la quantité.
     }
     @Override
     protected void traiterEchecRecherche(String codeBarre) {
