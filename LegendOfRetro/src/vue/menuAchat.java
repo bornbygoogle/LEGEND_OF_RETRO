@@ -34,6 +34,7 @@ public class menuAchat extends menuVente
     {
         super(c);
         this.parent = parent;
+        this.facture.setNature(true);
         
         //chargement d'un éventuel fichier sérialisé (reprise d'une facture après création d'un produit)
         File serializedFile = new File("facture_achat_en_cours.ser");
@@ -67,7 +68,7 @@ public class menuAchat extends menuVente
     @Override
     public boolean ajoutLigneLegal(FactureLigneForm ligne)
     {
-        return true; //On peut toujours acheter, il n'y a pas de condition sur la quantité.
+        return ligne.getQuantite() > 0; //On peut toujours acheter, il n'y a pas de condition sur la quantité.
     }
     @Override
     protected void traiterEchecRecherche(String codeBarre) {

@@ -40,6 +40,7 @@ public class menuVente extends JPanel implements Chercheur
         this.controleur = c;
         initComponents();
         this.facture = new FactureForm();
+        this.facture.setNature(false);
     }
 
     /**
@@ -107,11 +108,13 @@ public class menuVente extends JPanel implements Chercheur
 
     public void ajouterLigne(FactureLigneForm ligne)
     {
+//TODO: rechercher dans la facture pour voir si la ligne existe, et si elle existe, mofifier (attention ajoutLigneLegal devrait prendre en compte le DEUX linges -> polymorphisme ?)
         try {
             if (!ajoutLigneLegal(ligne))
                 throw new Exception("La quantité excède les stocks disponibles.");
             this.facture.getLignes().add(ligne);
-System.out.println("            this.affichageFacture.ajouter(ligne) //!TODO");}
+            this.affichageFacture.afficherRes(this.facture.getLignes());
+        }
         catch (Exception e)     {afficherErreur(e);}
     }
     void supprimerLigne(FactureLigneForm ligne)
@@ -134,14 +137,19 @@ System.out.println("            this.affichageFacture.ajouter(ligne) //!TODO");}
                 ligneNonTrouvee = false; //on quitte la boucle
             }
         }
+        
+        this.affichageFacture.afficherRes(this.facture.getLignes());
     }
     
     public boolean ajoutLigneLegal(FactureLigneForm ligne) {
-        return ligne.getProduit().getStock() < ligne.getQuantite();
+        return ligne.getProduit().getStock() > ligne.getQuantite()
+                && ligne.getQuantite() > 0;
     }
     protected void traiterEchecRecherche(String codeBarre) {
         afficherErreur(new Exception("Aucun produit trouvé."));
     }
+    
+    public FactureForm getFacture()     {return this.facture;}
 
 
 }
