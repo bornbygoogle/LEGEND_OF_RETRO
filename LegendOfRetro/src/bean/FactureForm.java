@@ -24,7 +24,13 @@ public class FactureForm extends Form
     private Vector<FactureLigneForm> lignes;
     private float reductions;
     
-    public FactureForm() {}
+    public FactureForm()
+    {
+        this.nature = false;
+        this.acteurId = -1;
+        this.lignes = new Vector<FactureLigneForm>();
+        this.reductions = 0f;
+    }
     
     public boolean getNature()              {return this.nature;}
     public void setNature(boolean achat)    {this.nature = achat;}

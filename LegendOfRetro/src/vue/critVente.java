@@ -229,6 +229,8 @@ public class critVente extends javax.swing.JPanel {
     
     public void clean()
     {
+        this.fieldCodeBarre.setText("");
+        this.fieldQuantite.getModel().setValue(new Integer(0));
         this.produitExamine = null;
         this.labelDevFab.setVisible(false);
         this.labelNom.setVisible(false);
