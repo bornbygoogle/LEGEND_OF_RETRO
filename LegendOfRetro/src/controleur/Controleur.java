@@ -9,6 +9,7 @@ import LOREntities.*;
 
 import bean.CodeBarreForm;
 import bean.FactureForm;
+import bean.FactureLigneForm;
 import bean.Form;
 import bean.ProduitForm;
 import bean.PromoForm;
@@ -98,9 +99,62 @@ public class Controleur
 
         return rapport;
     }
-    public Rapport creer(FactureForm form)
+    /**
+     * Crée une facture décrite par le bean.
+     * @param form formulaire décrivant la facture.
+     * @throws DonneesInsuffisantesException si la facture ne contient aucune ligne.
+     * @return un objet rapport qui permet d'afficher les différentes opérations réalisées.
+    */
+    public Rapport creer(FactureForm form) throws DonneesInsuffisantesException
     {
         if (form.getLignes().isEmpty())
+            throw new DonneesInsuffisantesException("Erreur : la facture est vide.");
+        
+        Rapport ret = new Rapport();
+        
+        //création de la facture
+        Facture facture = new Facture();
+        //type
+        if (form.getNature()) //achat
+            facture.setTypeFacture('a');
+        else //vente
+            facture.setTypeFacture('v');
+        //réductions éventuelles
+        facture.setReduction = form.getReductions();
+        //Client ou fournisseur lié //TODO: à implémenter
+        if (form.getActeurId() != -1) {
+            //chercher Personne et l'affecter
+        }
+        else
+            facture.setActeur = null;
+
+        //sauvegarde de la facture dans la base de données
+        this.modele.beginTransaction();
+        this.modele.save(facture);
+        this.modele.getTransaction().commit();
+        this.modele.flush();
+        
+        for(FactureLigneForm ligne : form.getLignes())
+            creerFactureLigne(rapport, ligne, facture);
+        
+        return ret;
+    }
+    /**
+     * Crée une facture décrite par le bean.
+     * @param rapport un objet rapport qui permet d'afficher les différentes opérations réalisées.
+     * @param ligne formulaire décrivant le contenu de la ligne
+     * @param facture objet POJO auquel est liée la ligne à créer.
+     * @throws DonneesInsuffisantesException si la ligne ne réfère à aucun produit
+    */
+    public void creerFactureLigne(Rapport rapport,
+            FactureLigneForm ligne, Facture facture) throws DonneesInsuffisantesException
+    {
+        if (rapport == null || facture == null || ligne == null)
+            throw new DonneesInsuffisantesException("Erreur : creerFactureLigne requiert des arguments non nuls.");
+        else if (ligne.getProduit() == null)
+            throw new DonneesInsuffisantesException("Erreur : la facture est vide.");
+        
+        //TODO
     }
      /**
      * Crée un fabricant. Assure l'unicité de l'enregistrement dans l'intérieur de cette méthode sont appelées les méthodes-voir See Also.
@@ -268,10 +322,8 @@ public class Controleur
             rapport.addOperation(jeu.getIdJeu(), Rapport.Table.JEU, Rapport.Operation.CREER);
             
             //traitement des tags (requiert enregistrement Jeu préalablement créé)
-System.out.println(tags);
             for (String tag : tags)
             {
-System.out.println("ligne " + tag);
                 //on vérifie l'existence du tag et, au besoin, on le crée.
                 Tag t = chercherTag(tag);
                 if (t == null)
@@ -279,28 +331,20 @@ System.out.println("ligne " + tag);
                 
                 //on lie le jeu au tag dans la table DECRIRE
                 Decrire d = new Decrire();
-//                Decrire d = new Decrire(new DecrireId(t.getIdTag(), jeu.getIdJeu()), jeu, t);
                 d.setId(new DecrireId());
-//                d.getId().setIdJeu(jeu.getIdJeu());
-//                d.getId().setIdTag(t.getIdTag());
                 d.getId().setIdTag(t.getIdTag());
                 d.getId().setIdJeu(jeu.getIdJeu());
-                //jeu.getDecrires().add(d);
-                //t.getDecrires().add(d);
                 
-System.out.println("jeu ");
                 //mise à jour jeu
                 this.modele.beginTransaction();
                 this.modele.saveOrUpdate(jeu);
                 this.modele.getTransaction().commit();
                 this.modele.flush();
-System.out.println("tag ");
                 //mise à jour tag
                 this.modele.beginTransaction();
                 this.modele.saveOrUpdate(t);
                 this.modele.getTransaction().commit();
                 this.modele.flush();
-System.out.println("décrire ");
                 //création de l'enregistrement "décrire"
                 this.modele.beginTransaction();
                 this.modele.save(d);
