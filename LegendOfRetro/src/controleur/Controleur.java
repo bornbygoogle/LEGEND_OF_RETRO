@@ -100,7 +100,7 @@ public class Controleur
     }
     public Rapport creer(FactureForm form)
     {
-        throw new UnsupportedOperationException("On essaye de créer une facture !");
+        if (form.getLignes().isEmpty())
     }
      /**
      * Crée un fabricant. Assure l'unicité de l'enregistrement dans l'intérieur de cette méthode sont appelées les méthodes-voir See Also.
