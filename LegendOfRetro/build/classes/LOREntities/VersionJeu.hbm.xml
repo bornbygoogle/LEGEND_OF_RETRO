@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 1, 2018 9:49:05 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="LOREntities.VersionJeu" table="VersionJeu" catalog="p1514527" optimistic-lock="version">
+        <id name="idVersionJeu" type="java.lang.Integer">
+            <column name="idVersionJeu" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="console" class="LOREntities.Console" fetch="select">
+            <column name="idConsole" not-null="true" />
+        </many-to-one>
+        <many-to-one name="jeu" class="LOREntities.Jeu" fetch="select">
+            <column name="idJeu" not-null="true" />
+        </many-to-one>
+        <many-to-one name="zone" class="LOREntities.Zone" fetch="select">
+            <column name="idZone" not-null="true" />
+        </many-to-one>
+        <property name="codeBarre" type="string">
+            <column name="codeBarre" length="13" not-null="true" />
+        </property>
+        <property name="edition" type="string">
+            <column name="edition" length="100" not-null="true" />
+        </property>
+        <property name="prix" type="float">
+            <column name="prix" precision="12" scale="0" not-null="true" />
+        </property>
+        <property name="stock" type="int">
+            <column name="stock" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
