@@ -14,8 +14,11 @@ import bean.ProduitForm;
 import bean.PersonneForm;
 import controleur.Controleur;
 import controleur.DonneeInvalideException;
+import controleur.DonneesInsuffisantesException;
 import java.awt.Color;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SpinnerNumberModel;
 
 /**
@@ -215,9 +218,13 @@ public class critVente extends javax.swing.JPanel {
     }//GEN-LAST:event_buttonSupprimerActionPerformed
 
     private void buttonTerminerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTerminerActionPerformed
-        this.parent.afficherLog(
-                this.controleur.creer(this.parent.getFacture())
-                .toString());
+        try {
+            this.parent.afficherLog(
+                    this.controleur.creer(this.parent.getFacture())
+                            .toString());
+        }
+        catch (DonneesInsuffisantesException ex) {
+            this.parent.afficherErreur(ex);}
          buttonTerminer.setBackground(Color.GREEN);
          
     }//GEN-LAST:event_buttonTerminerActionPerformed

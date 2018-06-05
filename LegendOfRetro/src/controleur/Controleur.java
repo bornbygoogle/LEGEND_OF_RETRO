@@ -332,15 +332,6 @@ public class Controleur
         rapport.addOperation(t.getIdTag(), Rapport.Table.TAG, Rapport.Operation.CREER);
         return t;
     }
-//    /**
-//     * Lie un tag à un jeu.
-//     * L'identifiant du tag doit être valide. L'identifiant du jeu doit être valide. La relation ne doit pas déjà exister. Aucun contrôle d'erreur n'est réalisé.
-//     */
-//    protected void lierTag(Rapport rapport, Jeu jeu, Tag tag)
-//    {
-//        //TODO : on génère la requête pour créer l'enregistrement.
-//        rapport.addOperation(desc., Rapport.Table.DESCRIPTION, Rapport.Operation.CREER);
-//    }
     /**
      * Crée un jeu et/ou son éditeur. Assure l'unicité de l'enregistrement.Si l'éditeur est inexistant dans la base de données, un nouvel éditeur est ajouté à la volée. De même pour les tags.
      * @param  rapport-une variable de type Rapport qui est utilisé pour retourner une réponse dans l'interface graphique
@@ -804,7 +795,7 @@ public class Controleur
 
         Vector<VersionConsole> ret = new Vector<VersionConsole>();
 
-        HQLRecherche q = new HQLRecherche("LOREntities.VersionConsole vc"); //TODO: requête imbriquée imbrCons
+        HQLRecherche q = new HQLRecherche("LOREntities.VersionConsole vc");
         //rédaction de la requête imbriquée pour console
         if (!"".equals(nom) || !"".equals(fabricant)) //si la console est renseignée (et/ou son fabricant)
         {
@@ -849,7 +840,7 @@ public class Controleur
     {
         Vector<VersionConsole> ret = new Vector<VersionConsole>();
 
-        HQLRecherche q = new HQLRecherche("LOREntities.VersionConsole vc"); //TODO: requête imbriquée imbrCons
+        HQLRecherche q = new HQLRecherche("LOREntities.VersionConsole vc");
         //rédaction de la requête imbriquée pour console
         if (!"".equals(fabricant)) //si la console est renseignée (et/ou son fabricant)
         {
@@ -928,7 +919,7 @@ public class Controleur
 
         Vector<VersionJeu> ret = new Vector<VersionJeu>();
 
-        HQLRecherche q = new HQLRecherche("LOREntities.VersionJeu vj"); //TODO: requête imbriquée imbrCons
+        HQLRecherche q = new HQLRecherche("LOREntities.VersionJeu vj");
         //rédaction de la requête imbriquée pour console
         if (!"".equals(plateforme)) //si la console est renseignée
         {
@@ -1071,8 +1062,6 @@ public class Controleur
             //else
             idEditeur = edtr.getIdEditeur();
         }
-
-        //TODO !à implémenter; (voir chercher console, encore que, y'a les tags...');
 
         HQLRecherche q = new HQLRecherche("LOREntities.Jeu j");
         q.addCondition("j.nomJeu", nomJeu, HQLRecherche.Operateur.EGAL);
