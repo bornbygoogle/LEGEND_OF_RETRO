@@ -172,34 +172,6 @@ public class Controleur
             throw new IllegalArgumentException("Erreur : une ligne correspond à un type de produit inconnu.");
     }
     /**
-     * Crée une ligne et l'ajoute à la facture. Ceci ne fonctionne que si le produit est un jeu.
-     * @param rapport un objet rapport qui permet d'afficher les différentes opérations réalisées.
-     * @param ligne formulaire décrivant le contenu de la ligne
-     * @param facture objet POJO auquel est liée la ligne à créer.
-     * @throws DonneesInsuffisantesException si la ligne ne réfère à aucun produit
-    */
-    private void creerFactureLigneJeu(Rapport rapport,
-            FactureLigneForm ligne, Facture facture) throws DonneesInsuffisantesException
-    {
-        FactureLigneJeu ligneJeu = new FactureLigneJeu();
-        ligneJeu.setProduit((VersionJeu) this.modele.load(
-                "VersionJeu", ligne.getProduit().getIdVersionJeu()));
-        ligneJeu.setQuantite(ligne.getQuantite());
-        
-        //sauvegarde de la ligne dans la base de données
-        this.modele.beginTransaction();
-        this.modele.save(ligneJeu);
-        this.modele.getTransaction().commit();
-        this.modele.flush();
-        
-        //mise à jour de la facture dans la base de données
-        facture.getFactureLigneJeus().add(ligneJeu);
-        this.modele.beginTransaction();
-        this.modele.save(facture);
-        this.modele.getTransaction().commit();
-        this.modele.flush();
-    }
-    /**
      * Crée une ligne et l'ajoute à la facture. Ceci ne fonctionne que si le produit est une console.
      * @param rapport un objet rapport qui permet d'afficher les différentes opérations réalisées.
      * @param ligne formulaire décrivant le contenu de la ligne
@@ -222,6 +194,34 @@ public class Controleur
         
         //mise à jour de la facture dans la base de données
         facture.getFactureLigneConsoles().add(ligneConsole);
+        this.modele.beginTransaction();
+        this.modele.save(facture);
+        this.modele.getTransaction().commit();
+        this.modele.flush();
+    }
+    /**
+     * Crée une ligne et l'ajoute à la facture. Ceci ne fonctionne que si le produit est un jeu.
+     * @param rapport un objet rapport qui permet d'afficher les différentes opérations réalisées.
+     * @param ligne formulaire décrivant le contenu de la ligne
+     * @param facture objet POJO auquel est liée la ligne à créer.
+     * @throws DonneesInsuffisantesException si la ligne ne réfère à aucun produit
+    */
+    private void creerFactureLigneJeu(Rapport rapport,
+            FactureLigneForm ligne, Facture facture) throws DonneesInsuffisantesException
+    {
+        FactureLigneJeu ligneJeu = new FactureLigneJeu();
+        ligneJeu.setProduit((VersionJeu) this.modele.load(
+                "VersionJeu", ligne.getProduit().getIdVersionJeu()));
+        ligneJeu.setQuantite(ligne.getQuantite());
+        
+        //sauvegarde de la ligne dans la base de données
+        this.modele.beginTransaction();
+        this.modele.save(ligneJeu);
+        this.modele.getTransaction().commit();
+        this.modele.flush();
+        
+        //mise à jour de la facture dans la base de données
+        facture.getFactureLigneJeus().add(ligneJeu);
         this.modele.beginTransaction();
         this.modele.save(facture);
         this.modele.getTransaction().commit();
@@ -1285,7 +1285,7 @@ public class Controleur
     }
 
     /**
-     * Renvoie la liste des Tags.
+     * Renvoie la liste des tags.
      * @param : void
      * @return : un vecteur/liste de resultat de type Tags
      */
@@ -1296,6 +1296,41 @@ public class Controleur
         List tags = modele.createQuery("from LOREntities.Tag t order by t.labelTag").list();
         for (Object t : tags)
             ret.add(((Tag) t).getLabelTag());
+        this.modele.flush();
+        
+        return ret;
+    }
+    
+    /**
+     * Renvoie la liste des pays.
+     * @param : void
+     * @return : un vecteur/liste de resultat de type Tags
+     */
+    public Vector<String> listePays()
+    {
+        Vector<String> ret = new Vector();
+        
+        List pays = modele.createQuery("from LOREntities.Pays p order by p.nomPays").list();
+        for (Object p : pays)
+            ret.add(((Pays) p).getNomPays());
+        this.modele.flush();
+        
+        return ret;
+    }
+    /**
+     * Renvoie la liste des villes d'un pays.
+     * @param : void
+     * @return : un vecteur/liste de resultat de type Tags
+     */
+    public Vector<String> listeVilles(String pays)
+    {
+        Vector<String> ret = new Vector();
+        
+        List villes = modele.createQuery(
+                "from LOREntities.Ville v where v.pays.nomPays = " + pays + " order by p.nomPays"
+                ).list();
+        for (Object v : villes)
+            ret.add(((Ville) v).getNomVille() + " (" + ((Ville) v).getCp() + " )");
         this.modele.flush();
         
         return ret;
