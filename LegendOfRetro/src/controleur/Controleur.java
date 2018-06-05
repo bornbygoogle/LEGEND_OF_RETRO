@@ -1201,6 +1201,7 @@ public class Controleur
 
         return rapport;
     }
+//!TODO : créer ville / créer pays / créer personne (==> fonctions de recherche)
     
     /**
      * Renvoie la liste des Editions.
