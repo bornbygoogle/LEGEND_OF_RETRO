@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 1, 2018 9:49:05 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="LOREntities.Fabricant" table="Fabricant" catalog="p1514527" optimistic-lock="version">
+        <id name="idFabricant" type="java.lang.Integer">
+            <column name="idFabricant" />
+            <generator class="identity" />
+        </id>
+        <property name="nomFabricant" type="string">
+            <column name="nomFabricant" length="100" not-null="true" />
+        </property>
+        <set name="consoles" table="Console" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idFabricant" not-null="true" />
+            </key>
+            <one-to-many class="LOREntities.Console" />
+        </set>
+    </class>
+</hibernate-mapping>
