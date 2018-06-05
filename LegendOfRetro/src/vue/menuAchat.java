@@ -50,6 +50,7 @@ public class menuAchat extends JPanel implements Chercheur
 
         this.Criteres = new critAchat(this.controleur, this);
         this.Resultats = new Resultat<ProduitForm>(this);
+        this.facture.setNature(true);
         
         this.setLayout(new BorderLayout());
         this.add(this.Criteres, BorderLayout.CENTER);
@@ -59,12 +60,7 @@ public class menuAchat extends JPanel implements Chercheur
     @Override
     public void selectionnerResultat(Form res)
     {
-        if (res instanceof ProduitForm) 
-            this.Criteres.setForm((ProduitForm) res);
-/*        else if (res instanceof FactureLigneForm)
-            this.Criteres.setForm(res);*/
-        else
-            throw new IllegalArgumentException("Erreur dans menuProduit: le formulaire à sélectionner n'est pas un ProduitForm ou un FactureLigneForm.");
+        return ligne.getQuantite() > 0; //On peut toujours acheter, il n'y a pas de condition sur la quantité.
     }
 
     @Override

@@ -134,14 +134,9 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
         this.res = res;
         //Affichage du nombre de résultats
         if (this.res.size() == 0)
-        {
-            critProduit.buttonNouveau.setVisible(true);
             afficherErreur("Aucun résultat.");
-        }
         else if (this.res.size() > 0)
         {
-            critProduit.buttonNouveau.setVisible(true);
-            critProduit.buttonModifier.setVisible(true);
             afficherMessage(this.res.size() + " résultats.");
             
             //On recrée le tableau

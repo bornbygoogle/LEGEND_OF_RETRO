@@ -6,6 +6,7 @@
 package vue;
 
 import bean.CodeBarreForm;
+import bean.FactureLigneForm;
 //import bean.FactureForm;
 //import bean.FactureLigneForm;
 import bean.Form;
@@ -15,6 +16,7 @@ import controleur.Controleur;
 import controleur.DonneeInvalideException;
 import java.awt.Color;
 import java.util.Vector;
+import javax.swing.SpinnerNumberModel;
 
 /**
  *
@@ -23,7 +25,7 @@ import java.util.Vector;
 public class critVente extends javax.swing.JPanel {
 
     private Controleur controleur;
-    private Chercheur parent;
+    private menuVente parent;
     
 //    private FactureLigneForm ligneFacture; //si une ligne est en train d'être modifiée
     private ProduitForm produitExamine;
@@ -31,7 +33,7 @@ public class critVente extends javax.swing.JPanel {
     /**
      * Creates new form critPersonne
      */
-    public critVente(Controleur controleur, Chercheur parent)
+    public critVente(Controleur controleur, menuVente parent)
     {
         this.controleur = controleur;
         this.parent = parent;
@@ -63,13 +65,6 @@ public class critVente extends javax.swing.JPanel {
         buttonSupprimer = new javax.swing.JButton();
         buttonTerminer = new javax.swing.JButton();
         fieldCodeBarre = new javax.swing.JFormattedTextField();
-        fieldNom = new javax.swing.JTextField();
-        fieldEditeur = new javax.swing.JTextField();
-        listeZone = new javax.swing.JComboBox<>();
-        fieldEdition = new javax.swing.JTextField();
-        listePlateforme = new javax.swing.JComboBox<>();
-        fieldPrix = new javax.swing.JFormattedTextField();
-        fieldStock = new javax.swing.JFormattedTextField();
 
         labelCodeBarre.setText("Code Barre : ");
 
@@ -127,52 +122,6 @@ public class critVente extends javax.swing.JPanel {
             }
         });
 
-        fieldNom.setToolTipText("Nom");
-        fieldNom.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                fieldNomKeyPressed(evt);
-            }
-        });
-
-        fieldEditeur.setToolTipText("Developpeur / Fabricant");
-        fieldEditeur.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldEditeurActionPerformed(evt);
-            }
-        });
-
-        listeZone.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                listeZoneItemStateChanged(evt);
-            }
-        });
-
-        fieldEdition.setToolTipText("Edition");
-
-        listePlateforme.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PC", "PS", " " }));
-        listePlateforme.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                listePlateformeItemStateChanged(evt);
-            }
-        });
-        listePlateforme.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                listePlateformeActionPerformed(evt);
-            }
-        });
-
-        fieldPrix.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldPrixActionPerformed(evt);
-            }
-        });
-
-        fieldStock.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldStockActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -180,57 +129,39 @@ public class critVente extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(labelEdition, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(labelZone, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(labelDevFab, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(labelPlateforme, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addContainerGap(819, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(labelPrix)
+                            .addContainerGap(880, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(buttonAjouter)
-                        .addGap(18, 18, 18)
-                        .addComponent(buttonSupprimer)
-                        .addGap(41, 41, 41)
-                        .addComponent(buttonTerminer))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelCodeBarre)
-                            .addComponent(labelNom))
-                        .addGap(35, 35, 35)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(buttonAjouter)
+                                .addGap(18, 18, 18)
+                                .addComponent(buttonSupprimer)
+                                .addGap(41, 41, 41)
+                                .addComponent(buttonTerminer))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelCodeBarre)
+                                    .addComponent(labelNom))
+                                .addGap(35, 35, 35)
                                 .addComponent(fieldCodeBarre, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(28, 28, 28)
                                 .addComponent(buttonChercher))
-                            .addComponent(fieldNom, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(labelQuantite)
-                                .addGap(18, 18, 18)
-                                .addComponent(fieldQuantite, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(labelStock))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(fieldStock, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(labelEdition)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(fieldEdition, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(labelZone)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(listeZone, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(labelDevFab)
-                            .addGap(49, 49, 49)
-                            .addComponent(fieldEditeur, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(labelPlateforme, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addComponent(labelPrix)
-                                    .addGap(91, 91, 91)))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(fieldPrix, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(listePlateforme, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(551, Short.MAX_VALUE))
+                                    .addComponent(labelQuantite)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(fieldQuantite, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(labelStock)))
+                        .addContainerGap(551, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,42 +172,23 @@ public class critVente extends javax.swing.JPanel {
                     .addComponent(buttonChercher)
                     .addComponent(fieldCodeBarre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fieldNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelNom, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(labelDevFab)
-                        .addGap(12, 12, 12))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fieldEditeur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)))
+                .addComponent(labelNom, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addComponent(labelDevFab)
+                .addGap(12, 12, 12)
+                .addComponent(labelZone)
+                .addGap(12, 12, 12)
+                .addComponent(labelEdition)
+                .addGap(12, 12, 12)
+                .addComponent(labelPlateforme)
+                .addGap(14, 14, 14)
+                .addComponent(labelPrix)
+                .addGap(12, 12, 12)
+                .addComponent(labelStock)
+                .addGap(8, 8, 8)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelZone)
-                    .addComponent(listeZone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelEdition)
-                    .addComponent(fieldEdition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelPlateforme)
-                    .addComponent(listePlateforme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelPrix)
-                    .addComponent(fieldPrix, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelStock)
-                        .addGap(8, 8, 8)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelQuantite, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fieldQuantite, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(fieldStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labelQuantite, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fieldQuantite, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonAjouter)
@@ -292,12 +204,13 @@ public class critVente extends javax.swing.JPanel {
     }//GEN-LAST:event_buttonChercherActionPerformed
 
     private void buttonAjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAjouterActionPerformed
-        // TODO add your handling code here:
+        this.parent.ajouterLigne(toForm());
+        clean();
         buttonAjouter.setBackground(Color.GREEN);
     }//GEN-LAST:event_buttonAjouterActionPerformed
 
     private void buttonSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSupprimerActionPerformed
-        // TODO add your handling code here:
+        this.parent.supprimerLigne(toForm());
          buttonSupprimer.setBackground(Color.GREEN);
     }//GEN-LAST:event_buttonSupprimerActionPerformed
 
@@ -313,48 +226,12 @@ public class critVente extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_fieldCodeBarreActionPerformed
 
-    private void fieldNomKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldNomKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldNomKeyPressed
-
-    private void fieldEditeurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldEditeurActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldEditeurActionPerformed
-
-    private void listeZoneItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listeZoneItemStateChanged
-        // TODO add your handling code here:
-        if ("Autre".equals((String)listeZone.getSelectedItem()))
-        {
-            // fieldTxtAjoutZone.setVisible(true);
-            // buttonAjoutZone.setVisible(true);
-        }
-        else
-        {
-            // fieldTxtAjoutZone.setVisible(false);
-            // buttonAjoutZone.setVisible(false);
-        }
-    }//GEN-LAST:event_listeZoneItemStateChanged
-
-    private void fieldStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldStockActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldStockActionPerformed
-
-    private void listePlateformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listePlateformeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_listePlateformeActionPerformed
-
-    private void listePlateformeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listePlateformeItemStateChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_listePlateformeItemStateChanged
-
-    private void fieldPrixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldPrixActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldPrixActionPerformed
-
     
     public void clean()
     {
-        //this.ligneFacture = null;
+        this.fieldCodeBarre.setText("");
+        this.fieldQuantite.getModel().setValue(new Integer(0));
+        this.produitExamine = null;
         this.labelDevFab.setVisible(false);
         this.labelNom.setVisible(false);
         this.labelPlateforme.setVisible(false);
@@ -373,45 +250,41 @@ public class critVente extends javax.swing.JPanel {
             this.produitExamine = (ProduitForm) f;
             
         }
-//        else if (f instanceof FactureLigneForm) {
-//            this.ligneFacture = (FactureLigneForm) f;
-//            this.produitExamine = this.ligneFacture.getProduit();
-//        }
         else
             throw new IllegalArgumentException("Erreur dans menuProduit: le formulaire à sélectionner n'est pas un ProduitForm ou un FactureLigneForm.");
         
-            typeJeu = ("Jeu".equals(this.produitExamine.getType()));
-            if (typeJeu) {
-                typeDev = "Développeur : ";
-                this.labelPlateforme.setText("Plateforme : " + this.produitExamine.getPlateforme());
-            }
-            else
-                typeDev = "Fabricant : ";
-            this.labelDevFab.setText(typeDev + this.produitExamine.getEditeur());
-            this.labelNom.setText("Nom : " + this.produitExamine.getNom());
-            this.labelEdition.setText("Edition : " + this.produitExamine.getEdition());
-            this.labelZone.setText("Zone : " + this.produitExamine.getZone());
-            this.labelPrix.setText("Prix : " + this.produitExamine.getPrix() + " €");
-            this.labelStock.setText("Stock : " + this.produitExamine.getStock());
-            
-            this.labelDevFab.setVisible(true);
-            this.labelNom.setVisible(true);
-            this.labelPlateforme.setVisible(typeJeu);
-            this.labelEdition.setVisible(true);
-            this.labelZone.setVisible(true);
-            this.labelPrix.setVisible(true);
-            this.labelStock.setVisible(true);
+        typeJeu = ("Jeu".equals(this.produitExamine.getType()));
+        if (typeJeu) {
+            typeDev = "Développeur : ";
+            this.labelPlateforme.setText("Plateforme : " + this.produitExamine.getPlateforme());
+        }
+        else
+            typeDev = "Fabricant : ";
+        this.labelDevFab.setText(typeDev + this.produitExamine.getEditeur());
+        this.labelNom.setText("Nom : " + this.produitExamine.getNom());
+        this.labelEdition.setText("Edition : " + this.produitExamine.getEdition());
+        this.labelZone.setText("Zone : " + this.produitExamine.getZone());
+        this.labelPrix.setText("Prix : " + this.produitExamine.getPrix() + " €");
+        this.labelStock.setText("Stock : " + this.produitExamine.getStock());
+
+        this.labelDevFab.setVisible(true);
+        this.labelNom.setVisible(true);
+        this.labelPlateforme.setVisible(typeJeu);
+        this.labelEdition.setVisible(true);
+        this.labelZone.setVisible(true);
+        this.labelPrix.setVisible(true);
+        this.labelStock.setVisible(true);
     }
-/*    private FactureForm toForm()
+    private FactureLigneForm toForm()
     {
-        FactureForm retour = new FactureForm();
-        retour.setNature(true);
-        retour.setLignes(this.parent.getLignesFacture());
-        
-        //TODO: setIdClient !
+        FactureLigneForm retour = new FactureLigneForm();
+        retour.setProduit(this.produitExamine);
+        int q = (((SpinnerNumberModel) this.fieldQuantite.getModel()).getNumber().intValue());
+        retour.setQuantite(q);
+        retour.setPrixLigne(q * this.produitExamine.getPrix());
         
         return retour;
-    }*/
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAjouter;
@@ -419,12 +292,7 @@ public class critVente extends javax.swing.JPanel {
     private javax.swing.JButton buttonSupprimer;
     private javax.swing.JButton buttonTerminer;
     private javax.swing.JFormattedTextField fieldCodeBarre;
-    private javax.swing.JTextField fieldEditeur;
-    private javax.swing.JTextField fieldEdition;
-    private javax.swing.JTextField fieldNom;
-    private javax.swing.JFormattedTextField fieldPrix;
     private javax.swing.JSpinner fieldQuantite;
-    private javax.swing.JFormattedTextField fieldStock;
     private javax.swing.JLabel labelCodeBarre;
     private javax.swing.JLabel labelDevFab;
     private javax.swing.JLabel labelEdition;
@@ -434,7 +302,5 @@ public class critVente extends javax.swing.JPanel {
     private javax.swing.JLabel labelQuantite;
     private javax.swing.JLabel labelStock;
     private javax.swing.JLabel labelZone;
-    private javax.swing.JComboBox<String> listePlateforme;
-    private javax.swing.JComboBox<String> listeZone;
     // End of variables declaration//GEN-END:variables
 }
