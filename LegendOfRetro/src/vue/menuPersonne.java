@@ -37,6 +37,9 @@ public class menuPersonne extends JPanel implements Chercheur
         super();
         this.controleur = c;
         initComponents();
+        
+System.out.println("test liste pays " + this.controleur.listePays());
+System.out.println("test liste villes de France " + this.controleur.listeVilles("France"));
     }
 
     /**

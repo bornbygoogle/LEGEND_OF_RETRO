@@ -1294,7 +1294,7 @@ public class Controleur
     /**
      * Renvoie la liste des pays.
      * @param : void
-     * @return : un vecteur/liste de resultat de type Tags
+     * @return : un vecteur/liste de resultat qui contient les noms des pays
      */
     public Vector<String> listePays()
     {
@@ -1310,14 +1310,14 @@ public class Controleur
     /**
      * Renvoie la liste des villes d'un pays.
      * @param : void
-     * @return : un vecteur/liste de resultat de type Tags
+     * @return : un vecteur/liste de resultat qui contient les noms des villes
      */
     public Vector<String> listeVilles(String pays)
     {
         Vector<String> ret = new Vector();
         
         List villes = modele.createQuery(
-                "from LOREntities.Ville v where v.pays.nomPays = " + pays + " order by p.nomPays"
+                "from LOREntities.Ville v where v.pays.nomPays = '" + pays + "' order by v.nomVille"
                 ).list();
         for (Object v : villes)
             ret.add(((Ville) v).getNomVille() + " (" + ((Ville) v).getCp() + " )");

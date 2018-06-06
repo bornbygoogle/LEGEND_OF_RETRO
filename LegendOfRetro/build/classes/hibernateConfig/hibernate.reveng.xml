@@ -50,4 +50,8 @@ Contributor(s):
   <table-filter match-name="Console"/>
   <table-filter match-name="Decrire"/>
   <table-filter match-name="Zone"/>
+  
+  <table-filter match-name="Personne"/>
+  <table-filter match-name="Pays"/>
+  <table-filter match-name="Ville"/>
 </hibernate-reverse-engineering>
