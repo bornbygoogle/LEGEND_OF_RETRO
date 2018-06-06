@@ -7,7 +7,6 @@ package vue;
 
 import bean.Form;
 import bean.ProduitForm;
-import bean.PromoForm;
 import controleur.Rapport;
 import java.util.Arrays;
 import java.util.Vector;
@@ -157,31 +156,6 @@ public class ResultatPromo <F extends Form> extends javax.swing.JPanel
                 for (Form f : this.res)
                 {
                     ProduitForm pf = (ProduitForm) f;
-                    Object[] donneesLigne = {
-                        pf.getCodeBarre(),
-                        pf.getNom(),
-                        pf.getEdition(),
-                        pf.getZone(),
-                        pf.getEditeur()
-                    };
-                    donnees[rowIndex] = donneesLigne;
-                    rowIndex++;
-                }
-            }
-            else if (test instanceof PromoForm)
-            {
-                //on détermine l'intitulé des colonnes
-                if ("jeu".equals(((PromoForm) test).getType()))
-                    nomsChamps = typeJeu;
-                else //if ("console".equals(((ProduitForm) test).getType()))
-                    nomsChamps = typeConsole;
-                
-                rowIndex = 0;
-                
-                //on remplit le tableau ligne à ligne
-                for (Form f : this.res)
-                {
-                    PromoForm pf = (PromoForm) f;
                     Object[] donneesLigne = {
                         pf.getCodeBarre(),
                         pf.getNom(),

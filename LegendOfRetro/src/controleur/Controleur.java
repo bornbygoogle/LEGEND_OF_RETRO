@@ -5,6 +5,9 @@
  */
 package controleur;
 
+import EntiteProvisoire.Facture;
+import EntiteProvisoire.FactureLigneJeu;
+import EntiteProvisoire.FactureLigneConsole;
 import LOREntities.*;
 
 import bean.CodeBarreForm;
@@ -14,6 +17,8 @@ import bean.Form;
 import bean.ProduitForm;
 import bean.PromoForm;
 import hibernateConfig.HibernateUtil;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -110,7 +115,7 @@ public class Controleur
         if (form.getLignes().isEmpty())
             throw new DonneesInsuffisantesException("Erreur : la facture est vide.");
         
-        Rapport ret = new Rapport();
+        Rapport rapport = new Rapport();
         
         //création de la facture
         Facture facture = new Facture();
@@ -120,13 +125,18 @@ public class Controleur
         else //vente
             facture.setTypeFacture('v');
         //réductions éventuelles
-        facture.setReduction = form.getReductions();
-        //Client ou fournisseur lié //TODO: à implémenter
+        facture.setReduction(form.getReductions());
+        
+        //date
+        facture.setDate(Date.from(Instant.now()));
+        
+        /*/Client ou fournisseur lié
+        TODO: à implémenter
         if (form.getActeurId() != -1) {
             //chercher Personne et l'affecter
         }
         else
-            facture.setActeur = null;
+            facture.setActeur(null);//*/
 
         //sauvegarde de la facture dans la base de données
         this.modele.beginTransaction();
@@ -137,16 +147,16 @@ public class Controleur
         for(FactureLigneForm ligne : form.getLignes())
             creerFactureLigne(rapport, ligne, facture);
         
-        return ret;
+        return rapport;
     }
     /**
-     * Crée une facture décrite par le bean.
+     * Crée une ligne et l'ajoute à la facture. Ceci fonctionne que le produit soit une console ou un jeu.
      * @param rapport un objet rapport qui permet d'afficher les différentes opérations réalisées.
      * @param ligne formulaire décrivant le contenu de la ligne
      * @param facture objet POJO auquel est liée la ligne à créer.
      * @throws DonneesInsuffisantesException si la ligne ne réfère à aucun produit
     */
-    public void creerFactureLigne(Rapport rapport,
+    private void creerFactureLigne(Rapport rapport,
             FactureLigneForm ligne, Facture facture) throws DonneesInsuffisantesException
     {
         if (rapport == null || facture == null || ligne == null)
@@ -154,7 +164,68 @@ public class Controleur
         else if (ligne.getProduit() == null)
             throw new DonneesInsuffisantesException("Erreur : la facture est vide.");
         
-        //TODO
+        if ("Jeu".equals(ligne.getProduit().getType()))
+            creerFactureLigneJeu(rapport, ligne, facture);
+        else if ("Console".equals(ligne.getProduit().getType()))
+            creerFactureLigneConsole(rapport, ligne, facture);
+        else
+            throw new IllegalArgumentException("Erreur : une ligne correspond à un type de produit inconnu.");
+    }
+    /**
+     * Crée une ligne et l'ajoute à la facture. Ceci ne fonctionne que si le produit est une console.
+     * @param rapport un objet rapport qui permet d'afficher les différentes opérations réalisées.
+     * @param ligne formulaire décrivant le contenu de la ligne
+     * @param facture objet POJO auquel est liée la ligne à créer.
+     * @throws DonneesInsuffisantesException si la ligne ne réfère à aucun produit
+    */
+    private void creerFactureLigneConsole(Rapport rapport,
+            FactureLigneForm ligne, Facture facture) throws DonneesInsuffisantesException
+    {
+        FactureLigneConsole ligneConsole = new FactureLigneConsole();
+        ligneConsole.setProduit((VersionConsole) this.modele.load(
+                "VersionConsole", ligne.getProduit().getIdVersionConsole()));
+        ligneConsole.setQuantite(ligne.getQuantite());
+        
+        //sauvegarde de la ligne dans la base de données
+        this.modele.beginTransaction();
+        this.modele.save(ligneConsole);
+        this.modele.getTransaction().commit();
+        this.modele.flush();
+        
+        //mise à jour de la facture dans la base de données
+        facture.getFactureLigneConsoles().add(ligneConsole);
+        this.modele.beginTransaction();
+        this.modele.save(facture);
+        this.modele.getTransaction().commit();
+        this.modele.flush();
+    }
+    /**
+     * Crée une ligne et l'ajoute à la facture. Ceci ne fonctionne que si le produit est un jeu.
+     * @param rapport un objet rapport qui permet d'afficher les différentes opérations réalisées.
+     * @param ligne formulaire décrivant le contenu de la ligne
+     * @param facture objet POJO auquel est liée la ligne à créer.
+     * @throws DonneesInsuffisantesException si la ligne ne réfère à aucun produit
+    */
+    private void creerFactureLigneJeu(Rapport rapport,
+            FactureLigneForm ligne, Facture facture) throws DonneesInsuffisantesException
+    {
+        FactureLigneJeu ligneJeu = new FactureLigneJeu();
+        ligneJeu.setProduit((VersionJeu) this.modele.load(
+                "VersionJeu", ligne.getProduit().getIdVersionJeu()));
+        ligneJeu.setQuantite(ligne.getQuantite());
+        
+        //sauvegarde de la ligne dans la base de données
+        this.modele.beginTransaction();
+        this.modele.save(ligneJeu);
+        this.modele.getTransaction().commit();
+        this.modele.flush();
+        
+        //mise à jour de la facture dans la base de données
+        facture.getFactureLigneJeus().add(ligneJeu);
+        this.modele.beginTransaction();
+        this.modele.save(facture);
+        this.modele.getTransaction().commit();
+        this.modele.flush();
     }
      /**
      * Crée un fabricant. Assure l'unicité de l'enregistrement dans l'intérieur de cette méthode sont appelées les méthodes-voir See Also.
@@ -261,15 +332,6 @@ public class Controleur
         rapport.addOperation(t.getIdTag(), Rapport.Table.TAG, Rapport.Operation.CREER);
         return t;
     }
-//    /**
-//     * Lie un tag à un jeu.
-//     * L'identifiant du tag doit être valide. L'identifiant du jeu doit être valide. La relation ne doit pas déjà exister. Aucun contrôle d'erreur n'est réalisé.
-//     */
-//    protected void lierTag(Rapport rapport, Jeu jeu, Tag tag)
-//    {
-//        //TODO : on génère la requête pour créer l'enregistrement.
-//        rapport.addOperation(desc., Rapport.Table.DESCRIPTION, Rapport.Operation.CREER);
-//    }
     /**
      * Crée un jeu et/ou son éditeur. Assure l'unicité de l'enregistrement.Si l'éditeur est inexistant dans la base de données, un nouvel éditeur est ajouté à la volée. De même pour les tags.
      * @param  rapport-une variable de type Rapport qui est utilisé pour retourner une réponse dans l'interface graphique
@@ -733,7 +795,7 @@ public class Controleur
 
         Vector<VersionConsole> ret = new Vector<VersionConsole>();
 
-        HQLRecherche q = new HQLRecherche("LOREntities.VersionConsole vc"); //TODO: requête imbriquée imbrCons
+        HQLRecherche q = new HQLRecherche("LOREntities.VersionConsole vc");
         //rédaction de la requête imbriquée pour console
         if (!"".equals(nom) || !"".equals(fabricant)) //si la console est renseignée (et/ou son fabricant)
         {
@@ -778,7 +840,7 @@ public class Controleur
     {
         Vector<VersionConsole> ret = new Vector<VersionConsole>();
 
-        HQLRecherche q = new HQLRecherche("LOREntities.VersionConsole vc"); //TODO: requête imbriquée imbrCons
+        HQLRecherche q = new HQLRecherche("LOREntities.VersionConsole vc");
         //rédaction de la requête imbriquée pour console
         if (!"".equals(fabricant)) //si la console est renseignée (et/ou son fabricant)
         {
@@ -857,7 +919,7 @@ public class Controleur
 
         Vector<VersionJeu> ret = new Vector<VersionJeu>();
 
-        HQLRecherche q = new HQLRecherche("LOREntities.VersionJeu vj"); //TODO: requête imbriquée imbrCons
+        HQLRecherche q = new HQLRecherche("LOREntities.VersionJeu vj");
         //rédaction de la requête imbriquée pour console
         if (!"".equals(plateforme)) //si la console est renseignée
         {
@@ -1001,8 +1063,6 @@ public class Controleur
             idEditeur = edtr.getIdEditeur();
         }
 
-        //TODO !à implémenter; (voir chercher console, encore que, y'a les tags...');
-
         HQLRecherche q = new HQLRecherche("LOREntities.Jeu j");
         q.addCondition("j.nomJeu", nomJeu, HQLRecherche.Operateur.EGAL);
         if (!"".equals(nomEditeur))
@@ -1141,6 +1201,7 @@ public class Controleur
 
         return rapport;
     }
+//!TODO : créer ville / créer pays / créer personne (==> fonctions de recherche)
     
     /**
      * Renvoie la liste des Editions.
@@ -1214,7 +1275,7 @@ public class Controleur
     }
 
     /**
-     * Renvoie la liste des Tags.
+     * Renvoie la liste des tags.
      * @param : void
      * @return : un vecteur/liste de resultat de type Tags
      */
@@ -1225,6 +1286,41 @@ public class Controleur
         List tags = modele.createQuery("from LOREntities.Tag t order by t.labelTag").list();
         for (Object t : tags)
             ret.add(((Tag) t).getLabelTag());
+        this.modele.flush();
+        
+        return ret;
+    }
+    
+    /**
+     * Renvoie la liste des pays.
+     * @param : void
+     * @return : un vecteur/liste de resultat qui contient les noms des pays
+     */
+    public Vector<String> listePays()
+    {
+        Vector<String> ret = new Vector();
+        
+        List pays = modele.createQuery("from LOREntities.Pays p order by p.nomPays").list();
+        for (Object p : pays)
+            ret.add(((Pays) p).getNomPays());
+        this.modele.flush();
+        
+        return ret;
+    }
+    /**
+     * Renvoie la liste des villes d'un pays.
+     * @param : void
+     * @return : un vecteur/liste de resultat qui contient les noms des villes
+     */
+    public Vector<String> listeVilles(String pays)
+    {
+        Vector<String> ret = new Vector();
+        
+        List villes = modele.createQuery(
+                "from LOREntities.Ville v where v.pays.nomPays = '" + pays + "' order by v.nomVille"
+                ).list();
+        for (Object v : villes)
+            ret.add(((Ville) v).getNomVille() + " (" + ((Ville) v).getCp() + " )");
         this.modele.flush();
         
         return ret;

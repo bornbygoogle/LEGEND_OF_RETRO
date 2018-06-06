@@ -1,5 +1,5 @@
 package LOREntities;
-// Generated Jun 1, 2018 9:49:05 PM by Hibernate Tools 4.3.1
+// Generated May 23, 2018 12:38:35 AM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -11,7 +11,7 @@ import java.util.Set;
 public class Tag  implements java.io.Serializable {
 
 
-     private Integer idTag;
+     private int idTag;
      private String labelTag;
      private Set decrires = new HashSet(0);
 
@@ -19,19 +19,21 @@ public class Tag  implements java.io.Serializable {
     }
 
 	
-    public Tag(String labelTag) {
+    public Tag(int idTag, String labelTag) {
+        this.idTag = idTag;
         this.labelTag = labelTag;
     }
-    public Tag(String labelTag, Set decrires) {
+    public Tag(int idTag, String labelTag, Set decrires) {
+       this.idTag = idTag;
        this.labelTag = labelTag;
        this.decrires = decrires;
     }
    
-    public Integer getIdTag() {
+    public int getIdTag() {
         return this.idTag;
     }
     
-    public void setIdTag(Integer idTag) {
+    public void setIdTag(int idTag) {
         this.idTag = idTag;
     }
     public String getLabelTag() {
