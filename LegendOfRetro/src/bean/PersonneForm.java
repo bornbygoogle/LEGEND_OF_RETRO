@@ -13,8 +13,9 @@ public class PersonneForm extends Form
 {
     private int idPersonne;
     
-    private String prenom;
     private String nom;
+    private String prenom;
+    private String societe;
     private String adresse;
     private String ville;
     private String codePostal;
@@ -40,6 +41,7 @@ public class PersonneForm extends Form
     public int getIdPersonne()                      {return this.idPersonne;}
     public String getPrenom()                       {return this.prenom;}
     public String getNom()                          {return this.nom;}
+    public String getSociete()                      {return this.societe;}
     public String getAdresse()                      {return this.adresse;}
     public String getVille()                        {return this.ville;}
     public String getCodePostal()                   {return this.codePostal;}
@@ -50,6 +52,7 @@ public class PersonneForm extends Form
     
     public void setPrenom(String prenom)            {this.prenom = prenom;}
     public void setNom(String nom)                  {this.nom = nom;}
+    public void setSociete(String societe)          {this.societe = societe;}
     public void setAdresse(String adresse)          {this.adresse = adresse;}
     public void setVille(String ville)              {this.ville = ville;}
     public void setCodePostal(String cp)            {this.codePostal = cp;}
