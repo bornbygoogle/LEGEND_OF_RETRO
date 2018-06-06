@@ -5,95 +5,91 @@
  */
 package vue;
 
-import bean.CodeBarreForm;
-//import bean.FactureLigneForm;
-import bean.Form;
-import bean.PersonneForm;
-import bean.ProduitForm;
+import bean.FactureForm;
+import bean.FactureLigneForm;
 import controleur.Controleur;
-import controleur.DonneeInvalideException;
-import controleur.DonneesInsuffisantesException;
-import controleur.ResultatInvalideException;
-import java.awt.BorderLayout;
-import java.util.Vector;
-import javax.swing.JButton;
-import javax.swing.JPanel;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Home
  */
-public class menuAchat extends JPanel implements Chercheur
+public class menuAchat extends menuVente
 {
-    private Controleur controleur;
-
-    private critAchat Criteres;
-    private Resultat<ProduitForm> Resultats;
-
+    private GUI parent;
+    
     /**
      * Creates new form menuProduit
      */
-    public menuAchat(Controleur c)
+    public menuAchat(Controleur c, GUI parent)
     {
-        super();
-        this.controleur = c;
-        initComponents();
-    }
-
-    /**
-     * Cette méthode est appelée depuis le constructeur pour initialiser le JPanel.
-     * ATTENTION : cette fonction reprend du code généré par un JForm.
-     */                       
-    private void initComponents()
-    {
-        this.setSize(500, 560);
-
-        this.Criteres = new critAchat(this.controleur, this);
-        this.Resultats = new Resultat<ProduitForm>(this);
+        super(c);
+        this.parent = parent;
         this.facture.setNature(true);
         
-        this.setLayout(new BorderLayout());
-        this.add(this.Criteres, BorderLayout.CENTER);
-        this.add(this.Resultats, BorderLayout.SOUTH);
+        //chargement d'un éventuel fichier sérialisé (reprise d'une facture après création d'un produit)
+        File serializedFile = new File("facture_achat_en_cours.ser");
+        if (serializedFile.exists())
+        {
+            //si un fichier .ser existe, on informe l'utilisateur
+            JOptionPane.showMessageDialog(this,
+                    "Une transaction en cours a été sauvegardée. Elle sera chargée automatiquement.",
+                    "Reprise d'une transaction.", JOptionPane.INFORMATION_MESSAGE);
+            //puis on le charge par défaut et on le supprime.
+            try {
+                FileInputStream fis = new FileInputStream(serializedFile);
+                ObjectInputStream ois = new ObjectInputStream(fis);
+
+                this.facture = (FactureForm) ois.readObject();
+                ois.close();
+                fis.close();
+            }
+            catch (FileNotFoundException ex)    {System.out.println(
+                    "Erreur lors de la désérialization : fichier non trouvé.");}
+            catch (IOException ex)              {System.out.println(
+                    "Erreur lors de la désérialization : entrée/sortie.");}
+            catch (ClassNotFoundException ex)   {System.out.println(
+                    "Erreur lors de la désérialization : classe FactureForm non trouvée.");}
+            finally {serializedFile.delete();}
+            
+            this.affichageFacture.afficherRes(this.facture.getLignes());
+        }
     }
     
     @Override
-    public void selectionnerResultat(Form res)
+    public boolean ajoutLigneLegal(FactureLigneForm ligne)
     {
         return ligne.getQuantite() > 0; //On peut toujours acheter, il n'y a pas de condition sur la quantité.
     }
-
     @Override
-    public void lancerRecherche(Form form)
-    {
-        if (!(form instanceof CodeBarreForm))
-            throw new IllegalArgumentException("Erreur dans menuAchat: le formulaire à rechercher n'est pas un CodeBarreForm.");
+    protected void traiterEchecRecherche(String codeBarre) {
+        //sérialisation de la facture en cours
+        File file = new File("facture_achat_en_cours.ser");
         try {
-            // Affectuer la recherche avec fonction RECHERCHE dans CONTROLEUR
-            Vector<ProduitForm> resultatsRecherche = null;
-            resultatsRecherche = this.controleur.chercher(form); //! TODO: attention, dans le contrôleur, à ce que renvoie chercherform()
-            // Afficher les résultats avec fonction AFFICHERES dans RESULTAT
-            if (resultatsRecherche != null)
-                this.Resultats.afficherRes(resultatsRecherche); }
-        catch (DonneeInvalideException e) {
-            afficherErreur(e);}
-        catch (controleur.DonneesInsuffisantesException e) {
-            afficherErreur(e);}
-        catch (ResultatInvalideException e) {
-            afficherErreur(e);}
+            if (!file.exists())
+                file.createNewFile();
+            FileOutputStream fos = new FileOutputStream(file);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            
+            oos.writeObject(this.facture);
+            oos.close();
+            fos.close();
+        }
+        catch (FileNotFoundException ex) {System.out.println("Problème lors de la sérialisation : fichier non trouvé");}
+        catch (IOException ex) {System.out.println("Problème lors de la sérialisation : entrée/sortie");}
+        
+        JOptionPane.showMessageDialog(this,
+                "Produit non trouvé.\nVous serez redirigé vers le menu Produit.\nLa facture en cours sera sauvegardée.",
+                "Produit non trouvé.", JOptionPane.INFORMATION_MESSAGE);
+        this.parent.ouvrirMenu(GUI.Menu.PRODUIT, codeBarre);
     }
-
-    @Override
-    public void afficherErreur(Exception e)
-    {
-        this.Resultats.afficherErreur(e.getMessage());
-    }
-
-    @Override
-    public void afficherLog(String log)
-    {
-        this.Resultats.afficherMessage(log);
-    }
-
-
 }

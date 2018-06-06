@@ -8,6 +8,7 @@ package vue;
 import bean.Form;
 import bean.PersonneForm;
 import bean.ProduitForm;
+import bean.PromoForm;
 import controleur.Controleur;
 import controleur.DonneeInvalideException;
 import controleur.DonneesInsuffisantesException;
@@ -57,9 +58,9 @@ public class menuPromo extends JPanel implements Chercheur
     @Override
     public void selectionnerResultat(Form res)
     {
-        if (!(res instanceof ProduitForm))
+        if (!(res instanceof PromoForm))
             throw new IllegalArgumentException("Erreur dans menuProduit: le formulaire à sélectionner n'est pas un ProduitForm.");
-        this.Criteres.setForm((ProduitForm) res);
+        this.Criteres.setForm((PromoForm) res);
     }
 
     @Override

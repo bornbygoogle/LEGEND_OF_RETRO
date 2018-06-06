@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd">
 <!--
 DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 
@@ -41,16 +41,13 @@ Contributor(s):
 -->
 <hibernate-reverse-engineering>
   <schema-selection match-catalog="p1514527"/>
-  <table-filter match-name="Zone"/>
+  <table-filter match-name="Jeu"/>
+  <table-filter match-name="Editeur"/>
+  <table-filter match-name="VersionConsole"/>
+  <table-filter match-name="Tag"/>
+  <table-filter match-name="Fabricant"/>
   <table-filter match-name="VersionJeu"/>
   <table-filter match-name="Console"/>
-  <table-filter match-name="Pays"/>
-  <table-filter match-name="Personne"/>
-  <table-filter match-name="Fabricant"/>
-  <table-filter match-name="VersionConsole"/>
-  <table-filter match-name="Jeu"/>
-  <table-filter match-name="Tag"/>
-  <table-filter match-name="Editeur"/>
   <table-filter match-name="Decrire"/>
-  <table-filter match-name="Ville"/>
+  <table-filter match-name="Zone"/>
 </hibernate-reverse-engineering>
