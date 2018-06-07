@@ -1,5 +1,5 @@
 package LOREntities;
-// Generated 7 juin 2018 17:20:44 by Hibernate Tools 4.3.1
+// Generated Jun 7, 2018 5:40:08 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
