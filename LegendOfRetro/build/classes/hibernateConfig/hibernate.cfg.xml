@@ -50,15 +50,15 @@ Contributor(s):
     <property name="hibernate.show_sql">false</property>
     <mapping resource="LOREntities/VersionConsole.hbm.xml"/>
     <mapping resource="LOREntities/Zone.hbm.xml"/>
+    <mapping resource="LOREntities/Ville.hbm.xml"/>
+    <mapping resource="LOREntities/Tag.hbm.xml"/>
+    <mapping resource="LOREntities/Pays.hbm.xml"/>
     <mapping resource="LOREntities/Jeu.hbm.xml"/>
+    <mapping resource="LOREntities/Personne.hbm.xml"/>
     <mapping resource="LOREntities/Editeur.hbm.xml"/>
     <mapping resource="LOREntities/Fabricant.hbm.xml"/>
     <mapping resource="LOREntities/Decrire.hbm.xml"/>
     <mapping resource="LOREntities/VersionJeu.hbm.xml"/>
-    <mapping resource="LOREntities/Tag.hbm.xml"/>
     <mapping resource="LOREntities/Console.hbm.xml"/>
-    <mapping resource="LOREntities/Pays.hbm.xml"/>
-    <mapping class="" file="" jar="" package="" resource="LOREntities/Ville.hbm.xml"/>
-    <mapping resource="LOREntities/Personne.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>
