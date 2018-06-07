@@ -25,35 +25,28 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="labelCategorie" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="listeCategorie" min="-2" pref="150" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="labelPlateforme" min="-2" max="-2" attributes="0"/>
-                          <Component id="labelZone" alignment="1" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="listeZone" min="-2" pref="150" max="-2" attributes="0"/>
-                          <Component id="listePlateforme" min="-2" pref="150" max="-2" attributes="0"/>
-                      </Group>
+                  <Component id="labelCategorie" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="0" attributes="0">
+                      <Component id="labelPlateforme" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelZone" alignment="1" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                  <Component id="listeCategorie" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                  <Component id="listeZone" min="-2" pref="150" max="-2" attributes="0"/>
+                  <Component id="listePlateforme" min="-2" pref="150" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="59" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="labelTag" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="labelEdition" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="fieldDevFab" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="fieldDevFab" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -61,7 +54,7 @@
                   <Component id="listeEdition" min="-2" pref="150" max="-2" attributes="0"/>
                   <Component id="listeTags" min="-2" pref="150" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" alignment="1" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
@@ -83,7 +76,7 @@
                   </Group>
                   <Component id="buttonModifier" alignment="1" min="-2" pref="150" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
