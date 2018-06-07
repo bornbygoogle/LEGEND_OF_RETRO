@@ -6,7 +6,7 @@
     <class name="LOREntities.Fabricant" table="Fabricant" catalog="p1514527" optimistic-lock="version">
         <id name="idFabricant" type="int">
             <column name="idFabricant" />
-            <generator class="assigned" />
+            <generator class="identify" />
         </id>
         <property name="nomFabricant" type="string">
             <column name="nomFabricant" length="100" not-null="true" />

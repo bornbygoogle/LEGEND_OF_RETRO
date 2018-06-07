@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 23, 2018 12:38:35 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="LOREntities.Facture" table="Facture" catalog="p1514527" optimistic-lock="version">
+        <id name="idFacture" type="int">
+            <column name="idFacture" />
+            <generator class="identity" />
+        </id>
+        <property name="prixTTC" type="float">
+            <column name="prixTTC" precision="12" scale="0" not-null="true" />
+        </property>
+        <property name="typeFacture" type="java.lang.Character">
+            <column name="typeFacture" not-null="true" />
+            <!--sql-type="char(1)"-->
+        </property>
+        <property name="reduction" type="float">
+            <column name="reduction" precision="12" scale="0" not-null="true" />
+        </property>
+        <property name="dateFacture" type="java.util.Date">
+            <column name="dateFacture" precision="12" scale="0" not-null="true" />
+            <!--sql-type="calendar_date"-->
+        </property>
+        <set name="ligneFactureConsoles" table="LigneFactureConsole" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idFacture" not-null="true" />
+            </key>
+            <one-to-many class="LOREntities.LigneFactureConsole" />
+        </set>
+        <set name="ligneFactureJeus" table="LigneFactureJeu" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idFacture" not-null="true" />
+            </key>
+            <one-to-many class="LOREntities.LigneFactureJeu" />
+        </set>
+    </class>
+</hibernate-mapping>

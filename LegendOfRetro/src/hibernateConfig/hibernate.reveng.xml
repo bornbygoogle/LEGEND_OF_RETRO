@@ -54,4 +54,9 @@ Contributor(s):
   <table-filter match-name="Personne"/>
   <table-filter match-name="Pays"/>
   <table-filter match-name="Ville"/>
+  
+  <table-filter match-name="Facture"/>
+  <table-filter match-name="LigneFactureConsole"/>
+  <table-filter match-name="LigneFactureJeu"/>
+  
 </hibernate-reverse-engineering>
