@@ -48,17 +48,20 @@ Contributor(s):
     <property name="hibernate.connection.password">249915</property>
     <property name="hibernate.query.factory_class">org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory</property>
     <property name="hibernate.show_sql">false</property>
-    <mapping resource="LOREntities/VersionConsole.hbm.xml"/>
-    <mapping resource="LOREntities/Zone.hbm.xml"/>
-    <mapping resource="LOREntities/Ville.hbm.xml"/>
-    <mapping resource="LOREntities/Tag.hbm.xml"/>
-    <mapping resource="LOREntities/Pays.hbm.xml"/>
-    <mapping resource="LOREntities/Jeu.hbm.xml"/>
-    <mapping resource="LOREntities/Personne.hbm.xml"/>
-    <mapping resource="LOREntities/Editeur.hbm.xml"/>
     <mapping resource="LOREntities/Fabricant.hbm.xml"/>
-    <mapping resource="LOREntities/Decrire.hbm.xml"/>
-    <mapping resource="LOREntities/VersionJeu.hbm.xml"/>
+    <mapping resource="LOREntities/Editeur.hbm.xml"/>
+    <mapping resource="LOREntities/Ville.hbm.xml"/>
+    <mapping resource="LOREntities/Facture.hbm.xml"/>
     <mapping resource="LOREntities/Console.hbm.xml"/>
+    <mapping resource="LOREntities/LigneFactureConsole.hbm.xml"/>
+    <mapping resource="LOREntities/Zone.hbm.xml"/>
+    <mapping resource="LOREntities/LigneFactureJeu.hbm.xml"/>
+    <mapping resource="LOREntities/Jeu.hbm.xml"/>
+    <mapping resource="LOREntities/VersionJeu.hbm.xml"/>
+    <mapping resource="LOREntities/Decrire.hbm.xml"/>
+    <mapping resource="LOREntities/VersionConsole.hbm.xml"/>
+    <mapping resource="LOREntities/Pays.hbm.xml"/>
+    <mapping resource="LOREntities/Tag.hbm.xml"/>
+    <mapping resource="LOREntities/Personne.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

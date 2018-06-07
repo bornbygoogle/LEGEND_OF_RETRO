@@ -13,10 +13,13 @@ import bean.Form;
 import bean.ProduitForm;
 import controleur.Controleur;
 import controleur.DonneeInvalideException;
+import controleur.DonneesInsuffisantesException;
 import controleur.ResultatInvalideException;
 import java.awt.BorderLayout;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 /**
@@ -41,6 +44,41 @@ public class menuVente extends JPanel implements Chercheur
         initComponents();
         this.facture = new FactureForm();
         this.facture.setNature(false);
+        
+/*/ à des fins de tests, création d'une facture :)
+FactureForm ff = new FactureForm();
+ff.setNature(false); //vente
+ff.setReductions(12.5f);
+try {
+    FactureLigneForm flf1 = new FactureLigneForm();
+    Vector<ProduitForm> Vpf1;
+    Vpf1 = this.controleur.chercher(new CodeBarreForm("4343434343434"));
+    if (Vpf1.isEmpty())
+        System.out.println("Shit");
+    flf1.setProduit(Vpf1.elementAt(0));
+    flf1.setQuantite(3);
+    flf1.setPrixLigne(flf1.getQuantite() * flf1.getProduit().getPrix());
+    ff.getLignes().add(flf1);
+
+    FactureLigneForm flf2 = new FactureLigneForm();
+    Vector<ProduitForm> Vpf2;
+    Vpf2 = this.controleur.chercher(new CodeBarreForm("1234567890128"));
+    if (Vpf2.isEmpty())
+        System.out.println("Shit2");
+    flf2.setProduit(Vpf2.elementAt(0));
+    flf2.setQuantite(2);
+    flf2.setPrixLigne(flf2.getQuantite() * flf2.getProduit().getPrix());
+    ff.getLignes().add(flf2);
+
+    this.controleur.creer(ff);
+} catch (DonneeInvalideException ex) {
+    Logger.getLogger(menuVente.class.getName()).log(Level.SEVERE, null, ex);
+} catch (ResultatInvalideException ex) {
+    Logger.getLogger(menuVente.class.getName()).log(Level.SEVERE, null, ex);
+} catch (DonneesInsuffisantesException ex) {
+    Logger.getLogger(menuVente.class.getName()).log(Level.SEVERE, null, ex);
+}
+//fin des tests*/
     }
 
     /**

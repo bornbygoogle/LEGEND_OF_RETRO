@@ -29,6 +29,7 @@ import vue.GUI;
  */
 public class Controleur
 {
+    private static final float TVA = 1.05f;
     private GUI vue; //utilisé pour communiquer avec l'affichage
     private Session modele; //session hibernate
 
@@ -124,6 +125,9 @@ public class Controleur
         //réductions éventuelles
         facture.setReduction(form.getReductions());
         
+        //prixTTC
+        facture.setPrixTtc(calculTotalTTC(form));
+        
         //date
         facture.setDateFacture(Date.from(Instant.now()));
         
@@ -181,23 +185,37 @@ public class Controleur
     {
         LigneFactureConsole ligneConsole = new LigneFactureConsole();
         ligneConsole.setId(new LigneFactureConsoleId(
-                facture.getIdFacture(), ligne.getProduit().getIdVersionConsole()));
+                ligne.getProduit().getIdVersionConsole(), facture.getIdFacture()));
         ligneConsole.setQuantite(ligne.getQuantite());
         
-        //sauvegarde de la ligne dans la base de données
-        this.modele.beginTransaction();
-        this.modele.save(ligneConsole);
-        this.modele.getTransaction().commit();
-        this.modele.flush();
-        
-        //mise à jour de la facture dans la base de données
-        facture.getLigneFactureConsoles().add(ligneConsole);
-        this.modele.beginTransaction();
-        this.modele.save(facture);
-        this.modele.getTransaction().commit();
-        this.modele.flush();
+        try {
+            //mise à jour de la version de console dans la base de données
+            VersionConsole vc = chercherVersionConsole(ligneConsole.getId().getIdVersionConsole());
+            vc.getLigneFactureConsoles().add(ligneConsole);
+            int nouveauStock = vc.getStock() - ligneConsole.getQuantite();
+            if (nouveauStock < 0)
+                throw new DonneeInvalideException("Impossible de créer la ligne : le stock obtenu est négatif.");
+            vc.setStock(nouveauStock);
+            this.modele.beginTransaction();
+            this.modele.save(facture);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
+            //sauvegarde de la ligne dans la base de données
+            this.modele.beginTransaction();
+            this.modele.save(ligneConsole);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
 
-        rapport.addOperation(facture.getIdFacture(), Rapport.Table.LIGNEFACTURECONSOLE, Rapport.Operation.CREER);
+            //mise à jour de la facture dans la base de données
+            facture.getLigneFactureConsoles().add(ligneConsole);
+            this.modele.beginTransaction();
+            this.modele.save(facture);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
+
+            rapport.addOperation(facture.getIdFacture(), Rapport.Table.LIGNEFACTURECONSOLE, Rapport.Operation.CREER);
+        }
+        catch (DonneeInvalideException die) {System.out.println(die.getMessage());}
     }
     /**
      * Crée une ligne et l'ajoute à la facture. Ceci ne fonctionne que si le produit est un jeu.
@@ -214,20 +232,34 @@ public class Controleur
                 facture.getIdFacture(), ligne.getProduit().getIdVersionJeu()));
         ligneJeu.setQuantite(ligne.getQuantite());
         
-        //sauvegarde de la ligne dans la base de données
-        this.modele.beginTransaction();
-        this.modele.save(ligneJeu);
-        this.modele.getTransaction().commit();
-        this.modele.flush();
-        
-        //mise à jour de la facture dans la base de données
-        facture.getLigneFactureJeus().add(ligneJeu);
-        this.modele.beginTransaction();
-        this.modele.save(facture);
-        this.modele.getTransaction().commit();
-        this.modele.flush();
+        try {
+            //mise à jour de la version de jeu dans la base de données
+            VersionJeu vj = chercherVersionJeu(ligneJeu.getId().getIdVersionJeu());
+            vj.getLigneFactureJeus().add(ligneJeu);
+            int nouveauStock = vj.getStock() - ligneJeu.getQuantite();
+            if (nouveauStock < 0)
+                throw new DonneeInvalideException("Impossible de créer la ligne : le stock obtenu est négatif.");
+            vj.setStock(nouveauStock);
+            this.modele.beginTransaction();
+            this.modele.save(facture);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
+            //mise à jour de la facture dans la base de données
+            facture.getLigneFactureJeus().add(ligneJeu);
+            this.modele.beginTransaction();
+            this.modele.save(facture);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
 
-        rapport.addOperation(facture.getIdFacture(), Rapport.Table.LIGNEFACTUREJEU, Rapport.Operation.CREER);
+            //sauvegarde de la ligne dans la base de données
+            this.modele.beginTransaction();
+            this.modele.save(ligneJeu);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
+
+            rapport.addOperation(facture.getIdFacture(), Rapport.Table.LIGNEFACTUREJEU, Rapport.Operation.CREER);
+        }
+        catch (DonneeInvalideException die) {System.out.println(die.getMessage());}
     }
      /**
      * Crée un fabricant. Assure l'unicité de l'enregistrement dans l'intérieur de cette méthode sont appelées les méthodes-voir See Also.
@@ -1356,6 +1388,20 @@ public class Controleur
         for (int i = 0 ; i < missingCharacters ; i++)
             ret = ret.concat("0");
         return ret.concat(cb);
+    }
+    /**
+     * Calcule le total d'une facture (sous forme de formulaire) et applique la TVA
+     * @param form la facture dont il faut calculer le total
+     * @return le total TTC de la facture
+     */
+    public float calculTotalTTC(FactureForm form)
+    {
+        float retour = 0f; //calcul du total des lignes
+        for (FactureLigneForm flf : form.getLignes())
+            retour += flf.getPrixLigne();
+        retour -= form.getReductions(); //application de la réduction globale
+        retour*= Controleur.TVA; //application de la TVA
+        return retour;
     }
     /**
      * Transforme un vecteur de tags en un vecteur de strings pour l'affichage.
