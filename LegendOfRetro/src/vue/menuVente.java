@@ -142,7 +142,7 @@ public class menuVente extends JPanel implements Chercheur
     }
     
     public boolean ajoutLigneLegal(FactureLigneForm ligne) {
-        return ligne.getProduit().getStock() > ligne.getQuantite()
+        return ligne.getProduit().getStock() >= ligne.getQuantite()
                 && ligne.getQuantite() > 0;
     }
     protected void traiterEchecRecherche(String codeBarre) {

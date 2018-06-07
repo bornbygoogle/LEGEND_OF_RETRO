@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 23, 2018 12:38:35 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="LOREntities.LigneFactureJeu" table="LigneFactureJeu" catalog="p1514527" optimistic-lock="version">
+        <composite-id name="id" class="LOREntities.LigneFactureJeuId">
+            <key-property name="idFacture" type="int">
+                <column name="idFacture" />
+            </key-property>
+            <key-property name="idVersionJeu" type="int">
+                <column name="idVersionJeu" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="facture" class="LOREntities.Facture" update="false" insert="false" fetch="select">
+            <column name="idFacture" not-null="true" />
+        </many-to-one>
+        <many-to-one name="versionJeu" class="LOREntities.VersionJeu" update="false" insert="false" fetch="select">
+            <column name="idVersionJeu" not-null="true" />
+        </many-to-one>
+        <property name="quantite" type="int">
+            <column name="quantite" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

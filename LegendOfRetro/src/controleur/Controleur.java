@@ -5,9 +5,6 @@
  */
 package controleur;
 
-import EntiteProvisoire.Facture;
-import EntiteProvisoire.FactureLigneJeu;
-import EntiteProvisoire.FactureLigneConsole;
 import LOREntities.*;
 
 import bean.CodeBarreForm;
@@ -128,7 +125,7 @@ public class Controleur
         facture.setReduction(form.getReductions());
         
         //date
-        facture.setDate(Date.from(Instant.now()));
+        facture.setDateFacture(Date.from(Instant.now()));
         
         /*/Client ou fournisseur lié
         TODO: à implémenter
@@ -145,8 +142,9 @@ public class Controleur
         this.modele.flush();
         
         for(FactureLigneForm ligne : form.getLignes())
-            creerFactureLigne(rapport, ligne, facture);
+            creerLigneFacture(rapport, ligne, facture);
         
+        rapport.addOperation(facture.getIdFacture(), Rapport.Table.FACTURE, Rapport.Operation.CREER);
         return rapport;
     }
     /**
@@ -156,18 +154,18 @@ public class Controleur
      * @param facture objet POJO auquel est liée la ligne à créer.
      * @throws DonneesInsuffisantesException si la ligne ne réfère à aucun produit
     */
-    private void creerFactureLigne(Rapport rapport,
+    private void creerLigneFacture(Rapport rapport,
             FactureLigneForm ligne, Facture facture) throws DonneesInsuffisantesException
     {
         if (rapport == null || facture == null || ligne == null)
-            throw new DonneesInsuffisantesException("Erreur : creerFactureLigne requiert des arguments non nuls.");
+            throw new DonneesInsuffisantesException("Erreur : creerLigneFacture requiert des arguments non nuls.");
         else if (ligne.getProduit() == null)
             throw new DonneesInsuffisantesException("Erreur : la facture est vide.");
         
         if ("Jeu".equals(ligne.getProduit().getType()))
-            creerFactureLigneJeu(rapport, ligne, facture);
+            creerLigneFactureJeu(rapport, ligne, facture);
         else if ("Console".equals(ligne.getProduit().getType()))
-            creerFactureLigneConsole(rapport, ligne, facture);
+            creerLigneFactureConsole(rapport, ligne, facture);
         else
             throw new IllegalArgumentException("Erreur : une ligne correspond à un type de produit inconnu.");
     }
@@ -178,12 +176,12 @@ public class Controleur
      * @param facture objet POJO auquel est liée la ligne à créer.
      * @throws DonneesInsuffisantesException si la ligne ne réfère à aucun produit
     */
-    private void creerFactureLigneConsole(Rapport rapport,
+    private void creerLigneFactureConsole(Rapport rapport,
             FactureLigneForm ligne, Facture facture) throws DonneesInsuffisantesException
     {
-        FactureLigneConsole ligneConsole = new FactureLigneConsole();
-        ligneConsole.setProduit((VersionConsole) this.modele.load(
-                "VersionConsole", ligne.getProduit().getIdVersionConsole()));
+        LigneFactureConsole ligneConsole = new LigneFactureConsole();
+        ligneConsole.setId(new LigneFactureConsoleId(
+                facture.getIdFacture(), ligne.getProduit().getIdVersionConsole()));
         ligneConsole.setQuantite(ligne.getQuantite());
         
         //sauvegarde de la ligne dans la base de données
@@ -193,11 +191,13 @@ public class Controleur
         this.modele.flush();
         
         //mise à jour de la facture dans la base de données
-        facture.getFactureLigneConsoles().add(ligneConsole);
+        facture.getLigneFactureConsoles().add(ligneConsole);
         this.modele.beginTransaction();
         this.modele.save(facture);
         this.modele.getTransaction().commit();
         this.modele.flush();
+
+        rapport.addOperation(facture.getIdFacture(), Rapport.Table.LIGNEFACTURECONSOLE, Rapport.Operation.CREER);
     }
     /**
      * Crée une ligne et l'ajoute à la facture. Ceci ne fonctionne que si le produit est un jeu.
@@ -206,12 +206,12 @@ public class Controleur
      * @param facture objet POJO auquel est liée la ligne à créer.
      * @throws DonneesInsuffisantesException si la ligne ne réfère à aucun produit
     */
-    private void creerFactureLigneJeu(Rapport rapport,
+    private void creerLigneFactureJeu(Rapport rapport,
             FactureLigneForm ligne, Facture facture) throws DonneesInsuffisantesException
     {
-        FactureLigneJeu ligneJeu = new FactureLigneJeu();
-        ligneJeu.setProduit((VersionJeu) this.modele.load(
-                "VersionJeu", ligne.getProduit().getIdVersionJeu()));
+        LigneFactureJeu ligneJeu = new LigneFactureJeu();
+        ligneJeu.setId(new LigneFactureJeuId(
+                facture.getIdFacture(), ligne.getProduit().getIdVersionJeu()));
         ligneJeu.setQuantite(ligne.getQuantite());
         
         //sauvegarde de la ligne dans la base de données
@@ -221,11 +221,13 @@ public class Controleur
         this.modele.flush();
         
         //mise à jour de la facture dans la base de données
-        facture.getFactureLigneJeus().add(ligneJeu);
+        facture.getLigneFactureJeus().add(ligneJeu);
         this.modele.beginTransaction();
         this.modele.save(facture);
         this.modele.getTransaction().commit();
         this.modele.flush();
+
+        rapport.addOperation(facture.getIdFacture(), Rapport.Table.LIGNEFACTUREJEU, Rapport.Operation.CREER);
     }
      /**
      * Crée un fabricant. Assure l'unicité de l'enregistrement dans l'intérieur de cette méthode sont appelées les méthodes-voir See Also.
