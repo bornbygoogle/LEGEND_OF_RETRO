@@ -5,9 +5,6 @@
  */
 package controleur;
 
-import EntiteProvisoire.Facture;
-import EntiteProvisoire.FactureLigneJeu;
-import EntiteProvisoire.FactureLigneConsole;
 import LOREntities.*;
 
 import bean.CodeBarreForm;
@@ -26,12 +23,14 @@ import java.util.Vector;
 import org.hibernate.*;
 import vue.GUI;
 
+
 /**
  * @author Adrien Marchand
  * La classe controleur contien:  1.Controleur() throws InitException-un contructeur qui initialise la Vue et le Modele et 2.Des methode qui vont faire l'aiguillage entre Vue-Modele 26:05:2018
  */
 public class Controleur
 {
+    private static final float TVA = 1.05f;
     private GUI vue; //utilisé pour communiquer avec l'affichage
     private Session modele; //session hibernate
 
@@ -127,8 +126,11 @@ public class Controleur
         //réductions éventuelles
         facture.setReduction(form.getReductions());
         
+        //prixTTC
+        facture.setPrixTtc(calculTotalTTC(form));
+        
         //date
-        facture.setDate(Date.from(Instant.now()));
+        facture.setDateFacture(Date.from(Instant.now()));
         
         /*/Client ou fournisseur lié
         TODO: à implémenter
@@ -145,8 +147,9 @@ public class Controleur
         this.modele.flush();
         
         for(FactureLigneForm ligne : form.getLignes())
-            creerFactureLigne(rapport, ligne, facture);
+            creerLigneFacture(rapport, ligne, facture);
         
+        rapport.addOperation(facture.getIdFacture(), Rapport.Table.FACTURE, Rapport.Operation.CREER);
         return rapport;
     }
     /**
@@ -156,18 +159,18 @@ public class Controleur
      * @param facture objet POJO auquel est liée la ligne à créer.
      * @throws DonneesInsuffisantesException si la ligne ne réfère à aucun produit
     */
-    private void creerFactureLigne(Rapport rapport,
+    private void creerLigneFacture(Rapport rapport,
             FactureLigneForm ligne, Facture facture) throws DonneesInsuffisantesException
     {
         if (rapport == null || facture == null || ligne == null)
-            throw new DonneesInsuffisantesException("Erreur : creerFactureLigne requiert des arguments non nuls.");
+            throw new DonneesInsuffisantesException("Erreur : creerLigneFacture requiert des arguments non nuls.");
         else if (ligne.getProduit() == null)
             throw new DonneesInsuffisantesException("Erreur : la facture est vide.");
         
         if ("Jeu".equals(ligne.getProduit().getType()))
-            creerFactureLigneJeu(rapport, ligne, facture);
+            creerLigneFactureJeu(rapport, ligne, facture);
         else if ("Console".equals(ligne.getProduit().getType()))
-            creerFactureLigneConsole(rapport, ligne, facture);
+            creerLigneFactureConsole(rapport, ligne, facture);
         else
             throw new IllegalArgumentException("Erreur : une ligne correspond à un type de produit inconnu.");
     }
@@ -178,26 +181,42 @@ public class Controleur
      * @param facture objet POJO auquel est liée la ligne à créer.
      * @throws DonneesInsuffisantesException si la ligne ne réfère à aucun produit
     */
-    private void creerFactureLigneConsole(Rapport rapport,
+    private void creerLigneFactureConsole(Rapport rapport,
             FactureLigneForm ligne, Facture facture) throws DonneesInsuffisantesException
     {
-        FactureLigneConsole ligneConsole = new FactureLigneConsole();
-        ligneConsole.setProduit((VersionConsole) this.modele.load(
-                "VersionConsole", ligne.getProduit().getIdVersionConsole()));
+        LigneFactureConsole ligneConsole = new LigneFactureConsole();
+        ligneConsole.setId(new LigneFactureConsoleId(
+                ligne.getProduit().getIdVersionConsole(), facture.getIdFacture()));
         ligneConsole.setQuantite(ligne.getQuantite());
         
-        //sauvegarde de la ligne dans la base de données
-        this.modele.beginTransaction();
-        this.modele.save(ligneConsole);
-        this.modele.getTransaction().commit();
-        this.modele.flush();
-        
-        //mise à jour de la facture dans la base de données
-        facture.getFactureLigneConsoles().add(ligneConsole);
-        this.modele.beginTransaction();
-        this.modele.save(facture);
-        this.modele.getTransaction().commit();
-        this.modele.flush();
+        try {
+            //mise à jour de la version de console dans la base de données
+            VersionConsole vc = chercherVersionConsole(ligneConsole.getId().getIdVersionConsole());
+            vc.getLigneFactureConsoles().add(ligneConsole);
+            int nouveauStock = vc.getStock() - ligneConsole.getQuantite();
+            if (nouveauStock < 0)
+                throw new DonneeInvalideException("Impossible de créer la ligne : le stock obtenu est négatif.");
+            vc.setStock(nouveauStock);
+            this.modele.beginTransaction();
+            this.modele.save(facture);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
+            //sauvegarde de la ligne dans la base de données
+            this.modele.beginTransaction();
+            this.modele.save(ligneConsole);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
+
+            //mise à jour de la facture dans la base de données
+            facture.getLigneFactureConsoles().add(ligneConsole);
+            this.modele.beginTransaction();
+            this.modele.save(facture);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
+
+            rapport.addOperation(facture.getIdFacture(), Rapport.Table.LIGNEFACTURECONSOLE, Rapport.Operation.CREER);
+        }
+        catch (DonneeInvalideException die) {System.out.println(die.getMessage());}
     }
     /**
      * Crée une ligne et l'ajoute à la facture. Ceci ne fonctionne que si le produit est un jeu.
@@ -206,26 +225,42 @@ public class Controleur
      * @param facture objet POJO auquel est liée la ligne à créer.
      * @throws DonneesInsuffisantesException si la ligne ne réfère à aucun produit
     */
-    private void creerFactureLigneJeu(Rapport rapport,
+    private void creerLigneFactureJeu(Rapport rapport,
             FactureLigneForm ligne, Facture facture) throws DonneesInsuffisantesException
     {
-        FactureLigneJeu ligneJeu = new FactureLigneJeu();
-        ligneJeu.setProduit((VersionJeu) this.modele.load(
-                "VersionJeu", ligne.getProduit().getIdVersionJeu()));
+        LigneFactureJeu ligneJeu = new LigneFactureJeu();
+        ligneJeu.setId(new LigneFactureJeuId(
+                facture.getIdFacture(), ligne.getProduit().getIdVersionJeu()));
         ligneJeu.setQuantite(ligne.getQuantite());
         
-        //sauvegarde de la ligne dans la base de données
-        this.modele.beginTransaction();
-        this.modele.save(ligneJeu);
-        this.modele.getTransaction().commit();
-        this.modele.flush();
-        
-        //mise à jour de la facture dans la base de données
-        facture.getFactureLigneJeus().add(ligneJeu);
-        this.modele.beginTransaction();
-        this.modele.save(facture);
-        this.modele.getTransaction().commit();
-        this.modele.flush();
+        try {
+            //mise à jour de la version de jeu dans la base de données
+            VersionJeu vj = chercherVersionJeu(ligneJeu.getId().getIdVersionJeu());
+            vj.getLigneFactureJeus().add(ligneJeu);
+            int nouveauStock = vj.getStock() - ligneJeu.getQuantite();
+            if (nouveauStock < 0)
+                throw new DonneeInvalideException("Impossible de créer la ligne : le stock obtenu est négatif.");
+            vj.setStock(nouveauStock);
+            this.modele.beginTransaction();
+            this.modele.save(facture);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
+            //mise à jour de la facture dans la base de données
+            facture.getLigneFactureJeus().add(ligneJeu);
+            this.modele.beginTransaction();
+            this.modele.save(facture);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
+
+            //sauvegarde de la ligne dans la base de données
+            this.modele.beginTransaction();
+            this.modele.save(ligneJeu);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
+
+            rapport.addOperation(facture.getIdFacture(), Rapport.Table.LIGNEFACTUREJEU, Rapport.Operation.CREER);
+        }
+        catch (DonneeInvalideException die) {System.out.println(die.getMessage());}
     }
      /**
      * Crée un fabricant. Assure l'unicité de l'enregistrement dans l'intérieur de cette méthode sont appelées les méthodes-voir See Also.
@@ -652,15 +687,15 @@ public class Controleur
      * @throws ResultatInvalideException si le resultat affiché n'est pas conforme
      * @throws DonneeInvalideException si l'utilisateur va entrer des variables non conformes comme type
      * @param  form met en parametre une variable objet de type Form ce objet contien des attributs qui vont etre decharger dans un vecteur de type generique
-     * le but est de chercher une version de console ou une verion de jeu dans la base de données
+ le but est de chercherProduit une version de console ou une verion de jeu dans la base de données
      * @return Vecteur( un vecteur de type  générique)retourne un vecteur des objets de type ProduitForm le but est
     */
     public Vector<ProduitForm> chercher(Form form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
     {
         if (form instanceof ProduitForm)
-            return chercher((ProduitForm) form);
-        else if (form instanceof CodeBarreForm)
-            return chercher((CodeBarreForm) form);
+                return chercherProduit((ProduitForm) form);
+            else if (form instanceof CodeBarreForm)
+                return chercher((CodeBarreForm) form);
         else
             throw new UnsupportedOperationException("On ne sait pas rechercher les Form de type " + form.getClass());
     }
@@ -687,7 +722,7 @@ public class Controleur
 
         return ret;
     }
-    public Vector<ProduitForm> chercher(ProduitForm form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
+    public Vector<ProduitForm> chercherProduit(ProduitForm form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
     {
         Vector<ProduitForm> ret = new Vector<ProduitForm>();
 
@@ -762,7 +797,7 @@ public class Controleur
         else if ("Jeu".equals(type))
         {
             if (!"".equals(cb) || !"".equals(nom) || !"".equals(editeur) || !tags.isEmpty())
-                for (VersionJeu enr : chercherVersionsJeu(cb, edition, zone, plateforme, nom, editeur, tags))
+                for (VersionJeu enr : chercherVersionsJeuPromo(edition, zone, plateforme,editeur, tags))
                     ret.add(new PromoForm(-1, enr.getIdVersionJeu(), "Jeu",
                             enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
                             enr.getJeu().getEditeur().getNomEditeur(), enr.getJeu().getDescriptionJeu(),
@@ -984,6 +1019,87 @@ public class Controleur
         //autres conditions
         if (!"".equals(cb)) //code barre
             q.addCondition("vj.codeBarre", cb, HQLRecherche.Operateur.EGAL);
+        if (!"".equals(edition)) //edition
+            q.addCondition("vj.edition", edition, HQLRecherche.Operateur.LIKE);
+
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
+        this.modele.flush();
+        ret.addAll(resultats);
+
+        return ret;
+    }
+    private Vector<VersionJeu> chercherVersionsJeuPromo(String edition, String zone,
+            String plateforme, String editeur, Vector<String> tags)
+            throws DonneesInsuffisantesException
+    {
+        Vector<VersionJeu> ret = new Vector<VersionJeu>();
+
+        HQLRecherche q = new HQLRecherche("LOREntities.VersionJeu vj");
+        //rédaction de la requête imbriquée pour console
+        if (!"".equals(plateforme)) //si la console est renseignée
+        {
+            HQLRecherche imbrCons = new HQLRecherche("LOREntities.Console c");
+            imbrCons.setImbriquee(true);
+            imbrCons.setSelect("c.idConsole");
+            imbrCons.addCondition("c.nomConsole", plateforme, HQLRecherche.Operateur.EGAL);
+
+            q.addCondition("vj.console.idConsole", imbrCons.toString(), HQLRecherche.Operateur.IN);
+        }
+
+        // rédaction de la requete imbriquée Jeu
+        if (!"".equals(editeur) || !tags.isEmpty()) //si le nom du jeu est renseignée
+        {
+            HQLRecherche imbrJeu = new HQLRecherche("LOREntities.Jeu j");
+            imbrJeu.setImbriquee(true);
+
+            /*if (!"".equals(nom)) //condition sur le nom
+                imbrJeu.addCondition("j.nomJeu", nom, HQLRecherche.Operateur.LIKE);*/
+            if (!"".equals(editeur)) //condition sur le développeur
+            {
+                HQLRecherche imbrEditeur = new HQLRecherche("LOREntities.Editeur e");
+                imbrEditeur.setImbriquee(true);
+                imbrEditeur.setSelect("e.idEditeur");
+                imbrEditeur.addCondition("e.nomEditeur", editeur, HQLRecherche.Operateur.LIKE);
+
+                imbrJeu.addCondition("j.editeur.idEditeur", imbrEditeur.toString(), HQLRecherche.Operateur.IN);
+            }
+            if (!tags.isEmpty())
+            {
+                for (String tag : tags)
+                {
+                    //on sélectionne le tag
+                    HQLRecherche imbrTag = new HQLRecherche("LOREntities.Tag t");
+                    imbrTag.setImbriquee(true);
+                    imbrTag.setSelect("t.idTag");
+                    imbrTag.addCondition("t.labelTag", tag, HQLRecherche.Operateur.EGAL);
+
+                    //on liste les jeux des relations "décrire" correspondant à ce tag (identifiants seulement)
+                    HQLRecherche imbrDecr = new HQLRecherche("LOREntities.Decrire d");
+                    imbrDecr.setImbriquee(true);
+                    imbrDecr.setSelect("d.jeu.idJeu");
+                    imbrDecr.addCondition("d.tag.idTag", imbrTag.toString(), HQLRecherche.Operateur.IN);
+
+                    //la requête qui recherche le jeu sélectionne parmi les jeux qui ont tous ces tags
+                    imbrJeu.addCondition("j.idJeu", imbrDecr.toString(), HQLRecherche.Operateur.IN);
+                }
+            }
+
+            q.addCondition("vj.jeu", imbrJeu.toString(), HQLRecherche.Operateur.IN);
+        }
+
+        //rédaction des requêtes imbriquées pour zone
+        if (!"".equals(zone)) //si la zone est renseignée
+        {
+            HQLRecherche imbrZone = new HQLRecherche("LOREntities.Zone z");
+            imbrZone.setImbriquee(true);
+            imbrZone.setSelect("z.idZone");
+            imbrZone.addCondition("z.nomZone", zone, HQLRecherche.Operateur.LIKE);
+            q.addCondition("vj.zone", imbrZone.toString(), HQLRecherche.Operateur.IN);
+        }
+        //autres conditions
+        /*if (!"".equals(cb)) //code barre
+            q.addCondition("vj.codeBarre", cb, HQLRecherche.Operateur.EGAL);*/
         if (!"".equals(edition)) //edition
             q.addCondition("vj.edition", edition, HQLRecherche.Operateur.LIKE);
 
@@ -1354,6 +1470,20 @@ public class Controleur
         for (int i = 0 ; i < missingCharacters ; i++)
             ret = ret.concat("0");
         return ret.concat(cb);
+    }
+    /**
+     * Calcule le total d'une facture (sous forme de formulaire) et applique la TVA
+     * @param form la facture dont il faut calculer le total
+     * @return le total TTC de la facture
+     */
+    public float calculTotalTTC(FactureForm form)
+    {
+        float retour = 0f; //calcul du total des lignes
+        for (FactureLigneForm flf : form.getLignes())
+            retour += flf.getPrixLigne();
+        retour -= form.getReductions(); //application de la réduction globale
+        retour*= Controleur.TVA; //application de la TVA
+        return retour;
     }
     /**
      * Transforme un vecteur de tags en un vecteur de strings pour l'affichage.

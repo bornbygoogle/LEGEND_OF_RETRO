@@ -72,7 +72,7 @@ System.out.println("test liste villes de France " + this.controleur.listeVilles(
 //        try {
 //            // Affectuer la recherche avec fonction RECHERCHE dans CONTROLEUR
 //            Vector<PersonneForm> resultatsRecherche = null;
-//     !       resultatsRecherche = this.controleur.chercher(form); //! TODO: attention, dans le contrôleur, à ce que renvoie chercherform() !
+//     !       resultatsRecherche = this.controleur.chercherProduit(form); //! TODO: attention, dans le contrôleur, à ce que renvoie chercherform() !
 //            // Afficher les résultats avec fonction AFFICHERES dans RESULTAT
 //            if (resultatsRecherche != null)
 //                this.Resultats.afficherRes(resultatsRecherche); }
