@@ -1,2 +1,4 @@
 Drive: https://drive.google.com/drive/folders/1sO1shotCREFbiduHtExW82ZGlsC2tpgT
-Base de données : https://iutdoua-web.univ-lyon1.fr/phpMyAdmin (pour id et mdp, me demander)
+Base de donnÃ©es : https://iutdoua-web.univ-lyon1.fr/phpMyAdmin (pour id et mdp, me demander)
+
+Site pour promo : http://inner-precept-195422.appspot.com/
