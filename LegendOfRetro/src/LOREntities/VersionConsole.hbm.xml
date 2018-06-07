@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 7 juin 2018 17:49:03 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="LOREntities.VersionConsole" table="VersionConsole" catalog="p1514527" optimistic-lock="version">
+        <id name="idVersionConsole" type="java.lang.Integer">
+            <column name="idVersionConsole" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="console" class="LOREntities.Console" fetch="select">
+            <column name="idConsole" not-null="true" />
+        </many-to-one>
+        <many-to-one name="zone" class="LOREntities.Zone" fetch="select">
+            <column name="idZone" not-null="true" />
+        </many-to-one>
+        <property name="codeBarre" type="string">
+            <column name="codeBarre" length="13" not-null="true" />
+        </property>
+        <property name="edition" type="string">
+            <column name="edition" length="100" not-null="true" />
+        </property>
+        <property name="prix" type="float">
+            <column name="prix" precision="12" scale="0" not-null="true" />
+        </property>
+        <property name="stock" type="int">
+            <column name="stock" not-null="true" />
+        </property>
+        <set name="ligneFactureConsoles" table="LigneFactureConsole" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idVersionConsole" not-null="true" />
+            </key>
+            <one-to-many class="LOREntities.LigneFactureConsole" />
+        </set>
+    </class>
+</hibernate-mapping>

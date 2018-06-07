@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 7 juin 2018 17:49:03 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="LOREntities.Console" table="Console" catalog="p1514527" optimistic-lock="version">
+        <id name="idConsole" type="java.lang.Integer">
+            <column name="idConsole" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="fabricant" class="LOREntities.Fabricant" fetch="select">
+            <column name="idFabricant" not-null="true" />
+        </many-to-one>
+        <property name="nomConsole" type="string">
+            <column name="nomConsole" length="100" not-null="true" />
+        </property>
+        <set name="versionConsoles" table="VersionConsole" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idConsole" not-null="true" />
+            </key>
+            <one-to-many class="LOREntities.VersionConsole" />
+        </set>
+        <set name="versionJeus" table="VersionJeu" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idConsole" not-null="true" />
+            </key>
+            <one-to-many class="LOREntities.VersionJeu" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 7 juin 2018 17:49:03 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="LOREntities.Jeu" table="Jeu" catalog="p1514527" optimistic-lock="version">
+        <id name="idJeu" type="java.lang.Integer">
+            <column name="idJeu" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="editeur" class="LOREntities.Editeur" fetch="select">
+            <column name="idEditeur" not-null="true" />
+        </many-to-one>
+        <property name="nomJeu" type="string">
+            <column name="nomJeu" length="100" not-null="true" />
+        </property>
+        <property name="descriptionJeu" type="string">
+            <column name="descriptionJeu" length="65535" not-null="true" />
+        </property>
+        <set name="decrires" table="Decrire" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idJeu" not-null="true" />
+            </key>
+            <one-to-many class="LOREntities.Decrire" />
+        </set>
+        <set name="versionJeus" table="VersionJeu" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idJeu" not-null="true" />
+            </key>
+            <one-to-many class="LOREntities.VersionJeu" />
+        </set>
+    </class>
+</hibernate-mapping>
