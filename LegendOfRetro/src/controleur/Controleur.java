@@ -23,6 +23,7 @@ import java.util.Vector;
 import org.hibernate.*;
 import vue.GUI;
 
+
 /**
  * @author Adrien Marchand
  * La classe controleur contien:  1.Controleur() throws InitException-un contructeur qui initialise la Vue et le Modele et 2.Des methode qui vont faire l'aiguillage entre Vue-Modele 26:05:2018
@@ -686,15 +687,15 @@ public class Controleur
      * @throws ResultatInvalideException si le resultat affiché n'est pas conforme
      * @throws DonneeInvalideException si l'utilisateur va entrer des variables non conformes comme type
      * @param  form met en parametre une variable objet de type Form ce objet contien des attributs qui vont etre decharger dans un vecteur de type generique
-     * le but est de chercher une version de console ou une verion de jeu dans la base de données
+ le but est de chercherProduit une version de console ou une verion de jeu dans la base de données
      * @return Vecteur( un vecteur de type  générique)retourne un vecteur des objets de type ProduitForm le but est
     */
     public Vector<ProduitForm> chercher(Form form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
     {
         if (form instanceof ProduitForm)
-            return chercher((ProduitForm) form);
-        else if (form instanceof CodeBarreForm)
-            return chercher((CodeBarreForm) form);
+                return chercherProduit((ProduitForm) form);
+            else if (form instanceof CodeBarreForm)
+                return chercher((CodeBarreForm) form);
         else
             throw new UnsupportedOperationException("On ne sait pas rechercher les Form de type " + form.getClass());
     }
@@ -721,7 +722,7 @@ public class Controleur
 
         return ret;
     }
-    public Vector<ProduitForm> chercher(ProduitForm form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
+    public Vector<ProduitForm> chercherProduit(ProduitForm form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
     {
         Vector<ProduitForm> ret = new Vector<ProduitForm>();
 
@@ -796,7 +797,7 @@ public class Controleur
         else if ("Jeu".equals(type))
         {
             if (!"".equals(cb) || !"".equals(nom) || !"".equals(editeur) || !tags.isEmpty())
-                for (VersionJeu enr : chercherVersionsJeu(cb, edition, zone, plateforme, nom, editeur, tags))
+                for (VersionJeu enr : chercherVersionsJeuPromo(edition, zone, plateforme,editeur, tags))
                     ret.add(new PromoForm(-1, enr.getIdVersionJeu(), "Jeu",
                             enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
                             enr.getJeu().getEditeur().getNomEditeur(), enr.getJeu().getDescriptionJeu(),
@@ -1018,6 +1019,87 @@ public class Controleur
         //autres conditions
         if (!"".equals(cb)) //code barre
             q.addCondition("vj.codeBarre", cb, HQLRecherche.Operateur.EGAL);
+        if (!"".equals(edition)) //edition
+            q.addCondition("vj.edition", edition, HQLRecherche.Operateur.LIKE);
+
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
+        this.modele.flush();
+        ret.addAll(resultats);
+
+        return ret;
+    }
+    private Vector<VersionJeu> chercherVersionsJeuPromo(String edition, String zone,
+            String plateforme, String editeur, Vector<String> tags)
+            throws DonneesInsuffisantesException
+    {
+        Vector<VersionJeu> ret = new Vector<VersionJeu>();
+
+        HQLRecherche q = new HQLRecherche("LOREntities.VersionJeu vj");
+        //rédaction de la requête imbriquée pour console
+        if (!"".equals(plateforme)) //si la console est renseignée
+        {
+            HQLRecherche imbrCons = new HQLRecherche("LOREntities.Console c");
+            imbrCons.setImbriquee(true);
+            imbrCons.setSelect("c.idConsole");
+            imbrCons.addCondition("c.nomConsole", plateforme, HQLRecherche.Operateur.EGAL);
+
+            q.addCondition("vj.console.idConsole", imbrCons.toString(), HQLRecherche.Operateur.IN);
+        }
+
+        // rédaction de la requete imbriquée Jeu
+        if (!"".equals(editeur) || !tags.isEmpty()) //si le nom du jeu est renseignée
+        {
+            HQLRecherche imbrJeu = new HQLRecherche("LOREntities.Jeu j");
+            imbrJeu.setImbriquee(true);
+
+            /*if (!"".equals(nom)) //condition sur le nom
+                imbrJeu.addCondition("j.nomJeu", nom, HQLRecherche.Operateur.LIKE);*/
+            if (!"".equals(editeur)) //condition sur le développeur
+            {
+                HQLRecherche imbrEditeur = new HQLRecherche("LOREntities.Editeur e");
+                imbrEditeur.setImbriquee(true);
+                imbrEditeur.setSelect("e.idEditeur");
+                imbrEditeur.addCondition("e.nomEditeur", editeur, HQLRecherche.Operateur.LIKE);
+
+                imbrJeu.addCondition("j.editeur.idEditeur", imbrEditeur.toString(), HQLRecherche.Operateur.IN);
+            }
+            if (!tags.isEmpty())
+            {
+                for (String tag : tags)
+                {
+                    //on sélectionne le tag
+                    HQLRecherche imbrTag = new HQLRecherche("LOREntities.Tag t");
+                    imbrTag.setImbriquee(true);
+                    imbrTag.setSelect("t.idTag");
+                    imbrTag.addCondition("t.labelTag", tag, HQLRecherche.Operateur.EGAL);
+
+                    //on liste les jeux des relations "décrire" correspondant à ce tag (identifiants seulement)
+                    HQLRecherche imbrDecr = new HQLRecherche("LOREntities.Decrire d");
+                    imbrDecr.setImbriquee(true);
+                    imbrDecr.setSelect("d.jeu.idJeu");
+                    imbrDecr.addCondition("d.tag.idTag", imbrTag.toString(), HQLRecherche.Operateur.IN);
+
+                    //la requête qui recherche le jeu sélectionne parmi les jeux qui ont tous ces tags
+                    imbrJeu.addCondition("j.idJeu", imbrDecr.toString(), HQLRecherche.Operateur.IN);
+                }
+            }
+
+            q.addCondition("vj.jeu", imbrJeu.toString(), HQLRecherche.Operateur.IN);
+        }
+
+        //rédaction des requêtes imbriquées pour zone
+        if (!"".equals(zone)) //si la zone est renseignée
+        {
+            HQLRecherche imbrZone = new HQLRecherche("LOREntities.Zone z");
+            imbrZone.setImbriquee(true);
+            imbrZone.setSelect("z.idZone");
+            imbrZone.addCondition("z.nomZone", zone, HQLRecherche.Operateur.LIKE);
+            q.addCondition("vj.zone", imbrZone.toString(), HQLRecherche.Operateur.IN);
+        }
+        //autres conditions
+        /*if (!"".equals(cb)) //code barre
+            q.addCondition("vj.codeBarre", cb, HQLRecherche.Operateur.EGAL);*/
         if (!"".equals(edition)) //edition
             q.addCondition("vj.edition", edition, HQLRecherche.Operateur.LIKE);
 

@@ -11,7 +11,7 @@ import java.util.Vector;
  *
  * @author Adrien Marchand
  */
-public class PromoForm extends CodeBarreForm
+public class PromoForm extends Form
 {
     private int idVersionConsole;
     private int idVersionJeu;
@@ -48,7 +48,8 @@ public class PromoForm extends CodeBarreForm
             String editeur, String description, String tags, String plateforme,
             float prix, int stock)
     {
-        super(cb);
+        super();
+        this.cb = cb;
         this.idVersionConsole = idVersionConsole;
         this.idVersionJeu = idVersionJeu;
         this.type = type;
@@ -66,6 +67,7 @@ public class PromoForm extends CodeBarreForm
     public int getIdVersionConsole()      {return this.idVersionConsole;}
     public int getIdVersionJeu()      {return this.idVersionJeu;}
     public String getType()      {return this.type;}
+    public String getCodeBarre() { return this.cb;}
     public String getNom()      {return this.nom;}
     public String getEdition()      {return this.edition;}
     public String getZone()      {return this.zone;}

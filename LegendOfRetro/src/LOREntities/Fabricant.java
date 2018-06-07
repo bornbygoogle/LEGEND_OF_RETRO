@@ -1,5 +1,5 @@
 package LOREntities;
-// Generated May 23, 2018 12:38:35 AM by Hibernate Tools 4.3.1
+// Generated Jun 7, 2018 5:40:08 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -11,7 +11,7 @@ import java.util.Set;
 public class Fabricant  implements java.io.Serializable {
 
 
-     private int idFabricant;
+     private Integer idFabricant;
      private String nomFabricant;
      private Set consoles = new HashSet(0);
 
@@ -19,21 +19,19 @@ public class Fabricant  implements java.io.Serializable {
     }
 
 	
-    public Fabricant(int idFabricant, String nomFabricant) {
-        this.idFabricant = idFabricant;
+    public Fabricant(String nomFabricant) {
         this.nomFabricant = nomFabricant;
     }
-    public Fabricant(int idFabricant, String nomFabricant, Set consoles) {
-       this.idFabricant = idFabricant;
+    public Fabricant(String nomFabricant, Set consoles) {
        this.nomFabricant = nomFabricant;
        this.consoles = consoles;
     }
    
-    public int getIdFabricant() {
+    public Integer getIdFabricant() {
         return this.idFabricant;
     }
     
-    public void setIdFabricant(int idFabricant) {
+    public void setIdFabricant(Integer idFabricant) {
         this.idFabricant = idFabricant;
     }
     public String getNomFabricant() {
