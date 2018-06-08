@@ -5,6 +5,7 @@
  */
 package vue;
 
+import bean.FactureLigneForm;
 import bean.Form;
 import bean.ProduitForm;
 import bean.PromoForm;
@@ -39,6 +40,10 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
         "Edition",
         "Zone",
         "Fabricant"};
+    protected static String [] typeFactureLigneForm = {
+        "Nom",
+        "Quantité choisie",
+        "Prix" };
     
 
     /**
@@ -200,6 +205,23 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
                     rowIndex++;
                 }
             }
+            else if (test instanceof FactureLigneForm){
+               
+                nomsChamps = typeFactureLigneForm;
+                rowIndex = 0;
+                //on remplit le tableau ligne à ligne
+                for (Form f : this.res)
+                {
+                    FactureLigneForm pf = ( FactureLigneForm) f;
+                    Object[] donneesLigne = {
+                        pf.getProduit().getNom(),
+                        pf.getQuantite(),
+                        pf.getPrixLigne()
+                    };
+                    donnees[rowIndex] = donneesLigne;
+                    rowIndex++;
+                }  
+            }    
             else
                 throw new UnsupportedOperationException("Erreur lors de l'affichage du résultat : le type du formulaire est inconnu");
             // Affectation les resultats au Jtable
