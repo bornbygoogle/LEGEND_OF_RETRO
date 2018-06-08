@@ -24,7 +24,7 @@ public class menuPersonne extends JPanel implements Chercheur
 {
     private Controleur controleur;
 
-    //private critPersonne Criteres;
+    private critPersonne Criteres;
 
     private Resultat<PersonneForm> Resultats;
 
@@ -50,11 +50,11 @@ System.out.println("test liste villes de France " + this.controleur.listeVilles(
     {
         this.setSize(500, 560);
 
-        //this.Criteres = new critPersonne(this.controleur, this);
+        this.Criteres = new critPersonne(this.controleur, this);
         this.Resultats = new Resultat<PersonneForm>(this);
         
         this.setLayout(new BorderLayout());
-        //this.add(this.Criteres, BorderLayout.CENTER);
+        this.add(this.Criteres, BorderLayout.CENTER);
         this.add(this.Resultats, BorderLayout.SOUTH);
     }
     
@@ -72,7 +72,7 @@ System.out.println("test liste villes de France " + this.controleur.listeVilles(
 //        try {
 //            // Affectuer la recherche avec fonction RECHERCHE dans CONTROLEUR
 //            Vector<PersonneForm> resultatsRecherche = null;
-//     !       resultatsRecherche = this.controleur.chercherProduit(form); //! TODO: attention, dans le contrôleur, à ce que renvoie chercherform() !
+//     !       resultatsRecherche = this.controleur.chercher(form); //! TODO: attention, dans le contrôleur, à ce que renvoie chercherform() !
 //            // Afficher les résultats avec fonction AFFICHERES dans RESULTAT
 //            if (resultatsRecherche != null)
 //                this.Resultats.afficherRes(resultatsRecherche); }
