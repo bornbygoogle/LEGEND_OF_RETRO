@@ -14,6 +14,9 @@
         <property name="nomJeu" type="string">
             <column name="nomJeu" length="100" not-null="true" />
         </property>
+        <property name="photoJeu" type="string">
+            <column name="photoJeu" length="100" not-null="true" />
+        </property>
         <property name="descriptionJeu" type="string">
             <column name="descriptionJeu" length="65535" not-null="true" />
         </property>

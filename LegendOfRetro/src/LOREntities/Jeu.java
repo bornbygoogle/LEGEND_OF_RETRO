@@ -14,6 +14,7 @@ public class Jeu  implements java.io.Serializable {
      private Integer idJeu;
      private Editeur editeur;
      private String nomJeu;
+     private String photoJeu;
      private String descriptionJeu;
      private Set decrires = new HashSet(0);
      private Set versionJeus = new HashSet(0);
@@ -22,14 +23,16 @@ public class Jeu  implements java.io.Serializable {
     }
 
 	
-    public Jeu(Editeur editeur, String nomJeu, String descriptionJeu) {
+    public Jeu(Editeur editeur, String nomJeu, String photoJeu, String descriptionJeu) {
         this.editeur = editeur;
         this.nomJeu = nomJeu;
+        this.photoJeu = photoJeu;
         this.descriptionJeu = descriptionJeu;
     }
-    public Jeu(Editeur editeur, String nomJeu, String descriptionJeu, Set decrires, Set versionJeus) {
+    public Jeu(Editeur editeur, String nomJeu, String photoJeu, String descriptionJeu, Set decrires, Set versionJeus) {
        this.editeur = editeur;
        this.nomJeu = nomJeu;
+       this.photoJeu = photoJeu;
        this.descriptionJeu = descriptionJeu;
        this.decrires = decrires;
        this.versionJeus = versionJeus;
@@ -56,6 +59,14 @@ public class Jeu  implements java.io.Serializable {
     public void setNomJeu(String nomJeu) {
         this.nomJeu = nomJeu;
     }
+    
+    public String getPhotoJeu() {
+        return this.photoJeu;
+    }
+    
+    public void setPhotoJeu(String photoJeu) {
+        this.photoJeu = photoJeu;
+    }    
     public String getDescriptionJeu() {
         return this.descriptionJeu;
     }
