@@ -15,7 +15,8 @@ public class Rapport
 {
     public enum Table {FABRICANT, CONSOLE, ZONE,
             VERSIONCONSOLE, VERSIONJEU, JEU, EDITEUR, TAG, DESCRIPTION,
-            FACTURE, LIGNEFACTUREJEU, LIGNEFACTURECONSOLE};
+            FACTURE, LIGNEFACTUREJEU, LIGNEFACTURECONSOLE,
+            PERSONNE, VILLE, PAYS};
     public enum Operation {CREER, MODIFIER};
     
     private int idDerniereOperation;
@@ -93,7 +94,15 @@ public class Rapport
                     ret = ret.concat(" de la zone ");
                 else if (this.tables.elementAt(i) == Table.FACTURE)
                     ret = ret.concat(" de la facture ");
+                else if (this.tables.elementAt(i) == Table.LIGNEFACTURECONSOLE
+                        || this.tables.elementAt(i) == Table.LIGNEFACTUREJEU)
                     ret = ret.concat(" de la ligne de facture ");
+                else if (this.tables.elementAt(i) == Table.PAYS)
+                    ret = ret.concat(" du pays ");
+                else if (this.tables.elementAt(i) == Table.VILLE)
+                    ret = ret.concat(" dde la ville ");
+                else if (this.tables.elementAt(i) == Table.PERSONNE)
+                    ret = ret.concat(" du client/fourn ");
             }
             ret = ret.concat("id "+this.ids.elementAt(i) + ".\n");
         }
