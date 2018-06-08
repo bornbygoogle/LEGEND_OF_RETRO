@@ -213,8 +213,14 @@ public class critVente extends javax.swing.JPanel {
     }//GEN-LAST:event_buttonAjouterActionPerformed
 
     private void buttonSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSupprimerActionPerformed
-        this.parent.supprimerLigne(toForm());
-         buttonSupprimer.setBackground(Color.GREEN);
+        if (!"".equals(this.fieldCodeBarre))
+            this.parent.afficherErreur(new Exception("Veuillez entrer un code barre."));
+        else
+        {
+            this.parent.supprimerLigne(toForm());
+            clean();
+        }
+        buttonSupprimer.setBackground(Color.GREEN);
     }//GEN-LAST:event_buttonSupprimerActionPerformed
 
     private void buttonTerminerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTerminerActionPerformed
@@ -253,9 +259,35 @@ public class critVente extends javax.swing.JPanel {
         String typeDev;
         
         if (f instanceof ProduitForm) {
-            //this.ligneFacture = null;
             this.produitExamine = (ProduitForm) f;
             
+            typeJeu = ("Jeu".equals(this.produitExamine.getType()));
+            if (typeJeu) {
+                typeDev = "Développeur : ";
+                this.labelPlateforme.setText("Plateforme : " + this.produitExamine.getPlateforme());
+            }
+            else
+                typeDev = "Fabricant : ";
+            this.fieldCodeBarre.setText(this.produitExamine.getCodeBarre());
+            this.labelDevFab.setText(typeDev + this.produitExamine.getEditeur());
+            this.labelNom.setText("Nom : " + this.produitExamine.getNom());
+            this.labelEdition.setText("Edition : " + this.produitExamine.getEdition());
+            this.labelZone.setText("Zone : " + this.produitExamine.getZone());
+            this.labelPrix.setText("Prix : " + this.produitExamine.getPrix() + " €");
+            this.labelStock.setText("Stock : " + this.produitExamine.getStock());
+
+            this.labelDevFab.setVisible(true);
+            this.labelNom.setVisible(true);
+            this.labelPlateforme.setVisible(typeJeu);
+            this.labelEdition.setVisible(true);
+            this.labelZone.setVisible(true);
+            this.labelPrix.setVisible(true);
+            this.labelStock.setVisible(true);
+        }
+        else if (f instanceof FactureLigneForm)
+        {
+            setForm(((FactureLigneForm) f).getProduit());
+            this.fieldQuantite.getModel().setValue(((FactureLigneForm) f).getQuantite());
         }
         else
             throw new IllegalArgumentException("Erreur dans menuProduit: le formulaire à sélectionner n'est pas un ProduitForm ou un FactureLigneForm.");

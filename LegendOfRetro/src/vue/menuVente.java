@@ -103,8 +103,8 @@ try {
     {
         if (res instanceof ProduitForm) 
             this.selectionProduit.setForm((ProduitForm) res);
-/*        else if (res instanceof FactureLigneForm)
-            this.Criteres.setForm(res);*/
+        else if (res instanceof FactureLigneForm)
+            this.selectionProduit.setForm(res);
         else
             throw new IllegalArgumentException("Erreur dans menuProduit: le formulaire à sélectionner n'est pas un ProduitForm ou un FactureLigneForm.");
     }
@@ -160,19 +160,26 @@ try {
         //on commence par trouver, dans this.facture, une ligne qui a le même code barre que la ligne fournie en paramètre.
         Iterator<FactureLigneForm> it = this.facture.getLignes().iterator();
         String codeBarre = ligne.getProduit().getCodeBarre();
-        boolean ligneNonTrouvee = it.hasNext();
+//test System.out.println("Code barre recherché " + codeBarre);
+        boolean ligneTrouvee = !it.hasNext();
         
-        while(ligneNonTrouvee)
+        if (ligneTrouvee)afficherErreur(new Exception(
+                        "Erreur: aucune ligne ne peut être supprimée."));
+        
+        while(!ligneTrouvee)
         {
-            ligneNonTrouvee = it.next().getProduit().getCodeBarre().equals(
+//test FactureLigneForm exam = it.next();
+//test System.out.println("Code barre examiné " + exam.getProduit().getCodeBarre());
+            ligneTrouvee = it.next().getProduit().getCodeBarre().equals(
                     codeBarre);
-            if (!ligneNonTrouvee) //si la ligne a été trouvée, on l'enlève de la facture
+//test System.out.println(ligneNonTrouvee);
+            if (!ligneTrouvee) //si la ligne a été trouvée, on l'enlève de la facture
                 it.remove();
             else if (!it.hasNext()) //si la ligne n'est pas trouée à la fin de la boucle, on affiche l'erreur et on quitte la boucle
             {
                 afficherErreur(new Exception(
                         "Erreur: aucune ligne préalablement entrée ne correspond à ce code barre."));
-                ligneNonTrouvee = false; //on quitte la boucle
+                ligneTrouvee = false; //on quitte la boucle
             }
         }
         
