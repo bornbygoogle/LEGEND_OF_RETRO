@@ -1516,8 +1516,6 @@ public class Controleur
         }
             
         
-
-        
         //Calculer cote
         cote = dateAchat/180 + stockActuel/10 + nbreVente/10;
         
