@@ -708,12 +708,12 @@ public class Controleur
             ret.add(new ProduitForm(enr.getIdVersionConsole(), -1, "Console",
                     enr.getCodeBarre(), enr.getConsole().getNomConsole(),
                     enr.getEdition(), enr.getZone().getNomZone(),
-                    enr.getConsole().getFabricant().getNomFabricant(), "", "", "",
+                    enr.getConsole().getFabricant().getNomFabricant(), "", "", "", "",
                     enr.getPrix(), enr.getStock()));
         for (VersionJeu enr : chercherVersionsJeu(cb, "", "", "", "","", new Vector<String>()))
             ret.add(new ProduitForm(-1, enr.getIdVersionJeu(), "Jeu",
                     enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
-                    enr.getJeu().getEditeur().getNomEditeur(), enr.getJeu().getDescriptionJeu(),
+                    enr.getJeu().getEditeur().getNomEditeur(), enr.getJeu().getPhotoJeu(), enr.getJeu().getDescriptionJeu(),
                     decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
                     enr.getPrix(), enr.getStock()));
         if (ret.size() > 1)
@@ -746,7 +746,7 @@ public class Controleur
             for (VersionConsole enr : chercherVersionsConsole(cb, edition, zone, nom, editeur))
                 ret.add(new ProduitForm(enr.getIdVersionConsole(), -1, "Console",
                         enr.getCodeBarre(), enr.getConsole().getNomConsole(), enr.getEdition(), enr.getZone().getNomZone(),
-                        enr.getConsole().getFabricant().getNomFabricant(), "", "", "",
+                        enr.getConsole().getFabricant().getNomFabricant(), "", "", "", "",
                         enr.getPrix(), enr.getStock()));
             else
                 throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
@@ -757,7 +757,7 @@ public class Controleur
                 for (VersionJeu enr : chercherVersionsJeu(cb, edition, zone, plateforme, nom, editeur, tags))
                     ret.add(new ProduitForm(-1, enr.getIdVersionJeu(), "Jeu",
                             enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
-                            enr.getJeu().getEditeur().getNomEditeur(), enr.getJeu().getDescriptionJeu(),
+                            enr.getJeu().getEditeur().getNomEditeur(), enr.getJeu().getPhotoJeu(), enr.getJeu().getDescriptionJeu(),
                             decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
                             enr.getPrix(), enr.getStock()));
             else
@@ -1484,6 +1484,42 @@ public class Controleur
         retour -= form.getReductions(); //application de la réduction globale
         retour*= Controleur.TVA; //application de la TVA
         return retour;
+    }
+    /**
+     * Calcule le cote d'un produit pour Promotion
+     * @param type de produit, ID du produit
+     * @return le cote du produit demandé
+     */
+    public float calculCote(String type, Integer idProduit) throws DonneeInvalideException
+    {
+        //Form pdf = new Form();
+        // Recuperer la date d'achat
+        Float dateAchat = 0f;
+        
+        // Recuperer le nombre de vente
+        Integer nbreVente = 0;
+        
+        // Recuperer le stock actuel
+        Integer stockActuel = 0;
+        float cote = 0f; //calcul du total des lignes
+        if ("Console".equals(type)) 
+        {
+            VersionConsole vc = new VersionConsole();
+            vc = chercherVersionConsole(idProduit);
+            stockActuel = vc.getStock();
+        }
+        else if ("Jeu".equals(type)) 
+        {
+            VersionJeu vj = new VersionJeu();
+            vj = chercherVersionJeu(idProduit);
+            stockActuel = vj.getStock();
+        }
+            
+        
+        //Calculer cote
+        cote = dateAchat/180 + stockActuel/10 + nbreVente/10;
+        
+        return cote;
     }
     /**
      * Transforme un vecteur de tags en un vecteur de strings pour l'affichage.
