@@ -12,9 +12,13 @@ import controleur.Controleur;
 import controleur.DonneeInvalideException;
 import controleur.DonneesInsuffisantesException;
 import controleur.EnregistrementExistantException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import static org.hibernate.cfg.AvailableSettings.URL;
 
 /**
  *
@@ -50,6 +54,8 @@ public class critProduit extends javax.swing.JPanel
         plateformes.add(0, "");
         listePlateforme.setModel(new javax.swing.DefaultComboBoxModel<>(plateformes));
         
+        
+        
         this.idVersionJeu = -1;
         this.idVersionConsole = -1;
     }
@@ -80,8 +86,8 @@ public class critProduit extends javax.swing.JPanel
         labelPrix = new javax.swing.JLabel();
         labelStock = new javax.swing.JLabel();
         labelCasse = new javax.swing.JLabel();
-        fieldCasse1 = new javax.swing.JLabel();
-        fieldCasse2 = new javax.swing.JLabel();
+        labelDescription = new javax.swing.JLabel();
+        labelPhoto = new javax.swing.JLabel();
         labelCurrency = new javax.swing.JLabel();
         labelCote = new javax.swing.JLabel();
         fieldCote = new javax.swing.JLabel();
@@ -164,15 +170,24 @@ public class critProduit extends javax.swing.JPanel
 
         labelCasse.setText("Casse :");
 
-        fieldCasse1.setText("Description :");
-        fieldCasse1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        fieldCasse1.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        labelDescription.setText("Description :");
+        labelDescription.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        labelDescription.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
 
-        fieldCasse2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        fieldCasse2.setText("Photo :");
-        fieldCasse2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        fieldCasse2.setEnabled(false);
-        fieldCasse2.setFocusable(false);
+        labelPhoto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelPhoto.setText("Photo :");
+        labelPhoto.setToolTipText("");
+        labelPhoto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        labelPhoto.setEnabled(false);
+        labelPhoto.setFocusable(false);
+        try{
+            URL url = new URL("htts://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg");
+            //more code goes here
+            labelPhoto.setIcon(new ImageIcon(url));
+        }catch(MalformedURLException ex){
+            //do exception handling here
+            labelPhoto.setText("Cant get photo !!!");
+        }
 
         labelCurrency.setText("€");
 
@@ -308,8 +323,8 @@ public class critProduit extends javax.swing.JPanel
                             .addComponent(fieldStock, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fieldCasse2, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fieldCasse1)
+                    .addComponent(labelPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelDescription)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10))
         );
@@ -371,15 +386,16 @@ public class critProduit extends javax.swing.JPanel
                             .addComponent(listePlateforme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(labelPlateforme))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(buttonChercher)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(buttonNouveau)
-                            .addComponent(buttonModifier)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(buttonChercher)
+                                .addComponent(buttonModifier))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(fieldCasse2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(labelPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fieldCasse1)
+                        .addComponent(labelDescription)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -553,7 +569,7 @@ public class critProduit extends javax.swing.JPanel
                     (String) listeCategorie.getSelectedItem(), fieldCodeBarre.getText(),
                     fieldNom.getText(), fieldEdition.getText(),
                     (String) listeZone.getSelectedItem(),
-                    fieldEditeur.getText(), jTextAreaDescription.getText(),
+                    fieldEditeur.getText(),""/*Photo*/, jTextAreaDescription.getText(),
                     fieldTag.getText(), (String) listePlateforme.getSelectedItem(),
                     prix, stock);
     }
@@ -566,8 +582,6 @@ public class critProduit extends javax.swing.JPanel
     public static javax.swing.JButton buttonNouveau;
     public static javax.swing.JSpinner fieldAjoutCasse;
     public static javax.swing.JLabel fieldCasse;
-    public static javax.swing.JLabel fieldCasse1;
-    public static javax.swing.JLabel fieldCasse2;
     public static javax.swing.JFormattedTextField fieldCodeBarre;
     public static javax.swing.JLabel fieldCote;
     public static javax.swing.JLabel fieldDevFab;
@@ -585,8 +599,10 @@ public class critProduit extends javax.swing.JPanel
     public static javax.swing.JLabel labelCodeBarre;
     public static javax.swing.JLabel labelCote;
     public static javax.swing.JLabel labelCurrency;
+    public static javax.swing.JLabel labelDescription;
     public static javax.swing.JLabel labelEdition;
     public static javax.swing.JLabel labelNom;
+    public static javax.swing.JLabel labelPhoto;
     public static javax.swing.JLabel labelPlateforme;
     public static javax.swing.JLabel labelPrix;
     public static javax.swing.JLabel labelStock;

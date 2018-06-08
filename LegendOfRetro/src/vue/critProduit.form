@@ -105,8 +105,8 @@
               </Group>
               <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="fieldCasse2" min="-2" pref="226" max="-2" attributes="0"/>
-                  <Component id="fieldCasse1" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelPhoto" min="-2" pref="226" max="-2" attributes="0"/>
+                  <Component id="labelDescription" min="-2" max="-2" attributes="0"/>
                   <Component id="jScrollPane1" min="-2" pref="227" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
@@ -185,17 +185,19 @@
                           <Component id="labelPlateforme" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="buttonChercher" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="buttonNouveau" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="buttonModifier" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="buttonChercher" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="buttonModifier" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="fieldCasse2" min="-2" pref="128" max="-2" attributes="0"/>
+                      <Component id="labelPhoto" min="-2" pref="128" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="fieldCasse1" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelDescription" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="117" max="-2" attributes="0"/>
                   </Group>
@@ -333,17 +335,18 @@
         <Property name="text" type="java.lang.String" value="Casse :"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="fieldCasse1">
+    <Component class="javax.swing.JLabel" name="labelDescription">
       <Properties>
         <Property name="text" type="java.lang.String" value="Description :"/>
         <Property name="verticalAlignment" type="int" value="1"/>
         <Property name="verticalTextPosition" type="int" value="1"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="fieldCasse2">
+    <Component class="javax.swing.JLabel" name="labelPhoto">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="Photo :"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
             <LineBorder/>
@@ -352,6 +355,9 @@
         <Property name="enabled" type="boolean" value="false"/>
         <Property name="focusable" type="boolean" value="false"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="try{&#xa;    URL url = new URL(&quot;htts://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg&quot;);&#xa;    //more code goes here&#xa;    labelPhoto.setIcon(new ImageIcon(url));&#xa;}catch(MalformedURLException ex){&#xa;//do exception handling here&#xa;labelPhoto.setText(&quot;Cant get photo !!!&quot;);&#xa;}"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="labelCurrency">
       <Properties>

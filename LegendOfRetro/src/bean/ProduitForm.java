@@ -21,6 +21,7 @@ public class ProduitForm extends CodeBarreForm
     private String edition;
     private String zone;
     private String editeur;
+    private String photo;
     private String description;
     private String tags;
     private String plateforme;
@@ -36,6 +37,7 @@ public class ProduitForm extends CodeBarreForm
         this.edition = "";
         this.zone = "";
         this.editeur = "";
+        this.photo = "";
         this.description = "";
         this.tags = "";
         this.prix = -1;
@@ -44,7 +46,7 @@ public class ProduitForm extends CodeBarreForm
     public ProduitForm(
             int idVersionConsole, int idVersionJeu,
             String type, String cb, String nom, String edition, String zone,
-            String editeur, String description, String tags, String plateforme,
+            String editeur, String photo, String description, String tags, String plateforme,
             float prix, int stock)
     {
         super(cb);
@@ -55,6 +57,7 @@ public class ProduitForm extends CodeBarreForm
         this.edition = edition;
         this.zone = zone;
         this.editeur = editeur;
+        this.photo = photo;
         this.description = description;
         this.plateforme = plateforme;
         this.tags = tags;
@@ -69,6 +72,7 @@ public class ProduitForm extends CodeBarreForm
     public String getEdition()      {return this.edition;}
     public String getZone()      {return this.zone;}
     public String getEditeur()      {return this.editeur;}
+    public String getPhoto()  { return this.photo; }
     public String getDescription()      {return this.description;}
     public String getTags()      {return this.tags;}
     public String getPlateforme()      {return this.plateforme;}
