@@ -6,7 +6,6 @@
 package vue;
 
 import bean.CodeBarreForm;
-import bean.FactureLigneForm;
 //import bean.FactureForm;
 //import bean.FactureLigneForm;
 import bean.Form;
@@ -14,21 +13,16 @@ import bean.ProduitForm;
 import bean.PersonneForm;
 import controleur.Controleur;
 import controleur.DonneeInvalideException;
-import controleur.DonneesInsuffisantesException;
-import java.awt.Color;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.SpinnerNumberModel;
 
 /**
  *
  * @author Home
  */
-public class critVente extends javax.swing.JPanel {
+public class critAchat extends javax.swing.JPanel {
 
     private Controleur controleur;
-    private menuVente parent;
+    private Chercheur parent;
     
 //    private FactureLigneForm ligneFacture; //si une ligne est en train d'être modifiée
     private ProduitForm produitExamine;
@@ -36,7 +30,7 @@ public class critVente extends javax.swing.JPanel {
     /**
      * Creates new form critPersonne
      */
-    public critVente(Controleur controleur, menuVente parent)
+    public critAchat(Controleur controleur, Chercheur parent)
     {
         this.controleur = controleur;
         this.parent = parent;
@@ -54,6 +48,7 @@ public class critVente extends javax.swing.JPanel {
     private void initComponents() {
 
         labelCodeBarre = new javax.swing.JLabel();
+        fieldCodeBarre = new javax.swing.JFormattedTextField();
         labelQuantite = new javax.swing.JLabel();
         fieldQuantite = new javax.swing.JSpinner();
         labelNom = new javax.swing.JLabel();
@@ -67,9 +62,14 @@ public class critVente extends javax.swing.JPanel {
         buttonAjouter = new javax.swing.JButton();
         buttonSupprimer = new javax.swing.JButton();
         buttonTerminer = new javax.swing.JButton();
-        fieldCodeBarre = new javax.swing.JFormattedTextField();
 
         labelCodeBarre.setText("Code Barre : ");
+
+        fieldCodeBarre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldCodeBarreActionPerformed(evt);
+            }
+        });
 
         labelQuantite.setText("Quantité :");
         labelQuantite.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -119,12 +119,6 @@ public class critVente extends javax.swing.JPanel {
             }
         });
 
-        fieldCodeBarre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldCodeBarreActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -132,63 +126,56 @@ public class critVente extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(labelEdition, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(labelZone, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(labelDevFab, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(labelPlateforme, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addContainerGap(819, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(labelPrix)
-                            .addContainerGap(880, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelQuantite)
+                        .addGap(18, 18, 18)
+                        .addComponent(fieldQuantite, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labelStock)
+                    .addComponent(labelPlateforme, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelPrix)
+                    .addComponent(labelDevFab)
+                    .addComponent(labelNom)
+                    .addComponent(labelEdition)
+                    .addComponent(labelZone)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(labelCodeBarre)
+                                .addGap(18, 18, 18)
+                                .addComponent(fieldCodeBarre, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(buttonAjouter)
                                 .addGap(18, 18, 18)
-                                .addComponent(buttonSupprimer)
-                                .addGap(41, 41, 41)
-                                .addComponent(buttonTerminer))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelCodeBarre)
-                                    .addComponent(labelNom))
-                                .addGap(35, 35, 35)
-                                .addComponent(fieldCodeBarre, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(28, 28, 28)
-                                .addComponent(buttonChercher))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(labelQuantite)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(fieldQuantite, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(labelStock)))
-                        .addContainerGap(551, Short.MAX_VALUE))))
+                                .addComponent(buttonSupprimer)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(buttonTerminer)
+                            .addComponent(buttonChercher))))
+                .addContainerGap(578, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fieldCodeBarre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelCodeBarre, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonChercher)
-                    .addComponent(fieldCodeBarre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(buttonChercher))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelNom, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelDevFab)
                 .addGap(12, 12, 12)
                 .addComponent(labelZone)
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(labelEdition)
-                .addGap(12, 12, 12)
+                .addGap(11, 11, 11)
                 .addComponent(labelPlateforme)
-                .addGap(14, 14, 14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(labelPrix)
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(labelStock)
-                .addGap(8, 8, 8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelQuantite, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fieldQuantite, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -201,44 +188,30 @@ public class critVente extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void buttonChercherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChercherActionPerformed
-        this.parent.lancerRecherche(new CodeBarreForm(this.fieldCodeBarre.getText()));
-        buttonChercher.setBackground(Color.GREEN);
-    }//GEN-LAST:event_buttonChercherActionPerformed
-
-    private void buttonAjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAjouterActionPerformed
-        this.parent.ajouterLigne(toForm());
-        clean();
-        buttonAjouter.setBackground(Color.GREEN);
-    }//GEN-LAST:event_buttonAjouterActionPerformed
-
-    private void buttonSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSupprimerActionPerformed
-        this.parent.supprimerLigne(toForm());
-         buttonSupprimer.setBackground(Color.GREEN);
-    }//GEN-LAST:event_buttonSupprimerActionPerformed
-
-    private void buttonTerminerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTerminerActionPerformed
-        try {
-            this.parent.afficherLog(
-                    this.controleur.creer(this.parent.getFacture())
-                            .toString());
-        }
-        catch (DonneesInsuffisantesException ex) {
-            this.parent.afficherErreur(ex);}
-         buttonTerminer.setBackground(Color.GREEN);
-         
-    }//GEN-LAST:event_buttonTerminerActionPerformed
-
     private void fieldCodeBarreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldCodeBarreActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_fieldCodeBarreActionPerformed
 
+    private void buttonChercherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChercherActionPerformed
+        this.parent.lancerRecherche(new CodeBarreForm(this.fieldCodeBarre.getText()));
+    }//GEN-LAST:event_buttonChercherActionPerformed
+
+    private void buttonAjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAjouterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonAjouterActionPerformed
+
+    private void buttonSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSupprimerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonSupprimerActionPerformed
+
+    private void buttonTerminerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTerminerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonTerminerActionPerformed
+
     
     public void clean()
     {
-        this.fieldCodeBarre.setText("");
-        this.fieldQuantite.getModel().setValue(new Integer(0));
-        this.produitExamine = null;
+        //this.ligneFacture = null;
         this.labelDevFab.setVisible(false);
         this.labelNom.setVisible(false);
         this.labelPlateforme.setVisible(false);
@@ -257,41 +230,45 @@ public class critVente extends javax.swing.JPanel {
             this.produitExamine = (ProduitForm) f;
             
         }
+//        else if (f instanceof FactureLigneForm) {
+//            this.ligneFacture = (FactureLigneForm) f;
+//            this.produitExamine = this.ligneFacture.getProduit();
+//        }
         else
             throw new IllegalArgumentException("Erreur dans menuProduit: le formulaire à sélectionner n'est pas un ProduitForm ou un FactureLigneForm.");
         
-        typeJeu = ("Jeu".equals(this.produitExamine.getType()));
-        if (typeJeu) {
-            typeDev = "Développeur : ";
-            this.labelPlateforme.setText("Plateforme : " + this.produitExamine.getPlateforme());
-        }
-        else
-            typeDev = "Fabricant : ";
-        this.labelDevFab.setText(typeDev + this.produitExamine.getEditeur());
-        this.labelNom.setText("Nom : " + this.produitExamine.getNom());
-        this.labelEdition.setText("Edition : " + this.produitExamine.getEdition());
-        this.labelZone.setText("Zone : " + this.produitExamine.getZone());
-        this.labelPrix.setText("Prix : " + this.produitExamine.getPrix() + " €");
-        this.labelStock.setText("Stock : " + this.produitExamine.getStock());
-
-        this.labelDevFab.setVisible(true);
-        this.labelNom.setVisible(true);
-        this.labelPlateforme.setVisible(typeJeu);
-        this.labelEdition.setVisible(true);
-        this.labelZone.setVisible(true);
-        this.labelPrix.setVisible(true);
-        this.labelStock.setVisible(true);
+            typeJeu = ("Jeu".equals(this.produitExamine.getType()));
+            if (typeJeu) {
+                typeDev = "Développeur : ";
+                this.labelPlateforme.setText("Plateforme : " + this.produitExamine.getPlateforme());
+            }
+            else
+                typeDev = "Fabricant : ";
+            this.labelDevFab.setText(typeDev + this.produitExamine.getEditeur());
+            this.labelNom.setText("Nom : " + this.produitExamine.getNom());
+            this.labelEdition.setText("Edition : " + this.produitExamine.getEdition());
+            this.labelZone.setText("Zone : " + this.produitExamine.getZone());
+            this.labelPrix.setText("Prix : " + this.produitExamine.getPrix() + " €");
+            this.labelStock.setText("Stock : " + this.produitExamine.getStock());
+            
+            this.labelDevFab.setVisible(true);
+            this.labelNom.setVisible(true);
+            this.labelPlateforme.setVisible(typeJeu);
+            this.labelEdition.setVisible(true);
+            this.labelZone.setVisible(true);
+            this.labelPrix.setVisible(true);
+            this.labelStock.setVisible(true);
     }
-    private FactureLigneForm toForm()
+/*    private FactureForm toForm()
     {
-        FactureLigneForm retour = new FactureLigneForm();
-        retour.setProduit(this.produitExamine);
-        int q = (((SpinnerNumberModel) this.fieldQuantite.getModel()).getNumber().intValue());
-        retour.setQuantite(q);
-        retour.setPrixLigne(q * this.produitExamine.getPrix());
+        FactureForm retour = new FactureForm();
+        retour.setNature(true);
+        retour.setLignes(this.parent.getLignesFacture());
+        
+        //TODO: setIdClient !
         
         return retour;
-    }
+    }*/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAjouter;

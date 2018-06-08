@@ -19,36 +19,39 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="labelEdition" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="labelZone" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="labelDevFab" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="labelPlateforme" alignment="0" min="-2" pref="86" max="-2" attributes="0"/>
-                  <Component id="labelPrix" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="buttonAjouter" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="buttonSupprimer" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
-                      <Component id="buttonTerminer" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="labelCodeBarre" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="labelNom" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                      <Component id="fieldCodeBarre" min="-2" pref="150" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                      <Component id="buttonChercher" min="-2" max="-2" attributes="0"/>
-                  </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="labelQuantite" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="fieldQuantite" min="-2" pref="67" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="labelStock" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelStock" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelPlateforme" min="-2" pref="86" max="-2" attributes="0"/>
+                  <Component id="labelPrix" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelDevFab" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelNom" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelEdition" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelZone" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="labelCodeBarre" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="fieldCodeBarre" min="-2" pref="150" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="buttonAjouter" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="buttonSupprimer" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="buttonTerminer" min="-2" max="-2" attributes="0"/>
+                          <Component id="buttonChercher" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
               </Group>
-              <EmptySpace pref="551" max="32767" attributes="0"/>
+              <EmptySpace pref="578" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -57,25 +60,25 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="fieldCodeBarre" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="labelCodeBarre" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
                   <Component id="buttonChercher" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="fieldCodeBarre" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="labelNom" min="-2" pref="28" max="-2" attributes="0"/>
-              <EmptySpace pref="17" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="labelDevFab" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
               <Component id="labelZone" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="labelEdition" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
               <Component id="labelPlateforme" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="labelPrix" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="labelStock" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="labelQuantite" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
                   <Component id="fieldQuantite" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -97,11 +100,16 @@
         <Property name="text" type="java.lang.String" value="Code Barre : "/>
       </Properties>
     </Component>
+    <Component class="javax.swing.JFormattedTextField" name="fieldCodeBarre">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldCodeBarreActionPerformed"/>
+      </Events>
+    </Component>
     <Component class="javax.swing.JLabel" name="labelQuantite">
       <Properties>
         <Property name="text" type="java.lang.String" value="Quantit&#xe9; :"/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Curseur par d&#xe9;faut"/>
+          <Color id="Default Cursor"/>
         </Property>
       </Properties>
     </Component>
@@ -116,7 +124,7 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Nom : "/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Curseur par d&#xe9;faut"/>
+          <Color id="Default Cursor"/>
         </Property>
       </Properties>
     </Component>
@@ -180,11 +188,6 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonTerminerActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JFormattedTextField" name="fieldCodeBarre">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldCodeBarreActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

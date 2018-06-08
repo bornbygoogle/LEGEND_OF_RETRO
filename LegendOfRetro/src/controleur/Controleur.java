@@ -8,9 +8,14 @@ package controleur;
 import LOREntities.*;
 
 import bean.CodeBarreForm;
+import bean.FactureForm;
+import bean.FactureLigneForm;
 import bean.Form;
 import bean.ProduitForm;
+import bean.PromoForm;
 import hibernateConfig.HibernateUtil;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -18,12 +23,14 @@ import java.util.Vector;
 import org.hibernate.*;
 import vue.GUI;
 
+
 /**
  * @author Adrien Marchand
  * La classe controleur contien:  1.Controleur() throws InitException-un contructeur qui initialise la Vue et le Modele et 2.Des methode qui vont faire l'aiguillage entre Vue-Modele 26:05:2018
  */
 public class Controleur
 {
+    private static final float TVA = 1.05f;
     private GUI vue; //utilisé pour communiquer avec l'affichage
     private Session modele; //session hibernate
 
@@ -72,29 +79,188 @@ public class Controleur
             f.setIdVersionConsole(
                     creerVersionConsole(rapport,
                     f.getCodeBarre(),
-                    f.getEdition(),
+                    normalize(f.getEdition()),
                     f.getZone(),
                     f.getPrix(),
                     f.getStock(),
-                    f.getNom(),
-                    f.getEditeur()));
+                    normalize(f.getNom()),
+                    normalize(f.getEditeur())));
         }
         else if ("Jeu".equals(type))
         {
             f.setIdVersionConsole(-1);
             f.setIdVersionJeu(creerVersionJeu(rapport,
                     f.getCodeBarre(),
-                    f.getEdition(),
+                    normalize(f.getEdition()),
                     f.getZone(),
                     f.getPrix(),
                     f.getStock(),
-                    f.getNom(),       //getNom() renvoie le nom du JEU, pas de la Version du jeu
-                    f.getDescription(), stringToVector(f.getTags() ,','),
+                    normalize(f.getNom()),       //getNom() renvoie le nom du JEU, pas de la Version du jeu
+                    f.getDescription(), stringToVector(normalize(f.getTags()) ,','),
                     f.getPlateforme(),
-                    f.getEditeur()));
+                    normalize(f.getEditeur())));
         }
 
         return rapport;
+    }
+    /**
+     * Crée une facture décrite par le bean.
+     * @param form formulaire décrivant la facture.
+     * @throws DonneesInsuffisantesException si la facture ne contient aucune ligne.
+     * @return un objet rapport qui permet d'afficher les différentes opérations réalisées.
+    */
+    public Rapport creer(FactureForm form) throws DonneesInsuffisantesException
+    {
+        if (form.getLignes().isEmpty())
+            throw new DonneesInsuffisantesException("Erreur : la facture est vide.");
+        
+        Rapport rapport = new Rapport();
+        
+        //création de la facture
+        Facture facture = new Facture();
+        //type
+        if (form.getNature()) //achat
+            facture.setTypeFacture('a');
+        else //vente
+            facture.setTypeFacture('v');
+        //réductions éventuelles
+        facture.setReduction(form.getReductions());
+        
+        //prixTTC
+        facture.setPrixTtc(calculTotalTTC(form));
+        
+        //date
+        facture.setDateFacture(Date.from(Instant.now()));
+        
+        /*/Client ou fournisseur lié
+        TODO: à implémenter
+        if (form.getActeurId() != -1) {
+            //chercher Personne et l'affecter
+        }
+        else
+            facture.setActeur(null);//*/
+
+        //sauvegarde de la facture dans la base de données
+        this.modele.beginTransaction();
+        this.modele.save(facture);
+        this.modele.getTransaction().commit();
+        this.modele.flush();
+        
+        for(FactureLigneForm ligne : form.getLignes())
+            creerLigneFacture(rapport, ligne, facture);
+        
+        rapport.addOperation(facture.getIdFacture(), Rapport.Table.FACTURE, Rapport.Operation.CREER);
+        return rapport;
+    }
+    /**
+     * Crée une ligne et l'ajoute à la facture. Ceci fonctionne que le produit soit une console ou un jeu.
+     * @param rapport un objet rapport qui permet d'afficher les différentes opérations réalisées.
+     * @param ligne formulaire décrivant le contenu de la ligne
+     * @param facture objet POJO auquel est liée la ligne à créer.
+     * @throws DonneesInsuffisantesException si la ligne ne réfère à aucun produit
+    */
+    private void creerLigneFacture(Rapport rapport,
+            FactureLigneForm ligne, Facture facture) throws DonneesInsuffisantesException
+    {
+        if (rapport == null || facture == null || ligne == null)
+            throw new DonneesInsuffisantesException("Erreur : creerLigneFacture requiert des arguments non nuls.");
+        else if (ligne.getProduit() == null)
+            throw new DonneesInsuffisantesException("Erreur : la facture est vide.");
+        
+        if ("Jeu".equals(ligne.getProduit().getType()))
+            creerLigneFactureJeu(rapport, ligne, facture);
+        else if ("Console".equals(ligne.getProduit().getType()))
+            creerLigneFactureConsole(rapport, ligne, facture);
+        else
+            throw new IllegalArgumentException("Erreur : une ligne correspond à un type de produit inconnu.");
+    }
+    /**
+     * Crée une ligne et l'ajoute à la facture. Ceci ne fonctionne que si le produit est une console.
+     * @param rapport un objet rapport qui permet d'afficher les différentes opérations réalisées.
+     * @param ligne formulaire décrivant le contenu de la ligne
+     * @param facture objet POJO auquel est liée la ligne à créer.
+     * @throws DonneesInsuffisantesException si la ligne ne réfère à aucun produit
+    */
+    private void creerLigneFactureConsole(Rapport rapport,
+            FactureLigneForm ligne, Facture facture) throws DonneesInsuffisantesException
+    {
+        LigneFactureConsole ligneConsole = new LigneFactureConsole();
+        ligneConsole.setId(new LigneFactureConsoleId(
+                ligne.getProduit().getIdVersionConsole(), facture.getIdFacture()));
+        ligneConsole.setQuantite(ligne.getQuantite());
+        
+        try {
+            //mise à jour de la version de console dans la base de données
+            VersionConsole vc = chercherVersionConsole(ligneConsole.getId().getIdVersionConsole());
+            vc.getLigneFactureConsoles().add(ligneConsole);
+            int nouveauStock = vc.getStock() - ligneConsole.getQuantite();
+            if (nouveauStock < 0)
+                throw new DonneeInvalideException("Impossible de créer la ligne : le stock obtenu est négatif.");
+            vc.setStock(nouveauStock);
+            this.modele.beginTransaction();
+            this.modele.save(facture);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
+            //sauvegarde de la ligne dans la base de données
+            this.modele.beginTransaction();
+            this.modele.save(ligneConsole);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
+
+            //mise à jour de la facture dans la base de données
+            facture.getLigneFactureConsoles().add(ligneConsole);
+            this.modele.beginTransaction();
+            this.modele.save(facture);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
+
+            rapport.addOperation(facture.getIdFacture(), Rapport.Table.LIGNEFACTURECONSOLE, Rapport.Operation.CREER);
+        }
+        catch (DonneeInvalideException die) {System.out.println(die.getMessage());}
+    }
+    /**
+     * Crée une ligne et l'ajoute à la facture. Ceci ne fonctionne que si le produit est un jeu.
+     * @param rapport un objet rapport qui permet d'afficher les différentes opérations réalisées.
+     * @param ligne formulaire décrivant le contenu de la ligne
+     * @param facture objet POJO auquel est liée la ligne à créer.
+     * @throws DonneesInsuffisantesException si la ligne ne réfère à aucun produit
+    */
+    private void creerLigneFactureJeu(Rapport rapport,
+            FactureLigneForm ligne, Facture facture) throws DonneesInsuffisantesException
+    {
+        LigneFactureJeu ligneJeu = new LigneFactureJeu();
+        ligneJeu.setId(new LigneFactureJeuId(
+                facture.getIdFacture(), ligne.getProduit().getIdVersionJeu()));
+        ligneJeu.setQuantite(ligne.getQuantite());
+        
+        try {
+            //mise à jour de la version de jeu dans la base de données
+            VersionJeu vj = chercherVersionJeu(ligneJeu.getId().getIdVersionJeu());
+            vj.getLigneFactureJeus().add(ligneJeu);
+            int nouveauStock = vj.getStock() - ligneJeu.getQuantite();
+            if (nouveauStock < 0)
+                throw new DonneeInvalideException("Impossible de créer la ligne : le stock obtenu est négatif.");
+            vj.setStock(nouveauStock);
+            this.modele.beginTransaction();
+            this.modele.save(facture);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
+            //mise à jour de la facture dans la base de données
+            facture.getLigneFactureJeus().add(ligneJeu);
+            this.modele.beginTransaction();
+            this.modele.save(facture);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
+
+            //sauvegarde de la ligne dans la base de données
+            this.modele.beginTransaction();
+            this.modele.save(ligneJeu);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
+
+            rapport.addOperation(facture.getIdFacture(), Rapport.Table.LIGNEFACTUREJEU, Rapport.Operation.CREER);
+        }
+        catch (DonneeInvalideException die) {System.out.println(die.getMessage());}
     }
      /**
      * Crée un fabricant. Assure l'unicité de l'enregistrement dans l'intérieur de cette méthode sont appelées les méthodes-voir See Also.
@@ -127,6 +293,7 @@ public class Controleur
         this.modele.beginTransaction();
         this.modele.save(fabr);
         this.modele.getTransaction().commit();
+        this.modele.flush();
 
         rapport.addOperation(fabr.getIdFabricant(), Rapport.Table.FABRICANT, Rapport.Operation.CREER);
         return fabr;
@@ -161,6 +328,7 @@ public class Controleur
         this.modele.beginTransaction();
         this.modele.save(ed);
         this.modele.getTransaction().commit();
+        this.modele.flush();
 
         rapport.addOperation(ed.getIdEditeur(), Rapport.Table.EDITEUR, Rapport.Operation.CREER);
         return ed;
@@ -194,19 +362,11 @@ public class Controleur
         this.modele.beginTransaction();
         this.modele.save(t);
         this.modele.getTransaction().commit();
+        this.modele.flush();
 
         rapport.addOperation(t.getIdTag(), Rapport.Table.TAG, Rapport.Operation.CREER);
         return t;
     }
-//    /**
-//     * Lie un tag à un jeu.
-//     * L'identifiant du tag doit être valide. L'identifiant du jeu doit être valide. La relation ne doit pas déjà exister. Aucun contrôle d'erreur n'est réalisé.
-//     */
-//    protected void lierTag(Rapport rapport, Jeu jeu, Tag tag)
-//    {
-//        //TODO : on génère la requête pour créer l'enregistrement.
-//        rapport.addOperation(desc., Rapport.Table.DESCRIPTION, Rapport.Operation.CREER);
-//    }
     /**
      * Crée un jeu et/ou son éditeur. Assure l'unicité de l'enregistrement.Si l'éditeur est inexistant dans la base de données, un nouvel éditeur est ajouté à la volée. De même pour les tags.
      * @param  rapport-une variable de type Rapport qui est utilisé pour retourner une réponse dans l'interface graphique
@@ -250,30 +410,17 @@ public class Controleur
             jeu.setEditeur(editeur);
             jeu.setDescriptionJeu(description);
 
-            //sauvegarde dans la base de données
-            this.modele.beginTransaction();
-            this.modele.save(jeu);
-            this.modele.getTransaction().commit();
-
-            
-            //mise à jour du fabricant
-            editeur.getJeus().add(jeu);
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(editeur);
-            this.modele.getTransaction().commit();
-
             //création de l'enregistrement dans la table Jeu
             this.modele.beginTransaction();
             this.modele.save(jeu);
             this.modele.getTransaction().commit();
+            this.modele.flush();
             
             rapport.addOperation(jeu.getIdJeu(), Rapport.Table.JEU, Rapport.Operation.CREER);
             
             //traitement des tags (requiert enregistrement Jeu préalablement créé)
-System.out.println(tags);
             for (String tag : tags)
             {
-System.out.println("ligne " + tag);
                 //on vérifie l'existence du tag et, au besoin, on le crée.
                 Tag t = chercherTag(tag);
                 if (t == null)
@@ -281,30 +428,25 @@ System.out.println("ligne " + tag);
                 
                 //on lie le jeu au tag dans la table DECRIRE
                 Decrire d = new Decrire();
-//                Decrire d = new Decrire(new DecrireId(t.getIdTag(), jeu.getIdJeu()), jeu, t);
                 d.setId(new DecrireId());
-//                d.getId().setIdJeu(jeu.getIdJeu());
-//                d.getId().setIdTag(t.getIdTag());
-                d.setTag(t);
-                d.setJeu(jeu);
-                jeu.getDecrires().add(d);
-                t.getDecrires().add(d);
+                d.getId().setIdTag(t.getIdTag());
+                d.getId().setIdJeu(jeu.getIdJeu());
                 
-System.out.println("jeu ");
                 //mise à jour jeu
                 this.modele.beginTransaction();
                 this.modele.saveOrUpdate(jeu);
                 this.modele.getTransaction().commit();
-System.out.println("tag ");
+                this.modele.flush();
                 //mise à jour tag
                 this.modele.beginTransaction();
                 this.modele.saveOrUpdate(t);
                 this.modele.getTransaction().commit();
-System.out.println("décrire ");
+                this.modele.flush();
                 //création de l'enregistrement "décrire"
                 this.modele.beginTransaction();
                 this.modele.save(d);
                 this.modele.getTransaction().commit();
+                this.modele.flush();
 
                 rapport.addOperation(t.getIdTag(), Rapport.Table.DESCRIPTION, Rapport.Operation.CREER);
                 
@@ -348,7 +490,7 @@ System.out.println("décrire ");
             Fabricant fabricant = chercherFabricant(nomFabr);
             if (fabricant == null)
                 fabricant = creerFabricant(rapport, nomFabr); //s'il n'existe pas, on le crée à la volée.
-
+            
             //on vérifie que la console n'existe pas déjà !
             Console existante = chercherConsole(nomConsole, nomFabr);
             if (existante != null)
@@ -358,17 +500,12 @@ System.out.println("décrire ");
             Console cons = new Console();
             cons.setNomConsole(nomConsole);
             cons.setFabricant(fabricant);
-            
-            //mise à jour du fabricant
-            fabricant.getConsoles().add(cons);
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(fabricant);
-            this.modele.getTransaction().commit();
 
             //sauvegarde dans la base de données
             this.modele.beginTransaction();
             this.modele.save(cons);
             this.modele.getTransaction().commit();
+            this.modele.flush();
 
             rapport.addOperation(cons.getIdConsole(), Rapport.Table.CONSOLE, Rapport.Operation.CREER);
             return cons;
@@ -438,22 +575,12 @@ System.out.println("décrire ");
             vc.setConsole(console);
             vc.setPrix(prix);
             vc.setStock(stock);
-            
-            //mise à jour de la console
-            console.getVersionConsoles().add(vc);
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(console);
-            this.modele.getTransaction().commit();
-            //mise à jour de la zone
-            zone.getVersionConsoles().add(vc);
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(zone);
-            this.modele.getTransaction().commit();
 
             //sauvegarde dans la base de données
             this.modele.beginTransaction();
             this.modele.save(vc);
             this.modele.getTransaction().commit();
+            this.modele.flush();
 
             rapport.addOperation(vc.getIdVersionConsole(), Rapport.Table.VERSIONCONSOLE, Rapport.Operation.CREER);
 
@@ -537,27 +664,12 @@ System.out.println("décrire ");
             vj.setJeu(jeu);
             vj.setPrix(prix);
             vj.setStock(stock);
-            
-            //mise à jour du jeu
-            jeu.getVersionJeus().add(vj);
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(jeu);
-            this.modele.getTransaction().commit();
-            //mise à jour de la zone
-            zone.getVersionJeus().add(vj);
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(zone);
-            this.modele.getTransaction().commit();
-            //mise à jour de la console
-            console.getVersionJeus().add(vj);
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(console);
-            this.modele.getTransaction().commit();
 
             //sauvegarde dans la base de données
             this.modele.beginTransaction();
             this.modele.save(vj);
             this.modele.getTransaction().commit();
+            this.modele.flush();
 
             rapport.addOperation(vj.getIdVersionJeu(), Rapport.Table.VERSIONJEU, Rapport.Operation.CREER);
 
@@ -575,15 +687,15 @@ System.out.println("décrire ");
      * @throws ResultatInvalideException si le resultat affiché n'est pas conforme
      * @throws DonneeInvalideException si l'utilisateur va entrer des variables non conformes comme type
      * @param  form met en parametre une variable objet de type Form ce objet contien des attributs qui vont etre decharger dans un vecteur de type generique
-     * le but est de chercher une version de console ou une verion de jeu dans la base de données
+ le but est de chercherProduit une version de console ou une verion de jeu dans la base de données
      * @return Vecteur( un vecteur de type  générique)retourne un vecteur des objets de type ProduitForm le but est
     */
     public Vector<ProduitForm> chercher(Form form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
     {
         if (form instanceof ProduitForm)
-            return chercher((ProduitForm) form);
-        else if (form instanceof CodeBarreForm)
-            return chercher((CodeBarreForm) form);
+                return chercherProduit((ProduitForm) form);
+            else if (form instanceof CodeBarreForm)
+                return chercher((CodeBarreForm) form);
         else
             throw new UnsupportedOperationException("On ne sait pas rechercher les Form de type " + form.getClass());
     }
@@ -610,7 +722,7 @@ System.out.println("décrire ");
 
         return ret;
     }
-    public Vector<ProduitForm> chercher(ProduitForm form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
+    public Vector<ProduitForm> chercherProduit(ProduitForm form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
     {
         Vector<ProduitForm> ret = new Vector<ProduitForm>();
 
@@ -619,12 +731,12 @@ System.out.println("décrire ");
         String cb = form.getCodeBarre();
         if (!"".equals(cb))
             cb = codeBarreValide(cb);
-        String nom = form.getNom();
-        String edition = form.getEdition();
+        String nom = normalize(form.getNom());
+        String edition = normalize(form.getEdition());
         String zone = form.getZone();
-        String editeur = form.getEditeur();
+        String editeur = normalize(form.getEditeur());
         String description = form.getDescription();      //La description n'est pas un critère de recherche viable.
-        Vector<String> tags = stringToVector(form.getTags().replace(" ", ""), ',');
+        Vector<String> tags = stringToVector(normalize(form.getTags()).replace(" ", ""), ',');
         String plateforme = form.getPlateforme();
         //Pas besoin de récupérer les identifiants, la description de jeu, le prix et le stock.
 
@@ -644,6 +756,49 @@ System.out.println("décrire ");
             if (!"".equals(cb) || !"".equals(nom) || !"".equals(editeur) || !tags.isEmpty())
                 for (VersionJeu enr : chercherVersionsJeu(cb, edition, zone, plateforme, nom, editeur, tags))
                     ret.add(new ProduitForm(-1, enr.getIdVersionJeu(), "Jeu",
+                            enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
+                            enr.getJeu().getEditeur().getNomEditeur(), enr.getJeu().getDescriptionJeu(),
+                            decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
+                            enr.getPrix(), enr.getStock()));
+            else
+                throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
+        }
+        return ret;
+    }
+    public Vector<PromoForm> chercherPromo(PromoForm form) throws ResultatInvalideException, DonneeInvalideException, DonneesInsuffisantesException
+    {
+        Vector<PromoForm> ret = new Vector<PromoForm>();
+
+        //On récupère les variables du bean pour améliorer la lisibilité
+        String type = form.getType();
+        String cb = form.getCodeBarre();
+        if (!"".equals(cb))
+            cb = codeBarreValide(cb);
+        String nom = normalize(form.getNom());
+        String edition = normalize(form.getEdition());
+        String zone = form.getZone();
+        String editeur = normalize(form.getEditeur());
+        String description = form.getDescription();      //La description n'est pas un critère de recherche viable.
+        Vector<String> tags = stringToVector(normalize(form.getTags()).replace(" ", ""), ',');
+        String plateforme = form.getPlateforme();
+        //Pas besoin de récupérer les identifiants, la description de jeu, le prix et le stock.
+
+        if ("Console".equals(type))
+        {
+            if (!"".equals(edition) || !"".equals(zone) || !"".equals(editeur))
+            for (VersionConsole enr : chercherVersionsConsolePromo(edition, zone, editeur))
+                ret.add(new PromoForm(enr.getIdVersionConsole(), -1, "Console",
+                        enr.getCodeBarre(), enr.getConsole().getNomConsole(), enr.getEdition(), enr.getZone().getNomZone(),
+                        enr.getConsole().getFabricant().getNomFabricant(), "", "", "",
+                        enr.getPrix(), enr.getStock()));
+            else
+                throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
+        }
+        else if ("Jeu".equals(type))
+        {
+            if (!"".equals(cb) || !"".equals(nom) || !"".equals(editeur) || !tags.isEmpty())
+                for (VersionJeu enr : chercherVersionsJeuPromo(edition, zone, plateforme,editeur, tags))
+                    ret.add(new PromoForm(-1, enr.getIdVersionJeu(), "Jeu",
                             enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
                             enr.getJeu().getEditeur().getNomEditeur(), enr.getJeu().getDescriptionJeu(),
                             decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
@@ -675,7 +830,7 @@ System.out.println("décrire ");
 
         Vector<VersionConsole> ret = new Vector<VersionConsole>();
 
-        HQLRecherche q = new HQLRecherche("LOREntities.VersionConsole vc"); //TODO: requête imbriquée imbrCons
+        HQLRecherche q = new HQLRecherche("LOREntities.VersionConsole vc");
         //rédaction de la requête imbriquée pour console
         if (!"".equals(nom) || !"".equals(fabricant)) //si la console est renseignée (et/ou son fabricant)
         {
@@ -705,6 +860,49 @@ System.out.println("décrire ");
         //autres conditions
         if (!"".equals(cb))
             q.addCondition("vc.codeBarre", cb, HQLRecherche.Operateur.EGAL);
+        if (!"".equals(edition))
+            q.addCondition("vc.edition", edition, HQLRecherche.Operateur.LIKE);
+
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
+        this.modele.flush();
+        ret.addAll(resultats);
+
+        return ret;
+    }
+    private Vector<VersionConsole> chercherVersionsConsolePromo(String edition, String zone, String fabricant)
+            throws DonneesInsuffisantesException, DonneeInvalideException
+    {
+        Vector<VersionConsole> ret = new Vector<VersionConsole>();
+
+        HQLRecherche q = new HQLRecherche("LOREntities.VersionConsole vc");
+        //rédaction de la requête imbriquée pour console
+        if (!"".equals(fabricant)) //si la console est renseignée (et/ou son fabricant)
+        {
+            HQLRecherche imbrCons = new HQLRecherche("LOREntities.Console c");
+            imbrCons.setImbriquee(true);
+            imbrCons.setSelect("c.idConsole");
+            //imbrCons.addCondition("c.nomConsole", nom, HQLRecherche.Operateur.LIKE);
+            //rédaction de la requête imbriquée pour fabricant
+            if (!"".equals(fabricant)) //si le fabricant est renseigné
+            {
+                HQLRecherche imbrFabr = new HQLRecherche("LOREntities.Fabricant f");
+                imbrFabr.setImbriquee(true);
+                imbrFabr.addCondition("f.nomFabricant", fabricant, HQLRecherche.Operateur.LIKE);
+                imbrCons.addCondition("c.fabricant", imbrFabr.toString(), HQLRecherche.Operateur.IN);
+            }
+            q.addCondition("vc.console", imbrCons.toString(), HQLRecherche.Operateur.IN);
+        }
+        //rédaction des requêtes imbriquées pour zone
+        if (!"".equals(zone)) //si la zone est renseignée
+        {
+            HQLRecherche imbrZone = new HQLRecherche("LOREntities.Zone z");
+            imbrZone.setImbriquee(true);
+            imbrZone.setSelect("z.idZone");
+            imbrZone.addCondition("z.nomZone", zone, HQLRecherche.Operateur.LIKE);
+            q.addCondition("vc.zone", imbrZone.toString(), HQLRecherche.Operateur.IN);
+        }
+        //autres conditions
         if (!"".equals(edition))
             q.addCondition("vc.edition", edition, HQLRecherche.Operateur.LIKE);
 
@@ -756,7 +954,7 @@ System.out.println("décrire ");
 
         Vector<VersionJeu> ret = new Vector<VersionJeu>();
 
-        HQLRecherche q = new HQLRecherche("LOREntities.VersionJeu vj"); //TODO: requête imbriquée imbrCons
+        HQLRecherche q = new HQLRecherche("LOREntities.VersionJeu vj");
         //rédaction de la requête imbriquée pour console
         if (!"".equals(plateforme)) //si la console est renseignée
         {
@@ -821,6 +1019,87 @@ System.out.println("décrire ");
         //autres conditions
         if (!"".equals(cb)) //code barre
             q.addCondition("vj.codeBarre", cb, HQLRecherche.Operateur.EGAL);
+        if (!"".equals(edition)) //edition
+            q.addCondition("vj.edition", edition, HQLRecherche.Operateur.LIKE);
+
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
+        this.modele.flush();
+        ret.addAll(resultats);
+
+        return ret;
+    }
+    private Vector<VersionJeu> chercherVersionsJeuPromo(String edition, String zone,
+            String plateforme, String editeur, Vector<String> tags)
+            throws DonneesInsuffisantesException
+    {
+        Vector<VersionJeu> ret = new Vector<VersionJeu>();
+
+        HQLRecherche q = new HQLRecherche("LOREntities.VersionJeu vj");
+        //rédaction de la requête imbriquée pour console
+        if (!"".equals(plateforme)) //si la console est renseignée
+        {
+            HQLRecherche imbrCons = new HQLRecherche("LOREntities.Console c");
+            imbrCons.setImbriquee(true);
+            imbrCons.setSelect("c.idConsole");
+            imbrCons.addCondition("c.nomConsole", plateforme, HQLRecherche.Operateur.EGAL);
+
+            q.addCondition("vj.console.idConsole", imbrCons.toString(), HQLRecherche.Operateur.IN);
+        }
+
+        // rédaction de la requete imbriquée Jeu
+        if (!"".equals(editeur) || !tags.isEmpty()) //si le nom du jeu est renseignée
+        {
+            HQLRecherche imbrJeu = new HQLRecherche("LOREntities.Jeu j");
+            imbrJeu.setImbriquee(true);
+
+            /*if (!"".equals(nom)) //condition sur le nom
+                imbrJeu.addCondition("j.nomJeu", nom, HQLRecherche.Operateur.LIKE);*/
+            if (!"".equals(editeur)) //condition sur le développeur
+            {
+                HQLRecherche imbrEditeur = new HQLRecherche("LOREntities.Editeur e");
+                imbrEditeur.setImbriquee(true);
+                imbrEditeur.setSelect("e.idEditeur");
+                imbrEditeur.addCondition("e.nomEditeur", editeur, HQLRecherche.Operateur.LIKE);
+
+                imbrJeu.addCondition("j.editeur.idEditeur", imbrEditeur.toString(), HQLRecherche.Operateur.IN);
+            }
+            if (!tags.isEmpty())
+            {
+                for (String tag : tags)
+                {
+                    //on sélectionne le tag
+                    HQLRecherche imbrTag = new HQLRecherche("LOREntities.Tag t");
+                    imbrTag.setImbriquee(true);
+                    imbrTag.setSelect("t.idTag");
+                    imbrTag.addCondition("t.labelTag", tag, HQLRecherche.Operateur.EGAL);
+
+                    //on liste les jeux des relations "décrire" correspondant à ce tag (identifiants seulement)
+                    HQLRecherche imbrDecr = new HQLRecherche("LOREntities.Decrire d");
+                    imbrDecr.setImbriquee(true);
+                    imbrDecr.setSelect("d.jeu.idJeu");
+                    imbrDecr.addCondition("d.tag.idTag", imbrTag.toString(), HQLRecherche.Operateur.IN);
+
+                    //la requête qui recherche le jeu sélectionne parmi les jeux qui ont tous ces tags
+                    imbrJeu.addCondition("j.idJeu", imbrDecr.toString(), HQLRecherche.Operateur.IN);
+                }
+            }
+
+            q.addCondition("vj.jeu", imbrJeu.toString(), HQLRecherche.Operateur.IN);
+        }
+
+        //rédaction des requêtes imbriquées pour zone
+        if (!"".equals(zone)) //si la zone est renseignée
+        {
+            HQLRecherche imbrZone = new HQLRecherche("LOREntities.Zone z");
+            imbrZone.setImbriquee(true);
+            imbrZone.setSelect("z.idZone");
+            imbrZone.addCondition("z.nomZone", zone, HQLRecherche.Operateur.LIKE);
+            q.addCondition("vj.zone", imbrZone.toString(), HQLRecherche.Operateur.IN);
+        }
+        //autres conditions
+        /*if (!"".equals(cb)) //code barre
+            q.addCondition("vj.codeBarre", cb, HQLRecherche.Operateur.EGAL);*/
         if (!"".equals(edition)) //edition
             q.addCondition("vj.edition", edition, HQLRecherche.Operateur.LIKE);
 
@@ -900,8 +1179,6 @@ System.out.println("décrire ");
             idEditeur = edtr.getIdEditeur();
         }
 
-        //TODO !à implémenter; (voir chercher console, encore que, y'a les tags...');
-
         HQLRecherche q = new HQLRecherche("LOREntities.Jeu j");
         q.addCondition("j.nomJeu", nomJeu, HQLRecherche.Operateur.EGAL);
         if (!"".equals(nomEditeur))
@@ -954,7 +1231,7 @@ System.out.println("décrire ");
         q.addCondition("e.nomEditeur", nomEdit, HQLRecherche.Operateur.EGAL);
         System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
-        this.modele.flush();
+        //this.modele.flush();
 
         if (resultats.isEmpty())
             return null;
@@ -1034,22 +1311,28 @@ System.out.println("décrire ");
         this.modele.beginTransaction();
         this.modele.save(z);
         this.modele.getTransaction().commit();
+        this.modele.flush();
 
         rapport.addOperation(z.getIdZone(), Rapport.Table.ZONE, Rapport.Operation.CREER);
 
         return rapport;
     }
+//!TODO : créer ville / créer pays / créer personne (==> fonctions de recherche)
     
     /**
      * Renvoie la liste des Editions.
-     * @param : void
+     * @param : type Console / Jeu
      * @return : un vecteur/liste de resultat de type Edition
      */
-    public Vector<String> listeEdition()
+    public Vector<String> listeEdition(String type)
     {
         Vector<String> ret = new Vector();
+        List editions;
+        if (type=="Console")
+            { editions = modele.createQuery("select vc.edition from LOREntities.VersionConsole vc").list(); }
+        else
+            { editions = modele.createQuery("select vj.edition from LOREntities.VersionJeu vj").list(); }
 
-        List editions = modele.createQuery("select vj.edition from LOREntities.VersionJeu vj").list();
         for (Object e : editions)
             ret.add((String) e);
         this.modele.flush();
@@ -1083,7 +1366,7 @@ System.out.println("décrire ");
     {
         Vector<String> ret = new Vector();
 
-        List zones = modele.createQuery("from LOREntities.Zone").list();
+        List zones = modele.createQuery("from LOREntities.Zone z order by z.nomZone").list();
         for (Object z : zones)
             ret.add(((Zone) z).getNomZone());
         this.modele.flush();
@@ -1099,7 +1382,7 @@ System.out.println("décrire ");
     {
         Vector<String> ret = new Vector();
 
-        List consoles = modele.createQuery("from LOREntities.Console").list();
+        List consoles = modele.createQuery("from LOREntities.Console c order by c.nomConsole").list();
         for (Object c : consoles)
             ret.add(((Console) c).getNomConsole());
         this.modele.flush();
@@ -1108,7 +1391,7 @@ System.out.println("décrire ");
     }
 
     /**
-     * Renvoie la liste des Tags.
+     * Renvoie la liste des tags.
      * @param : void
      * @return : un vecteur/liste de resultat de type Tags
      */
@@ -1116,9 +1399,44 @@ System.out.println("décrire ");
     {
         Vector<String> ret = new Vector();
         
-        List tags = modele.createQuery("from LOREntities.Tag").list();
+        List tags = modele.createQuery("from LOREntities.Tag t order by t.labelTag").list();
         for (Object t : tags)
             ret.add(((Tag) t).getLabelTag());
+        this.modele.flush();
+        
+        return ret;
+    }
+    
+    /**
+     * Renvoie la liste des pays.
+     * @param : void
+     * @return : un vecteur/liste de resultat qui contient les noms des pays
+     */
+    public Vector<String> listePays()
+    {
+        Vector<String> ret = new Vector();
+        
+        List pays = modele.createQuery("from LOREntities.Pays p order by p.nomPays").list();
+        for (Object p : pays)
+            ret.add(((Pays) p).getNomPays());
+        this.modele.flush();
+        
+        return ret;
+    }
+    /**
+     * Renvoie la liste des villes d'un pays.
+     * @param : void
+     * @return : un vecteur/liste de resultat qui contient les noms des villes
+     */
+    public Vector<String> listeVilles(String pays)
+    {
+        Vector<String> ret = new Vector();
+        
+        List villes = modele.createQuery(
+                "from LOREntities.Ville v where v.pays.nomPays = '" + pays + "' order by v.nomVille"
+                ).list();
+        for (Object v : villes)
+            ret.add(((Ville) v).getNomVille() + " (" + ((Ville) v).getCp() + " )");
         this.modele.flush();
         
         return ret;
@@ -1152,6 +1470,20 @@ System.out.println("décrire ");
         for (int i = 0 ; i < missingCharacters ; i++)
             ret = ret.concat("0");
         return ret.concat(cb);
+    }
+    /**
+     * Calcule le total d'une facture (sous forme de formulaire) et applique la TVA
+     * @param form la facture dont il faut calculer le total
+     * @return le total TTC de la facture
+     */
+    public float calculTotalTTC(FactureForm form)
+    {
+        float retour = 0f; //calcul du total des lignes
+        for (FactureLigneForm flf : form.getLignes())
+            retour += flf.getPrixLigne();
+        retour -= form.getReductions(); //application de la réduction globale
+        retour*= Controleur.TVA; //application de la TVA
+        return retour;
     }
     /**
      * Transforme un vecteur de tags en un vecteur de strings pour l'affichage.

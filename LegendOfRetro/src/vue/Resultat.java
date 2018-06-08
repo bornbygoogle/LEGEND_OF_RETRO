@@ -7,6 +7,7 @@ package vue;
 
 import bean.Form;
 import bean.ProduitForm;
+import bean.PromoForm;
 import controleur.Rapport;
 import java.util.Arrays;
 import java.util.Vector;
@@ -32,13 +33,17 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
         "Edition",
         "Zone",
         "Fabricant"};
+    protected static String [] typePromo = {
+        "Code Barre",
+        "Nom",
+        "Edition",
+        "Zone",
+        "Fabricant"};
+    
 
     /**
      * Creates new form Resultat
-<<<<<<< HEAD
      * @param parent x
-=======
->>>>>>> origin/Iulianbranch
      */
     public Resultat(Chercheur parent)
     {
@@ -134,14 +139,9 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
         this.res = res;
         //Affichage du nombre de résultats
         if (this.res.size() == 0)
-        {
-            critProduit.buttonNouveau.setVisible(true);
             afficherErreur("Aucun résultat.");
-        }
         else if (this.res.size() > 0)
         {
-            critProduit.buttonNouveau.setVisible(true);
-            critProduit.buttonModifier.setVisible(true);
             afficherMessage(this.res.size() + " résultats.");
             
             //On recrée le tableau
@@ -150,7 +150,32 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
                       
             int rowIndex = 0;
             Form test = this.res.iterator().next(); //on commence par déterminer le type de données avec un test. TODO: plus propre ?
-            if (test instanceof ProduitForm)
+            if (test instanceof PromoForm)
+            {
+                //on détermine l'intitulé des colonnes
+                if ("jeu".equals(((PromoForm) test).getType()))
+                    nomsChamps = typeJeu;
+                else //if ("console".equals(((ProduitForm) test).getType()))
+                    nomsChamps = typeConsole;
+                
+                rowIndex = 0;
+                
+                //on remplit le tableau ligne à ligne
+                for (Form f : this.res)
+                {
+                    PromoForm pf = (PromoForm) f;
+                    Object[] donneesLigne = {
+                        pf.getCodeBarre(),
+                        pf.getNom(),
+                        pf.getEdition(),
+                        pf.getZone(),
+                        pf.getEditeur()
+                    };
+                    donnees[rowIndex] = donneesLigne;
+                    rowIndex++;
+                }
+            }
+            else if (test instanceof ProduitForm)
             {
                 //on détermine l'intitulé des colonnes
                 if ("jeu".equals(((ProduitForm) test).getType()))
