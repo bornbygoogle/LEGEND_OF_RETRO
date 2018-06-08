@@ -54,7 +54,7 @@ public class critProduit extends javax.swing.JPanel
         plateformes.add(0, "");
         listePlateforme.setModel(new javax.swing.DefaultComboBoxModel<>(plateformes));
         
-        
+        labelPhoto.setVisible(false);
         
         this.idVersionJeu = -1;
         this.idVersionConsole = -1;
@@ -112,18 +112,8 @@ public class critProduit extends javax.swing.JPanel
         labelZone.setText("Zone : ");
 
         fieldNom.setToolTipText("Nom");
-        fieldNom.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                fieldNomKeyPressed(evt);
-            }
-        });
 
         fieldEditeur.setToolTipText("Developpeur / Fabricant");
-        fieldEditeur.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldEditeurActionPerformed(evt);
-            }
-        });
 
         labelNom.setText("Nom : ");
         labelNom.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -146,10 +136,12 @@ public class critProduit extends javax.swing.JPanel
         });
 
         labelTag.setText("Tag : ");
+        labelTag.setVisible(false);
 
         fieldEdition.setToolTipText("Edition");
 
         fieldTag.setToolTipText("Tag");
+        fieldTag.setVisible(false);
 
         listePlateforme.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PC", "PS", " " }));
         listePlateforme.setVisible(false);
@@ -214,12 +206,6 @@ public class critProduit extends javax.swing.JPanel
         buttonAjoutZone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonAjoutZoneActionPerformed(evt);
-            }
-        });
-
-        fieldCodeBarre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldCodeBarreActionPerformed(evt);
             }
         });
 
@@ -411,22 +397,24 @@ public class critProduit extends javax.swing.JPanel
             fieldDevFab.setText("Développeur :"); 
             labelPlateforme.setVisible(true);
             listePlateforme.setVisible(true);
+            labelTag.setVisible(true);
+            fieldTag.setVisible(true);
+            labelPhoto.setVisible(true);
         }
         else 
         { 
             fieldDevFab.setText("Fabricant : ");
             labelPlateforme.setVisible(false);
             listePlateforme.setVisible(false);
+            labelTag.setVisible(false);
+            fieldTag.setVisible(false);
+            labelPhoto.setVisible(false);
         }
     }//GEN-LAST:event_listeCategorieItemStateChanged
 
     private void listePlateformeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listePlateformeItemStateChanged
         // TODO add your handling code here:
     }//GEN-LAST:event_listePlateformeItemStateChanged
-
-    private void fieldEditeurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldEditeurActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldEditeurActionPerformed
 
     private void buttonAjoutZoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAjoutZoneActionPerformed
         try {
@@ -488,10 +476,6 @@ public class critProduit extends javax.swing.JPanel
         throw new UnsupportedOperationException("La modification de produit n'a pas encore été implémentée.");
     }//GEN-LAST:event_buttonModifierActionPerformed
 
-    private void fieldCodeBarreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldCodeBarreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldCodeBarreActionPerformed
-
     private void listeZoneItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listeZoneItemStateChanged
         // TODO add your handling code here:
         if ("Autre".equals((String)listeZone.getSelectedItem())) 
@@ -505,10 +489,6 @@ public class critProduit extends javax.swing.JPanel
             buttonAjoutZone.setVisible(false);
         }
     }//GEN-LAST:event_listeZoneItemStateChanged
-
-    private void fieldNomKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldNomKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldNomKeyPressed
 
     private void listePlateformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listePlateformeActionPerformed
         // TODO add your handling code here:

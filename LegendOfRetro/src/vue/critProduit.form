@@ -222,17 +222,11 @@
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value="Nom"/>
       </Properties>
-      <Events>
-        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="fieldNomKeyPressed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="fieldEditeur">
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value="Developpeur / Fabricant"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldEditeurActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="labelNom">
       <Properties>
@@ -289,6 +283,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Tag : "/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="labelTag.setVisible(false);&#xa;"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="fieldEdition">
       <Properties>
@@ -299,6 +296,9 @@
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value="Tag"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="fieldTag.setVisible(false);"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JComboBox" name="listePlateforme">
       <Properties>
@@ -420,9 +420,6 @@
       </AuxValues>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="fieldCodeBarre">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldCodeBarreActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="buttonChercher">
       <Properties>

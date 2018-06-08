@@ -679,6 +679,85 @@ public class Controleur
         //si aucun produit n'a été créé
         return -1;
     }
+    
+    /**
+     * Crée un pays. Assure l'unicité de l'enregistrement.
+     * @param rapport le rapport dans lequel l'opération sera enregistrée
+     * @param nomPays le nom exact du pays à créer
+     * @throws DonneesInsuffisantesException si l'utilisateur rentre des données insufisantes
+     * @throws EnregistrementExistantException si la valeur entrée existe deja dans la base de données
+     * @return un rapport dans lequel l'opération est enregistrée
+    */
+    public Rapport creerPays(String nomPays)
+            throws DonneesInsuffisantesException, EnregistrementExistantException
+    {
+        if ("".equals(nomPays)) //si le nom de du pays n'est pas saisi
+            throw new DonneesInsuffisantesException("Impossible de créer le pays : un nom est requis."); //vérifier le code appelant.
+
+        //on vérifie que le pays n'existe pas déjà !
+        Pays existant = chercherPays(nomPays);
+        if (existant != null)
+            throw new EnregistrementExistantException("Impossible de créer le pays : ce pays existe déjà."); //vérifier le code appelant.
+
+        //création du pays
+        Pays p = new Pays();
+        p.setNomPays(nomPays);
+
+        //sauvegarde dans la base de données
+        this.modele.beginTransaction();
+        this.modele.save(p);
+        this.modele.getTransaction().commit();
+        this.modele.flush();
+
+        Rapport rapport = new Rapport();
+        rapport.addOperation(p.getIdPays(), Rapport.Table.PAYS, Rapport.Operation.CREER);
+        return rapport;
+    }
+    /**
+     * Crée une ville.
+     * @param nomVille le nom exact de la ville à créer
+     * @param CP le code postal de la ville à créer
+     * @param nomPays le nom exact du pays auquel appartient la ville
+     * @throws DonneesInsuffisantesException si l'utilisateur rentre de données insufisantes
+     * @throws EnregistrementExistantException si la valeur entre existe deja dans la base de données
+     * @throws DonneeInvalideException - si le pays est renseigné n'existe pas dans la base de données
+     * - si le code postal est déjà attribué
+     * @return un rapport dans lequel l'opération est enregistrée
+    */
+    public Rapport creerVille(String nomVille, String cp, String nomPays)
+            throws DonneesInsuffisantesException, EnregistrementExistantException, DonneeInvalideException
+    {
+        if ("".equals(nomVille) || "".equals(cp) || "".equals(nomPays))
+            throw new DonneesInsuffisantesException("Impossible de créer la ville : un nom, un code postal et un pays sont requis.");
+
+        //on détermine l'identifiant du pays
+        Pays pays = chercherPays(nomPays);
+        if (pays == null)
+            throw new DonneeInvalideException("Impossible de créer la ville : le pays renseigné n'existe pas dans la base de données.");
+
+        //on vérifie que la ville n'existe pas déjà !
+        Ville existante = chercherVille(nomVille, cp, nomPays);
+        if (existante != null)
+            throw new EnregistrementExistantException("Impossible de créer la ville : cette ville existe déjà.");
+
+        //création de la ville
+        Ville ville = new Ville();
+        ville.setNomVille(nomVille);
+//        ville.setCp(cp); //ne pas réparer : remplacer par la ligne suivante.
+        ville.setCp(new Long(cp));
+        //Le problème, c'est que long est une très mauvaise idée pour décrire un code postal. TODO : A réparer.
+        ville.setPays(pays);
+
+        //sauvegarde dans la base de données
+        this.modele.beginTransaction();
+        this.modele.save(ville);
+        this.modele.getTransaction().commit();
+        this.modele.flush();
+
+        Rapport rapport = new Rapport();
+        rapport.addOperation(ville.getIdVille(), Rapport.Table.VILLE, Rapport.Operation.CREER);
+        return rapport;
+    }
 
     /**
      * Détermine, à partir d'un bean, quelle(s) requête(s) de recherche générer et exécuter. Transforme les résultats en formulaires.
@@ -1275,6 +1354,53 @@ public class Controleur
             return null;
         else //on suppose qu'il n'y a qu'un seul résultat !
             return (Tag) resultats.get(0);
+    }
+    
+    /**
+     * Recherche un pays dans la base de données. Si le pays renseigné est trouvé, un objet Pays est renvoyé. Sinon, la méthode renvoie null.
+     */
+    private Pays chercherPays(String pays) throws DonneesInsuffisantesException
+    {
+        if (pays == null || "".equals(pays))
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche du pays : nom du pays non renseigné.");
+
+        HQLRecherche q = new HQLRecherche("Pays p");
+        q.addCondition("p.nomPays", pays, HQLRecherche.Operateur.EGAL);
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
+        this.modele.flush();
+
+        if (resultats.isEmpty())
+            return null;
+        else //on suppose qu'il n'y a qu'un seul résultat !
+            return (Pays) resultats.get(0);
+    }
+    /**
+     * Recherche une ville dans la base de données
+     * @param nomVille le nom de la ville à rechercher (obligatoire)
+     * @param cp le code postal de la ville à rechercher (obligatoire)
+     * @param nomPays le nom du pays dans lequel se situe la ville
+     * @return L'entité hibernate associée à l'enregistrement correspondant
+     */
+    private Ville chercherVille(String nomVille, String cp, String nomPays) throws DonneesInsuffisantesException
+    {
+        if (nomVille == null || "".equals(nomVille)
+                || cp == null || "".equals(cp)
+                || nomPays == null || "".equals(nomPays))
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche de la ville : nom de la ville, code postal ou nom du pays non renseigné.");
+
+        HQLRecherche q = new HQLRecherche("Ville v");
+        q.addCondition("v.nomVille", nomVille, HQLRecherche.Operateur.EGAL);
+        q.addCondition("v.cp", cp, HQLRecherche.Operateur.EGAL);
+        q.addCondition("v.pays.nomPays", nomPays, HQLRecherche.Operateur.EGAL);
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
+        this.modele.flush();
+
+        if (resultats.isEmpty())
+            return null;
+        else //on suppose qu'il n'y a qu'un seul résultat !
+            return (Ville) resultats.get(0);
     }
 
      /**
