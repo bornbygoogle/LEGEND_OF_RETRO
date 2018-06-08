@@ -1,5 +1,5 @@
 package LOREntities;
-// Generated Jun 7, 2018 5:40:08 PM by Hibernate Tools 4.3.1
+// Generated Jun 9, 2018 12:02:55 AM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -18,6 +18,7 @@ public class VersionConsole  implements java.io.Serializable {
      private String edition;
      private float prix;
      private int stock;
+     private Set promoConsoles = new HashSet(0);
      private Set ligneFactureConsoles = new HashSet(0);
 
     public VersionConsole() {
@@ -32,13 +33,14 @@ public class VersionConsole  implements java.io.Serializable {
         this.prix = prix;
         this.stock = stock;
     }
-    public VersionConsole(Console console, Zone zone, String codeBarre, String edition, float prix, int stock, Set ligneFactureConsoles) {
+    public VersionConsole(Console console, Zone zone, String codeBarre, String edition, float prix, int stock, Set promoConsoles, Set ligneFactureConsoles) {
        this.console = console;
        this.zone = zone;
        this.codeBarre = codeBarre;
        this.edition = edition;
        this.prix = prix;
        this.stock = stock;
+       this.promoConsoles = promoConsoles;
        this.ligneFactureConsoles = ligneFactureConsoles;
     }
    
@@ -90,6 +92,13 @@ public class VersionConsole  implements java.io.Serializable {
     
     public void setStock(int stock) {
         this.stock = stock;
+    }
+    public Set getPromoConsoles() {
+        return this.promoConsoles;
+    }
+    
+    public void setPromoConsoles(Set promoConsoles) {
+        this.promoConsoles = promoConsoles;
     }
     public Set getLigneFactureConsoles() {
         return this.ligneFactureConsoles;

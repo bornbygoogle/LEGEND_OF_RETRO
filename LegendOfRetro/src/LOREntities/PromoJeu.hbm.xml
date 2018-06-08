@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 9, 2018 12:02:56 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="LOREntities.PromoJeu" table="PromoJeu" catalog="p1514527" optimistic-lock="version">
+        <id name="idPromoJeu" type="java.lang.Integer">
+            <column name="idPromoJeu" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="versionJeu" class="LOREntities.VersionJeu" fetch="select">
+            <column name="idVersionJeu" not-null="true" />
+        </many-to-one>
+        <property name="coteJeu" type="float">
+            <column name="coteJeu" precision="12" scale="0" not-null="true" />
+        </property>
+        <property name="prixPromoJeu" type="float">
+            <column name="prixPromoJeu" precision="12" scale="0" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
