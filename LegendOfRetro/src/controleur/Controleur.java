@@ -15,6 +15,7 @@ import bean.ProduitForm;
 import bean.PromoForm;
 import hibernateConfig.HibernateUtil;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -1598,6 +1599,58 @@ public class Controleur
         return ret.concat(cb);
     }
     /**
+     * Renvoie la quantite de vente d'un produit
+     * @param : type de produit, ID du produit
+     * @return : la quantité du produit demandé en Integer
+     */
+    public int getSellQuantityProduct(String typeProduit, Integer idProduit)
+    {
+        int nombreAchat = 0;
+        List resul = new ArrayList();
+        if ("Console".equals(typeProduit)) 
+        {
+            resul = modele.createQuery("select quantite from LOREntities.LigneFactureConsole lfc "
+                                     + "where "
+                                        + "(lfc.versionConsole IN (select vc.idVersionConsole from LOREntities.VersionConsole vc  where vc.idVersionConsole="+idProduit+")"
+                                        + " AND lfc.facture IN ( select f.idFacture from LOREntities.Facture f where f.typeFacture='v')"
+                                        + " )").list();
+        }
+        else if ("Jeu".equals(typeProduit)) 
+        {
+            resul = modele.createQuery("select quantite from LOREntities.LigneFactureJeu lfj "
+                                     + "where "
+                                        + "(lfj.versionJeu IN (select vj.idVersionJeu from LOREntities.VersionJeu vj  where vj.idVersionJeu="+idProduit+")"
+                                        + " AND lfc.facture IN ( select f.idFacture from LOREntities.Facture f where f.typeFacture='v')"
+                                        + " )").list();
+        } 
+        this.modele.flush();
+        nombreAchat = (int) resul.get(0);
+        return nombreAchat;
+    }
+    /**
+     * Renvoie la quantite de stock d'un produit
+     * @param : type de produit, ID du produit
+     * @return : la quantité du produit demandé en Integer
+     */
+    public int getStockProduct(String typeProduit, Integer idProduit) throws DonneeInvalideException
+    {
+        int stock = 0;
+        if ("Console".equals(typeProduit)) 
+        {
+            VersionConsole vc = new VersionConsole();
+            vc = chercherVersionConsole(idProduit);
+            stock = vc.getStock();
+        }
+        else if ("Jeu".equals(typeProduit)) 
+        {
+            VersionJeu vj = new VersionJeu();
+            vj = chercherVersionJeu(idProduit);
+            stock = vj.getStock();
+        }  
+        this.modele.flush();
+        return stock;
+    }
+    /**
      * Calcule le total d'une facture (sous forme de formulaire) et applique la TVA
      * @param form la facture dont il faut calculer le total
      * @return le total TTC de la facture
@@ -1616,31 +1669,18 @@ public class Controleur
      * @param type de produit, ID du produit
      * @return le cote du produit demandé
      */
-    public float calculCote(String type, Integer idProduit) throws DonneeInvalideException
+    public float calculCote(String typeProduit, Integer idProduit) throws DonneeInvalideException
     {
+        float cote = 0f; //calcul du total des lignes
         //Form pdf = new Form();
         // Recuperer la date d'achat
         Float dateAchat = 0f;
         
         // Recuperer le nombre de vente
-        Integer nbreVente = 0;
+        Integer nbreVente = getSellQuantityProduct(typeProduit, idProduit);
         
         // Recuperer le stock actuel
-        Integer stockActuel = 0;
-        float cote = 0f; //calcul du total des lignes
-        if ("Console".equals(type)) 
-        {
-            VersionConsole vc = new VersionConsole();
-            vc = chercherVersionConsole(idProduit);
-            stockActuel = vc.getStock();
-        }
-        else if ("Jeu".equals(type)) 
-        {
-            VersionJeu vj = new VersionJeu();
-            vj = chercherVersionJeu(idProduit);
-            stockActuel = vj.getStock();
-        }
-            
+        Integer stockActuel = getStockProduct(typeProduit, idProduit);
         
         //Calculer cote
         cote = dateAchat/180 + stockActuel/10 + nbreVente/10;
