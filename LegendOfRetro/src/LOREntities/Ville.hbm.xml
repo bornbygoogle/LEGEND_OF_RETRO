@@ -14,8 +14,8 @@
         <property name="nomVille" type="string">
             <column name="nomVille" length="30" not-null="true" />
         </property>
-        <property name="cp" type="long">
-            <column name="CP" not-null="true" />
+        <property name="cp" type="string">
+            <column name="CP" length="10" not-null="true" />
         </property>
         <set name="personnes" table="Personne" inverse="true" lazy="true" fetch="select">
             <key>

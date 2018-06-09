@@ -743,9 +743,7 @@ public class Controleur
         //création de la ville
         Ville ville = new Ville();
         ville.setNomVille(nomVille);
-//        ville.setCp(cp); //ne pas réparer : remplacer par la ligne suivante.
-        ville.setCp(new Long(cp));
-        //Le problème, c'est que long est une très mauvaise idée pour décrire un code postal. TODO : A réparer.
+        ville.setCp(cp);
         ville.setPays(pays);
 
         //sauvegarde dans la base de données
