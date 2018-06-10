@@ -47,6 +47,7 @@ System.out.println("test liste villes de France " + this.controleur.listeVilles(
     {
         this(c);
         this.menuAppelant = menuVente;
+        this.Criteres.selectionnerVisible(false);
     }
 
     /**

@@ -618,6 +618,10 @@ public class critPersonne extends javax.swing.JPanel {
         
         return retour;
     }
+    public void selectionnerVisible(boolean b)
+    {
+        this.buttonSelectionner.setVisible(b);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel CP;
