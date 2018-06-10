@@ -66,7 +66,7 @@ public class critVente extends javax.swing.JPanel {
         buttonChercher = new javax.swing.JButton();
         buttonAjouter = new javax.swing.JButton();
         buttonSupprimer = new javax.swing.JButton();
-        buttonTerminer = new javax.swing.JButton();
+        buttonSuivant = new javax.swing.JButton();
         fieldCodeBarre = new javax.swing.JFormattedTextField();
 
         labelCodeBarre.setText("Code Barre : ");
@@ -112,10 +112,10 @@ public class critVente extends javax.swing.JPanel {
             }
         });
 
-        buttonTerminer.setText("Terminer");
-        buttonTerminer.addActionListener(new java.awt.event.ActionListener() {
+        buttonSuivant.setText("Suivant");
+        buttonSuivant.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonTerminerActionPerformed(evt);
+                buttonSuivantActionPerformed(evt);
             }
         });
 
@@ -132,39 +132,31 @@ public class critVente extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(labelEdition, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(labelZone, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(labelDevFab, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(labelPlateforme, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addContainerGap(819, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(labelPrix)
-                            .addContainerGap(880, Short.MAX_VALUE)))
+                    .addComponent(labelEdition)
+                    .addComponent(labelZone)
+                    .addComponent(labelDevFab)
+                    .addComponent(labelPlateforme, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelPrix)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(buttonAjouter)
+                        .addGap(18, 18, 18)
+                        .addComponent(buttonSupprimer)
+                        .addGap(41, 41, 41)
+                        .addComponent(buttonSuivant))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(buttonAjouter)
-                                .addGap(18, 18, 18)
-                                .addComponent(buttonSupprimer)
-                                .addGap(41, 41, 41)
-                                .addComponent(buttonTerminer))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelCodeBarre)
-                                    .addComponent(labelNom))
-                                .addGap(35, 35, 35)
-                                .addComponent(fieldCodeBarre, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(28, 28, 28)
-                                .addComponent(buttonChercher))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(labelQuantite)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(fieldQuantite, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(labelStock)))
-                        .addContainerGap(551, Short.MAX_VALUE))))
+                            .addComponent(labelCodeBarre)
+                            .addComponent(labelNom))
+                        .addGap(35, 35, 35)
+                        .addComponent(fieldCodeBarre, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(buttonChercher))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelQuantite)
+                        .addGap(18, 18, 18)
+                        .addComponent(fieldQuantite, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labelStock))
+                .addContainerGap(551, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,7 +188,7 @@ public class critVente extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonAjouter)
                     .addComponent(buttonSupprimer)
-                    .addComponent(buttonTerminer))
+                    .addComponent(buttonSuivant))
                 .addGap(12, 12, 12))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -223,17 +215,11 @@ public class critVente extends javax.swing.JPanel {
         buttonSupprimer.setBackground(Color.GREEN);
     }//GEN-LAST:event_buttonSupprimerActionPerformed
 
-    private void buttonTerminerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTerminerActionPerformed
-        try {
-            this.parent.afficherLog(
-                    this.controleur.creer(this.parent.getFacture())
-                            .toString());
-        }
-        catch (DonneesInsuffisantesException ex) {
-            this.parent.afficherErreur(ex);}
-         buttonTerminer.setBackground(Color.GREEN);
+    private void buttonSuivantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSuivantActionPerformed
+        this.parent.selectionnerPersonne();
+         buttonSuivant.setBackground(Color.GREEN);
          
-    }//GEN-LAST:event_buttonTerminerActionPerformed
+    }//GEN-LAST:event_buttonSuivantActionPerformed
 
     private void fieldCodeBarreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldCodeBarreActionPerformed
         // TODO add your handling code here:
@@ -328,8 +314,8 @@ public class critVente extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAjouter;
     private javax.swing.JButton buttonChercher;
+    private javax.swing.JButton buttonSuivant;
     private javax.swing.JButton buttonSupprimer;
-    private javax.swing.JButton buttonTerminer;
     private javax.swing.JFormattedTextField fieldCodeBarre;
     private javax.swing.JSpinner fieldQuantite;
     private javax.swing.JLabel labelCodeBarre;

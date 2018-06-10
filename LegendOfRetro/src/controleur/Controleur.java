@@ -38,8 +38,9 @@ import vue.GUI;
  */
 public class Controleur
 {
-    private static final float TVA = 1.05f;
+    private static final float TVA = 1.2f;
     private static final int largeurFacture = 43;
+    private static final String nomEntreprise = "Micromania";
     private GUI vue; //utilisé pour communiquer avec l'affichage
     private Session modele; //session hibernate
 
@@ -141,9 +142,10 @@ public class Controleur
         //date
         facture.setDateFacture(Date.from(Instant.now()));
         
-        /*/Client ou fournisseur lié
-        TODO: à implémenter
-        if (form.getActeurId() != -1) {
+        //Client ou fournisseur lié
+System.out.println("        TODO: à implémenter, Personne dans Facture (méthode creer(FactureForm))");
+        /*
+        if (form.getActeur() != null) {
             //chercher Personne et l'affecter
         }
         else
@@ -1600,8 +1602,7 @@ public class Controleur
         for (int i = 0 ; i < largeurFacture ; i++)
             fw.write('-');
         fw.write("\n");
-        
-        //informations facture
+        //En-ête : informations facture
         ligneCourante = "Facture ";
         if (facture.getTypeFacture() == 'a')
             ligneCourante = ligneCourante.concat("d'achat ");
@@ -1611,8 +1612,15 @@ public class Controleur
         //écriture
         for (String sl : formater(ligneCourante, "", largeurFacture, 0, ' '))
             fw.write(sl);
-        
-        //TODO: informations client
+        //information entreprise
+        for (String sl : formater("Entreprise : " + nomEntreprise, "", largeurFacture, 0, ' '))
+            fw.write(sl);
+        //TODO: informations client/fourn
+        if (facture.getTypeFacture() == 'a')
+            ligneCourante = "Fournisseur : ";
+        else if (facture.getTypeFacture() == 'v')
+            ligneCourante = "Client : ";
+        ligneCourante  =ligneCourante.concat("#TODO");
         
         
         //ligne du milieu haut

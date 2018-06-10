@@ -20,22 +20,22 @@ public class FactureForm extends Form
     /**
      * Identifiant de la personne (fournisseur ou client) qui constitue l'autre partie de la transaction. Voir table Personne dans la base de données.
      */
-    private int acteurId;
+    private PersonneForm acteur;
     private Vector<FactureLigneForm> lignes;
     private float reductions;
     
     public FactureForm()
     {
         this.nature = false;
-        this.acteurId = -1;
+        this.acteur = null;
         this.lignes = new Vector<FactureLigneForm>();
         this.reductions = 0f;
     }
     
-    public boolean getNature()              {return this.nature;}
-    public void setNature(boolean achat)    {this.nature = achat;}
-    public int getActeurId()                {return this.acteurId;}
-    public void setActeurId(int acteurId)   {this.acteurId = acteurId;}
+    public boolean getNature()                  {return this.nature;}
+    public void setNature(boolean achat)        {this.nature = achat;}
+    public PersonneForm getActeur()             {return this.acteur;}
+    public void setActeur(PersonneForm acteur)  {this.acteur = acteur;}
     public Vector<FactureLigneForm> getLignes()                 {return this.lignes;}
     public void setLignes(Vector<FactureLigneForm> lignes)      {this.lignes = lignes;}
     public float getReductions()          {return this.reductions;}

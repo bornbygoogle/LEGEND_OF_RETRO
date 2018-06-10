@@ -15,16 +15,16 @@ import controleur.Controleur;
  */
 public class critPersonne extends javax.swing.JPanel {
 
-    private Form selectedForm;
+    private PersonneForm selectedForm;
     private Controleur controleur;
-    private Chercheur parent;
+    private menuPersonne parent;
     
     private int idPersonne;
 
     /**
      * Creates new form critPersonne
      */
-    public critPersonne(Controleur controleur, Chercheur parent)
+    public critPersonne(Controleur controleur, menuPersonne parent)
     {
         this.controleur = controleur;
         this.parent = parent;
@@ -87,6 +87,7 @@ public class critPersonne extends javax.swing.JPanel {
         totalV = new javax.swing.JLabel();
         labelTotalVente = new javax.swing.JLabel();
         e1 = new javax.swing.JLabel();
+        buttonSelectionner = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -292,6 +293,13 @@ public class critPersonne extends javax.swing.JPanel {
 
         e1.setText("€");
 
+        buttonSelectionner.setText("Sélectionner");
+        buttonSelectionner.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSelectionnerActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -364,13 +372,15 @@ public class critPersonne extends javax.swing.JPanel {
                         .addComponent(mail1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(mailField1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(buttonChercher1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(buttonNouveau)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonModifier))
-                            .addComponent(mailField1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(buttonModifier)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(buttonSelectionner)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -406,17 +416,16 @@ public class critPersonne extends javax.swing.JPanel {
                     .addComponent(jLabel2)
                     .addComponent(id)
                     .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(histoVente)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(totalV)
                                         .addComponent(labelTotalVente)
-                                        .addComponent(e1)))
+                                        .addComponent(e1))
+                                    .addComponent(histoVente))
                                 .addGap(119, 119, 119))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(28, 28, 28)
@@ -476,7 +485,8 @@ public class critPersonne extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(buttonNouveau)
                             .addComponent(buttonModifier)
-                            .addComponent(buttonChercher1))))
+                            .addComponent(buttonChercher1)
+                            .addComponent(buttonSelectionner))))
                 .addContainerGap())
         );
 
@@ -546,11 +556,7 @@ public class critPersonne extends javax.swing.JPanel {
 
     private void buttonNouveauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNouveauActionPerformed
 
-            Form f = this.toForm();
-            
-
-       
-       
+            parent.creer(this.toForm());
     }//GEN-LAST:event_buttonNouveauActionPerformed
 
     private void buttonModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonModifierActionPerformed
@@ -589,6 +595,13 @@ public class critPersonne extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_fieldDomainMailActionPerformed
 
+    private void buttonSelectionnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSelectionnerActionPerformed
+        if (this.selectedForm != null)
+            this.parent.selectionner(this.selectedForm);
+        else
+            this.parent.afficherErreur(new IllegalArgumentException("Veuillez créer ou rechercher un client."));
+    }//GEN-LAST:event_buttonSelectionnerActionPerformed
+
     
     
     public void setForm(PersonneForm f)
@@ -619,6 +632,7 @@ public class critPersonne extends javax.swing.JPanel {
     private javax.swing.JButton buttonChercher1;
     private javax.swing.JButton buttonModifier;
     private javax.swing.JButton buttonNouveau;
+    private javax.swing.JButton buttonSelectionner;
     private javax.swing.JLabel complement;
     private javax.swing.JTextField complementField;
     private javax.swing.JLabel e1;
