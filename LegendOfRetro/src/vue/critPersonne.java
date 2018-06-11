@@ -8,6 +8,9 @@ package vue;
 import bean.Form;
 import bean.PersonneForm;
 import controleur.Controleur;
+import controleur.DonneesInsuffisantesException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -576,7 +579,7 @@ public class critPersonne extends javax.swing.JPanel {
     }//GEN-LAST:event_paysComboBoxActionPerformed
 
     private void buttonChercher1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChercher1ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_buttonChercher1ActionPerformed
 
     private void societeField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_societeField1ActionPerformed

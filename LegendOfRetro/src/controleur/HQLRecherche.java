@@ -16,7 +16,7 @@ public class HQLRecherche
 {
     public enum Operateur
     {
-        EGAL, INF, INFOUEGAL, SUP, SUPOUEGAL, DIFF, LIKE, IN, NOTIN, ISNULL, ISNOTNULL;
+        EGAL, INF, INFOUEGAL, SUP, SUPOUEGAL, DIFF, LIKE, IN, NOTIN, ISNULL, ISNOTNULL, AND;
         public String toString()
         {
             String ret;
@@ -32,6 +32,8 @@ public class HQLRecherche
                 ret = ">=";
             else if (this.equals(DIFF))
                 ret = "!=";
+            else if (this.equals(AND))
+                ret = "&";
             else if (this.equals(LIKE))
                 ret = "LIKE";
             else if (this.equals(IN))
