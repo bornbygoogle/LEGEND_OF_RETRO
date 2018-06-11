@@ -10,6 +10,7 @@ import bean.FactureForm;
 import bean.FactureLigneForm;
 //import bean.FactureLigneForm;
 import bean.Form;
+import bean.PersonneForm;
 import bean.ProduitForm;
 import controleur.Controleur;
 import controleur.DonneeInvalideException;
@@ -32,6 +33,7 @@ public class menuVente extends JPanel implements Chercheur
 
     protected critVente selectionProduit;
     protected Resultat<FactureLigneForm> affichageFacture;
+    protected menuPersonne selectionPersonne;
     FactureForm facture;
 
     /**
@@ -144,6 +146,41 @@ try {
         this.affichageFacture.afficherMessage(log);
     }
 
+    public void selectionnerPersonne() //appelé par un composant qui ne peut pas sélectionner de personne
+    {
+        if (this.facture.getLignes().isEmpty())
+        {
+            this.afficherErreur(new IllegalArgumentException("Erreur : la facture est vide."));
+            return;
+        }
+        
+        this.selectionPersonne = new menuPersonne(this.controleur, this);
+        
+        this.removeAll();
+        this.add(this.selectionPersonne, BorderLayout.CENTER);
+        //refresh
+        this.setVisible(false);
+        this.setVisible(true);
+    }
+    public void selectionnerPersonne(PersonneForm pf) //appelé par un composant qui A sélectionné une personne
+    {
+        this.facture.setActeur(pf);
+        //création de la facture !
+        try {
+            this.afficherLog(
+                    this.controleur.creer(this.facture).toString());
+        }
+        catch (DonneesInsuffisantesException ex) {
+            this.afficherErreur(ex);}
+        //retour à l'affichage initial
+        this.removeAll();
+        this.add(this.selectionProduit, BorderLayout.CENTER);
+        this.add(this.affichageFacture, BorderLayout.SOUTH);
+        //refresh
+        this.setVisible(false);
+        this.setVisible(true);
+    }
+    
     public void ajouterLigne(FactureLigneForm ligne)
     {
 //TODO: rechercher dans la facture pour voir si la ligne existe, et si elle existe, mofifier (attention ajoutLigneLegal devrait prendre en compte le DEUX linges -> polymorphisme ?)
@@ -155,7 +192,7 @@ try {
         }
         catch (Exception e)     {afficherErreur(e);}
     }
-    void supprimerLigne(FactureLigneForm ligne)
+    void supprimerLigne(FactureLigneForm ligne) //TODO : tester !
     {
         //on commence par trouver, dans this.facture, une ligne qui a le même code barre que la ligne fournie en paramètre.
         Iterator<FactureLigneForm> it = this.facture.getLignes().iterator();
@@ -193,8 +230,4 @@ try {
     protected void traiterEchecRecherche(String codeBarre) {
         afficherErreur(new Exception("Aucun produit trouvé."));
     }
-    
-    public FactureForm getFacture()     {return this.facture;}
-
-
 }

@@ -14,19 +14,19 @@ public class Ville  implements java.io.Serializable {
      private Integer idVille;
      private Pays pays;
      private String nomVille;
-     private long cp;
+     private String cp;
      private Set personnes = new HashSet(0);
 
     public Ville() {
     }
 
 	
-    public Ville(Pays pays, String nomVille, long cp) {
+    public Ville(Pays pays, String nomVille, String cp) {
         this.pays = pays;
         this.nomVille = nomVille;
         this.cp = cp;
     }
-    public Ville(Pays pays, String nomVille, long cp, Set personnes) {
+    public Ville(Pays pays, String nomVille, String cp, Set personnes) {
        this.pays = pays;
        this.nomVille = nomVille;
        this.cp = cp;
@@ -54,11 +54,11 @@ public class Ville  implements java.io.Serializable {
     public void setNomVille(String nomVille) {
         this.nomVille = nomVille;
     }
-    public long getCp() {
+    public String getCp() {
         return this.cp;
     }
     
-    public void setCp(long cp) {
+    public void setCp(String cp) {
         this.cp = cp;
     }
     public Set getPersonnes() {
