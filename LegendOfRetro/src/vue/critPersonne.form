@@ -119,14 +119,16 @@
                       <Component id="mail1" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
+                          <Component id="mailField1" min="-2" pref="116" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
                               <Component id="buttonChercher1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="buttonNouveau" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="buttonModifier" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="buttonSelectionner" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="mailField1" min="-2" pref="116" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -174,18 +176,17 @@
                   <Component id="id" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="idField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="histoVente" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                                       <Component id="totalV" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="labelTotalVente" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="e1" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
+                                  <Component id="histoVente" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="119" max="-2" attributes="0"/>
                           </Group>
@@ -261,6 +262,7 @@
                           <Component id="buttonNouveau" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="buttonModifier" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="buttonChercher1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="buttonSelectionner" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -644,6 +646,14 @@
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="e1"/>
       </AccessibilityProperties>
+    </Component>
+    <Component class="javax.swing.JButton" name="buttonSelectionner">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="S&#xe9;lectionner"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonSelectionnerActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

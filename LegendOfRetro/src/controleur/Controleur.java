@@ -14,12 +14,20 @@ import bean.Form;
 import bean.ProduitForm;
 import bean.PromoForm;
 import hibernateConfig.HibernateUtil;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.hibernate.*;
 import vue.GUI;
 
@@ -30,7 +38,9 @@ import vue.GUI;
  */
 public class Controleur
 {
-    private static final float TVA = 1.05f;
+    private static final float TVA = 1.2f;
+    private static final int largeurFacture = 43;
+    private static final String nomEntreprise = "Micromania";
     private GUI vue; //utilisé pour communiquer avec l'affichage
     private Session modele; //session hibernate
 
@@ -132,9 +142,10 @@ public class Controleur
         //date
         facture.setDateFacture(Date.from(Instant.now()));
         
-        /*/Client ou fournisseur lié
-        TODO: à implémenter
-        if (form.getActeurId() != -1) {
+        //Client ou fournisseur lié
+System.out.println("        TODO: à implémenter, Personne dans Facture (méthode creer(FactureForm))");
+        /*
+        if (form.getActeur() != null) {
             //chercher Personne et l'affecter
         }
         else
@@ -150,6 +161,11 @@ public class Controleur
             creerLigneFacture(rapport, ligne, facture);
         
         rapport.addOperation(facture.getIdFacture(), Rapport.Table.FACTURE, Rapport.Operation.CREER);
+        
+        try {
+            exporter(facture);}
+        catch (IOException ex) {System.out.println(ex.getMessage());}
+        
         return rapport;
     }
     /**
@@ -678,6 +694,83 @@ public class Controleur
 
         //si aucun produit n'a été créé
         return -1;
+    }
+    
+    /**
+     * Crée un pays. Assure l'unicité de l'enregistrement.
+     * @param rapport le rapport dans lequel l'opération sera enregistrée
+     * @param nomPays le nom exact du pays à créer
+     * @throws DonneesInsuffisantesException si l'utilisateur rentre des données insufisantes
+     * @throws EnregistrementExistantException si la valeur entrée existe deja dans la base de données
+     * @return un rapport dans lequel l'opération est enregistrée
+    */
+    public Rapport creerPays(String nomPays)
+            throws DonneesInsuffisantesException, EnregistrementExistantException
+    {
+        if ("".equals(nomPays)) //si le nom de du pays n'est pas saisi
+            throw new DonneesInsuffisantesException("Impossible de créer le pays : un nom est requis."); //vérifier le code appelant.
+
+        //on vérifie que le pays n'existe pas déjà !
+        Pays existant = chercherPays(nomPays);
+        if (existant != null)
+            throw new EnregistrementExistantException("Impossible de créer le pays : ce pays existe déjà."); //vérifier le code appelant.
+
+        //création du pays
+        Pays p = new Pays();
+        p.setNomPays(nomPays);
+
+        //sauvegarde dans la base de données
+        this.modele.beginTransaction();
+        this.modele.save(p);
+        this.modele.getTransaction().commit();
+        this.modele.flush();
+
+        Rapport rapport = new Rapport();
+        rapport.addOperation(p.getIdPays(), Rapport.Table.PAYS, Rapport.Operation.CREER);
+        return rapport;
+    }
+    /**
+     * Crée une ville.
+     * @param nomVille le nom exact de la ville à créer
+     * @param CP le code postal de la ville à créer
+     * @param nomPays le nom exact du pays auquel appartient la ville
+     * @throws DonneesInsuffisantesException si l'utilisateur rentre de données insufisantes
+     * @throws EnregistrementExistantException si la valeur entre existe deja dans la base de données
+     * @throws DonneeInvalideException - si le pays est renseigné n'existe pas dans la base de données
+     * - si le code postal est déjà attribué
+     * @return un rapport dans lequel l'opération est enregistrée
+    */
+    public Rapport creerVille(String nomVille, String cp, String nomPays)
+            throws DonneesInsuffisantesException, EnregistrementExistantException, DonneeInvalideException
+    {
+        if ("".equals(nomVille) || "".equals(cp) || "".equals(nomPays))
+            throw new DonneesInsuffisantesException("Impossible de créer la ville : un nom, un code postal et un pays sont requis.");
+
+        //on détermine l'identifiant du pays
+        Pays pays = chercherPays(nomPays);
+        if (pays == null)
+            throw new DonneeInvalideException("Impossible de créer la ville : le pays renseigné n'existe pas dans la base de données.");
+
+        //on vérifie que la ville n'existe pas déjà !
+        Ville existante = chercherVille(nomVille, cp, nomPays);
+        if (existante != null)
+            throw new EnregistrementExistantException("Impossible de créer la ville : cette ville existe déjà.");
+
+        //création de la ville
+        Ville ville = new Ville();
+        ville.setNomVille(nomVille);
+        ville.setCp(cp);
+        ville.setPays(pays);
+
+        //sauvegarde dans la base de données
+        this.modele.beginTransaction();
+        this.modele.save(ville);
+        this.modele.getTransaction().commit();
+        this.modele.flush();
+
+        Rapport rapport = new Rapport();
+        rapport.addOperation(ville.getIdVille(), Rapport.Table.VILLE, Rapport.Operation.CREER);
+        return rapport;
     }
 
     /**
@@ -1276,6 +1369,53 @@ public class Controleur
         else //on suppose qu'il n'y a qu'un seul résultat !
             return (Tag) resultats.get(0);
     }
+    
+    /**
+     * Recherche un pays dans la base de données. Si le pays renseigné est trouvé, un objet Pays est renvoyé. Sinon, la méthode renvoie null.
+     */
+    private Pays chercherPays(String pays) throws DonneesInsuffisantesException
+    {
+        if (pays == null || "".equals(pays))
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche du pays : nom du pays non renseigné.");
+
+        HQLRecherche q = new HQLRecherche("Pays p");
+        q.addCondition("p.nomPays", pays, HQLRecherche.Operateur.EGAL);
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
+        this.modele.flush();
+
+        if (resultats.isEmpty())
+            return null;
+        else //on suppose qu'il n'y a qu'un seul résultat !
+            return (Pays) resultats.get(0);
+    }
+    /**
+     * Recherche une ville dans la base de données
+     * @param nomVille le nom de la ville à rechercher (obligatoire)
+     * @param cp le code postal de la ville à rechercher (obligatoire)
+     * @param nomPays le nom du pays dans lequel se situe la ville
+     * @return L'entité hibernate associée à l'enregistrement correspondant
+     */
+    private Ville chercherVille(String nomVille, String cp, String nomPays) throws DonneesInsuffisantesException
+    {
+        if (nomVille == null || "".equals(nomVille)
+                || cp == null || "".equals(cp)
+                || nomPays == null || "".equals(nomPays))
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche de la ville : nom de la ville, code postal ou nom du pays non renseigné.");
+
+        HQLRecherche q = new HQLRecherche("Ville v");
+        q.addCondition("v.nomVille", nomVille, HQLRecherche.Operateur.EGAL);
+        q.addCondition("v.cp", cp, HQLRecherche.Operateur.EGAL);
+        q.addCondition("v.pays.nomPays", nomPays, HQLRecherche.Operateur.EGAL);
+        System.out.println(q.toString()); //imprimé à des fins de test
+        List resultats = modele.createQuery(q.toString()).list();
+        this.modele.flush();
+
+        if (resultats.isEmpty())
+            return null;
+        else //on suppose qu'il n'y a qu'un seul résultat !
+            return (Ville) resultats.get(0);
+    }
 
      /**
      * Crée une zone dans la table des zones. Si la zone renseignée est trouvé, un objet Zone est renvoyé. Sinon, la méthode renvoie null.
@@ -1441,6 +1581,97 @@ public class Controleur
         
         return ret;
     }
+
+    /**
+     * Enregistre la facture fournie sous forme de fichier texte.
+     * @param facture
+     * @throws IOException 
+     */
+    private void exporter(Facture facture) throws IOException
+    {
+        String adresseFichier = "facture_numero_" + facture.getIdFacture() + ".fac";
+        File fichier = new File(adresseFichier);
+        if (fichier.exists())
+            throw new IOException("Erreur lors de l'export de la facture : le fichier "
+                    + adresseFichier + " existe déjà.");
+        FileWriter fw = new FileWriter(fichier);
+        
+        String ligneCourante;
+        
+        //ligne du haut
+        for (int i = 0 ; i < largeurFacture ; i++)
+            fw.write('-');
+        fw.write("\n");
+        //En-ête : informations facture
+        ligneCourante = "Facture ";
+        if (facture.getTypeFacture() == 'a')
+            ligneCourante = ligneCourante.concat("d'achat ");
+        else if (facture.getTypeFacture() == 'v')
+            ligneCourante = ligneCourante.concat("de vente ");
+        ligneCourante = ligneCourante.concat("numéro " + facture.getIdFacture());
+        //écriture
+        for (String sl : formater(ligneCourante, "", largeurFacture, 0, ' '))
+            fw.write(sl);
+        //information entreprise
+        for (String sl : formater("Entreprise : " + nomEntreprise, "", largeurFacture, 0, ' '))
+            fw.write(sl);
+        //TODO: informations client/fourn
+        if (facture.getTypeFacture() == 'a')
+            ligneCourante = "Fournisseur : ";
+        else if (facture.getTypeFacture() == 'v')
+            ligneCourante = "Client : ";
+        ligneCourante  =ligneCourante.concat("#TODO");
+        
+        
+        //ligne du milieu haut
+        fw.write('|');
+        for (int i = 1 ; i < largeurFacture - 1 ; i++)
+            fw.write('-');
+        fw.write("|\n");
+        //lignes de la facture : d'abord consoles, puis jeux
+        for (Object o : facture.getLigneFactureConsoles())
+        {
+            int quantite = ((LigneFactureConsole) o).getQuantite();
+            VersionConsole vc = (VersionConsole) this.modele.load(VersionConsole.class,
+                    ((LigneFactureConsole) o).getId().getIdVersionConsole());
+            for (String sl : formater(
+                    vc.getConsole().getNomConsole() + " x" + quantite,
+                    vc.getPrix() * quantite + "€",
+                    largeurFacture, 6, '.'))
+                fw.write(sl);
+        }
+        for (Object o : facture.getLigneFactureJeus())
+        {
+            int quantite = ((LigneFactureJeu) o).getQuantite();
+            VersionJeu vj = (VersionJeu) this.modele.load(VersionJeu.class,
+                    ((LigneFactureJeu) o).getId().getIdVersionJeu());
+            for (String sl : formater(vj.getJeu().getNomJeu() + " x" + quantite,
+                    vj.getPrix() * quantite + "€",
+                    largeurFacture, 6, '.'))
+                fw.write(sl);
+        }
+        
+        //ligne du milieu bas
+        fw.write('|');
+        for (int i = 1 ; i < largeurFacture - 1 ; i++)
+            fw.write('-');
+        fw.write("|\n");
+        //réduction
+        for (String sl : formater("REDUCTIONS", "-" + ((Float) facture.getReduction()).toString() + "€",
+                largeurFacture, 0, '.'))
+            fw.write(sl);
+        //ligne du total
+        for (String sl : formater("TOTAL TTC", ((Float) facture.getPrixTtc()).toString() + "€",
+                largeurFacture, 0, '.'))
+            fw.write(sl);
+        
+        //ligne du bas (fin)
+        for (int i = 0 ; i < largeurFacture ; i++)
+            fw.write('-');
+        fw.write("\n");
+        
+        fw.close();
+    }
     
     /**
      * Convertit une chaîne de 1 à 13 chiffres en code barre valides. Si le code barre fait moins de 13 chiffres, il est complété par des 0 à gauche.
@@ -1472,6 +1703,113 @@ public class Controleur
         return ret.concat(cb);
     }
     /**
+     * Renvoie la quantite de vente d'un produit
+     * @param : type de produit, ID du produit
+     * @return : la quantité du produit demandé en Integer
+     */
+    public int getSellQuantityProduct(String typeProduit, Integer idProduit)
+    {
+        int nombreAchat = 0;
+        List resul = new ArrayList();
+        if ("Console".equals(typeProduit)) 
+        {
+            resul = modele.createQuery("select quantite from LOREntities.LigneFactureConsole lfc "
+                                     + "where "
+                                        + "(lfc.versionConsole IN (select vc.idVersionConsole from LOREntities.VersionConsole vc  where vc.idVersionConsole="+idProduit+")"
+                                        + " AND lfc.facture IN ( select f.idFacture from LOREntities.Facture f where f.typeFacture='v')"
+                                        + " )").list();
+        }
+        else if ("Jeu".equals(typeProduit)) 
+        {
+            resul = modele.createQuery("select quantite from LOREntities.LigneFactureJeu lfj "
+                                     + "where "
+                                        + "(lfj.versionJeu IN (select vj.idVersionJeu from LOREntities.VersionJeu vj  where vj.idVersionJeu="+idProduit+")"
+                                        + " AND lfc.facture IN ( select f.idFacture from LOREntities.Facture f where f.typeFacture='v')"
+                                        + " )").list();
+        } 
+        this.modele.flush();
+        nombreAchat = (int) resul.get(0);
+        return nombreAchat;
+    }
+    /**
+     * Renvoie la quantite de stock d'un produit
+     * @param : type de produit, ID du produit
+     * @return : la quantité du produit demandé en Integer
+     */
+    public int getStockProduct(String typeProduit, Integer idProduit) throws DonneeInvalideException
+    {
+        int stock = 0;
+        if ("Console".equals(typeProduit)) 
+        {
+            VersionConsole vc = new VersionConsole();
+            vc = chercherVersionConsole(idProduit);
+            stock = vc.getStock();
+        }
+        else if ("Jeu".equals(typeProduit)) 
+        {
+            VersionJeu vj = new VersionJeu();
+            vj = chercherVersionJeu(idProduit);
+            stock = vj.getStock();
+        }  
+        this.modele.flush();
+        return stock;
+    }
+
+    /**
+     * Divise une ligne en un tableau de sous-lignes de longueur adéquate pour mise en forme.
+     */
+    protected Vector<String> formater(String ligne, String finLigne, int longueurMax,
+            int tailleBuffer, char caractereEntreLigneEtFinLigne)
+    {
+        if (tailleBuffer >= longueurMax - 2 - 5) //je pose ici que la ligne doit faire au moins 5 caractères de long !
+            throw new IllegalArgumentException("Erreur : le buffer de la facture est trop grand.");
+        if (longueurMax <= 7) //je pose ici que la ligne doit faire au moins 5 caractères de long !
+            throw new IllegalArgumentException("Erreur : la longueur de la ligne de facture est trop petite.");
+        
+        Vector<String> retour = new Vector<String>();
+        
+        longueurMax -= 2; //prend en compte le '|' au début et à la fin de la ligne
+        String caracEntreLigneEtFinLigne = ((Character) caractereEntreLigneEtFinLigne).toString();
+        int indexCoupure; //dernier espace de la sous-ligne, pour coupure (retour à la ligne)
+        
+        //Si la ligne est trop longue, on la découpe en sous-lignes, au niveau des espaces (si possible).
+        while (ligne.length() + finLigne.length() > longueurMax)
+        {
+            //recherche du point de coupure
+            //par défaut, on prend la sous-chaîne la plus longue possible. On cherche la position du dernier espace.
+            indexCoupure = ligne.substring(0, longueurMax - tailleBuffer).lastIndexOf(" ");
+            if (indexCoupure == -1) //si la ligne ne contient aucun espace avant la position maximale
+                indexCoupure = longueurMax - tailleBuffer; //on repositionne le curseur à la fin
+            
+            //génération du buffer pour la sous-ligne
+            String buffer = "";
+            for (int i = indexCoupure ; i < longueurMax ; i++)
+                buffer = buffer.concat(" ");
+            
+            //ajout de la sous-ligne
+            retour.add("|"
+                    .concat(ligne.substring(0, indexCoupure))
+                    .concat(buffer)
+                    .concat("|\n"));
+
+            //on enlève la sous-ligne de la ligne
+            ligne = ligne.substring(indexCoupure);
+        }
+
+        //Ensuite, on s'occupe de la dernière ligne.
+        String buffer = "";
+        for (int i = ligne.length() + finLigne.length() ; i < longueurMax ; i++)
+            buffer = buffer.concat(caracEntreLigneEtFinLigne);
+        retour.add("|"
+                .concat(ligne)
+                .concat(buffer)
+                .concat(finLigne)
+                .concat("|\n"));
+        
+        return retour;
+    }
+
+    /**
      * Calcule le total d'une facture (sous forme de formulaire) et applique la TVA
      * @param form la facture dont il faut calculer le total
      * @return le total TTC de la facture
@@ -1490,31 +1828,18 @@ public class Controleur
      * @param type de produit, ID du produit
      * @return le cote du produit demandé
      */
-    public float calculCote(String type, Integer idProduit) throws DonneeInvalideException
+    public float calculCote(String typeProduit, Integer idProduit) throws DonneeInvalideException
     {
+        float cote = 0f; //calcul du total des lignes
         //Form pdf = new Form();
         // Recuperer la date d'achat
         Float dateAchat = 0f;
         
         // Recuperer le nombre de vente
-        Integer nbreVente = 0;
+        Integer nbreVente = getSellQuantityProduct(typeProduit, idProduit);
         
         // Recuperer le stock actuel
-        Integer stockActuel = 0;
-        float cote = 0f; //calcul du total des lignes
-        if ("Console".equals(type)) 
-        {
-            VersionConsole vc = new VersionConsole();
-            vc = chercherVersionConsole(idProduit);
-            stockActuel = vc.getStock();
-        }
-        else if ("Jeu".equals(type)) 
-        {
-            VersionJeu vj = new VersionJeu();
-            vj = chercherVersionJeu(idProduit);
-            stockActuel = vj.getStock();
-        }
-            
+        Integer stockActuel = getStockProduct(typeProduit, idProduit);
         
         //Calculer cote
         cote = dateAchat/180 + stockActuel/10 + nbreVente/10;
