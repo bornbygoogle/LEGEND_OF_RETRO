@@ -1370,6 +1370,39 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             return (Tag) resultats.get(0);
     }
     
+   /**
+     * Recherche le client/fournisseur dont le nom correspond parfaitement à la chaîne renseignée et/ou ayant le prenom renseigné.
+     *@param nomPers une variable de type String utilisé dans la methode .addCondition("pers.nom", nomPers, HQLRecherche.Operateur.LIKE) pour la recherche d'un client via son nom
+     *@param prenomPers une variable de type String utilisé dans la methode query.addCondition("pers.prenom", prenomPers, HQLRecherche.Operateur.LIKE) pour la recherche d'un client via son prenom
+     *@return un objet de type Personne,(voir See Also) qui est une classe.
+     * @see  HQLRecherche#addCondition(java.lang.String, java.lang.String, controleur.HQLRecherche.Operateur)
+     * @see  LOREntities.Personne
+     */
+    
+   private Personne chercherPersonne(String nomPers, String prenomPers) throws DonneesInsuffisantesException{
+       
+        if ("".equals(nomPers) || "".equals(prenomPers)){
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche de la console : nom, prenom de la console non renseignés.");
+        }
+        
+        HQLRecherche query = new HQLRecherche("LOREntities.Personne pers");
+               
+        if (!"".equals(nomPers))
+            query.addCondition("pers.nom", nomPers, HQLRecherche.Operateur.LIKE);
+        if (!"".equals(prenomPers))
+            query.addCondition("pers.prenom", prenomPers, HQLRecherche.Operateur.LIKE);
+     
+        List resultats = modele.createQuery(query.toString()).list();
+        this.modele.flush();
+
+        if (resultats.isEmpty())
+            return null;
+        else if (resultats.size() != 1)
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche de la console : plusieurs résultats sont retournés.");
+        else
+            return (Personne) resultats.get(0);
+    }
+    
     /**
      * Recherche un pays dans la base de données. Si le pays renseigné est trouvé, un objet Pays est renvoyé. Sinon, la méthode renvoie null.
      */
