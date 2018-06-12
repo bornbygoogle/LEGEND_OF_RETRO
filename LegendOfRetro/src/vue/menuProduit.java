@@ -20,6 +20,10 @@ import javax.swing.JPanel;
  */
 public class menuProduit extends JPanel implements Chercheur
 {
+
+    private int largueur;
+    private int longueur;    
+
     private Controleur controleur;
 
     private critProduit Criteres;
@@ -48,8 +52,12 @@ public class menuProduit extends JPanel implements Chercheur
      * ATTENTION : cette fonction reprend du code généré par un JForm.
      */                       
     private void initComponents()
-    {
-        this.setSize(500, 560);
+    { 
+        // définition des dimensions des menus
+        largueur = 660;
+        longueur = 1100;
+        
+        this.setSize(longueur, largueur-150);
 
         this.Criteres = new critProduit(this.controleur, this);
         this.Resultats = new Resultat<ProduitForm>(this);

@@ -498,6 +498,14 @@ public class critProduit extends javax.swing.JPanel
     {
         this.fieldCodeBarre.setText(cb);
     }
+    
+    /********
+    *
+    *   Fonction utilisé pour remplir les champs dans le menu
+    *   @param ProduitForm f
+    *   @return void ( le remplissage se fait directement par le menu )
+    * 
+    *********/
     public void setForm(ProduitForm f)
     {
         this.selectedForm = f;
@@ -521,9 +529,15 @@ public class critProduit extends javax.swing.JPanel
         
         this.idVersionJeu = f.getIdVersionJeu();
         this.idVersionConsole = f.getIdVersionConsole();
-        
-        //TODO: à terminer (zones, plateformes... D'ailleurs, celles-ci doivent être initialisées proprement !)
     }
+    
+    /********
+    *
+    *   Fonction utilisé pour récupérer les champs dans le menu
+    *   @param void
+    *   @return Form ( récupération tous les champs remplis dans le menu et popularise le form avec.
+    * 
+    *********/
     private Form toForm() throws DonneeInvalideException
     {
         float prix = 0f;
@@ -536,8 +550,6 @@ public class critProduit extends javax.swing.JPanel
                 throw new DonneeInvalideException("Erreur : veuillez saisir le 'prix' en notation anglo-saxonne (par exemple : 2.5");
             if (!"".equals(Integer.valueOf(fieldStock.getText())))
                 throw new DonneeInvalideException("Erreur : veuillez saisir un entier dans le champ 'stock'");
-            //prix = 0f;
-            //stock = 0;
         }
             
         if("".equals(fieldNom.getText()) && "".equals(fieldEditeur.getText())
@@ -553,6 +565,7 @@ public class critProduit extends javax.swing.JPanel
                     fieldTag.getText(), (String) listePlateforme.getSelectedItem(),
                     prix, stock);
     }
+    
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
