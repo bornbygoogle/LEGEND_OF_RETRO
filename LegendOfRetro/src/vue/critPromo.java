@@ -376,11 +376,11 @@ public class critPromo extends javax.swing.JPanel
         this.idVersionConsole = f.getIdVersionConsole();               // Id Version Console
         this.fieldPrix.setText(String.valueOf(f.getPrix()));           // Prix
         this.fieldStock.setText(String.valueOf(f.getStock()));         // Stock
-        this.fieldCote.setText("10");                                  // Cote
+        this.fieldCote.setText(String.valueOf(f.getCote()));                                  // Cote
     }
     private Form toForm() throws DonneeInvalideException
     {
-        float prix;
+        float prix,cote;
         int stock;
         try {
             prix = Float.valueOf(fieldPrix.getText());
@@ -388,6 +388,7 @@ public class critPromo extends javax.swing.JPanel
         catch (NumberFormatException nfe) {
             prix = 0f;
             stock = 0;
+            cote = Float.valueOf(fieldCote.getText());
         }
             
         return new PromoForm(this.idVersionConsole,
@@ -401,8 +402,7 @@ public class critPromo extends javax.swing.JPanel
                                  ""/* Description */,
                                  (String) listeTags.getSelectedItem()/*Tags*/,
                                  (String) listePlateforme.getSelectedItem() /*Platforme*/,
-                                 prix,
-                                 stock);
+                                 prix, stock, cote);
     }
     
 

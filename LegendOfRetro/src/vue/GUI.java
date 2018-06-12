@@ -34,14 +34,20 @@ public class GUI extends JFrame implements ActionListener
     private JButton buttonVente;
     private JButton buttonClient;
     private JButton buttonPromo;
+    private int largueur;
+    private int longueur;
     
     public GUI(Controleur controleur)
     {
         super();
         
+        // définition des dimensions des menus
+        largueur = 660;
+        longueur = 1100;
+        
         //initialisation des composants
         menuPanel = new JPanel();
-        menuPanel.setPreferredSize(new java.awt.Dimension(150, 560));
+        menuPanel.setPreferredSize(new java.awt.Dimension(150, largueur));
         
         buttonProduit = new JButton();
         buttonProduit.setText("Produit");
@@ -100,9 +106,8 @@ public class GUI extends JFrame implements ActionListener
         c.add(this.menuPanel, BorderLayout.WEST);
         
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setSize(990, 560);
+        this.setSize(longueur, largueur);
         this.setVisible(true);
-        
         this.controleur = controleur;
     }
 
@@ -228,4 +233,5 @@ public class GUI extends JFrame implements ActionListener
         this.menuOuvert = null;
         this.FLAG_menuOuvert = Menu.AUCUN;
     }
+    
 }
