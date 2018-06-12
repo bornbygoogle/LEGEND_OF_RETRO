@@ -1740,7 +1740,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
      * @param : type de produit, ID du produit
      * @return : la quantité du produit demandé en Integer
      */
-    public int getSellQuantityProduct(String typeProduit, Integer idProduit)
+    private int getSellQuantityProduct(String typeProduit, Integer idProduit)
     {
         int nombreAchat = 0;
         List resul = new ArrayList();
@@ -1769,7 +1769,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
      * @param : type de produit, ID du produit
      * @return : la quantité du produit demandé en Integer
      */
-    public int getStockProduct(String typeProduit, Integer idProduit) throws DonneeInvalideException
+    private int getStockProduct(String typeProduit, Integer idProduit) throws DonneeInvalideException
     {
         int stock = 0;
         if ("Console".equals(typeProduit)) 
@@ -1787,7 +1787,32 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         this.modele.flush();
         return stock;
     }
-
+    /**
+     * Renvoie la frequence de vendre d'un produit
+     * @param : type de produit, ID du produit
+     * @return : la fréquence de ventre du produit demandé en Integer
+     */
+    private int getFrequentSellProduit(String typeProduit, Integer idProduit) throws DonneeInvalideException
+    {
+        
+        
+        int stock = 0;
+        if ("Console".equals(typeProduit)) 
+        {
+            VersionConsole vc = new VersionConsole();
+            vc = chercherVersionConsole(idProduit);
+            stock = vc.getStock();
+        }
+        else if ("Jeu".equals(typeProduit)) 
+        {
+            VersionJeu vj = new VersionJeu();
+            vj = chercherVersionJeu(idProduit);
+            stock = vj.getStock();
+        }  
+        this.modele.flush();
+        return stock;
+    }
+    
     /**
      * Divise une ligne en un tableau de sous-lignes de longueur adéquate pour mise en forme.
      */
