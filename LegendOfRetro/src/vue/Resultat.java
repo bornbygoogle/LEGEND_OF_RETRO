@@ -55,6 +55,8 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
         this.parent = parent;
         initComponents();
         
+        //System.out.println(critProduit.getHeight());
+        
         //destruction du tableau par défaut
         this.table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
@@ -90,6 +92,7 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
                 "Code Barre", "Nom", "Quantité disponible", "Developpeur", "Date de sortie", "Plus Infos"
             }
         ));
+        table.setFillsViewportHeight(true);
         table.setShowVerticalLines(false);
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -110,7 +113,7 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 976, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 926, Short.MAX_VALUE)
                     .addComponent(verbose, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -120,7 +123,7 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
                 .addContainerGap()
                 .addComponent(verbose)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -244,6 +247,8 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
         this.verbose.setForeground(new java.awt.Color(3, 143, 10));
         this.verbose.setText(message);
     }
+    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JScrollPane jScrollPane1;

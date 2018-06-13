@@ -33,6 +33,7 @@ public class critProduit extends javax.swing.JPanel
     
     private int idVersionJeu;
     private int idVersionConsole;
+    private String urlPhotoJeu;
 
     /**
      * Creates new form Resultat
@@ -44,7 +45,7 @@ public class critProduit extends javax.swing.JPanel
         this.controleur = controleur;
         this.parent = parent;
         this.selectedForm = null;
-        initComponents();
+        initComponents(); 
         
         Vector<String> zones = controleur.listeZones();
         zones.add(0, "");
@@ -173,14 +174,6 @@ public class critProduit extends javax.swing.JPanel
         labelPhoto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         labelPhoto.setEnabled(false);
         labelPhoto.setFocusable(false);
-        try{
-            URL url = new URL("htts://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg");
-            //more code goes here
-            labelPhoto.setIcon(new ImageIcon(url));
-        }catch(MalformedURLException ex){
-            //do exception handling here
-            labelPhoto.setText("Cant get photo !!!");
-        }
 
         labelCurrency.setText("€");
 
@@ -505,6 +498,14 @@ public class critProduit extends javax.swing.JPanel
     {
         this.fieldCodeBarre.setText(cb);
     }
+    
+    /********
+    *
+    *   Fonction utilisé pour remplir les champs dans le menu
+    *   @param ProduitForm f
+    *   @return void ( le remplissage se fait directement par le menu )
+    * 
+    *********/
     public void setForm(ProduitForm f)
     {
         this.selectedForm = f;
@@ -541,7 +542,7 @@ public class critProduit extends javax.swing.JPanel
         this.fieldEdition.setText(f.getEdition());
         this.fieldPrix.setText(String.valueOf(f.getPrix()));
         this.fieldStock.setText(String.valueOf(f.getStock()));
-        
+    
         //zone
         int i = 0;
         boolean found = false;
@@ -565,7 +566,16 @@ public class critProduit extends javax.swing.JPanel
 
         if (!"".equals(errors))
             this.parent.afficherErreur(new Exception(errors));
+
     }
+    
+    /********
+    *
+    *   Fonction utilisé pour récupérer les champs dans le menu
+    *   @param void
+    *   @return Form ( récupération tous les champs remplis dans le menu et popularise le form avec.
+    * 
+    *********/
     private Form toForm() throws DonneeInvalideException
     {
         float prix = 0f;
@@ -578,8 +588,6 @@ public class critProduit extends javax.swing.JPanel
                 throw new DonneeInvalideException("Erreur : veuillez saisir le 'prix' en notation anglo-saxonne (par exemple : 2.5");
             if (!"".equals(Integer.valueOf(fieldStock.getText())))
                 throw new DonneeInvalideException("Erreur : veuillez saisir un entier dans le champ 'stock'");
-            //prix = 0f;
-            //stock = 0;
         }
             
         if("".equals(fieldNom.getText()) && "".equals(fieldEditeur.getText())
@@ -595,6 +603,7 @@ public class critProduit extends javax.swing.JPanel
                     fieldTag.getText(), (String) listePlateforme.getSelectedItem(),
                     prix, stock);
     }
+    
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

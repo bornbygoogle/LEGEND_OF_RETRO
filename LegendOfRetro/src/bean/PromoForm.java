@@ -27,6 +27,7 @@ public class PromoForm extends Form
     private String plateforme;
     private float prix;
     private int stock;
+    private float cote;
     
     public PromoForm()
     {
@@ -41,12 +42,13 @@ public class PromoForm extends Form
         this.tags = "";
         this.prix = -1;
         this.stock = -1;
+        this.cote = 1.0f;
     }
     public PromoForm(
             int idVersionConsole, int idVersionJeu,
             String type, String cb, String nom, String edition, String zone,
             String editeur, String description, String tags, String plateforme,
-            float prix, int stock)
+            float prix, int stock, float cote)
     {
         super();
         this.cb = cb;
@@ -62,6 +64,7 @@ public class PromoForm extends Form
         this.tags = tags;
         this.prix = prix;
         this.stock = stock;
+        this.cote = cote;
     }
     
     public int getIdVersionConsole()      {return this.idVersionConsole;}
@@ -77,6 +80,7 @@ public class PromoForm extends Form
     public String getPlateforme()      {return this.plateforme;}
     public float getPrix()      {return this.prix;}
     public int getStock()      {return this.stock;}
+    public float getCote()      {return this.cote;}
     
     public void setIdVersionConsole(int id)      {this.idVersionConsole = id;}
     public void setIdVersionJeu(int id)      {this.idVersionJeu = id;}
@@ -90,5 +94,6 @@ public class PromoForm extends Form
     public void setPlateforme(String pf)      {this.plateforme = pf;}
     public void setPrix(float p)      {this.prix = p;}
     public void setStock(int n)      {this.stock = n;}
+    public void setCote(float c)     {this.cote = c; }
     
 }

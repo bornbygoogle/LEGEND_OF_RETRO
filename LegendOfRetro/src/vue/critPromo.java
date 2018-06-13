@@ -11,6 +11,12 @@ import controleur.Controleur;
 import controleur.DonneeInvalideException;
 import controleur.DonneesInsuffisantesException;
 import controleur.EnregistrementExistantException;
+import java.text.ParseException;
+import java.time.Instant;
+import java.time.LocalDate;
+import static java.time.LocalDate.now;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -313,7 +319,12 @@ public class critPromo extends javax.swing.JPanel
     }//GEN-LAST:event_listePlateformeItemStateChanged
 
     private void buttonModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonModifierActionPerformed
-        throw new UnsupportedOperationException("La modification de produit n'a pas encore été implémentée.");
+        try {
+            this.controleur.calculCote("Jeu", 5);
+            //throw new UnsupportedOperationException("La modification de produit n'a pas encore été implémentée.");
+        } catch (DonneeInvalideException ex) {
+            Logger.getLogger(critPromo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_buttonModifierActionPerformed
 
     private void listeZoneItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listeZoneItemStateChanged
@@ -376,11 +387,11 @@ public class critPromo extends javax.swing.JPanel
         this.idVersionConsole = f.getIdVersionConsole();               // Id Version Console
         this.fieldPrix.setText(String.valueOf(f.getPrix()));           // Prix
         this.fieldStock.setText(String.valueOf(f.getStock()));         // Stock
-        this.fieldCote.setText("10");                                  // Cote
+        this.fieldCote.setText(String.valueOf(f.getCote()));                                  // Cote
     }
     private Form toForm() throws DonneeInvalideException
     {
-        float prix;
+        float prix,cote=0;
         int stock;
         try {
             prix = Float.valueOf(fieldPrix.getText());
@@ -388,6 +399,7 @@ public class critPromo extends javax.swing.JPanel
         catch (NumberFormatException nfe) {
             prix = 0f;
             stock = 0;
+            cote = Float.valueOf(fieldCote.getText());
         }
             
         return new PromoForm(this.idVersionConsole,
@@ -401,8 +413,7 @@ public class critPromo extends javax.swing.JPanel
                                  ""/* Description */,
                                  (String) listeTags.getSelectedItem()/*Tags*/,
                                  (String) listePlateforme.getSelectedItem() /*Platforme*/,
-                                 prix,
-                                 stock);
+                                 prix, stock, cote);
     }
     
 

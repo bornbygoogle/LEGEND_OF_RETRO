@@ -14,23 +14,23 @@ import bean.Form;
 import bean.ProduitForm;
 import bean.PromoForm;
 import hibernateConfig.HibernateUtil;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Instant;
-import java.util.ArrayList;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import org.hibernate.*;
 import vue.GUI;
+import static vue.critProduit.labelPhoto;
 
 
 /**
@@ -41,7 +41,7 @@ public class Controleur
 {
     private static final float TVA = 1.2f;
     private static final int largeurFacture = 43;
-    private static final String nomEntreprise = "Micromania";
+    private static final String nomEntreprise = "Legend Of Retro";
     private GUI vue; //utilisé pour communiquer avec l'affichage
     private Session modele; //session hibernate
 
@@ -885,7 +885,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 ret.add(new PromoForm(enr.getIdVersionConsole(), -1, "Console",
                         enr.getCodeBarre(), enr.getConsole().getNomConsole(), enr.getEdition(), enr.getZone().getNomZone(),
                         enr.getConsole().getFabricant().getNomFabricant(), "", "", "",
-                        enr.getPrix(), enr.getStock()));
+                        enr.getPrix(), enr.getStock(), 0.0f/* Cote promo Console*/));
             else
                 throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
         }
@@ -897,10 +897,11 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                             enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
                             enr.getJeu().getEditeur().getNomEditeur(), enr.getJeu().getDescriptionJeu(),
                             decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
-                            enr.getPrix(), enr.getStock()));
+                            enr.getPrix(), enr.getStock(), 0.0f/* Cote promo Jeu*/));
             else
                 throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
         }
+       
         return ret;
     }
    /**
@@ -1369,6 +1370,39 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             return null;
         else //on suppose qu'il n'y a qu'un seul résultat !
             return (Tag) resultats.get(0);
+    }
+    
+   /**
+     * Recherche le client/fournisseur dont le nom correspond parfaitement à la chaîne renseignée et/ou ayant le prenom renseigné.
+     *@param nomPers une variable de type String utilisé dans la methode .addCondition("pers.nom", nomPers, HQLRecherche.Operateur.LIKE) pour la recherche d'un client via son nom
+     *@param prenomPers une variable de type String utilisé dans la methode query.addCondition("pers.prenom", prenomPers, HQLRecherche.Operateur.LIKE) pour la recherche d'un client via son prenom
+     *@return un objet de type Personne,(voir See Also) qui est une classe.
+     * @see  HQLRecherche#addCondition(java.lang.String, java.lang.String, controleur.HQLRecherche.Operateur)
+     * @see  LOREntities.Personne
+     */
+    
+   private Personne chercherPersonne(String nomPers, String prenomPers) throws DonneesInsuffisantesException{
+       
+        if ("".equals(nomPers) || "".equals(prenomPers)){
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche de la console : nom, prenom de la console non renseignés.");
+        }
+        
+        HQLRecherche query = new HQLRecherche("LOREntities.Personne pers");
+               
+        if (!"".equals(nomPers))
+            query.addCondition("pers.nom", nomPers, HQLRecherche.Operateur.LIKE);
+        if (!"".equals(prenomPers))
+            query.addCondition("pers.prenom", prenomPers, HQLRecherche.Operateur.LIKE);
+     
+        List resultats = modele.createQuery(query.toString()).list();
+        this.modele.flush();
+
+        if (resultats.isEmpty())
+            return null;
+        else if (resultats.size() != 1)
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche de la console : plusieurs résultats sont retournés.");
+        else
+            return (Personne) resultats.get(0);
     }
     
     /**
@@ -1943,28 +1977,29 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
      * @param : type de produit, ID du produit
      * @return : la quantité du produit demandé en Integer
      */
-    public int getSellQuantityProduct(String typeProduit, Integer idProduit)
+    private int getSellQuantityProduct(String typeProduit, Integer idProduit)
     {
         int nombreAchat = 0;
-        List resul = new ArrayList();
+        //int resul;
+        Query resul = null;
         if ("Console".equals(typeProduit)) 
         {
-            resul = modele.createQuery("select quantite from LOREntities.LigneFactureConsole lfc "
-                                     + "where "
-                                        + "(lfc.versionConsole IN (select vc.idVersionConsole from LOREntities.VersionConsole vc  where vc.idVersionConsole="+idProduit+")"
-                                        + " AND lfc.facture IN ( select f.idFacture from LOREntities.Facture f where f.typeFacture='v')"
-                                        + " )").list();
+            resul = modele.createQuery("select sum(quantite) from LOREntities.LigneFactureConsole lfc "
+                    + "where "
+                    + "(lfc.versionConsole IN (select vc.idVersionConsole from LOREntities.VersionConsole vc  where vc.idVersionConsole="+idProduit+")"
+                            + " AND lfc.facture IN ( select f.idFacture from LOREntities.Facture f where f.typeFacture='v')"
+                            + " )");
         }
         else if ("Jeu".equals(typeProduit)) 
         {
-            resul = modele.createQuery("select quantite from LOREntities.LigneFactureJeu lfj "
-                                     + "where "
-                                        + "(lfj.versionJeu IN (select vj.idVersionJeu from LOREntities.VersionJeu vj  where vj.idVersionJeu="+idProduit+")"
-                                        + " AND lfc.facture IN ( select f.idFacture from LOREntities.Facture f where f.typeFacture='v')"
-                                        + " )").list();
+            resul = modele.createQuery("select sum(quantite) from LOREntities.LigneFactureJeu lfj "
+                    + "where "
+                    + "(lfj.versionJeu IN (select vj.idVersionJeu from LOREntities.VersionJeu vj  where vj.idVersionJeu="+idProduit+")"
+                            + " AND lfj.facture IN ( select f.idFacture from LOREntities.Facture f where f.typeFacture='v')"
+                            + " )");
         } 
         this.modele.flush();
-        nombreAchat = (int) resul.get(0);
+        nombreAchat = Integer.valueOf(resul.uniqueResult().toString());
         return nombreAchat;
     }
     /**
@@ -1972,7 +2007,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
      * @param : type de produit, ID du produit
      * @return : la quantité du produit demandé en Integer
      */
-    public int getStockProduct(String typeProduit, Integer idProduit) throws DonneeInvalideException
+    private int getStockProduct(String typeProduit, Integer idProduit) throws DonneeInvalideException
     {
         int stock = 0;
         if ("Console".equals(typeProduit)) 
@@ -1989,8 +2024,52 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         }  
         this.modele.flush();
         return stock;
-    }
+    }   
+    /**
+     * Renvoie la frequence de vendre d'un produit
+     * 
+     * Par défault, j'ai pris le choix de prendre en compte que les ventes sur un an
+     * 
+     * @param : type de produit, ID du produit
+     * @return : la fréquence de ventre du produit demandé en Integer
+     */
+    public float getFrequentSellProduct(String typeProduit, int idProduit) throws DonneeInvalideException
+    {
+        
+        float frequenceDeVente = 0.0f;
+        Integer yearDebutPeriod = 0;
 
+        Integer yearActuel = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear();
+         
+        String HQL_QUERY = "select sum(lfc.quantite) from LigneFactureConsole lfc  "
+                         + "where (lfc.versionConsole IN (select vc.idVersionConsole from VersionConsole vc  where vc.idVersionConsole=2) "
+                           + "AND lfc.facture IN ( select f.idFacture from Facture f where f.typeFacture LIKE '%v%' "
+                                                + "AND year(f.dateFacture) BETWEEN :yearDebutPeriod AND :yearActuel ))";                       
+
+        Query query = this.modele.createQuery(HQL_QUERY)
+                      .setParameter("yearDebutPeriod", yearDebutPeriod)
+                      .setParameter("yearActuel",yearActuel);
+        int nombreVente = Integer.valueOf(query.uniqueResult().toString());
+        this.modele.flush();
+        
+        return frequenceDeVente = nombreVente/12;
+    }
+    
+    /**
+     * Brancher la photo des jeux
+     * @param : String - url de la photo du jeu
+     * @return : void
+     */
+    public void setPhotoProduct(String urlPhotoJeu)
+    {
+        try{
+            URL url = new URL(urlPhotoJeu);
+            labelPhoto.setIcon(new ImageIcon(url));
+        }catch(MalformedURLException ex){
+            labelPhoto.setText("Cant get photo !!!");
+        }
+    }
+    
     /**
      * Divise une ligne en un tableau de sous-lignes de longueur adéquate pour mise en forme.
      */
@@ -2066,20 +2145,22 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
      */
     public float calculCote(String typeProduit, Integer idProduit) throws DonneeInvalideException
     {
-        float cote = 0f; //calcul du total des lignes
-        //Form pdf = new Form();
-        // Recuperer la date d'achat
-        Float dateAchat = 0f;
+        int periodEnMonths = 12;
+        float cote = 0.00f; //calcul du total des lignes
+      
+        // Recuperer la fréquence de vente d'un produit sur une période donnée
+        Float frequentDeVente = getFrequentSellProduct(typeProduit, idProduit);
         
         // Recuperer le nombre de vente
-        Integer nbreVente = getSellQuantityProduct(typeProduit, idProduit);
+        int nbreVente = getSellQuantityProduct(typeProduit, idProduit);
         
         // Recuperer le stock actuel
-        Integer stockActuel = getStockProduct(typeProduit, idProduit);
+        int stockActuel = getStockProduct(typeProduit, idProduit);
         
         //Calculer cote
-        cote = dateAchat/180 + stockActuel/10 + nbreVente/10;
-        
+        //cote = dateAchat/180 + stockActuel/10 + nbreVente/10;
+        cote = (float)Math.round((frequentDeVente/stockActuel)*100d) + Float.valueOf(nbreVente/10);
+        System.out.println(cote);
         return cote;
     }
     /**
