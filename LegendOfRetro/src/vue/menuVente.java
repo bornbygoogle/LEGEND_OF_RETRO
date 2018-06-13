@@ -95,11 +95,11 @@ public class menuVente extends JPanel implements Chercheur
                     {
                        if(vectorcontrolCodeBarre.elementAt(i)==vectorcontrolCodeBarre.lastElement())
                        {
-                        System.out.println( "--Codebarre-table--"+vectorcontrolCodeBarre.elementAt(i)+"----");
+                       
                         this.detectredondCodeBarre=true;
                         this.detectQuelLigne=i;
                        } 
-                        System.out.println( "--Codebarre-tableinafara--"+vectorcontrolCodeBarre.elementAt(i)+"----");
+                        
                     
                      }  
                 }
@@ -107,8 +107,7 @@ public class menuVente extends JPanel implements Chercheur
                 
                
                 this.selectionProduit.setForm(resultatsRecherche.elementAt(0)); //normalement, il n'y a qu'un produit
-                System.out.println( "--count1 --"+this.count+"----");
-                System.out.println( "--code barre --"+resultatsRecherche.elementAt(0).getCodeBarre()+"-----");
+                
             
             
             }
@@ -203,6 +202,46 @@ public class menuVente extends JPanel implements Chercheur
         catch (Exception e)     {afficherErreur(e);}
     }
     
+   public void modifLigne(FactureLigneForm ligne)
+    {
+       //on commence par trouver, dans this.facture, une ligne qui a le même code barre que la ligne fournie en paramètre.
+        Iterator<FactureLigneForm> it = this.facture.getLignes().iterator();
+        String codeBarre = ligne.getProduit().getCodeBarre();
+        boolean ligneNonTrouvee = it.hasNext();
+        boolean ligneclean=false;
+          
+                   for(int i=0; i<vectorcontrolCodeBarre.size()-1;i++)
+                    {
+                      ligneNonTrouvee = it.next().getProduit().getCodeBarre().equals(
+                        codeBarre);
+                       if(vectorcontrolCodeBarre.elementAt(i)==vectorcontrolCodeBarre.lastElement())
+                       {
+                          
+                        
+                        this.detectredondCodeBarre=false;
+                        this.detectQuelLigne=i;
+                        this.facture.getLignes().elementAt(i).getQuantite();
+                        this.facture.getLignes().elementAt(i).getPrixLigne();
+                        
+                        Integer sqexist=this.facture.getLignes().elementAt(i).getQuantite();
+                        Float   spexist=this.facture.getLignes().elementAt(i).getPrixLigne();
+                        Integer sqraj=ligne.getQuantite();
+                        Float   spraj=ligne.getPrixLigne();
+                        
+                       
+                        ligne.setQuantite(sqexist+sqraj);
+                        ligne.setPrixLigne(spexist+spraj);
+                                         
+                       }
+                    } 
+               
+          
+       // this.affichageFacture.afficherRes(this.facture.getLignes()); 
+ 
+         
+         
+    }      
+    
     
     
     
@@ -220,7 +259,7 @@ public class menuVente extends JPanel implements Chercheur
                         codeBarre);
                        if(vectorcontrolCodeBarre.elementAt(i)==vectorcontrolCodeBarre.lastElement())
                        {
-                        System.out.println( "--Codebarre-table--"+vectorcontrolCodeBarre.elementAt(i)+"----");
+                        
                         this.detectredondCodeBarre=false;
                         this.detectQuelLigne=i;
                         it.remove();
