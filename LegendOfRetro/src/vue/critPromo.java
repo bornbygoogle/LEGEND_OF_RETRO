@@ -11,6 +11,13 @@ import controleur.Controleur;
 import controleur.DonneeInvalideException;
 import controleur.DonneesInsuffisantesException;
 import controleur.EnregistrementExistantException;
+import controleur.EnregistrementInexistantException;
+import java.text.ParseException;
+import java.time.Instant;
+import java.time.LocalDate;
+import static java.time.LocalDate.now;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +34,8 @@ public class critPromo extends javax.swing.JPanel
     
     private int idVersionJeu;
     private int idVersionConsole;
+    // Initialisation la modele pour listeEdition
+    Vector<String> editions;
 
     /**
      * Creates new form Resultat
@@ -38,9 +47,6 @@ public class critPromo extends javax.swing.JPanel
         this.selectedForm = null;
         initComponents();
         
-        
-       // Initialisation la modele pour listeEdition
-        Vector<String> editions;
         editions = controleur.listeEdition((String)listeCategorie.getSelectedItem());
         editions.add(0, "");
         listeEdition.setModel(new javax.swing.DefaultComboBoxModel<>(editions));
@@ -282,25 +288,23 @@ public class critPromo extends javax.swing.JPanel
         // TODO add your handling code here:
         if ("Jeu".equals((String)listeCategorie.getSelectedItem())) 
            {
-               fieldDevFab.setText("Développeur :");
-               labelPlateforme.setVisible(true);
-               listePlateforme.setVisible(true);
-               labelTag.setVisible(true);
-               listeTags.setVisible(true);
+                fieldDevFab.setText("Développeur :");
+                labelPlateforme.setVisible(true);
+                listePlateforme.setVisible(true);
+                labelTag.setVisible(true);
+                listeTags.setVisible(true);
+                editions = controleur.listeEdition((String)listeCategorie.getSelectedItem());
+                editions.add(0, "");
+                listeEdition.setModel(new javax.swing.DefaultComboBoxModel<>(editions));
            }
         else 
-            { 
+            {
                 fieldDevFab.setText("Fabricant : ");
                 labelPlateforme.setVisible(false);
                 listePlateforme.setVisible(false);
                 labelTag.setVisible(false);
                 listeTags.setVisible(false);
             }
-        try {
-            this.parent.lancerRecherche(toForm());}
-        catch (DonneeInvalideException ex) {
-            this.parent.afficherErreur(ex);
-        }
     }//GEN-LAST:event_listeCategorieItemStateChanged
 
     private void listePlateformeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listePlateformeItemStateChanged
@@ -313,7 +317,13 @@ public class critPromo extends javax.swing.JPanel
     }//GEN-LAST:event_listePlateformeItemStateChanged
 
     private void buttonModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonModifierActionPerformed
-        throw new UnsupportedOperationException("La modification de produit n'a pas encore été implémentée.");
+        try {
+            this.controleur.calculCote("Jeu", 5);
+        } catch (EnregistrementInexistantException ex) {
+            Logger.getLogger(critPromo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DonneeInvalideException ex) {
+            Logger.getLogger(critPromo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_buttonModifierActionPerformed
 
     private void listeZoneItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listeZoneItemStateChanged
@@ -376,19 +386,20 @@ public class critPromo extends javax.swing.JPanel
         this.idVersionConsole = f.getIdVersionConsole();               // Id Version Console
         this.fieldPrix.setText(String.valueOf(f.getPrix()));           // Prix
         this.fieldStock.setText(String.valueOf(f.getStock()));         // Stock
-        this.fieldCote.setText(String.valueOf(f.getCote()));                                  // Cote
+        this.fieldCote.setText(String.valueOf(f.getCote()));           // Cote
     }
     private Form toForm() throws DonneeInvalideException
     {
-        float prix,cote;
+        float prix,cote=0;
         int stock;
         try {
             prix = Float.valueOf(fieldPrix.getText());
-            stock = Integer.valueOf(fieldStock.getText());}
+            stock = Integer.valueOf(fieldStock.getText());
+            cote = Float.valueOf(fieldCote.getText());
+        }
         catch (NumberFormatException nfe) {
             prix = 0f;
             stock = 0;
-            cote = Float.valueOf(fieldCote.getText());
         }
             
         return new PromoForm(this.idVersionConsole,
@@ -399,6 +410,7 @@ public class critPromo extends javax.swing.JPanel
                                  (String) listeEdition.getSelectedItem() /*Edition*/,
                                  (String) listeZone.getSelectedItem()/*Zone*/,
                                  (String) listeFabricant.getSelectedItem()/*Fabricant*/,
+                                 ""/*Photo*/,
                                  ""/* Description */,
                                  (String) listeTags.getSelectedItem()/*Tags*/,
                                  (String) listePlateforme.getSelectedItem() /*Platforme*/,

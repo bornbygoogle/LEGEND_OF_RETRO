@@ -22,6 +22,7 @@ public class PromoForm extends Form
     private String edition;
     private String zone;
     private String editeur;
+    private String photo;
     private String description;
     private String tags;
     private String plateforme;
@@ -38,6 +39,7 @@ public class PromoForm extends Form
         this.edition = "";
         this.zone = "";
         this.editeur = "";
+        this.photo = "";
         this.description = "";
         this.tags = "";
         this.prix = -1;
@@ -47,7 +49,7 @@ public class PromoForm extends Form
     public PromoForm(
             int idVersionConsole, int idVersionJeu,
             String type, String cb, String nom, String edition, String zone,
-            String editeur, String description, String tags, String plateforme,
+            String editeur,String photo, String description, String tags, String plateforme,
             float prix, int stock, float cote)
     {
         super();
@@ -59,6 +61,7 @@ public class PromoForm extends Form
         this.edition = edition;
         this.zone = zone;
         this.editeur = editeur;
+        this.photo = photo;
         this.description = description;
         this.plateforme = plateforme;
         this.tags = tags;
@@ -75,6 +78,7 @@ public class PromoForm extends Form
     public String getEdition()      {return this.edition;}
     public String getZone()      {return this.zone;}
     public String getEditeur()      {return this.editeur;}
+    public String getPhoto()        {return this.photo;}
     public String getDescription()      {return this.description;}
     public String getTags()      {return this.tags;}
     public String getPlateforme()      {return this.plateforme;}
@@ -89,6 +93,7 @@ public class PromoForm extends Form
     public void setEdition(String edition)      {this.edition = edition;}
     public void setZone(String zone)      {this.zone = zone;}
     public void setEditeur(String editeur)      {this.editeur = editeur;}
+    public void setPhoto(String photo)          {this.photo = photo;}
     public void setDescription(String descr)      {this.description = descr;}
     public void setTags(String tags)      {this.tags = tags;}
     public void setPlateforme(String pf)      {this.plateforme = pf;}

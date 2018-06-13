@@ -92,6 +92,7 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
                 "Code Barre", "Nom", "Quantité disponible", "Developpeur", "Date de sortie", "Plus Infos"
             }
         ));
+        table.setFillsViewportHeight(true);
         table.setShowVerticalLines(false);
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -122,7 +123,7 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
                 .addContainerGap()
                 .addComponent(verbose)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents

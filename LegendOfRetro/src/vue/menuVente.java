@@ -35,6 +35,10 @@ public class menuVente extends JPanel implements Chercheur
     protected Resultat<FactureLigneForm> affichageFacture;
     protected menuPersonne selectionPersonne;
     FactureForm facture;
+    int   count=0;
+    Vector vectorcontrolCodeBarre;
+    boolean detectredondCodeBarre;
+    int     detectQuelLigne;
 
     /**
      * Creates new form menuProduit
@@ -46,6 +50,9 @@ public class menuVente extends JPanel implements Chercheur
         initComponents();
         this.facture = new FactureForm();
         this.facture.setNature(false);
+        vectorcontrolCodeBarre=new Vector();
+        detectredondCodeBarre=false;
+        detectQuelLigne=1;
         
 /*/ à des fins de tests, création d'une facture :)
 FactureForm ff = new FactureForm();
@@ -122,8 +129,35 @@ try {
             resultatsRecherche = this.controleur.chercher(form);
             // Afficher le produit dans CRITERE
             if (resultatsRecherche != null && !resultatsRecherche.isEmpty())
+            { 
+                
+                this.count=this.count+1;
+                vectorcontrolCodeBarre.add(resultatsRecherche.elementAt(0).getCodeBarre());
+                
+                if(this.count>1)
+                {    
+                    for(int i=0; i<vectorcontrolCodeBarre.size()-1;i++)
+                    {
+                       if(vectorcontrolCodeBarre.elementAt(i)==vectorcontrolCodeBarre.lastElement())
+                       {
+                       
+                        this.detectredondCodeBarre=true;
+                        this.detectQuelLigne=i;
+                       } 
+                        
+                    
+                     }  
+                }
+                
+                
+               
                 this.selectionProduit.setForm(resultatsRecherche.elementAt(0)); //normalement, il n'y a qu'un produit
-            else //ou, si le produit n'a pas été trouvé :
+                
+            
+            
+            }
+            
+                else //ou, si le produit n'a pas été trouvé :
                 traiterEchecRecherche(((CodeBarreForm) form).getCodeBarre());
         }
         catch (DonneeInvalideException e) {
@@ -133,7 +167,6 @@ try {
         catch (ResultatInvalideException e) {
             afficherErreur(e);}
     }
-
     @Override
     public void afficherErreur(Exception e)
     {
@@ -187,41 +220,88 @@ try {
         try {
             if (!ajoutLigneLegal(ligne))
                 throw new Exception("La quantité excède les stocks disponibles.");
+             if(this.detectredondCodeBarre=true){ 
+             modifLigne(ligne);
+             supprimerLigne(ligne);                           
+            }
             this.facture.getLignes().add(ligne);
             this.affichageFacture.afficherRes(this.facture.getLignes());
         }
         catch (Exception e)     {afficherErreur(e);}
     }
-    void supprimerLigne(FactureLigneForm ligne) //TODO : tester !
+    
+   public void modifLigne(FactureLigneForm ligne)
     {
+       //on commence par trouver, dans this.facture, une ligne qui a le même code barre que la ligne fournie en paramètre.
+        Iterator<FactureLigneForm> it = this.facture.getLignes().iterator();
+        String codeBarre = ligne.getProduit().getCodeBarre();
+        boolean ligneNonTrouvee = it.hasNext();
+        boolean ligneclean=false;
+          
+                   for(int i=0; i<vectorcontrolCodeBarre.size()-1;i++)
+                    {
+                      ligneNonTrouvee = it.next().getProduit().getCodeBarre().equals(
+                        codeBarre);
+                       if(vectorcontrolCodeBarre.elementAt(i)==vectorcontrolCodeBarre.lastElement())
+                       {
+                          
+                        
+                        this.detectredondCodeBarre=false;
+                        this.detectQuelLigne=i;
+                        this.facture.getLignes().elementAt(i).getQuantite();
+                        this.facture.getLignes().elementAt(i).getPrixLigne();
+                        
+                        Integer sqexist=this.facture.getLignes().elementAt(i).getQuantite();
+                        Float   spexist=this.facture.getLignes().elementAt(i).getPrixLigne();
+                        Integer sqraj=ligne.getQuantite();
+                        Float   spraj=ligne.getPrixLigne();
+                        
+                       
+                        ligne.setQuantite(sqexist+sqraj);
+                        ligne.setPrixLigne(spexist+spraj);
+                                         
+                       }
+                    } 
+               
+          
+       // this.affichageFacture.afficherRes(this.facture.getLignes()); 
+ 
+         
+         
+    }      
+    
+    
+    
+    
+  void supprimerLigne(FactureLigneForm ligne)
+    {  
         //on commence par trouver, dans this.facture, une ligne qui a le même code barre que la ligne fournie en paramètre.
         Iterator<FactureLigneForm> it = this.facture.getLignes().iterator();
         String codeBarre = ligne.getProduit().getCodeBarre();
-//test System.out.println("Code barre recherché " + codeBarre);
-        boolean ligneTrouvee = !it.hasNext();
-        
-        if (ligneTrouvee)afficherErreur(new Exception(
-                        "Erreur: aucune ligne ne peut être supprimée."));
-        
-        while(!ligneTrouvee)
-        {
-//test FactureLigneForm exam = it.next();
-//test System.out.println("Code barre examiné " + exam.getProduit().getCodeBarre());
-            ligneTrouvee = it.next().getProduit().getCodeBarre().equals(
-                    codeBarre);
-//test System.out.println(ligneNonTrouvee);
-            if (!ligneTrouvee) //si la ligne a été trouvée, on l'enlève de la facture
-                it.remove();
-            else if (!it.hasNext()) //si la ligne n'est pas trouée à la fin de la boucle, on affiche l'erreur et on quitte la boucle
-            {
-                afficherErreur(new Exception(
-                        "Erreur: aucune ligne préalablement entrée ne correspond à ce code barre."));
-                ligneTrouvee = false; //on quitte la boucle
-            }
-        }
-        
+        boolean ligneNonTrouvee = it.hasNext();
+        boolean ligneclean=false;
+          
+                   for(int i=0; i<vectorcontrolCodeBarre.size()-1;i++)
+                    {
+                      ligneNonTrouvee = it.next().getProduit().getCodeBarre().equals(
+                        codeBarre);
+                       if(vectorcontrolCodeBarre.elementAt(i)==vectorcontrolCodeBarre.lastElement())
+                       {
+                        
+                        this.detectredondCodeBarre=false;
+                        this.detectQuelLigne=i;
+                        it.remove();
+                        vectorcontrolCodeBarre.remove(i);
+                       }
+                    } 
+               
+          
         this.affichageFacture.afficherRes(this.facture.getLignes());
-    }
+       
+    }        
+    
+    
+    
     
     public boolean ajoutLigneLegal(FactureLigneForm ligne) {
         return ligne.getProduit().getStock() >= ligne.getQuantite()
