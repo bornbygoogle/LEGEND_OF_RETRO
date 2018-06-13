@@ -42,7 +42,7 @@ public class GUI extends JFrame implements ActionListener
         super();
         
         // définition des dimensions des menus
-        largueur = 660;
+        largueur = 700;
         longueur = 1100;
         
         //initialisation des composants

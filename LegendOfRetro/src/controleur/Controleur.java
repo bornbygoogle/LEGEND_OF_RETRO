@@ -19,7 +19,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -883,7 +886,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 ret.add(new PromoForm(enr.getIdVersionConsole(), -1, "Console",
                         enr.getCodeBarre(), enr.getConsole().getNomConsole(), enr.getEdition(), enr.getZone().getNomZone(),
                         enr.getConsole().getFabricant().getNomFabricant(), "", "", "",
-                        enr.getPrix(), enr.getStock()));
+                        enr.getPrix(), enr.getStock(), 0.0f/* Cote promo Console*/));
             else
                 throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
         }
@@ -895,7 +898,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                             enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
                             enr.getJeu().getEditeur().getNomEditeur(), enr.getJeu().getDescriptionJeu(),
                             decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
-                            enr.getPrix(), enr.getStock()));
+                            enr.getPrix(), enr.getStock(), 0.0f/* Cote promo Jeu*/));
             else
                 throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
         }
@@ -1744,25 +1747,26 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
     private int getSellQuantityProduct(String typeProduit, Integer idProduit)
     {
         int nombreAchat = 0;
-        List resul = new ArrayList();
+        //int resul;
+        Query resul = null;
         if ("Console".equals(typeProduit)) 
         {
-            resul = modele.createQuery("select quantite from LOREntities.LigneFactureConsole lfc "
-                                     + "where "
-                                        + "(lfc.versionConsole IN (select vc.idVersionConsole from LOREntities.VersionConsole vc  where vc.idVersionConsole="+idProduit+")"
-                                        + " AND lfc.facture IN ( select f.idFacture from LOREntities.Facture f where f.typeFacture='v')"
-                                        + " )").list();
+            resul = modele.createQuery("select sum(quantite) from LOREntities.LigneFactureConsole lfc "
+                    + "where "
+                    + "(lfc.versionConsole IN (select vc.idVersionConsole from LOREntities.VersionConsole vc  where vc.idVersionConsole="+idProduit+")"
+                            + " AND lfc.facture IN ( select f.idFacture from LOREntities.Facture f where f.typeFacture='v')"
+                            + " )");
         }
         else if ("Jeu".equals(typeProduit)) 
         {
-            resul = modele.createQuery("select quantite from LOREntities.LigneFactureJeu lfj "
-                                     + "where "
-                                        + "(lfj.versionJeu IN (select vj.idVersionJeu from LOREntities.VersionJeu vj  where vj.idVersionJeu="+idProduit+")"
-                                        + " AND lfc.facture IN ( select f.idFacture from LOREntities.Facture f where f.typeFacture='v')"
-                                        + " )").list();
+            resul = modele.createQuery("select sum(quantite) from LOREntities.LigneFactureJeu lfj "
+                    + "where "
+                    + "(lfj.versionJeu IN (select vj.idVersionJeu from LOREntities.VersionJeu vj  where vj.idVersionJeu="+idProduit+")"
+                            + " AND lfj.facture IN ( select f.idFacture from LOREntities.Facture f where f.typeFacture='v')"
+                            + " )");
         } 
         this.modele.flush();
-        nombreAchat = (int) resul.get(0);
+        nombreAchat = Integer.valueOf(resul.uniqueResult().toString());
         return nombreAchat;
     }
     /**
@@ -1790,28 +1794,32 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
     }
     /**
      * Renvoie la frequence de vendre d'un produit
+     * 
+     * Par défault, j'ai pris le choix de prendre en compte que les ventes sur un an
+     * 
      * @param : type de produit, ID du produit
      * @return : la fréquence de ventre du produit demandé en Integer
      */
-    private int getFrequentSellProduit(String typeProduit, Integer idProduit) throws DonneeInvalideException
+    private float getFrequentSellProduct(String typeProduit, int idProduit) throws DonneeInvalideException
     {
         
-        
-        int stock = 0;
-        if ("Console".equals(typeProduit)) 
-        {
-            VersionConsole vc = new VersionConsole();
-            vc = chercherVersionConsole(idProduit);
-            stock = vc.getStock();
-        }
-        else if ("Jeu".equals(typeProduit)) 
-        {
-            VersionJeu vj = new VersionJeu();
-            vj = chercherVersionJeu(idProduit);
-            stock = vj.getStock();
-        }  
+        float frequenceDeVente = 0.0f;
+        Integer yearDebutPeriod = 0;
+
+        Integer yearActuel = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear();
+         
+        String HQL_QUERY = "select sum(lfc.quantite) from LigneFactureConsole lfc  "
+                         + "where (lfc.versionConsole IN (select vc.idVersionConsole from VersionConsole vc  where vc.idVersionConsole=2) "
+                           + "AND lfc.facture IN ( select f.idFacture from Facture f where f.typeFacture LIKE '%v%' "
+                                                + "AND year(f.dateFacture) BETWEEN :yearDebutPeriod AND :yearActuel ))";                       
+
+        Query query = this.modele.createQuery(HQL_QUERY)
+                      .setParameter("yearDebutPeriod", yearDebutPeriod)
+                      .setParameter("yearActuel",yearActuel);
+        int nombreVente = Integer.valueOf(query.uniqueResult().toString());
         this.modele.flush();
-        return stock;
+        
+        return frequenceDeVente = nombreVente/12;
     }
     
     /**
@@ -1887,22 +1895,24 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
      * @param type de produit, ID du produit
      * @return le cote du produit demandé
      */
-    public float calculCote(String typeProduit, Integer idProduit) throws DonneeInvalideException
+    public float calculCote(String typeProduit, Integer idProduit) throws DonneeInvalideException, ParseException
     {
-        float cote = 0f; //calcul du total des lignes
-        //Form pdf = new Form();
-        // Recuperer la date d'achat
-        Float dateAchat = 0f;
+        int periodEnMonths = 12;
+        float cote = 0.00f; //calcul du total des lignes
+      
+        // Recuperer la fréquence de vente d'un produit sur une période donnée
+        Float frequentDeVente = getFrequentSellProduct(typeProduit, idProduit);
         
         // Recuperer le nombre de vente
-        Integer nbreVente = getSellQuantityProduct(typeProduit, idProduit);
+        int nbreVente = getSellQuantityProduct(typeProduit, idProduit);
         
         // Recuperer le stock actuel
-        Integer stockActuel = getStockProduct(typeProduit, idProduit);
+        int stockActuel = getStockProduct(typeProduit, idProduit);
         
         //Calculer cote
-        cote = dateAchat/180 + stockActuel/10 + nbreVente/10;
-        
+        //cote = dateAchat/180 + stockActuel/10 + nbreVente/10;
+        cote = (float)Math.round((frequentDeVente/stockActuel)*100d) + Float.valueOf(nbreVente/10);
+        System.out.println(cote);
         return cote;
     }
     /**
