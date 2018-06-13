@@ -26,7 +26,6 @@ public class GUI extends JFrame implements ActionListener
     private Controleur controleur;
     
     public enum Menu {AUCUN, PRODUIT, ACHAT, VENTE, PERSONNE, PROMO};
-    private Menu FLAG_menuOuvert; // à fixer (voir ouvrirMenu. Et oui, à fixer quand même, car on en a besoin !)
     private JPanel menuOuvert;
     private JPanel menuPanel;
     private JButton buttonProduit;
@@ -148,7 +147,6 @@ public class GUI extends JFrame implements ActionListener
     }
     public void ouvrirMenu(Menu m)
     {
-        this.FLAG_menuOuvert = m;
         if (m == Menu.PRODUIT)
         {
             fermerMenu();
@@ -231,7 +229,6 @@ public class GUI extends JFrame implements ActionListener
         this.setContentPane(c);
         
         this.menuOuvert = null;
-        this.FLAG_menuOuvert = Menu.AUCUN;
     }
     
 }

@@ -232,7 +232,7 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Nom : "/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Default Cursor"/>
+          <Color id="Curseur par d&#xe9;faut"/>
         </Property>
       </Properties>
     </Component>
@@ -436,9 +436,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonNouveauActionPerformed"/>
       </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="buttonNouveau.setVisible(false);"/>
-      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="buttonModifier">
       <Properties>
@@ -447,9 +444,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonModifierActionPerformed"/>
       </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="buttonModifier.setVisible(false);"/>
-      </AuxValues>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
