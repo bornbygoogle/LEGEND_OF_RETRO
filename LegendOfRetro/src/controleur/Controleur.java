@@ -1503,12 +1503,23 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             if (!(nom.equals(vc.getConsole().getNomConsole())
                     && editeur.equals(vc.getConsole().getFabricant().getNomFabricant())))
             {
-                Console nouvelleConsole;
-                try {
-                    nouvelleConsole = creerConsole(rapport, nom, editeur); }
-                catch (EnregistrementExistantException ex) {
-                    nouvelleConsole = chercherConsole(nom, editeur);}
-                vc.setConsole(nouvelleConsole);
+                Console nouvelleConsole = chercherConsole(nom, editeur);
+                if (nouvelleConsole != null) //si la console existe, on remplace
+                    vc.setConsole(nouvelleConsole);
+                else //sinon, on change le nom/l'éditeur de l'ancienne console
+                {
+                    if (!(nom.equals(vc.getConsole().getNomConsole())))
+                        vc.getConsole().setNomConsole(nom);
+                    //fabricant
+                    if (!(editeur.equals(vc.getConsole().getFabricant().getNomFabricant())))
+                    {
+                        Fabricant nouveauFabricant = chercherFabricant(editeur);
+                        if (nouveauFabricant != null) //si le fabricant existe, on remplace
+                            vc.getConsole().setFabricant(nouveauFabricant);
+                        else //sinon, on change le nom du fabricant
+                            vc.getConsole().getFabricant().setNomFabricant(editeur);
+                    }
+                }
             }
             
             //sauvegarde de la version de console
@@ -1527,6 +1538,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                         "Erreur : impossible de modifier jeu (version) d'identifiant " + id);
             Vector<String> tags = stringToVector(normalize(form.getTags()) ,',');
             String descr = form.getDescription();
+System.out.println("Conroleur : " + "".equals(descr));
             
             VersionJeu vj = chercherVersionJeu(id);
             if (vj == null)
@@ -1563,27 +1575,38 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 vj.setConsole(chercherConsole(form.getPlateforme(), ""));
             }
             //jeu
-            if (!(nom.equals(vj.getJeu().getNomJeu())
-                    && editeur.equals(vj.getJeu().getEditeur().getNomEditeur())))
+            Jeu jeu = vj.getJeu();
+            if (!(nom.equals(jeu.getNomJeu())
+                    && editeur.equals(jeu.getEditeur().getNomEditeur())))
             {
-                Jeu nouveauJeu;
-                try {
-                    nouveauJeu = creerJeu(rapport, nom, descr, tags, editeur); }
-                catch (EnregistrementExistantException ex) {
-                    //remarque : les tags ne sont pas un critère de recherche
-                    nouveauJeu = chercherJeu(nom, new Vector<String>(), editeur);
+                //remarque : les tags ne sont pas un critère de recherche
+                Jeu nouveauJeu = chercherJeu(nom, new Vector<String>(), editeur);
+                if (nouveauJeu != null) //si le jeu existe, on remplace
+                    jeu = nouveauJeu;
+                else //sinon, on change le nom/l'éditeur de l'ancien jeu
+                {
+                    if (!(nom.equals(jeu.getNomJeu())))
+                        jeu.setNomJeu(nom);
+                    //éditeur
+                    if (!(editeur.equals(jeu.getEditeur().getNomEditeur())))
+                    {
+                        Editeur nouvelEditeur = chercherEditeur(editeur);
+                        if (nouvelEditeur != null) //si l'éditeur existe, on remplace
+                            jeu.setEditeur(nouvelEditeur);
+                        else //sinon, on change le nom de l'éditeur
+                            jeu.getEditeur().setNomEditeur(editeur);
+                    }
                 }
-                    
-                vj.setJeu(nouveauJeu);
             }
             //description du jeu
-//            if (!(vj.getJeu().getDescriptionJeu().equals(descr)))
-            vj.getJeu().setDescriptionJeu(descr);
+//            if (!(jeu.getDescriptionJeu().equals(descr)))
+            jeu.setDescriptionJeu(descr);
             
             //tags
             //1° supprimer les decrire qui sont dans la BDD mais pas dans le form (variable tags);
+System.out.println("BUG : la suppression de tags pendant la modification ne se fait pas. !TODO");
             //pour chaque tag décrivant le jeu dans la base de données...
-            for (Object dec : vj.getJeu().getDecrires())
+            for (Object dec : jeu.getDecrires())
             {
                 Tag tagBDD = (Tag) this.modele.load(Tag.class, ((Decrire) dec).getId().getIdTag());
                 //...on vérifie si il est dans les tags décrits par le formulaire
@@ -1609,9 +1632,9 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                         this.modele.flush();
                     }
                     //mise à jour du jeu
-                    vj.getJeu().getDecrires().remove(dec);
+                    jeu.getDecrires().remove(dec);
                     this.modele.beginTransaction();
-                    this.modele.saveOrUpdate(vj.getJeu());
+                    this.modele.saveOrUpdate(jeu);
                     this.modele.getTransaction().commit();
                     this.modele.flush();
                     //destruction de l'enregistrement Decrire
@@ -1626,7 +1649,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             for (String tagForm : tags)
             {
                 //on vérifie s'il n'est pas lié au jeu dans la base de données
-                Iterator<Object> iterateurDecriresBDD = vj.getJeu().getDecrires().iterator();
+                Iterator<Object> iterateurDecriresBDD = jeu.getDecrires().iterator();
                 boolean present = false;
                 while (!present && iterateurDecriresBDD.hasNext())
                     present = tagForm.equals(((Tag) this.modele.load(
@@ -1645,11 +1668,11 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 Decrire d = new Decrire();
                 d.setId(new DecrireId());
                 d.getId().setIdTag(tagBDD.getIdTag());
-                d.getId().setIdJeu(vj.getJeu().getIdJeu());
+                d.getId().setIdJeu(jeu.getIdJeu());
                 
                 //mise à jour jeu
                 this.modele.beginTransaction();
-                this.modele.saveOrUpdate(vj.getJeu());
+                this.modele.saveOrUpdate(jeu);
                 this.modele.getTransaction().commit();
                 this.modele.flush();
                 //mise à jour tag
@@ -1669,11 +1692,12 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             
             //sauvegarde des modifications sur le jeu
             this.modele.beginTransaction();
-            this.modele.saveOrUpdate(vj.getJeu());
+            this.modele.saveOrUpdate(jeu);
             this.modele.getTransaction().commit();
             this.modele.flush();
             
             //sauvegarde de la version de jeu
+            vj.setJeu(jeu);
             this.modele.beginTransaction();
             this.modele.save(vj);
             this.modele.getTransaction().commit();
