@@ -87,6 +87,7 @@ public class ProduitForm extends CodeBarreForm
     public void setZone(String zone)      {this.zone = zone;}
     public void setEditeur(String editeur)      {this.editeur = editeur;}
     public void setDescription(String descr)      {this.description = descr;}
+    public void setPhoto(String photo)      {this.photo = photo;}
     public void setTags(String tags)      {this.tags = tags;}
     public void setPlateforme(String pf)      {this.plateforme = pf;}
     public void setPrix(float p)      {this.prix = p;}
