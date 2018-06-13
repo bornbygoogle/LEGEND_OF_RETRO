@@ -320,7 +320,7 @@ public class critPromo extends javax.swing.JPanel
 
     private void buttonModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonModifierActionPerformed
         try {
-            this.controleur.calculCote("Console", 2);
+            this.controleur.calculCote("Jeu", 5);
             //throw new UnsupportedOperationException("La modification de produit n'a pas encore été implémentée.");
         } catch (DonneeInvalideException ex) {
             Logger.getLogger(critPromo.class.getName()).log(Level.SEVERE, null, ex);

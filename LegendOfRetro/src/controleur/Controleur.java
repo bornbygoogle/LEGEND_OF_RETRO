@@ -1761,7 +1761,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             resul = modele.createQuery("select sum(quantite) from LOREntities.LigneFactureJeu lfj "
                     + "where "
                     + "(lfj.versionJeu IN (select vj.idVersionJeu from LOREntities.VersionJeu vj  where vj.idVersionJeu="+idProduit+")"
-                            + " AND lfc.facture IN ( select f.idFacture from LOREntities.Facture f where f.typeFacture='v')"
+                            + " AND lfj.facture IN ( select f.idFacture from LOREntities.Facture f where f.typeFacture='v')"
                             + " )");
         } 
         this.modele.flush();
@@ -1910,7 +1910,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         
         //Calculer cote
         //cote = dateAchat/180 + stockActuel/10 + nbreVente/10;
-        cote = (float)Math.round((frequentDeVente/stockActuel)*100d) + Float.valueOf(nbreVente/10);      
+        cote = (float)Math.round((frequentDeVente/stockActuel)*100d) + Float.valueOf(nbreVente/10);
+        System.out.println(cote);
         return cote;
     }
     /**
