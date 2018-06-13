@@ -521,8 +521,8 @@ public class critProduit extends javax.swing.JPanel
         this.listePlateforme.setSelectedIndex(0);
         this.listeZone.setSelectedIndex(0);
         this.selectedForm = null;
-        this.idVersionConsole = -1;
-        this.idVersionJeu = -1;
+        this.idVersionConsole = 0;
+        this.idVersionJeu = 0;
         parent.lancerRecherche(null);
     }
     public void setCodeBarre(String cb)
@@ -610,7 +610,7 @@ System.out.println("BUG : !TODO il faut récupérer les tags (contrôleur ?) Nul
     *********/
     private Form toForm() throws DonneeInvalideException
     {
-        float prix = 0f;
+        float prix = 0.0f;
         int stock = 0;
         try {
             prix = Float.valueOf(fieldPrix.getText());
