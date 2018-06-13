@@ -26,7 +26,7 @@ public class PersonneForm extends Form
     
     public PersonneForm()
     {
-        this.idPersonne = -1;
+        this.idPersonne = 0;
         this.prenom = "";
         this.nom = "";
         this.adresse = "";

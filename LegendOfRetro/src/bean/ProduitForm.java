@@ -31,8 +31,8 @@ public class ProduitForm extends CodeBarreForm
     
     public ProduitForm()
     {
-        this.idVersionConsole = -1;
-        this.idVersionJeu = -1;
+        this.idVersionConsole = 0;
+        this.idVersionJeu = 0;
         this.type = "";
         this.nom = "";
         this.edition = "";

@@ -396,12 +396,22 @@ public class critProduit extends javax.swing.JPanel
             fieldCodeBarre.setText("");
             fieldNom.setText("");
             fieldEditeur.setText("");
-            listeZone.setSelectedItem(0);
+            //Reinitialiser la liste Zone            
+            listeZone.removeAllItems();
+            Vector<String> zones = controleur.listeZones();
+            zones.add(0, "");
+            listeZone.setModel(new javax.swing.DefaultComboBoxModel<>(zones));
+            
             fieldEdition.setText("");
-            listePlateforme.setSelectedItem(0);
-            fieldPrix.setText("");
-            fieldStock.setText("");
-            fieldCote.setText("");
+            //Reinitialiser la liste Plateforme
+            listePlateforme.removeAllItems();
+            Vector<String> plateformes = controleur.listeConsoles();
+            plateformes.add(0, "");
+            listePlateforme.setModel(new javax.swing.DefaultComboBoxModel<>(plateformes));
+                
+            fieldPrix.setText("0");
+            fieldStock.setText("0");
+            fieldCote.setText("0");
             fieldTag.setText("");
             jTextAreaDescription.setText("");
         }
@@ -417,12 +427,22 @@ public class critProduit extends javax.swing.JPanel
             fieldCodeBarre.setText("");
             fieldNom.setText("");
             fieldEditeur.setText("");
-            listeZone.setSelectedItem(0);
+            //Reinitialiser la liste Zone            
+            listeZone.removeAllItems();
+            Vector<String> zones = controleur.listeZones();
+            zones.add(0, "");
+            listeZone.setModel(new javax.swing.DefaultComboBoxModel<>(zones));
+            
             fieldEdition.setText("");
-            listePlateforme.setSelectedItem(0);
-            fieldPrix.setText("");
-            fieldStock.setText("");
-            fieldCote.setText("");
+            //Reinitialiser la liste Plateforme
+            listePlateforme.removeAllItems();
+            Vector<String> plateformes = controleur.listeConsoles();
+            plateformes.add(0, "");
+            listePlateforme.setModel(new javax.swing.DefaultComboBoxModel<>(plateformes));
+                
+            fieldPrix.setText("0");
+            fieldStock.setText("0");
+            fieldCote.setText("0");
             fieldTag.setText("");
             jTextAreaDescription.setText("");            
         }
@@ -603,7 +623,7 @@ public class critProduit extends javax.swing.JPanel
     *********/
     private Form toForm() throws DonneeInvalideException
     {
-        float prix = 0f;
+        float prix = 0.0f;
         int stock = 0;
         float cote = 0.0f;
         try {

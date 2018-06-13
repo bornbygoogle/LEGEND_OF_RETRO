@@ -824,6 +824,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         Vector<ProduitForm> ret = new Vector<ProduitForm>();
 
         //On récupère les variables du bean pour améliorer la lisibilité
+        int idVersion = form.getIdVersionConsole();
+                System.out.println(idVersion);
         String type = form.getType();
         String cb = form.getCodeBarre();
         if (!"".equals(cb))
@@ -868,28 +870,37 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         //On récupère les variables du bean pour améliorer la lisibilité
         String type = form.getType();
+                System.out.println(type);
         String cb = form.getCodeBarre();
         if (!"".equals(cb))
             cb = codeBarreValide(cb);
         String nom = normalize(form.getNom());
+        System.out.println(nom);
         String edition = normalize(form.getEdition());
         String zone = form.getZone();
+                System.out.println(zone);
         String editeur = normalize(form.getEditeur());
-        String description = form.getDescription();      //La description n'est pas un critère de recherche viable.
+                System.out.println(editeur);
+        String description = form.getDescription();
+                System.out.println(description);
         Vector<String> tags = stringToVector(normalize(form.getTags()).replace(" ", ""), ',');
         String plateforme = form.getPlateforme();
+        Float cote = 0.0f;
         //Pas besoin de récupérer les identifiants, la description de jeu, le prix et le stock.
 
         if ("Console".equals(type))
         {
-            if (!"".equals(edition) || !"".equals(zone) || !"".equals(editeur))
             for (VersionConsole enr : chercherVersionsConsolePromo(edition, zone, editeur))
+            {
+                /*if (enr.getIdVersionConsole()<1) cote = 0.0f;
+                else 
+                {   System.out.println(enr.getIdVersionConsole());
+                    cote = getCoteProduct("Console", enr.getIdVersionConsole());}*/
                 ret.add(new PromoForm(enr.getIdVersionConsole(), -1, "Console",
                         enr.getCodeBarre(), enr.getConsole().getNomConsole(), enr.getEdition(), enr.getZone().getNomZone(),
                         enr.getConsole().getFabricant().getNomFabricant(), "", "", "", "",
-                        enr.getPrix(), enr.getStock(), getCoteProduct(type,enr.getIdVersionConsole())));
-            else
-                throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
+                        enr.getPrix(), enr.getStock(), getCoteProduct(type, enr.getIdVersionConsole())));
+            }
         }
         else if ("Jeu".equals(type))
         {
@@ -898,7 +909,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                     enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
                     enr.getJeu().getEditeur().getNomEditeur(), ""/*Photo*/, enr.getJeu().getDescriptionJeu(),
                     decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
-                    enr.getPrix(), enr.getStock(), getCoteProduct(type,enr.getIdVersionJeu())));
+                    enr.getPrix(), enr.getStock(), getCoteProduct(type, enr.getIdVersionJeu())));
         }
        
         return ret;
@@ -1737,12 +1748,10 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
     {
         Vector<String> ret = new Vector();
         List editions = new ArrayList();
-        System.out.println(type);
         if (type.equals("Console"))
             { editions = modele.createQuery("select vc.edition from LOREntities.VersionConsole vc").list(); }
         else if (type.equals("Jeu"))
             { editions = modele.createQuery("select vj.edition from LOREntities.VersionJeu vj").list(); }
-        System.out.println(editions);
         for (Object e : editions)
             if (e!=null) ret.add((String) e);
         this.modele.flush();
@@ -2085,20 +2094,20 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
     public float getCoteProduct(String typeProduit, int idProduit)
     {
         float coteProduit = 0.0f;
-
-        Query resul = null;
         if ("CONSOLE".equals(normalize(typeProduit))) 
         {
-            resul = modele.createQuery("select pc.coteConsole from LOREntities.PromoConsole pc "
-                                     + "where pc.versionConsole IN (select vc.idVersionConsole from VersionConsole vc  where vc.idVersionConsole="+idProduit+")");
+            String HQL_QUERY = "select pc.coteConsole from LOREntities.PromoConsole pc where pc.versionConsole IN (select vc.idVersionConsole from VersionConsole vc where vc.idVersionConsole= :idProduit)";
+            Query query = this.modele.createQuery(HQL_QUERY).setParameter("idProduit", idProduit);
+            if (query.list().isEmpty()) { coteProduit = 0f; } else { coteProduit = Float.valueOf(query.list().get(0).toString()); }
+            this.modele.flush();
         }
         else if ("JEU".equals(normalize(typeProduit))) 
         {
-            resul = modele.createQuery("select pj.coteJeu from LOREntities.PromoJeu pj "
-                                     + "where pj.versionJeu IN (select vj.idVersionJeu from VersionJeu vj where vj.idVersionJeu="+idProduit+")");
-        } 
-        this.modele.flush();
-        coteProduit = Float.valueOf(resul.uniqueResult().toString());
+            String HQL_QUERY = "select pj.coteJeu from LOREntities.PromoJeu pj where pj.versionJeu IN (select vj.idVersionJeu from VersionJeu vj where vj.idVersionJeu= :idProduit)";
+            Query query = this.modele.createQuery(HQL_QUERY).setParameter("idProduit", idProduit);
+            if (query.list().isEmpty()) { coteProduit = 0f; } else { coteProduit = Float.valueOf(query.list().get(0).toString()); }
+            this.modele.flush();
+         }
         return coteProduit;
     }    
     /**

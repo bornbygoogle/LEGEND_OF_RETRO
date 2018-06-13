@@ -32,8 +32,8 @@ public class PromoForm extends Form
     
     public PromoForm()
     {
-        this.idVersionConsole = -1;
-        this.idVersionJeu = -1;
+        this.idVersionConsole = 0;
+        this.idVersionJeu = 0;
         this.type = "";
         this.nom = "";
         this.edition = "";
@@ -44,7 +44,7 @@ public class PromoForm extends Form
         this.tags = "";
         this.prix = -1;
         this.stock = -1;
-        this.cote = 1.0f;
+        this.cote = -1;
     }
     public PromoForm(
             int idVersionConsole, int idVersionJeu,
