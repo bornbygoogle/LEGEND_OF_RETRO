@@ -1,0 +1,5 @@
+/LegendOfRetro/src/hibernateConfig/hibernate.cfg.xml
+/LegendOfRetro/nbproject/*
+/LegendOfRetro/dist/*
+/LegendOfRetro/build/*
+/.gitignore

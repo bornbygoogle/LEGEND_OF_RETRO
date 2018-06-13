@@ -902,6 +902,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             else
                 throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
         }
+       
         return ret;
     }
    /**
