@@ -32,6 +32,7 @@ public class critProduit extends javax.swing.JPanel
     
     private int idVersionJeu;
     private int idVersionConsole;
+    private String urlPhotoJeu;
 
     /**
      * Creates new form Resultat
@@ -43,7 +44,7 @@ public class critProduit extends javax.swing.JPanel
         this.controleur = controleur;
         this.parent = parent;
         this.selectedForm = null;
-        initComponents();
+        initComponents(); 
         
         Vector<String> zones = controleur.listeZones();
         zones.add(0, "");
@@ -172,14 +173,6 @@ public class critProduit extends javax.swing.JPanel
         labelPhoto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         labelPhoto.setEnabled(false);
         labelPhoto.setFocusable(false);
-        try{
-            URL url = new URL("htts://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg");
-            //more code goes here
-            labelPhoto.setIcon(new ImageIcon(url));
-        }catch(MalformedURLException ex){
-            //do exception handling here
-            labelPhoto.setText("Cant get photo !!!");
-        }
 
         labelCurrency.setText("€");
 
@@ -525,8 +518,7 @@ public class critProduit extends javax.swing.JPanel
         this.fieldEdition.setText(f.getEdition());
         this.fieldPrix.setText(String.valueOf(f.getPrix()));
         this.fieldStock.setText(String.valueOf(f.getStock()));
-                
-        
+        this.controleur.setPhotoProduct(String.valueOf(f.getPhoto()));       
         this.idVersionJeu = f.getIdVersionJeu();
         this.idVersionConsole = f.getIdVersionConsole();
     }

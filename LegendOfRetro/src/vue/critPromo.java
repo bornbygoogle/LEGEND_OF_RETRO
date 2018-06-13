@@ -324,8 +324,6 @@ public class critPromo extends javax.swing.JPanel
             //throw new UnsupportedOperationException("La modification de produit n'a pas encore été implémentée.");
         } catch (DonneeInvalideException ex) {
             Logger.getLogger(critPromo.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
-            Logger.getLogger(critPromo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_buttonModifierActionPerformed
 
