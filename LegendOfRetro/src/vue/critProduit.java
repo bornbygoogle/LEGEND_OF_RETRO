@@ -12,6 +12,7 @@ import controleur.Controleur;
 import controleur.DonneeInvalideException;
 import controleur.DonneesInsuffisantesException;
 import controleur.EnregistrementExistantException;
+import controleur.EnregistrementInexistantException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Vector;
@@ -26,7 +27,7 @@ import static org.hibernate.cfg.AvailableSettings.URL;
  */
 public class critProduit extends javax.swing.JPanel
 {
-    private Form selectedForm;
+    private ProduitForm selectedForm;
     private Controleur controleur;
     private Chercheur parent;
     
@@ -450,10 +451,10 @@ public class critProduit extends javax.swing.JPanel
     private void buttonNouveauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNouveauActionPerformed
         try {
             Form f = this.toForm();
-            if (f instanceof CodeBarreForm)
-                this.parent.afficherLog(this.controleur.creer((CodeBarreForm) f).toString());
-            else if (f instanceof ProduitForm)
-                this.parent.afficherLog(this.controleur.creer((ProduitForm) f).toString());
+            //controleur.creer(CodeBarreForm) lance une exception si le form n'est pas un ProduitForm.
+            this.parent.afficherLog(this.controleur.creer((CodeBarreForm) f).toString());
+            //exécuté seulement si le form est un ProduitForm
+            this.selectedForm = (ProduitForm) f;
             
             /*
             *  Refresh la liste Platforme après Ajout
@@ -473,7 +474,15 @@ public class critProduit extends javax.swing.JPanel
     }//GEN-LAST:event_buttonNouveauActionPerformed
 
     private void buttonModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonModifierActionPerformed
-        throw new UnsupportedOperationException("La modification de produit n'a pas encore été implémentée.");
+        try {
+            this.parent.afficherLog(
+                    this.controleur.modifier(this.selectedForm).toString());
+            setForm(this.selectedForm); //update affichage dans critProduit (normalement inutile)
+        }
+        catch (DonneesInsuffisantesException ex) {this.parent.afficherErreur(ex);}
+        catch (DonneeInvalideException ex) {this.parent.afficherErreur(ex);}
+        catch (EnregistrementInexistantException ex) {this.parent.afficherErreur(ex);}
+
     }//GEN-LAST:event_buttonModifierActionPerformed
 
     private void listeZoneItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listeZoneItemStateChanged
@@ -501,12 +510,29 @@ public class critProduit extends javax.swing.JPanel
     public void setForm(ProduitForm f)
     {
         this.selectedForm = f;
+        String errors = "";
         
         if ("jeu".equals(f.getType()))
         {
             this.listeCategorie.setSelectedIndex(1); //type Jeu
             this.fieldTag.setText(f.getTags());
             this.jTextAreaDescription.setText(f.getDescription());
+            //plateforme
+            int i=0;
+            boolean found = false;
+            String dansListe = null;
+            String plateforme = f.getPlateforme();
+            while (!found && i < listePlateforme.getModel().getSize())
+            {
+                dansListe = listePlateforme.getModel().getElementAt(i);
+                found = plateforme.equals(dansListe);
+                i++;
+            }
+            if (found)
+                listePlateforme.getModel().setSelectedItem(dansListe);
+            else
+                errors = errors.concat("Erreur lors de la sélection de la plateforme " + plateforme
+                        + " : plateforme non trouvée dans la liste déroulante. \n");
         }
         else if ("console".equals(f.getType()))
             this.listeCategorie.setSelectedIndex(0); //type Console
@@ -517,12 +543,30 @@ public class critProduit extends javax.swing.JPanel
         this.fieldEdition.setText(f.getEdition());
         this.fieldPrix.setText(String.valueOf(f.getPrix()));
         this.fieldStock.setText(String.valueOf(f.getStock()));
+        
+        //zone
+        int i = 0;
+        boolean found = false;
+        String dansListe = null;
+        String zone = f.getZone();
+        while (!found && i < listeZone.getModel().getSize())
+        {
+            dansListe = listeZone.getModel().getElementAt(i);
+            found = zone.equals(dansListe);
+            i++;
+        }
+        if (found)
+            listeZone.getModel().setSelectedItem(dansListe);
+        else
+            errors = errors.concat("Erreur lors de la sélection de la zone " + zone
+                    + " : zone non trouvée dans la liste déroulante. \n");
                 
         
         this.idVersionJeu = f.getIdVersionJeu();
         this.idVersionConsole = f.getIdVersionConsole();
-        
-        //TODO: à terminer (zones, plateformes... D'ailleurs, celles-ci doivent être initialisées proprement !)
+
+        if (!"".equals(errors))
+            this.parent.afficherErreur(new Exception(errors));
     }
     private Form toForm() throws DonneeInvalideException
     {
