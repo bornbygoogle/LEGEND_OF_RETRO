@@ -574,6 +574,7 @@ System.out.println("BUG : !TODO il faut récupérer les tags (contrôleur ?) Nul
         this.fieldEdition.setText(f.getEdition());
         this.fieldPrix.setText(String.valueOf(f.getPrix()));
         this.fieldStock.setText(String.valueOf(f.getStock()));
+        this.fieldCote.setText(String.valueOf(f.getCote()));
     
         //zone
         int i = 0;
@@ -610,7 +611,7 @@ System.out.println("BUG : !TODO il faut récupérer les tags (contrôleur ?) Nul
     *********/
     private Form toForm() throws DonneeInvalideException
     {
-        float prix = 0.0f;
+        float prix = 0.0f, cote=0.0f;
         int stock = 0;
         try {
             prix = Float.valueOf(fieldPrix.getText());
@@ -633,7 +634,7 @@ System.out.println("BUG : !TODO il faut récupérer les tags (contrôleur ?) Nul
                     (String) listeZone.getSelectedItem(),
                     fieldEditeur.getText(),""/*Photo*/, jTextAreaDescription.getText(),
                     fieldTag.getText(), (String) listePlateforme.getSelectedItem(),
-                    prix, stock);
+                    prix, stock, cote);
     }
     
     
