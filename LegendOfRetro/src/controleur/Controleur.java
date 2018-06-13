@@ -14,25 +14,22 @@ import bean.Form;
 import bean.ProduitForm;
 import bean.PromoForm;
 import hibernateConfig.HibernateUtil;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import org.hibernate.*;
 import vue.GUI;
+import static vue.critProduit.labelPhoto;
 
 
 /**
@@ -43,7 +40,7 @@ public class Controleur
 {
     private static final float TVA = 1.2f;
     private static final int largeurFacture = 43;
-    private static final String nomEntreprise = "Micromania";
+    private static final String nomEntreprise = "Legend Of Retro";
     private GUI vue; //utilisé pour communiquer avec l'affichage
     private Session modele; //session hibernate
 
@@ -1791,7 +1788,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         }  
         this.modele.flush();
         return stock;
-    }
+    }   
     /**
      * Renvoie la frequence de vendre d'un produit
      * 
@@ -1800,7 +1797,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
      * @param : type de produit, ID du produit
      * @return : la fréquence de ventre du produit demandé en Integer
      */
-    private float getFrequentSellProduct(String typeProduit, int idProduit) throws DonneeInvalideException
+    public float getFrequentSellProduct(String typeProduit, int idProduit) throws DonneeInvalideException
     {
         
         float frequenceDeVente = 0.0f;
@@ -1820,6 +1817,21 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         this.modele.flush();
         
         return frequenceDeVente = nombreVente/12;
+    }
+    
+    /**
+     * Brancher la photo des jeux
+     * @param : String - url de la photo du jeu
+     * @return : void
+     */
+    public void setPhotoProduct(String urlPhotoJeu)
+    {
+        try{
+            URL url = new URL(urlPhotoJeu);
+            labelPhoto.setIcon(new ImageIcon(url));
+        }catch(MalformedURLException ex){
+            labelPhoto.setText("Cant get photo !!!");
+        }
     }
     
     /**
@@ -1895,7 +1907,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
      * @param type de produit, ID du produit
      * @return le cote du produit demandé
      */
-    public float calculCote(String typeProduit, Integer idProduit) throws DonneeInvalideException, ParseException
+    public float calculCote(String typeProduit, Integer idProduit) throws DonneeInvalideException
     {
         int periodEnMonths = 12;
         float cote = 0.00f; //calcul du total des lignes
