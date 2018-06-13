@@ -78,17 +78,19 @@ public class menuProduit extends JPanel implements Chercheur
     @Override
     public void lancerRecherche(Form form)
     {
+        if (form == null)
+        {
+            this.Resultats.afficherRes(new Vector<ProduitForm>()); //affichage d'un vecteur nul (0 résultats);
+            afficherLog("");
+            return;
+        }
         try {
             // Affectuer la recherche avec fonction RECHERCHE dans CONTROLEUR
             Vector<ProduitForm> resultatsRecherche = null;
             resultatsRecherche = this.controleur.chercher(form);
             // Afficher les résultats avec fonction AFFICHERES dans RESULTAT
             if (resultatsRecherche != null)
-            {
                 this.Resultats.afficherRes(resultatsRecherche); 
-            }
-            //this.Criteres.buttonNouveau.setVisible(false);
-            //this.Criteres.buttonModifier.setVisible(false);
         }
 
         catch (DonneeInvalideException e) {

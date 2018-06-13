@@ -147,7 +147,10 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
         this.res = res;
         //Affichage du nombre de résultats
         if (this.res.size() == 0)
+        {
             afficherErreur("Aucun résultat.");
+            this.table.setModel(new javax.swing.table.DefaultTableModel());
+        }
         else if (this.res.size() > 0)
         {
             afficherMessage(this.res.size() + " résultats.");
