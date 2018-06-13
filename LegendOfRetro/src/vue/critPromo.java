@@ -380,7 +380,7 @@ public class critPromo extends javax.swing.JPanel
     }
     private Form toForm() throws DonneeInvalideException
     {
-        float prix,cote;
+        float prix,cote=0;
         int stock;
         try {
             prix = Float.valueOf(fieldPrix.getText());
