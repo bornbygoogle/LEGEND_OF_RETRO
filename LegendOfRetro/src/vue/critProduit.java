@@ -392,6 +392,18 @@ public class critProduit extends javax.swing.JPanel
             labelTag.setVisible(true);
             fieldTag.setVisible(true);
             labelPhoto.setVisible(true);
+            //Réinitialiser tous les champs
+            fieldCodeBarre.setText("");
+            fieldNom.setText("");
+            fieldEditeur.setText("");
+            listeZone.setSelectedItem(0);
+            fieldEdition.setText("");
+            listePlateforme.setSelectedItem(0);
+            fieldPrix.setText("");
+            fieldStock.setText("");
+            fieldCote.setText("");
+            fieldTag.setText("");
+            jTextAreaDescription.setText("");
         }
         else 
         { 
@@ -401,6 +413,18 @@ public class critProduit extends javax.swing.JPanel
             labelTag.setVisible(false);
             fieldTag.setVisible(false);
             labelPhoto.setVisible(false);
+            //Réinitialiser tous les champs
+            fieldCodeBarre.setText("");
+            fieldNom.setText("");
+            fieldEditeur.setText("");
+            listeZone.setSelectedItem(0);
+            fieldEdition.setText("");
+            listePlateforme.setSelectedItem(0);
+            fieldPrix.setText("");
+            fieldStock.setText("");
+            fieldCote.setText("");
+            fieldTag.setText("");
+            jTextAreaDescription.setText("");            
         }
     }//GEN-LAST:event_listeCategorieItemStateChanged
 
@@ -542,6 +566,7 @@ public class critProduit extends javax.swing.JPanel
         this.fieldEdition.setText(f.getEdition());
         this.fieldPrix.setText(String.valueOf(f.getPrix()));
         this.fieldStock.setText(String.valueOf(f.getStock()));
+        this.fieldCote.setText(String.valueOf(f.getCote()));
     
         //zone
         int i = 0;
@@ -580,9 +605,12 @@ public class critProduit extends javax.swing.JPanel
     {
         float prix = 0f;
         int stock = 0;
+        float cote = 0.0f;
         try {
             prix = Float.valueOf(fieldPrix.getText());
-            stock = Integer.valueOf(fieldStock.getText());}
+            stock = Integer.valueOf(fieldStock.getText());
+            cote = Float.valueOf(fieldCote.getText());
+        }
         catch (NumberFormatException nfe) {
             if (!"".equals(fieldPrix.getText()))
                 throw new DonneeInvalideException("Erreur : veuillez saisir le 'prix' en notation anglo-saxonne (par exemple : 2.5");
@@ -601,7 +629,7 @@ public class critProduit extends javax.swing.JPanel
                     (String) listeZone.getSelectedItem(),
                     fieldEditeur.getText(),""/*Photo*/, jTextAreaDescription.getText(),
                     fieldTag.getText(), (String) listePlateforme.getSelectedItem(),
-                    prix, stock);
+                    prix, stock, cote);
     }
     
     
