@@ -21,6 +21,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -426,6 +427,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             Jeu jeu = new Jeu();
             jeu.setNomJeu(nomJeu);
             jeu.setEditeur(editeur);
+            jeu.setPhotoJeu("");
             jeu.setDescriptionJeu(description);
 
             //création de l'enregistrement dans la table Jeu
@@ -804,13 +806,13 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                     enr.getCodeBarre(), enr.getConsole().getNomConsole(),
                     enr.getEdition(), enr.getZone().getNomZone(),
                     enr.getConsole().getFabricant().getNomFabricant(), "", "", "", "",
-                    enr.getPrix(), enr.getStock()));
+                    enr.getPrix(), enr.getStock(), getCoteProduct("Console",enr.getIdVersionConsole()) ));
         for (VersionJeu enr : chercherVersionsJeu(cb, "", "", "", "","", new Vector<String>()))
             ret.add(new ProduitForm(-1, enr.getIdVersionJeu(), "Jeu",
                     enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
                     enr.getJeu().getEditeur().getNomEditeur(), enr.getJeu().getPhotoJeu(), enr.getJeu().getDescriptionJeu(),
                     decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
-                    enr.getPrix(), enr.getStock()));
+                    enr.getPrix(), enr.getStock(), getCoteProduct("Jeu",enr.getIdVersionJeu())));
         if (ret.size() > 1)
             throw new ResultatInvalideException("Erreur : la recherche du code barre " + cb
                     + " renvoie plus d'un résultat", ret);
@@ -842,7 +844,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 ret.add(new ProduitForm(enr.getIdVersionConsole(), -1, "Console",
                         enr.getCodeBarre(), enr.getConsole().getNomConsole(), enr.getEdition(), enr.getZone().getNomZone(),
                         enr.getConsole().getFabricant().getNomFabricant(), "", "", "", "",
-                        enr.getPrix(), enr.getStock()));
+                        enr.getPrix(), enr.getStock(), getCoteProduct("Console",enr.getIdVersionConsole())));
             else
                 throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
         }
@@ -854,7 +856,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                             enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
                             enr.getJeu().getEditeur().getNomEditeur(), enr.getJeu().getPhotoJeu(), enr.getJeu().getDescriptionJeu(),
                             decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
-                            enr.getPrix(), enr.getStock()));
+                            enr.getPrix(), enr.getStock(), getCoteProduct("Jeu",enr.getIdVersionJeu())));
             else
                 throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
         }
@@ -884,22 +886,19 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             for (VersionConsole enr : chercherVersionsConsolePromo(edition, zone, editeur))
                 ret.add(new PromoForm(enr.getIdVersionConsole(), -1, "Console",
                         enr.getCodeBarre(), enr.getConsole().getNomConsole(), enr.getEdition(), enr.getZone().getNomZone(),
-                        enr.getConsole().getFabricant().getNomFabricant(), "", "", "",
-                        enr.getPrix(), enr.getStock(), 0.0f/* Cote promo Console*/));
+                        enr.getConsole().getFabricant().getNomFabricant(), "", "", "", "",
+                        enr.getPrix(), enr.getStock(), getCoteProduct(type,enr.getIdVersionConsole())));
             else
                 throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
         }
         else if ("Jeu".equals(type))
         {
-            if (!"".equals(cb) || !"".equals(nom) || !"".equals(editeur) || !tags.isEmpty())
-                for (VersionJeu enr : chercherVersionsJeuPromo(edition, zone, plateforme,editeur, tags))
-                    ret.add(new PromoForm(-1, enr.getIdVersionJeu(), "Jeu",
-                            enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
-                            enr.getJeu().getEditeur().getNomEditeur(), enr.getJeu().getDescriptionJeu(),
-                            decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
-                            enr.getPrix(), enr.getStock(), 0.0f/* Cote promo Jeu*/));
-            else
-                throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
+            for (VersionJeu enr : chercherVersionsJeuPromo(edition, zone, plateforme,editeur, tags))
+                ret.add(new PromoForm(-1, enr.getIdVersionJeu(), "Jeu",
+                    enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
+                    enr.getJeu().getEditeur().getNomEditeur(), ""/*Photo*/, enr.getJeu().getDescriptionJeu(),
+                    decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
+                    enr.getPrix(), enr.getStock(), getCoteProduct(type,enr.getIdVersionJeu())));
         }
        
         return ret;
@@ -1737,14 +1736,15 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
     public Vector<String> listeEdition(String type)
     {
         Vector<String> ret = new Vector();
-        List editions;
-        if (type=="Console")
+        List editions = new ArrayList();
+        System.out.println(type);
+        if (type.equals("Console"))
             { editions = modele.createQuery("select vc.edition from LOREntities.VersionConsole vc").list(); }
-        else
+        else if (type.equals("Jeu"))
             { editions = modele.createQuery("select vj.edition from LOREntities.VersionJeu vj").list(); }
-
+        System.out.println(editions);
         for (Object e : editions)
-            ret.add((String) e);
+            if (e!=null) ret.add((String) e);
         this.modele.flush();
             
         return ret;
@@ -1761,7 +1761,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         List fabricants = modele.createQuery("from LOREntities.Fabricant").list();
         for (Object f : fabricants)
-            ret.add(((Fabricant) f).getNomFabricant());
+            if (f!=null) ret.add(((Fabricant) f).getNomFabricant());
         this.modele.flush();
 
         return ret;
@@ -1778,7 +1778,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         List zones = modele.createQuery("from LOREntities.Zone z order by z.nomZone").list();
         for (Object z : zones)
-            ret.add(((Zone) z).getNomZone());
+            if (z!=null) ret.add(((Zone) z).getNomZone());
         this.modele.flush();
 
         return ret;
@@ -1794,7 +1794,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         List consoles = modele.createQuery("from LOREntities.Console c order by c.nomConsole").list();
         for (Object c : consoles)
-            ret.add(((Console) c).getNomConsole());
+            if (c!=null) ret.add(((Console) c).getNomConsole());
         this.modele.flush();
 
         return ret;
@@ -1982,7 +1982,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         int nombreAchat = 0;
         //int resul;
         Query resul = null;
-        if ("Console".equals(typeProduit)) 
+        if ("CONSOLE".equals(normalize(typeProduit))) 
         {
             resul = modele.createQuery("select sum(quantite) from LOREntities.LigneFactureConsole lfc "
                     + "where "
@@ -1990,7 +1990,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                             + " AND lfc.facture IN ( select f.idFacture from LOREntities.Facture f where f.typeFacture='v')"
                             + " )");
         }
-        else if ("Jeu".equals(typeProduit)) 
+        else if ("JEU".equals(normalize(typeProduit))) 
         {
             resul = modele.createQuery("select sum(quantite) from LOREntities.LigneFactureJeu lfj "
                     + "where "
@@ -2010,13 +2010,13 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
     private int getStockProduct(String typeProduit, Integer idProduit) throws DonneeInvalideException
     {
         int stock = 0;
-        if ("Console".equals(typeProduit)) 
+        if ("CONSOLE".equals(normalize(typeProduit))) 
         {
             VersionConsole vc = new VersionConsole();
             vc = chercherVersionConsole(idProduit);
             stock = vc.getStock();
         }
-        else if ("Jeu".equals(typeProduit)) 
+        else if ("JEU".equals(normalize(typeProduit))) 
         {
             VersionJeu vj = new VersionJeu();
             vj = chercherVersionJeu(idProduit);
@@ -2024,7 +2024,29 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         }  
         this.modele.flush();
         return stock;
-    }   
+    }
+    /**
+     * Renvoie le prix de vente d'un produit
+     * @param : type de produit, ID du produit
+     * @return : le prix du produit demandé en réel
+     */
+    private float getSellPrixProduct(String typeProduit, Integer idProduit)
+    {
+        float prixProduit = 0.0f;
+        //int resul;
+        Query resul = null;
+        if ("CONSOLE".equals(normalize(typeProduit))) 
+        {
+            resul = modele.createQuery("select vc.prix from LOREntities.VersionConsole vc  where vc.idVersionConsole="+idProduit+")");
+        }
+        else if ("JEU".equals(normalize(typeProduit))) 
+        {
+            resul = modele.createQuery("select vj.prix from LOREntities.VersionJeu vj  where vj.idVersionJeu="+idProduit+")");
+        } 
+        this.modele.flush();
+        prixProduit = Float.valueOf(resul.uniqueResult().toString());
+        return prixProduit;
+    }
     /**
      * Renvoie la frequence de vendre d'un produit
      * 
@@ -2033,7 +2055,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
      * @param : type de produit, ID du produit
      * @return : la fréquence de ventre du produit demandé en Integer
      */
-    public float getFrequentSellProduct(String typeProduit, int idProduit) throws DonneeInvalideException
+    private float getFrequentSellProduct(String typeProduit, int idProduit)
     {
         
         float frequenceDeVente = 0.0f;
@@ -2054,7 +2076,31 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         
         return frequenceDeVente = nombreVente/12;
     }
-    
+    /**
+     * Renvoie la cote d'un produit
+     * 
+     * @param : type de produit, ID du produit
+     * @return : le cote du produit demandé en Float
+     */
+    public float getCoteProduct(String typeProduit, int idProduit)
+    {
+        float coteProduit = 0.0f;
+
+        Query resul = null;
+        if ("CONSOLE".equals(normalize(typeProduit))) 
+        {
+            resul = modele.createQuery("select pc.coteConsole from LOREntities.PromoConsole pc "
+                                     + "where pc.versionConsole IN (select vc.idVersionConsole from VersionConsole vc  where vc.idVersionConsole="+idProduit+")");
+        }
+        else if ("JEU".equals(normalize(typeProduit))) 
+        {
+            resul = modele.createQuery("select pj.coteJeu from LOREntities.PromoJeu pj "
+                                     + "where pj.versionJeu IN (select vj.idVersionJeu from VersionJeu vj where vj.idVersionJeu="+idProduit+")");
+        } 
+        this.modele.flush();
+        coteProduit = Float.valueOf(resul.uniqueResult().toString());
+        return coteProduit;
+    }    
     /**
      * Brancher la photo des jeux
      * @param : String - url de la photo du jeu
@@ -2139,29 +2185,61 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         return retour;
     }
     /**
-     * Calcule le cote d'un produit pour Promotion
+     * Calcule et mis a jour dans la BDD le cote d'un produit pour Promotion
      * @param type de produit, ID du produit
-     * @return le cote du produit demandé
+     * @return void le cote du produit demandé
      */
-    public float calculCote(String typeProduit, Integer idProduit) throws DonneeInvalideException
+    public void calculCote(String typeProduit, Integer idProduit) throws EnregistrementInexistantException, DonneeInvalideException
     {
-        int periodEnMonths = 12;
-        float cote = 0.00f; //calcul du total des lignes
-      
-        // Recuperer la fréquence de vente d'un produit sur une période donnée
-        Float frequentDeVente = getFrequentSellProduct(typeProduit, idProduit);
+        float cote = 0.0f, prixPromo = 0.0f; 
         
-        // Recuperer le nombre de vente
-        int nbreVente = getSellQuantityProduct(typeProduit, idProduit);
-        
-        // Recuperer le stock actuel
-        int stockActuel = getStockProduct(typeProduit, idProduit);
-        
-        //Calculer cote
-        //cote = dateAchat/180 + stockActuel/10 + nbreVente/10;
-        cote = (float)Math.round((frequentDeVente/stockActuel)*100d) + Float.valueOf(nbreVente/10);
+
+        //on vérifie que le jeu existe déjà !
+        if ((chercherVersionJeu(idProduit) == null) && (chercherVersionConsole(idProduit) == null))
+            throw new EnregistrementInexistantException("Le produit recherché n'existe pas !!!");
+        else
+        {
+            // Recuperer la fréquence de vente d'un produit sur une période donnée
+            Float frequentDeVente = getFrequentSellProduct(typeProduit, idProduit);
+            // Recuperer le nombre de vente
+            int nbreVente = getSellQuantityProduct(typeProduit, idProduit);
+            // Recuperer le stock actuel
+            int stockActuel = getStockProduct(typeProduit, idProduit);
+            //Calculer cote
+            cote = (float)Math.round((frequentDeVente/stockActuel)*100d) + Float.valueOf(nbreVente/10);
+            prixPromo = getSellPrixProduct(typeProduit, idProduit) * cote;
+        }
         System.out.println(cote);
-        return cote;
+        // Enregistrement le calcul de cote dans la BDD
+        if ("CONSOLE".equals(normalize(typeProduit)))
+        {
+            //Remplissage des cote et prix Promo
+            PromoConsole pc = new PromoConsole();
+            pc.setVersionConsole(chercherVersionConsole(idProduit));
+            pc.setCoteConsole(cote);
+            pc.setPrixPromoConsole(prixPromo);
+
+            //création de l'enregistrement dans la table PromoConsole
+            this.modele.beginTransaction();
+            this.modele.save(pc);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
+        }
+        else if ("JEU".equals(normalize(typeProduit)))
+        {
+            //Remplissage des cote et prix Promo
+            PromoJeu pj = new PromoJeu();
+            pj.setVersionJeu(chercherVersionJeu(idProduit));
+            pj.setCoteJeu(cote);
+            pj.setPrixPromoJeu(prixPromo);
+
+            //création de l'enregistrement dans la table PromoJeu
+            this.modele.beginTransaction();
+            this.modele.save(pj);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
+        }
+        //return cote;
     }
     /**
      * Transforme un vecteur de tags en un vecteur de strings pour l'affichage.

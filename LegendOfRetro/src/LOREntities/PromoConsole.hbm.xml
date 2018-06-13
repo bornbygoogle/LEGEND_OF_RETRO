@@ -11,11 +11,11 @@
         <many-to-one name="versionConsole" class="LOREntities.VersionConsole" fetch="select">
             <column name="idVersionConsole" not-null="true" />
         </many-to-one>
-        <property name="coteConsole" type="int">
-            <column name="coteConsole" not-null="true" />
+        <property name="coteConsole" type="float">
+            <column name="coteConsole" precision="12" scale="0" not-null="true" />
         </property>
-        <property name="prixPromoConsole" type="int">
-            <column name="prixPromoConsole" not-null="true" />
+        <property name="prixPromoConsole" type="float">
+            <column name="prixPromoConsole" precision="12" scale="0" not-null="true" />
         </property>
     </class>
 </hibernate-mapping>

@@ -11,8 +11,8 @@ public class PromoConsole  implements java.io.Serializable {
 
      private Integer idPromoConsole;
      private VersionConsole versionConsole;
-     private int coteConsole;
-     private int prixPromoConsole;
+     private float coteConsole;
+     private float prixPromoConsole;
 
     public PromoConsole() {
     }
@@ -37,18 +37,18 @@ public class PromoConsole  implements java.io.Serializable {
     public void setVersionConsole(VersionConsole versionConsole) {
         this.versionConsole = versionConsole;
     }
-    public int getCoteConsole() {
+    public float getCoteConsole() {
         return this.coteConsole;
     }
     
-    public void setCoteConsole(int coteConsole) {
+    public void setCoteConsole(float coteConsole) {
         this.coteConsole = coteConsole;
     }
-    public int getPrixPromoConsole() {
+    public float getPrixPromoConsole() {
         return this.prixPromoConsole;
     }
     
-    public void setPrixPromoConsole(int prixPromoConsole) {
+    public void setPrixPromoConsole(float prixPromoConsole) {
         this.prixPromoConsole = prixPromoConsole;
     }
 
