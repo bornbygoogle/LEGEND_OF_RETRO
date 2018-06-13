@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -416,7 +417,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 editeur = creerEditeur(rapport, nomEditeur); //s'il n'existe pas, on le crée à la volée.
 
             //on vérifie que le jeu n'existe pas déjà !
-            Jeu jeuExistant = chercherJeu(nomJeu, tags, "");
+            //remarque : les tags ne sont pas un critère de recherche
+            Jeu jeuExistant = chercherJeu(nomJeu, new Vector<String>(), "");
             if (jeuExistant != null)
                 throw new EnregistrementExistantException("Impossible de créer le jeu : ce jeu existe déjà.");
 
@@ -1284,10 +1286,9 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         if (resultats.isEmpty())
             return null;
         else if (resultats.size() != 1)
-            throw new DonneesInsuffisantesException("Erreur lors de la recherche de la console : plusieurs résultats sont retournés.");
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche du jeu : plusieurs résultats sont retournés.");
         else
             return (Jeu) resultats.get(0);
-        //return null;
     }
     /**
      * Recherche les fabricants dont le nom contient la chaîne renseignée.
@@ -1415,6 +1416,241 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             return null;
         else //on suppose qu'il n'y a qu'un seul résultat !
             return (Ville) resultats.get(0);
+    }
+    
+    public Rapport modifier(ProduitForm form) throws DonneesInsuffisantesException, DonneeInvalideException, EnregistrementInexistantException
+    {
+        Rapport rapport = new Rapport();
+        
+        int id;
+        String type = form.getType();
+        String codeBarre = codeBarreValide(form.getCodeBarre());
+        String edition = normalize(form.getEdition());
+        String nom = normalize(form.getNom());
+        String editeur = normalize(form.getEditeur());
+        float prix = form.getPrix();
+        int stock = form.getStock();
+        if ("".equals(nom))
+            throw new DonneeInvalideException("Erreur : le nom ne peut pas être vide.");
+        if (prix <= 0f)
+            throw new DonneeInvalideException("Erreur : le prix ne peut pas être négatif ou nul.");
+        if (stock < 0)
+            throw new DonneeInvalideException("Erreur : le stock ne peut pas être négatif.");
+        
+        if ("Console".equals(type))
+        {
+            id = form.getIdVersionConsole();
+            if (id <= 0)
+                throw new DonneesInsuffisantesException(
+                        "Erreur : impossible de modifier console (version) d'identifiant " + id);
+            VersionConsole vc = chercherVersionConsole(id);
+            if (vc == null)
+                throw new EnregistrementInexistantException("Erreur : version de console " + id
+                        + " non trouvée");
+            //attributs directs : code barre, édition, prix, stock
+//            if (vc.getCodeBarre() != codeBarre)
+            vc.setCodeBarre(codeBarre);
+//            if (!(edition.equals(vc.getEdition())))
+            vc.setEdition(edition);
+//            if (vc.getPrix() != prix)
+            vc.setPrix(prix);
+//            if (vc.getStock() != stock)
+            vc.setStock(stock);
+            //zone
+            if (!(form.getZone().equals(vc.getZone().getNomZone())))
+            {
+                Zone nouvelleZone = chercherZone(form.getZone());
+                if (nouvelleZone == null) //si la zone n'existe pas, on ne la crée pas.
+                    throw new EnregistrementInexistantException("Erreur : la zone "
+                            + form.getZone() + " n'existe pas.");
+                //affectation de la zone à la version de console
+                vc.setZone(nouvelleZone);
+            }
+            //console
+            if (!(nom.equals(vc.getConsole().getNomConsole())
+                    && editeur.equals(vc.getConsole().getFabricant().getNomFabricant())))
+            {
+                Console nouvelleConsole;
+                try {
+                    nouvelleConsole = creerConsole(rapport, nom, editeur); }
+                catch (EnregistrementExistantException ex) {
+                    nouvelleConsole = chercherConsole(nom, editeur);}
+                vc.setConsole(nouvelleConsole);
+            }
+            
+            //sauvegarde de la version de console
+            this.modele.beginTransaction();
+            this.modele.save(vc);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
+            
+            rapport.addOperation(vc.getIdVersionConsole(), Rapport.Table.VERSIONCONSOLE, Rapport.Operation.MODIFIER);
+        }
+        else if ("Jeu".equals(type))
+        {
+            id = form.getIdVersionJeu();
+            if (id <= 0)
+                throw new DonneesInsuffisantesException(
+                        "Erreur : impossible de modifier jeu (version) d'identifiant " + id);
+            Vector<String> tags = stringToVector(normalize(form.getTags()) ,',');
+            String descr = form.getDescription();
+            
+            VersionJeu vj = chercherVersionJeu(id);
+            if (vj == null)
+                throw new EnregistrementInexistantException("Erreur : version de jeu " + id
+                        + " non trouvée");
+            
+            //attributs directs : code barre, édition, prix, stock
+//            if (vj.getCodeBarre() != codeBarre)
+            vj.setCodeBarre(codeBarre);
+//            if (!(edition.equals(vj.getEdition())))
+            vj.setEdition(edition);
+//            if (vj.getPrix() != prix)
+            vj.setPrix(prix);
+//            if (vj.getStock() != stock)
+            vj.setStock(stock);
+            //zone
+            if (!(form.getZone().equals(vj.getZone().getNomZone())))
+            {
+                Zone nouvelleZone = chercherZone(form.getZone());
+                if (nouvelleZone == null) //si la zone n'existe pas, on ne la crée pas.
+                    throw new EnregistrementInexistantException("Erreur : la zone "
+                            + form.getZone() + " n'existe pas.");
+                //affectation de la zone à la version de console
+                vj.setZone(nouvelleZone);
+            }
+            //plateforme
+            if (!(form.getPlateforme().equals(vj.getConsole().getNomConsole())))
+            {
+                Console nouvellePlateforme = chercherConsole(form.getPlateforme(), "");
+                if (nouvellePlateforme == null) //si la console n'existe pas, on ne la crée pas.
+                    throw new EnregistrementInexistantException("Erreur : la console "
+                            + form.getPlateforme() + " n'existe pas.");
+                //affectation de la plateforme à la version de jeu
+                vj.setConsole(chercherConsole(form.getPlateforme(), ""));
+            }
+            //jeu
+            if (!(nom.equals(vj.getJeu().getNomJeu())
+                    && editeur.equals(vj.getJeu().getEditeur().getNomEditeur())))
+            {
+                Jeu nouveauJeu;
+                try {
+                    nouveauJeu = creerJeu(rapport, nom, descr, tags, editeur); }
+                catch (EnregistrementExistantException ex) {
+                    //remarque : les tags ne sont pas un critère de recherche
+                    nouveauJeu = chercherJeu(nom, new Vector<String>(), editeur);
+                }
+                    
+                vj.setJeu(nouveauJeu);
+            }
+            //description du jeu
+//            if (!(vj.getJeu().getDescriptionJeu().equals(descr)))
+            vj.getJeu().setDescriptionJeu(descr);
+            
+            //tags
+            //1° supprimer les decrire qui sont dans la BDD mais pas dans le form (variable tags);
+            //pour chaque tag décrivant le jeu dans la base de données...
+            for (Object dec : vj.getJeu().getDecrires())
+            {
+                Tag tagBDD = (Tag) this.modele.load(Tag.class, ((Decrire) dec).getId().getIdTag());
+                //...on vérifie si il est dans les tags décrits par le formulaire
+                boolean present = false;
+                Iterator<String> iteratorTagsForm = tags.iterator();
+                while (!present && iteratorTagsForm.hasNext())
+                    present = iteratorTagsForm.next().equals(tagBDD.getLabelTag());
+                
+                //et si le tag n'est pas présent dans le formulaire, on supprime la relation entre le tag et le jeu.
+                if (!present)
+                {
+                    //mise à jour du tag
+                    tagBDD.getDecrires().remove(dec);
+                    this.modele.beginTransaction();
+                    this.modele.saveOrUpdate(tagBDD);
+                    this.modele.getTransaction().commit();
+                    this.modele.flush();
+                    if (tagBDD.getDecrires().isEmpty()) //si le tag ne décrit plus rien, on le supprime
+                    {
+                        this.modele.beginTransaction();
+                        this.modele.delete(tagBDD);
+                        this.modele.getTransaction().commit();
+                        this.modele.flush();
+                    }
+                    //mise à jour du jeu
+                    vj.getJeu().getDecrires().remove(dec);
+                    this.modele.beginTransaction();
+                    this.modele.saveOrUpdate(vj.getJeu());
+                    this.modele.getTransaction().commit();
+                    this.modele.flush();
+                    //destruction de l'enregistrement Decrire
+                    this.modele.beginTransaction();
+                    this.modele.delete(dec);
+                    this.modele.getTransaction().commit();
+                    this.modele.flush();
+                }
+            }
+            //2° créer/chercher et lier les tags qui sont dans le formulaire mais pas dans la table Decrire;
+            //pour chaque tag dans le formulaire...
+            for (String tagForm : tags)
+            {
+                //on vérifie s'il n'est pas lié au jeu dans la base de données
+                Iterator<Object> iterateurDecriresBDD = vj.getJeu().getDecrires().iterator();
+                boolean present = false;
+                while (!present && iterateurDecriresBDD.hasNext())
+                    present = tagForm.equals(((Tag) this.modele.load(
+                            Tag.class, ((Decrire) iterateurDecriresBDD.next()).getId().getIdTag())).getLabelTag());
+                //si la relation entre le tag et le jeu n'existe pas dans la base de données
+                if (!present)
+                {
+                    //on recherche le tag ou on le crée
+                    Tag tagBDD;
+                    try {
+                        tagBDD = creerTag(rapport, tagForm);}
+                    catch (EnregistrementExistantException ex) {
+                        tagBDD = chercherTag(tagForm);}
+                
+                //on lie le jeu au tag dans la table DECRIRE
+                Decrire d = new Decrire();
+                d.setId(new DecrireId());
+                d.getId().setIdTag(tagBDD.getIdTag());
+                d.getId().setIdJeu(vj.getJeu().getIdJeu());
+                
+                //mise à jour jeu
+                this.modele.beginTransaction();
+                this.modele.saveOrUpdate(vj.getJeu());
+                this.modele.getTransaction().commit();
+                this.modele.flush();
+                //mise à jour tag
+                this.modele.beginTransaction();
+                this.modele.saveOrUpdate(tagBDD);
+                this.modele.getTransaction().commit();
+                this.modele.flush();
+                //création de l'enregistrement "décrire"
+                this.modele.beginTransaction();
+                this.modele.save(d);
+                this.modele.getTransaction().commit();
+                this.modele.flush();
+
+                rapport.addOperation(tagBDD.getIdTag(), Rapport.Table.DESCRIPTION, Rapport.Operation.CREER);
+                }
+            }
+            
+            //sauvegarde des modifications sur le jeu
+            this.modele.beginTransaction();
+            this.modele.saveOrUpdate(vj.getJeu());
+            this.modele.getTransaction().commit();
+            this.modele.flush();
+            
+            //sauvegarde de la version de jeu
+            this.modele.beginTransaction();
+            this.modele.save(vj);
+            this.modele.getTransaction().commit();
+            this.modele.flush();
+            
+            rapport.addOperation(vj.getIdVersionJeu(), Rapport.Table.VERSIONJEU, Rapport.Operation.MODIFIER);
+        }
+
+        return rapport;
+        
     }
 
      /**
