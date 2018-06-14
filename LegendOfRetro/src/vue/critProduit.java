@@ -13,11 +13,15 @@ import controleur.DonneeInvalideException;
 import controleur.DonneesInsuffisantesException;
 import controleur.EnregistrementExistantException;
 import controleur.EnregistrementInexistantException;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import static org.hibernate.cfg.AvailableSettings.URL;
 
@@ -484,7 +488,9 @@ public class critProduit extends javax.swing.JPanel
         }
         catch (DonneesInsuffisantesException ex) {this.parent.afficherErreur(ex);}
         catch (DonneeInvalideException ex) {this.parent.afficherErreur(ex);}
-        catch (EnregistrementInexistantException ex) {this.parent.afficherErreur(ex);}
+        catch (EnregistrementInexistantException ex) {this.parent.afficherErreur(ex);} catch (IOException ex) {
+            Logger.getLogger(critProduit.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }//GEN-LAST:event_buttonModifierActionPerformed
 
@@ -517,6 +523,7 @@ public class critProduit extends javax.swing.JPanel
         this.fieldStock.setValue("");
         this.fieldTag.setText("");
         this.fieldTxtAjoutZone.setText("");
+        this.labelPhoto.setIcon(null);
         this.jTextAreaDescription.setText("");
         this.listePlateforme.setSelectedIndex(0);
         this.listeZone.setSelectedIndex(0);
@@ -537,7 +544,7 @@ public class critProduit extends javax.swing.JPanel
     *   @return void ( le remplissage se fait directement par le menu )
     * 
     *********/
-    public void setForm(ProduitForm f)
+    public void setForm(ProduitForm f) throws MalformedURLException, IOException
     {
         this.selectedForm = f;
         String errors = "";
@@ -564,6 +571,10 @@ System.out.println("BUG : !TODO il faut récupérer les tags (contrôleur ?) Nul
             else
                 errors = errors.concat("Erreur lors de la sélection de la plateforme " + plateforme
                         + " : plateforme non trouvée dans la liste déroulante. \n");
+            
+            //Affichage photo dans le cadre          
+            if (f.getPhoto()!="") { controleur.setPhotoProduct(f.getPhoto()); }
+            
         }
         else if ("console".equals(f.getType()))
             this.listeCategorie.setSelectedIndex(0); //type Console
@@ -574,6 +585,7 @@ System.out.println("BUG : !TODO il faut récupérer les tags (contrôleur ?) Nul
         this.fieldEdition.setText(f.getEdition());
         this.fieldPrix.setText(String.valueOf(f.getPrix()));
         this.fieldStock.setText(String.valueOf(f.getStock()));
+        this.fieldCote.setText(String.valueOf(f.getCote()));
     
         //zone
         int i = 0;
@@ -611,6 +623,7 @@ System.out.println("BUG : !TODO il faut récupérer les tags (contrôleur ?) Nul
     private Form toForm() throws DonneeInvalideException
     {
         float prix = 0f;
+        float cote = 0f;
         int stock = 0;
         try {
             prix = Float.valueOf(fieldPrix.getText());
@@ -637,11 +650,13 @@ System.out.println("BUG : !TODO il faut récupérer les tags (contrôleur ?) Nul
             retour.setEdition(fieldEdition.getText());
             retour.setZone((String) listeZone.getSelectedItem());
             retour.setEditeur(fieldEditeur.getText());
+            retour.setPhoto("");
             retour.setDescription(jTextAreaDescription.getText());
             retour.setTags(fieldTag.getText());
             retour.setPlateforme((String) listePlateforme.getSelectedItem());
             retour.setPrix(prix);
             retour.setStock(stock);
+            retour.setCote(cote);
             return retour;
         }
     }

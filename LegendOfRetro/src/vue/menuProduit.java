@@ -11,7 +11,10 @@ import controleur.Controleur;
 import controleur.DonneeInvalideException;
 import controleur.ResultatInvalideException;
 import java.awt.BorderLayout;
+import java.io.IOException;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 /**
@@ -72,7 +75,11 @@ public class menuProduit extends JPanel implements Chercheur
     {
         if (!(res instanceof ProduitForm))
             throw new IllegalArgumentException("Erreur dans menuProduit: le formulaire à sélectionner n'est pas un ProduitForm.");
-        this.Criteres.setForm((ProduitForm) res);
+        try {
+            this.Criteres.setForm((ProduitForm) res);
+        } catch (IOException ex) {
+            Logger.getLogger(menuProduit.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
