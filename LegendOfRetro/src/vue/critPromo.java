@@ -406,18 +406,23 @@ public class critPromo extends javax.swing.JPanel
         //parent.lancerRecherche(null);
     }    
     private void buttonModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonModifierActionPerformed
-        /*try {
+        try {
             Form f = toForm();
             if (!(f instanceof PromoForm))
                 throw new DonneesInsuffisantesException(
                         "Erreur : on ne peut pas effacer toutes ces données sur le produit");
             this.parent.afficherLog(
-                    this.controleur.modifier((PromoForm) f).toString());
+                    this.controleur.modifierPromo((PromoForm) f).toString());
             this.selectedForm = (PromoForm) f;
             setForm((PromoForm) this.selectedForm); //update affichage dans critProduit (normalement inutile)
         }
         catch (DonneesInsuffisantesException ex) {this.parent.afficherErreur(ex);}
-        catch (DonneeInvalideException ex) {this.parent.afficherErreur(ex);}*/
+        catch (DonneeInvalideException ex) {this.parent.afficherErreur(ex);} 
+        catch (EnregistrementInexistantException ex) {
+            Logger.getLogger(critPromo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(critPromo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_buttonModifierActionPerformed
 
     private void buttonChercherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChercherActionPerformed
@@ -512,7 +517,7 @@ System.out.println("BUG : !TODO il faut récupérer les tags (contrôleur ?) Nul
             cote = 0f;
         }
 
-        return new PromoForm(this.idVersionConsole, this.idVersionJeu,
+        return new PromoForm(-1,this.idVersionConsole, this.idVersionJeu,
                     (String) listeCategorie.getSelectedItem(), ""/*CodeBarre*/,
                     ""/*Nom*/, (String) listeEdition.getSelectedItem(),
                     (String) listeZone.getSelectedItem(),
