@@ -2353,6 +2353,13 @@ System.out.println("BUG : la suppression de tags pendant la modification ne se f
                 org.jboss.logging.Logger logger = org.jboss.logging.Logger.getLogger("org.hibernate");
                 java.util.logging.Logger.getLogger("org.hibernate").setLevel(java.util.logging.Level.OFF); //or whatever level you need*/
 
-        new Controleur();
+        try {
+            //initialisation de la session hibernate
+            Controleur.modele = (HibernateUtil.getSessionFactory()).openSession();
+            //lancement du programme
+            new Controleur();}
+        
+        catch (ExceptionInInitializerError eiie)    {System.out.println("Erreur lors de l'initialisation du modèle.\n"
+                + eiie.getMessage());}
     }
 }
