@@ -5,12 +5,8 @@
  */
 package vue;
 
-import bean.Form;
 import bean.PersonneForm;
 import controleur.Controleur;
-import controleur.DonneesInsuffisantesException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

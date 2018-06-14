@@ -10,10 +10,7 @@ import bean.CodeBarreForm;
 //import bean.FactureLigneForm;
 import bean.Form;
 import bean.ProduitForm;
-import bean.PersonneForm;
 import controleur.Controleur;
-import controleur.DonneeInvalideException;
-import java.util.Vector;
 
 /**
  *

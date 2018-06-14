@@ -9,10 +9,7 @@ import bean.FactureLigneForm;
 import bean.Form;
 import bean.ProduitForm;
 import bean.PromoForm;
-import controleur.Rapport;
-import java.util.Arrays;
 import java.util.Vector;
-import javax.swing.JPanel;
 
 /**
  *
