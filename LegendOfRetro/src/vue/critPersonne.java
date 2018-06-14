@@ -7,6 +7,7 @@ package vue;
 
 import bean.PersonneForm;
 import controleur.Controleur;
+import controleur.DonneeInvalideException;
 
 /**
  *
@@ -532,7 +533,7 @@ public class critPersonne extends javax.swing.JPanel {
         try {
             parent.creer(this.toForm());
         } catch (DonneeInvalideException ex) {
-            Logger.getLogger(critPersonne.class.getName()).log(Level.SEVERE, null, ex);
+            this.parent.afficherErreur(ex);
         }
     }//GEN-LAST:event_buttonNouveauActionPerformed
 
