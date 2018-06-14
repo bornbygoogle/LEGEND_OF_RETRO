@@ -14,6 +14,8 @@ import bean.Form;
 import bean.ProduitForm;
 import bean.PromoForm;
 import hibernateConfig.HibernateUtil;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -28,6 +30,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.Vector;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import org.hibernate.*;
 import vue.GUI;
@@ -2160,11 +2163,14 @@ System.out.println("BUG : la suppression de tags pendant la modification ne se f
      * @param : String - url de la photo du jeu
      * @return : void
      */
-    public void setPhotoProduct(String urlPhotoJeu)
+    public void setPhotoProduct(String urlPhotoJeu) throws IOException
     {
         try{
             URL url = new URL(urlPhotoJeu);
-            labelPhoto.setIcon(new ImageIcon(url));
+            BufferedImage img = ImageIO.read(url);
+            Image newimg = img.getScaledInstance(242, 128,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+            ImageIcon icon = new ImageIcon(newimg);
+            labelPhoto.setIcon(icon);
         }catch(MalformedURLException ex){
             labelPhoto.setText("Cant get photo !!!");
         }
