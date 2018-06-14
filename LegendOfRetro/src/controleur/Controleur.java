@@ -14,6 +14,8 @@ import bean.Form;
 import bean.ProduitForm;
 import bean.PromoForm;
 import hibernateConfig.HibernateUtil;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -28,6 +30,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.Vector;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import org.hibernate.*;
 import vue.GUI;
@@ -44,9 +47,9 @@ public class Controleur
     private static final int largeurFacture = 43;
     private static final String nomEntreprise = "Legend Of Retro";
     private GUI vue; //utilisé pour communiquer avec l'affichage
-    private Session modele; //session hibernate
+    private static Session modele; //session hibernate
 
-    public Controleur() throws InitException
+    public Controleur()
     {
         init();
     }
@@ -55,14 +58,9 @@ public class Controleur
      * le modele va preparer la sesion hibernate
      * @throws InitException va etre lancér si un fichier de confiquration requis n'est pas trouvé
      */
-    public void init() throws InitException
+    public void init()
     {
-        try {
-            this.modele = (HibernateUtil.getSessionFactory()).openSession();
-            this.vue = new GUI(this);
-        }
-        catch (ExceptionInInitializerError eiie)    {System.out.println("Erreur lors de l'initialisation du modèle.\n"
-                + eiie.getMessage());}
+        this.vue = new GUI(this);
     }
 
     /**
@@ -154,10 +152,10 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             facture.setActeur(null);//*/
 
         //sauvegarde de la facture dans la base de données
-        this.modele.beginTransaction();
-        this.modele.save(facture);
-        this.modele.getTransaction().commit();
-        this.modele.flush();
+        modele.beginTransaction();
+        modele.save(facture);
+        modele.getTransaction().commit();
+        modele.flush();
         
         for(FactureLigneForm ligne : form.getLignes())
             creerLigneFacture(rapport, ligne, facture);
@@ -215,22 +213,22 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             if (nouveauStock < 0)
                 throw new DonneeInvalideException("Impossible de créer la ligne : le stock obtenu est négatif.");
             vc.setStock(nouveauStock);
-            this.modele.beginTransaction();
-            this.modele.save(facture);
-            this.modele.getTransaction().commit();
-            this.modele.flush();
+            modele.beginTransaction();
+            modele.save(facture);
+            modele.getTransaction().commit();
+            modele.flush();
             //sauvegarde de la ligne dans la base de données
-            this.modele.beginTransaction();
-            this.modele.save(ligneConsole);
-            this.modele.getTransaction().commit();
-            this.modele.flush();
+            modele.beginTransaction();
+            modele.save(ligneConsole);
+            modele.getTransaction().commit();
+            modele.flush();
 
             //mise à jour de la facture dans la base de données
             facture.getLigneFactureConsoles().add(ligneConsole);
-            this.modele.beginTransaction();
-            this.modele.save(facture);
-            this.modele.getTransaction().commit();
-            this.modele.flush();
+            modele.beginTransaction();
+            modele.save(facture);
+            modele.getTransaction().commit();
+            modele.flush();
 
             rapport.addOperation(facture.getIdFacture(), Rapport.Table.LIGNEFACTURECONSOLE, Rapport.Operation.CREER);
         }
@@ -259,22 +257,22 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             if (nouveauStock < 0)
                 throw new DonneeInvalideException("Impossible de créer la ligne : le stock obtenu est négatif.");
             vj.setStock(nouveauStock);
-            this.modele.beginTransaction();
-            this.modele.save(facture);
-            this.modele.getTransaction().commit();
-            this.modele.flush();
+            modele.beginTransaction();
+            modele.save(facture);
+            modele.getTransaction().commit();
+            modele.flush();
             //mise à jour de la facture dans la base de données
             facture.getLigneFactureJeus().add(ligneJeu);
-            this.modele.beginTransaction();
-            this.modele.save(facture);
-            this.modele.getTransaction().commit();
-            this.modele.flush();
+            modele.beginTransaction();
+            modele.save(facture);
+            modele.getTransaction().commit();
+            modele.flush();
 
             //sauvegarde de la ligne dans la base de données
-            this.modele.beginTransaction();
-            this.modele.save(ligneJeu);
-            this.modele.getTransaction().commit();
-            this.modele.flush();
+            modele.beginTransaction();
+            modele.save(ligneJeu);
+            modele.getTransaction().commit();
+            modele.flush();
 
             rapport.addOperation(facture.getIdFacture(), Rapport.Table.LIGNEFACTUREJEU, Rapport.Operation.CREER);
         }
@@ -308,10 +306,10 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         fabr.setNomFabricant(nomFabr);
 
         //sauvegarde dans la base de données
-        this.modele.beginTransaction();
-        this.modele.save(fabr);
-        this.modele.getTransaction().commit();
-        this.modele.flush();
+        modele.beginTransaction();
+        modele.save(fabr);
+        modele.getTransaction().commit();
+        modele.flush();
 
         rapport.addOperation(fabr.getIdFabricant(), Rapport.Table.FABRICANT, Rapport.Operation.CREER);
         return fabr;
@@ -343,10 +341,10 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         ed.setNomEditeur(nomEditeur);
 
         //sauvegarde dans la base de données
-        this.modele.beginTransaction();
-        this.modele.save(ed);
-        this.modele.getTransaction().commit();
-        this.modele.flush();
+        modele.beginTransaction();
+        modele.save(ed);
+        modele.getTransaction().commit();
+        modele.flush();
 
         rapport.addOperation(ed.getIdEditeur(), Rapport.Table.EDITEUR, Rapport.Operation.CREER);
         return ed;
@@ -377,10 +375,10 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         t.setLabelTag(tag);
 
         //sauvegarde dans la base de données
-        this.modele.beginTransaction();
-        this.modele.save(t);
-        this.modele.getTransaction().commit();
-        this.modele.flush();
+        modele.beginTransaction();
+        modele.save(t);
+        modele.getTransaction().commit();
+        modele.flush();
 
         rapport.addOperation(t.getIdTag(), Rapport.Table.TAG, Rapport.Operation.CREER);
         return t;
@@ -431,10 +429,10 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             jeu.setDescriptionJeu(description);
 
             //création de l'enregistrement dans la table Jeu
-            this.modele.beginTransaction();
-            this.modele.save(jeu);
-            this.modele.getTransaction().commit();
-            this.modele.flush();
+            modele.beginTransaction();
+            modele.save(jeu);
+            modele.getTransaction().commit();
+            modele.flush();
             
             rapport.addOperation(jeu.getIdJeu(), Rapport.Table.JEU, Rapport.Operation.CREER);
             
@@ -453,20 +451,20 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 d.getId().setIdJeu(jeu.getIdJeu());
                 
                 //mise à jour jeu
-                this.modele.beginTransaction();
-                this.modele.saveOrUpdate(jeu);
-                this.modele.getTransaction().commit();
-                this.modele.flush();
+                modele.beginTransaction();
+                modele.saveOrUpdate(jeu);
+                modele.getTransaction().commit();
+                modele.flush();
                 //mise à jour tag
-                this.modele.beginTransaction();
-                this.modele.saveOrUpdate(t);
-                this.modele.getTransaction().commit();
-                this.modele.flush();
+                modele.beginTransaction();
+                modele.saveOrUpdate(t);
+                modele.getTransaction().commit();
+                modele.flush();
                 //création de l'enregistrement "décrire"
-                this.modele.beginTransaction();
-                this.modele.save(d);
-                this.modele.getTransaction().commit();
-                this.modele.flush();
+                modele.beginTransaction();
+                modele.save(d);
+                modele.getTransaction().commit();
+                modele.flush();
 
                 rapport.addOperation(t.getIdTag(), Rapport.Table.DESCRIPTION, Rapport.Operation.CREER);
                 
@@ -522,10 +520,10 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             cons.setFabricant(fabricant);
 
             //sauvegarde dans la base de données
-            this.modele.beginTransaction();
-            this.modele.save(cons);
-            this.modele.getTransaction().commit();
-            this.modele.flush();
+            modele.beginTransaction();
+            modele.save(cons);
+            modele.getTransaction().commit();
+            modele.flush();
 
             rapport.addOperation(cons.getIdConsole(), Rapport.Table.CONSOLE, Rapport.Operation.CREER);
             return cons;
@@ -597,10 +595,10 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             vc.setStock(stock);
 
             //sauvegarde dans la base de données
-            this.modele.beginTransaction();
-            this.modele.save(vc);
-            this.modele.getTransaction().commit();
-            this.modele.flush();
+            modele.beginTransaction();
+            modele.save(vc);
+            modele.getTransaction().commit();
+            modele.flush();
 
             rapport.addOperation(vc.getIdVersionConsole(), Rapport.Table.VERSIONCONSOLE, Rapport.Operation.CREER);
 
@@ -686,10 +684,10 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             vj.setStock(stock);
 
             //sauvegarde dans la base de données
-            this.modele.beginTransaction();
-            this.modele.save(vj);
-            this.modele.getTransaction().commit();
-            this.modele.flush();
+            modele.beginTransaction();
+            modele.save(vj);
+            modele.getTransaction().commit();
+            modele.flush();
 
             rapport.addOperation(vj.getIdVersionJeu(), Rapport.Table.VERSIONJEU, Rapport.Operation.CREER);
 
@@ -724,10 +722,10 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         p.setNomPays(nomPays);
 
         //sauvegarde dans la base de données
-        this.modele.beginTransaction();
-        this.modele.save(p);
-        this.modele.getTransaction().commit();
-        this.modele.flush();
+        modele.beginTransaction();
+        modele.save(p);
+        modele.getTransaction().commit();
+        modele.flush();
 
         Rapport rapport = new Rapport();
         rapport.addOperation(p.getIdPays(), Rapport.Table.PAYS, Rapport.Operation.CREER);
@@ -767,10 +765,10 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         ville.setPays(pays);
 
         //sauvegarde dans la base de données
-        this.modele.beginTransaction();
-        this.modele.save(ville);
-        this.modele.getTransaction().commit();
-        this.modele.flush();
+        modele.beginTransaction();
+        modele.save(ville);
+        modele.getTransaction().commit();
+        modele.flush();
 
         Rapport rapport = new Rapport();
         rapport.addOperation(ville.getIdVille(), Rapport.Table.VILLE, Rapport.Operation.CREER);
@@ -824,6 +822,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         Vector<ProduitForm> ret = new Vector<ProduitForm>();
 
         //On récupère les variables du bean pour améliorer la lisibilité
+        int idVersion = form.getIdVersionConsole();
+                System.out.println(idVersion);
         String type = form.getType();
         String cb = form.getCodeBarre();
         if (!"".equals(cb))
@@ -841,10 +841,21 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         {
             if (!"".equals(cb) || !"".equals(edition) || !"".equals(zone) || !"".equals(nom) || !"".equals(editeur))
             for (VersionConsole enr : chercherVersionsConsole(cb, edition, zone, nom, editeur))
-                ret.add(new ProduitForm(enr.getIdVersionConsole(), -1, "Console",
-                        enr.getCodeBarre(), enr.getConsole().getNomConsole(), enr.getEdition(), enr.getZone().getNomZone(),
-                        enr.getConsole().getFabricant().getNomFabricant(), "", "", "", "",
-                        enr.getPrix(), enr.getStock(), getCoteProduct("Console",enr.getIdVersionConsole())));
+            {
+                ProduitForm pf = new ProduitForm();
+                pf.setIdVersionConsole(enr.getIdVersionConsole());
+                pf.setIdVersionJeu(-1);
+                pf.setType("Console");
+                pf.setCodeBarre(enr.getCodeBarre());
+                pf.setNom(enr.getConsole().getNomConsole());
+                pf.setEdition(enr.getEdition());
+                pf.setZone(enr.getZone().getNomZone());
+                pf.setEditeur(enr.getConsole().getFabricant().getNomFabricant());
+                pf.setPrix(enr.getPrix());
+                pf.setStock(enr.getStock());
+                pf.setCote(getCoteProduct("Console",enr.getIdVersionConsole()));
+                ret.add(pf);
+            }
             else
                 throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
         }
@@ -852,11 +863,25 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         {
             if (!"".equals(cb) || !"".equals(nom) || !"".equals(editeur) || !tags.isEmpty())
                 for (VersionJeu enr : chercherVersionsJeu(cb, edition, zone, plateforme, nom, editeur, tags))
-                    ret.add(new ProduitForm(-1, enr.getIdVersionJeu(), "Jeu",
-                            enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
-                            enr.getJeu().getEditeur().getNomEditeur(), enr.getJeu().getPhotoJeu(), enr.getJeu().getDescriptionJeu(),
-                            decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
-                            enr.getPrix(), enr.getStock(), getCoteProduct("Jeu",enr.getIdVersionJeu())));
+            {
+                ProduitForm pf = new ProduitForm();
+                pf.setIdVersionConsole(-1);
+                pf.setIdVersionJeu(enr.getIdVersionJeu());
+                pf.setType("Jeu");
+                pf.setCodeBarre(enr.getCodeBarre());
+                pf.setNom(enr.getJeu().getNomJeu());
+                pf.setEdition(enr.getEdition());
+                pf.setZone(enr.getZone().getNomZone());
+                pf.setEditeur(enr.getJeu().getEditeur().getNomEditeur());
+                pf.setPhoto(enr.getJeu().getPhotoJeu());
+                pf.setDescription(enr.getJeu().getDescriptionJeu());
+                pf.setTags(decriresToString(enr.getJeu().getDecrires(), ','));
+                pf.setPlateforme(enr.getConsole().getNomConsole());
+                pf.setPrix(enr.getPrix());
+                pf.setStock(enr.getStock());
+                pf.setCote(getCoteProduct("Jeu",enr.getIdVersionJeu()));
+                ret.add(pf);
+            }
             else
                 throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
         }
@@ -868,28 +893,37 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         //On récupère les variables du bean pour améliorer la lisibilité
         String type = form.getType();
+                System.out.println(type);
         String cb = form.getCodeBarre();
         if (!"".equals(cb))
             cb = codeBarreValide(cb);
         String nom = normalize(form.getNom());
+        System.out.println(nom);
         String edition = normalize(form.getEdition());
         String zone = form.getZone();
+                System.out.println(zone);
         String editeur = normalize(form.getEditeur());
-        String description = form.getDescription();      //La description n'est pas un critère de recherche viable.
+                System.out.println(editeur);
+        String description = form.getDescription();
+                System.out.println(description);
         Vector<String> tags = stringToVector(normalize(form.getTags()).replace(" ", ""), ',');
         String plateforme = form.getPlateforme();
+        Float cote = 0.0f;
         //Pas besoin de récupérer les identifiants, la description de jeu, le prix et le stock.
 
         if ("Console".equals(type))
         {
-            if (!"".equals(edition) || !"".equals(zone) || !"".equals(editeur))
             for (VersionConsole enr : chercherVersionsConsolePromo(edition, zone, editeur))
+            {
+                /*if (enr.getIdVersionConsole()<1) cote = 0.0f;
+                else 
+                {   System.out.println(enr.getIdVersionConsole());
+                    cote = getCoteProduct("Console", enr.getIdVersionConsole());}*/
                 ret.add(new PromoForm(enr.getIdVersionConsole(), -1, "Console",
                         enr.getCodeBarre(), enr.getConsole().getNomConsole(), enr.getEdition(), enr.getZone().getNomZone(),
                         enr.getConsole().getFabricant().getNomFabricant(), "", "", "", "",
-                        enr.getPrix(), enr.getStock(), getCoteProduct(type,enr.getIdVersionConsole())));
-            else
-                throw new DonneesInsuffisantesException("Données insuffisantes pour lancer une recherche.");
+                        enr.getPrix(), enr.getStock(), getCoteProduct(type, enr.getIdVersionConsole())));
+            }
         }
         else if ("Jeu".equals(type))
         {
@@ -898,7 +932,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                     enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
                     enr.getJeu().getEditeur().getNomEditeur(), ""/*Photo*/, enr.getJeu().getDescriptionJeu(),
                     decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
-                    enr.getPrix(), enr.getStock(), getCoteProduct(type,enr.getIdVersionJeu())));
+                    enr.getPrix(), enr.getStock(), getCoteProduct(type, enr.getIdVersionJeu())));
         }
        
         return ret;
@@ -958,9 +992,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         if (!"".equals(edition))
             q.addCondition("vc.edition", edition, HQLRecherche.Operateur.LIKE);
 
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
-        this.modele.flush();
+        modele.flush();
         ret.addAll(resultats);
 
         return ret;
@@ -1001,9 +1034,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         if (!"".equals(edition))
             q.addCondition("vc.edition", edition, HQLRecherche.Operateur.LIKE);
 
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
-        this.modele.flush();
+        modele.flush();
         ret.addAll(resultats);
 
         return ret;
@@ -1015,9 +1047,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         HQLRecherche q = new HQLRecherche("VersionConsole vc");
         q.addCondition("vc.idVersionConsole", id, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
-        this.modele.flush();
+        modele.flush();
 
         if (resultats.isEmpty())
             
@@ -1117,9 +1148,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         if (!"".equals(edition)) //edition
             q.addCondition("vj.edition", edition, HQLRecherche.Operateur.LIKE);
 
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
-        this.modele.flush();
+        modele.flush();
         ret.addAll(resultats);
 
         return ret;
@@ -1198,9 +1228,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         if (!"".equals(edition)) //edition
             q.addCondition("vj.edition", edition, HQLRecherche.Operateur.LIKE);
 
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
-        this.modele.flush();
+        modele.flush();
         ret.addAll(resultats);
 
         return ret;
@@ -1212,7 +1241,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         HQLRecherche q = new HQLRecherche("VersionJeu vj");
         q.addCondition("vj.idVersionJeu", id, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
 
         if (resultats.isEmpty())
@@ -1237,10 +1265,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         q.addCondition("c.nomConsole", nomCons, HQLRecherche.Operateur.EGAL);
         if (!"".equals(nomFabr))
             q.addCondition("c.fabricant.nomFabricant", nomFabr, HQLRecherche.Operateur.EGAL);
-        System.out.println("Recherche Console"); //imprimé à des fins de test
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
-        this.modele.flush();
+        modele.flush();
 
         if (resultats.isEmpty())
             return null;
@@ -1278,10 +1304,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         q.addCondition("j.nomJeu", nomJeu, HQLRecherche.Operateur.EGAL);
         if (!"".equals(nomEditeur))
             q.addCondition("j.editeur.idEditeur", idEditeur , HQLRecherche.Operateur.EGAL);
-        System.out.println("Recherche Jeu"); //imprimé à des fins de test
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
-        this.modele.flush();
+        modele.flush();
 
         if (resultats.isEmpty())
             return null;
@@ -1304,9 +1328,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         HQLRecherche q = new HQLRecherche("Fabricant f");
         q.addCondition("f.nomFabricant", nomFabr, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
-        this.modele.flush();
+        modele.flush();
 
         if (resultats.isEmpty())
             return null;
@@ -1323,9 +1346,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         HQLRecherche q = new HQLRecherche("Editeur e");
         q.addCondition("e.nomEditeur", nomEdit, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
-        //this.modele.flush();
+        //modele.flush();
 
         if (resultats.isEmpty())
             return null;
@@ -1342,9 +1364,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         HQLRecherche q = new HQLRecherche("Zone z");
         q.addCondition("z.nomZone", zone, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
-        this.modele.flush();
+        modele.flush();
 
         if (resultats.isEmpty())
             return null;
@@ -1361,9 +1382,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         HQLRecherche q = new HQLRecherche("Tag t");
         q.addCondition("t.labelTag", tag, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
-        this.modele.flush();
+        modele.flush();
 
         if (resultats.isEmpty())
             return null;
@@ -1394,7 +1414,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             query.addCondition("pers.prenom", prenomPers, HQLRecherche.Operateur.LIKE);
      
         List resultats = modele.createQuery(query.toString()).list();
-        this.modele.flush();
+        modele.flush();
 
         if (resultats.isEmpty())
             return null;
@@ -1414,9 +1434,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         HQLRecherche q = new HQLRecherche("Pays p");
         q.addCondition("p.nomPays", pays, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
-        this.modele.flush();
+        modele.flush();
 
         if (resultats.isEmpty())
             return null;
@@ -1441,9 +1460,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         q.addCondition("v.nomVille", nomVille, HQLRecherche.Operateur.EGAL);
         q.addCondition("v.cp", cp, HQLRecherche.Operateur.EGAL);
         q.addCondition("v.pays.nomPays", nomPays, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
-        this.modele.flush();
+        modele.flush();
 
         if (resultats.isEmpty())
             return null;
@@ -1503,19 +1521,30 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             if (!(nom.equals(vc.getConsole().getNomConsole())
                     && editeur.equals(vc.getConsole().getFabricant().getNomFabricant())))
             {
-                Console nouvelleConsole;
-                try {
-                    nouvelleConsole = creerConsole(rapport, nom, editeur); }
-                catch (EnregistrementExistantException ex) {
-                    nouvelleConsole = chercherConsole(nom, editeur);}
-                vc.setConsole(nouvelleConsole);
+                Console nouvelleConsole = chercherConsole(nom, editeur);
+                if (nouvelleConsole != null) //si la console existe, on remplace
+                    vc.setConsole(nouvelleConsole);
+                else //sinon, on change le nom/l'éditeur de l'ancienne console
+                {
+                    if (!(nom.equals(vc.getConsole().getNomConsole())))
+                        vc.getConsole().setNomConsole(nom);
+                    //fabricant
+                    if (!(editeur.equals(vc.getConsole().getFabricant().getNomFabricant())))
+                    {
+                        Fabricant nouveauFabricant = chercherFabricant(editeur);
+                        if (nouveauFabricant != null) //si le fabricant existe, on remplace
+                            vc.getConsole().setFabricant(nouveauFabricant);
+                        else //sinon, on change le nom du fabricant
+                            vc.getConsole().getFabricant().setNomFabricant(editeur);
+                    }
+                }
             }
             
             //sauvegarde de la version de console
-            this.modele.beginTransaction();
-            this.modele.save(vc);
-            this.modele.getTransaction().commit();
-            this.modele.flush();
+            modele.beginTransaction();
+            modele.save(vc);
+            modele.getTransaction().commit();
+            modele.flush();
             
             rapport.addOperation(vc.getIdVersionConsole(), Rapport.Table.VERSIONCONSOLE, Rapport.Operation.MODIFIER);
         }
@@ -1563,29 +1592,40 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 vj.setConsole(chercherConsole(form.getPlateforme(), ""));
             }
             //jeu
-            if (!(nom.equals(vj.getJeu().getNomJeu())
-                    && editeur.equals(vj.getJeu().getEditeur().getNomEditeur())))
+            Jeu jeu = vj.getJeu();
+            if (!(nom.equals(jeu.getNomJeu())
+                    && editeur.equals(jeu.getEditeur().getNomEditeur())))
             {
-                Jeu nouveauJeu;
-                try {
-                    nouveauJeu = creerJeu(rapport, nom, descr, tags, editeur); }
-                catch (EnregistrementExistantException ex) {
-                    //remarque : les tags ne sont pas un critère de recherche
-                    nouveauJeu = chercherJeu(nom, new Vector<String>(), editeur);
+                //remarque : les tags ne sont pas un critère de recherche
+                Jeu nouveauJeu = chercherJeu(nom, new Vector<String>(), editeur);
+                if (nouveauJeu != null) //si le jeu existe, on remplace
+                    jeu = nouveauJeu;
+                else //sinon, on change le nom/l'éditeur de l'ancien jeu
+                {
+                    if (!(nom.equals(jeu.getNomJeu())))
+                        jeu.setNomJeu(nom);
+                    //éditeur
+                    if (!(editeur.equals(jeu.getEditeur().getNomEditeur())))
+                    {
+                        Editeur nouvelEditeur = chercherEditeur(editeur);
+                        if (nouvelEditeur != null) //si l'éditeur existe, on remplace
+                            jeu.setEditeur(nouvelEditeur);
+                        else //sinon, on change le nom de l'éditeur
+                            jeu.getEditeur().setNomEditeur(editeur);
+                    }
                 }
-                    
-                vj.setJeu(nouveauJeu);
             }
             //description du jeu
-//            if (!(vj.getJeu().getDescriptionJeu().equals(descr)))
-            vj.getJeu().setDescriptionJeu(descr);
+//            if (!(jeu.getDescriptionJeu().equals(descr)))
+            jeu.setDescriptionJeu(descr);
             
             //tags
             //1° supprimer les decrire qui sont dans la BDD mais pas dans le form (variable tags);
             //pour chaque tag décrivant le jeu dans la base de données...
-            for (Object dec : vj.getJeu().getDecrires())
+            Vector<Decrire> liensASupprimer = new Vector<Decrire>();
+            for (Object dec : jeu.getDecrires())
             {
-                Tag tagBDD = (Tag) this.modele.load(Tag.class, ((Decrire) dec).getId().getIdTag());
+                Tag tagBDD = (Tag) modele.load(Tag.class, ((Decrire) dec).getId().getIdTag());
                 //...on vérifie si il est dans les tags décrits par le formulaire
                 boolean present = false;
                 Iterator<String> iteratorTagsForm = tags.iterator();
@@ -1594,31 +1634,35 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 
                 //et si le tag n'est pas présent dans le formulaire, on supprime la relation entre le tag et le jeu.
                 if (!present)
+                    liensASupprimer.add((Decrire) dec);
+            }
+            for (Object dec : liensASupprimer)
+            {
+                Tag tagBDD = (Tag) modele.load(Tag.class, ((Decrire) dec).getId().getIdTag());
+                //mise à jour du tag
+                tagBDD.getDecrires().remove(dec);
+                modele.beginTransaction();
+                modele.saveOrUpdate(tagBDD);
+                modele.getTransaction().commit();
+                modele.flush();
+                //mise à jour du jeu
+                jeu.getDecrires().remove(dec);
+                modele.beginTransaction();
+                modele.saveOrUpdate(jeu);
+                modele.getTransaction().commit();
+                modele.flush();
+                //destruction de l'enregistrement Decrire
+                modele.beginTransaction();
+                modele.delete(dec);
+                modele.getTransaction().commit();
+                modele.flush();
+                //si le tag ne décrit plus rien, on le supprime
+                if (tagBDD.getDecrires().isEmpty())
                 {
-                    //mise à jour du tag
-                    tagBDD.getDecrires().remove(dec);
-                    this.modele.beginTransaction();
-                    this.modele.saveOrUpdate(tagBDD);
-                    this.modele.getTransaction().commit();
-                    this.modele.flush();
-                    if (tagBDD.getDecrires().isEmpty()) //si le tag ne décrit plus rien, on le supprime
-                    {
-                        this.modele.beginTransaction();
-                        this.modele.delete(tagBDD);
-                        this.modele.getTransaction().commit();
-                        this.modele.flush();
-                    }
-                    //mise à jour du jeu
-                    vj.getJeu().getDecrires().remove(dec);
-                    this.modele.beginTransaction();
-                    this.modele.saveOrUpdate(vj.getJeu());
-                    this.modele.getTransaction().commit();
-                    this.modele.flush();
-                    //destruction de l'enregistrement Decrire
-                    this.modele.beginTransaction();
-                    this.modele.delete(dec);
-                    this.modele.getTransaction().commit();
-                    this.modele.flush();
+                    modele.beginTransaction();
+                    modele.delete(tagBDD);
+                    modele.getTransaction().commit();
+                    modele.flush();
                 }
             }
             //2° créer/chercher et lier les tags qui sont dans le formulaire mais pas dans la table Decrire;
@@ -1626,10 +1670,10 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             for (String tagForm : tags)
             {
                 //on vérifie s'il n'est pas lié au jeu dans la base de données
-                Iterator<Object> iterateurDecriresBDD = vj.getJeu().getDecrires().iterator();
+                Iterator<Object> iterateurDecriresBDD = jeu.getDecrires().iterator();
                 boolean present = false;
                 while (!present && iterateurDecriresBDD.hasNext())
-                    present = tagForm.equals(((Tag) this.modele.load(
+                    present = tagForm.equals(((Tag) modele.load(
                             Tag.class, ((Decrire) iterateurDecriresBDD.next()).getId().getIdTag())).getLabelTag());
                 //si la relation entre le tag et le jeu n'existe pas dans la base de données
                 if (!present)
@@ -1645,39 +1689,40 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 Decrire d = new Decrire();
                 d.setId(new DecrireId());
                 d.getId().setIdTag(tagBDD.getIdTag());
-                d.getId().setIdJeu(vj.getJeu().getIdJeu());
+                d.getId().setIdJeu(jeu.getIdJeu());
                 
                 //mise à jour jeu
-                this.modele.beginTransaction();
-                this.modele.saveOrUpdate(vj.getJeu());
-                this.modele.getTransaction().commit();
-                this.modele.flush();
+                modele.beginTransaction();
+                modele.saveOrUpdate(jeu);
+                modele.getTransaction().commit();
+                modele.flush();
                 //mise à jour tag
-                this.modele.beginTransaction();
-                this.modele.saveOrUpdate(tagBDD);
-                this.modele.getTransaction().commit();
-                this.modele.flush();
+                modele.beginTransaction();
+                modele.saveOrUpdate(tagBDD);
+                modele.getTransaction().commit();
+                modele.flush();
                 //création de l'enregistrement "décrire"
-                this.modele.beginTransaction();
-                this.modele.save(d);
-                this.modele.getTransaction().commit();
-                this.modele.flush();
+                modele.beginTransaction();
+                modele.save(d);
+                modele.getTransaction().commit();
+                modele.flush();
 
                 rapport.addOperation(tagBDD.getIdTag(), Rapport.Table.DESCRIPTION, Rapport.Operation.CREER);
                 }
             }
             
             //sauvegarde des modifications sur le jeu
-            this.modele.beginTransaction();
-            this.modele.saveOrUpdate(vj.getJeu());
-            this.modele.getTransaction().commit();
-            this.modele.flush();
+            modele.beginTransaction();
+            modele.saveOrUpdate(jeu);
+            modele.getTransaction().commit();
+            modele.flush();
             
             //sauvegarde de la version de jeu
-            this.modele.beginTransaction();
-            this.modele.save(vj);
-            this.modele.getTransaction().commit();
-            this.modele.flush();
+            vj.setJeu(jeu);
+            modele.beginTransaction();
+            modele.save(vj);
+            modele.getTransaction().commit();
+            modele.flush();
             
             rapport.addOperation(vj.getIdVersionJeu(), Rapport.Table.VERSIONJEU, Rapport.Operation.MODIFIER);
         }
@@ -1717,10 +1762,10 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         z.setNomZone(zone);
 
         //sauvegarde dans la base de données
-        this.modele.beginTransaction();
-        this.modele.save(z);
-        this.modele.getTransaction().commit();
-        this.modele.flush();
+        modele.beginTransaction();
+        modele.save(z);
+        modele.getTransaction().commit();
+        modele.flush();
 
         rapport.addOperation(z.getIdZone(), Rapport.Table.ZONE, Rapport.Operation.CREER);
 
@@ -1737,15 +1782,13 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
     {
         Vector<String> ret = new Vector();
         List editions = new ArrayList();
-        System.out.println(type);
         if (type.equals("Console"))
             { editions = modele.createQuery("select vc.edition from LOREntities.VersionConsole vc").list(); }
         else if (type.equals("Jeu"))
             { editions = modele.createQuery("select vj.edition from LOREntities.VersionJeu vj").list(); }
-        System.out.println(editions);
         for (Object e : editions)
             if (e!=null) ret.add((String) e);
-        this.modele.flush();
+        modele.flush();
             
         return ret;
     }
@@ -1762,7 +1805,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         List fabricants = modele.createQuery("from LOREntities.Fabricant").list();
         for (Object f : fabricants)
             if (f!=null) ret.add(((Fabricant) f).getNomFabricant());
-        this.modele.flush();
+        modele.flush();
 
         return ret;
     }    
@@ -1779,7 +1822,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         List zones = modele.createQuery("from LOREntities.Zone z order by z.nomZone").list();
         for (Object z : zones)
             if (z!=null) ret.add(((Zone) z).getNomZone());
-        this.modele.flush();
+        modele.flush();
 
         return ret;
     }
@@ -1795,7 +1838,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         List consoles = modele.createQuery("from LOREntities.Console c order by c.nomConsole").list();
         for (Object c : consoles)
             if (c!=null) ret.add(((Console) c).getNomConsole());
-        this.modele.flush();
+        modele.flush();
 
         return ret;
     }
@@ -1812,7 +1855,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         List tags = modele.createQuery("from LOREntities.Tag t order by t.labelTag").list();
         for (Object t : tags)
             ret.add(((Tag) t).getLabelTag());
-        this.modele.flush();
+        modele.flush();
         
         return ret;
     }
@@ -1829,7 +1872,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         List pays = modele.createQuery("from LOREntities.Pays p order by p.nomPays").list();
         for (Object p : pays)
             ret.add(((Pays) p).getNomPays());
-        this.modele.flush();
+        modele.flush();
         
         return ret;
     }
@@ -1847,7 +1890,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 ).list();
         for (Object v : villes)
             ret.add(((Ville) v).getNomVille() + " (" + ((Ville) v).getCp() + " )");
-        this.modele.flush();
+        modele.flush();
         
         return ret;
     }
@@ -1902,7 +1945,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         for (Object o : facture.getLigneFactureConsoles())
         {
             int quantite = ((LigneFactureConsole) o).getQuantite();
-            VersionConsole vc = (VersionConsole) this.modele.load(VersionConsole.class,
+            VersionConsole vc = (VersionConsole) modele.load(VersionConsole.class,
                     ((LigneFactureConsole) o).getId().getIdVersionConsole());
             for (String sl : formater(
                     vc.getConsole().getNomConsole() + " x" + quantite,
@@ -1913,7 +1956,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         for (Object o : facture.getLigneFactureJeus())
         {
             int quantite = ((LigneFactureJeu) o).getQuantite();
-            VersionJeu vj = (VersionJeu) this.modele.load(VersionJeu.class,
+            VersionJeu vj = (VersionJeu) modele.load(VersionJeu.class,
                     ((LigneFactureJeu) o).getId().getIdVersionJeu());
             for (String sl : formater(vj.getJeu().getNomJeu() + " x" + quantite,
                     vj.getPrix() * quantite + "€",
@@ -1998,7 +2041,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                             + " AND lfj.facture IN ( select f.idFacture from LOREntities.Facture f where f.typeFacture='v')"
                             + " )");
         } 
-        this.modele.flush();
+        modele.flush();
         nombreAchat = Integer.valueOf(resul.uniqueResult().toString());
         return nombreAchat;
     }
@@ -2022,7 +2065,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             vj = chercherVersionJeu(idProduit);
             stock = vj.getStock();
         }  
-        this.modele.flush();
+        modele.flush();
         return stock;
     }
     /**
@@ -2043,7 +2086,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         {
             resul = modele.createQuery("select vj.prix from LOREntities.VersionJeu vj  where vj.idVersionJeu="+idProduit+")");
         } 
-        this.modele.flush();
+        modele.flush();
         prixProduit = Float.valueOf(resul.uniqueResult().toString());
         return prixProduit;
     }
@@ -2068,11 +2111,11 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                            + "AND lfc.facture IN ( select f.idFacture from Facture f where f.typeFacture LIKE '%v%' "
                                                 + "AND year(f.dateFacture) BETWEEN :yearDebutPeriod AND :yearActuel ))";                       
 
-        Query query = this.modele.createQuery(HQL_QUERY)
+        Query query = modele.createQuery(HQL_QUERY)
                       .setParameter("yearDebutPeriod", yearDebutPeriod)
                       .setParameter("yearActuel",yearActuel);
         int nombreVente = Integer.valueOf(query.uniqueResult().toString());
-        this.modele.flush();
+        modele.flush();
         
         return frequenceDeVente = nombreVente/12;
     }
@@ -2085,20 +2128,21 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
     public float getCoteProduct(String typeProduit, int idProduit)
     {
         float coteProduit = 0.0f;
-
-        Query resul = null;
         if ("CONSOLE".equals(normalize(typeProduit))) 
         {
-            resul = modele.createQuery("select pc.coteConsole from LOREntities.PromoConsole pc "
-                                     + "where pc.versionConsole IN (select vc.idVersionConsole from VersionConsole vc  where vc.idVersionConsole="+idProduit+")");
+            String HQL_QUERY = "select pc.coteConsole from LOREntities.PromoConsole pc where pc.versionConsole IN (select vc.idVersionConsole from VersionConsole vc where vc.idVersionConsole= :idProduit)";
+            Query query = modele.createQuery(HQL_QUERY).setParameter("idProduit", idProduit);
+            if (query.list().isEmpty()) { coteProduit = 0f; } else { coteProduit = Float.valueOf(query.list().get(0).toString()); }
+            modele.flush();
         }
         else if ("JEU".equals(normalize(typeProduit))) 
         {
-            resul = modele.createQuery("select pj.coteJeu from LOREntities.PromoJeu pj "
-                                     + "where pj.versionJeu IN (select vj.idVersionJeu from VersionJeu vj where vj.idVersionJeu="+idProduit+")");
-        } 
-        this.modele.flush();
-        coteProduit = Float.valueOf(resul.uniqueResult().toString());
+        modele.flush();
+            String HQL_QUERY = "select pj.coteJeu from LOREntities.PromoJeu pj where pj.versionJeu IN (select vj.idVersionJeu from VersionJeu vj where vj.idVersionJeu= :idProduit)";
+            Query query = modele.createQuery(HQL_QUERY).setParameter("idProduit", idProduit);
+            if (query.list().isEmpty()) { coteProduit = 0f; } else { coteProduit = Float.valueOf(query.list().get(0).toString()); }
+            modele.flush();
+         }
         return coteProduit;
     }    
     /**
@@ -2106,11 +2150,14 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
      * @param : String - url de la photo du jeu
      * @return : void
      */
-    public void setPhotoProduct(String urlPhotoJeu)
+    public void setPhotoProduct(String urlPhotoJeu) throws IOException
     {
         try{
             URL url = new URL(urlPhotoJeu);
-            labelPhoto.setIcon(new ImageIcon(url));
+            BufferedImage img = ImageIO.read(url);
+            Image newimg = img.getScaledInstance(242, 128,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+            ImageIcon icon = new ImageIcon(newimg);
+            labelPhoto.setIcon(icon);
         }catch(MalformedURLException ex){
             labelPhoto.setText("Cant get photo !!!");
         }
@@ -2220,10 +2267,10 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             pc.setPrixPromoConsole(prixPromo);
 
             //création de l'enregistrement dans la table PromoConsole
-            this.modele.beginTransaction();
-            this.modele.save(pc);
-            this.modele.getTransaction().commit();
-            this.modele.flush();
+            modele.beginTransaction();
+            modele.save(pc);
+            modele.getTransaction().commit();
+            modele.flush();
         }
         else if ("JEU".equals(normalize(typeProduit)))
         {
@@ -2234,10 +2281,10 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             pj.setPrixPromoJeu(prixPromo);
 
             //création de l'enregistrement dans la table PromoJeu
-            this.modele.beginTransaction();
-            this.modele.save(pj);
-            this.modele.getTransaction().commit();
-            this.modele.flush();
+            modele.beginTransaction();
+            modele.save(pj);
+            modele.getTransaction().commit();
+            modele.flush();
         }
         //return cote;
     }
@@ -2251,7 +2298,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
     {
         Vector <String> vect = new Vector<String>();
         for (Decrire d : decrires)
-            vect.add(d.getTag().getLabelTag());
+            vect.add(((Tag) modele.load(Tag.class, d.getId().getIdTag()))
+                    .getLabelTag());
         return vectorToString(vect, separator);
     }
     protected static final Vector<String> stringToVector(String s, char separator)
@@ -2286,21 +2334,25 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         s = s.toUpperCase(new Locale("FRENCH", "FRANCE"));
         return s;
     }
-
+    
     /**
      * Démarre l'application
      * args x
      */
     public static void main(String[] args)
     {
-        try {
             //magical - do not touch
               /*@SuppressWarnings("unused")
                 org.jboss.logging.Logger logger = org.jboss.logging.Logger.getLogger("org.hibernate");
                 java.util.logging.Logger.getLogger("org.hibernate").setLevel(java.util.logging.Level.OFF); //or whatever level you need*/
 
+        try {
+            //initialisation de la session hibernate
+            Controleur.modele = (HibernateUtil.getSessionFactory()).openSession();
+            //lancement du programme
             new Controleur();}
-        catch (InitException ex) {
-            System.out.println(ex.getMessage());}
+        
+        catch (ExceptionInInitializerError eiie)    {System.out.println("Erreur lors de l'initialisation du modèle.\n"
+                + eiie.getMessage());}
     }
 }

@@ -31,8 +31,8 @@ public class ProduitForm extends CodeBarreForm
     
     public ProduitForm()
     {
-        this.idVersionConsole = -1;
-        this.idVersionJeu = -1;
+        this.idVersionConsole = 0;
+        this.idVersionJeu = 0;
         this.type = "";
         this.nom = "";
         this.edition = "";
@@ -41,6 +41,7 @@ public class ProduitForm extends CodeBarreForm
         this.photo = "";
         this.description = "";
         this.tags = "";
+        this.plateforme = "";
         this.prix = -1;
         this.stock = -1;
         this.cote = 1.0f;
@@ -91,6 +92,7 @@ public class ProduitForm extends CodeBarreForm
     public void setZone(String zone)      {this.zone = zone;}
     public void setEditeur(String editeur)      {this.editeur = editeur;}
     public void setDescription(String descr)      {this.description = descr;}
+    public void setPhoto(String photo)      {this.photo = photo;}
     public void setTags(String tags)      {this.tags = tags;}
     public void setPlateforme(String pf)      {this.plateforme = pf;}
     public void setPrix(float p)      {this.prix = p;}

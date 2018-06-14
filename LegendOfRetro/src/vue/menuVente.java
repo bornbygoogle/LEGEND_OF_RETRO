@@ -8,7 +8,6 @@ package vue;
 import bean.CodeBarreForm;
 import bean.FactureForm;
 import bean.FactureLigneForm;
-//import bean.FactureLigneForm;
 import bean.Form;
 import bean.PersonneForm;
 import bean.ProduitForm;
@@ -19,8 +18,6 @@ import controleur.ResultatInvalideException;
 import java.awt.BorderLayout;
 import java.util.Iterator;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 /**

@@ -71,7 +71,6 @@ public class Rapport
                 ret = ret.concat("Ajout");
             else if (this.operations.elementAt(i) == Operation.MODIFIER)
                 ret = ret.concat("Modification");
-            System.out.println(this.tables.elementAt(i));
             if (this.tables.elementAt(i) == Table.DESCRIPTION)
                 ret = ret.concat(" d'un lien entre un jeu et le tag ");
             else
