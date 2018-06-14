@@ -992,7 +992,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         if (!"".equals(edition))
             q.addCondition("vc.edition", edition, HQLRecherche.Operateur.LIKE);
 
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
         ret.addAll(resultats);
@@ -1035,7 +1034,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         if (!"".equals(edition))
             q.addCondition("vc.edition", edition, HQLRecherche.Operateur.LIKE);
 
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
         ret.addAll(resultats);
@@ -1049,7 +1047,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         HQLRecherche q = new HQLRecherche("VersionConsole vc");
         q.addCondition("vc.idVersionConsole", id, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
 
@@ -1151,7 +1148,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         if (!"".equals(edition)) //edition
             q.addCondition("vj.edition", edition, HQLRecherche.Operateur.LIKE);
 
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
         ret.addAll(resultats);
@@ -1232,7 +1228,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         if (!"".equals(edition)) //edition
             q.addCondition("vj.edition", edition, HQLRecherche.Operateur.LIKE);
 
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
         ret.addAll(resultats);
@@ -1246,7 +1241,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         HQLRecherche q = new HQLRecherche("VersionJeu vj");
         q.addCondition("vj.idVersionJeu", id, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
 
         if (resultats.isEmpty())
@@ -1271,8 +1265,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         q.addCondition("c.nomConsole", nomCons, HQLRecherche.Operateur.EGAL);
         if (!"".equals(nomFabr))
             q.addCondition("c.fabricant.nomFabricant", nomFabr, HQLRecherche.Operateur.EGAL);
-        System.out.println("Recherche Console"); //imprimé à des fins de test
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
 
@@ -1312,8 +1304,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         q.addCondition("j.nomJeu", nomJeu, HQLRecherche.Operateur.EGAL);
         if (!"".equals(nomEditeur))
             q.addCondition("j.editeur.idEditeur", idEditeur , HQLRecherche.Operateur.EGAL);
-        System.out.println("Recherche Jeu"); //imprimé à des fins de test
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
 
@@ -1338,7 +1328,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         HQLRecherche q = new HQLRecherche("Fabricant f");
         q.addCondition("f.nomFabricant", nomFabr, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
 
@@ -1357,7 +1346,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         HQLRecherche q = new HQLRecherche("Editeur e");
         q.addCondition("e.nomEditeur", nomEdit, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         //modele.flush();
 
@@ -1376,7 +1364,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         HQLRecherche q = new HQLRecherche("Zone z");
         q.addCondition("z.nomZone", zone, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
 
@@ -1395,7 +1382,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         HQLRecherche q = new HQLRecherche("Tag t");
         q.addCondition("t.labelTag", tag, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
 
@@ -1448,7 +1434,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         HQLRecherche q = new HQLRecherche("Pays p");
         q.addCondition("p.nomPays", pays, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
 
@@ -1475,7 +1460,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         q.addCondition("v.nomVille", nomVille, HQLRecherche.Operateur.EGAL);
         q.addCondition("v.cp", cp, HQLRecherche.Operateur.EGAL);
         q.addCondition("v.pays.nomPays", nomPays, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
 
@@ -1572,7 +1556,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                         "Erreur : impossible de modifier jeu (version) d'identifiant " + id);
             Vector<String> tags = stringToVector(normalize(form.getTags()) ,',');
             String descr = form.getDescription();
-System.out.println("Conroleur : " + "".equals(descr));
             
             VersionJeu vj = chercherVersionJeu(id);
             if (vj == null)
@@ -1638,8 +1621,8 @@ System.out.println("Conroleur : " + "".equals(descr));
             
             //tags
             //1° supprimer les decrire qui sont dans la BDD mais pas dans le form (variable tags);
-System.out.println("BUG : la suppression de tags pendant la modification ne se fait pas. !TODO");
             //pour chaque tag décrivant le jeu dans la base de données...
+            Vector<Decrire> liensASupprimer = new Vector<Decrire>();
             for (Object dec : jeu.getDecrires())
             {
                 Tag tagBDD = (Tag) modele.load(Tag.class, ((Decrire) dec).getId().getIdTag());
@@ -1651,29 +1634,33 @@ System.out.println("BUG : la suppression de tags pendant la modification ne se f
                 
                 //et si le tag n'est pas présent dans le formulaire, on supprime la relation entre le tag et le jeu.
                 if (!present)
+                    liensASupprimer.add((Decrire) dec);
+            }
+            for (Object dec : liensASupprimer)
+            {
+                Tag tagBDD = (Tag) modele.load(Tag.class, ((Decrire) dec).getId().getIdTag());
+                //mise à jour du tag
+                tagBDD.getDecrires().remove(dec);
+                modele.beginTransaction();
+                modele.saveOrUpdate(tagBDD);
+                modele.getTransaction().commit();
+                modele.flush();
+                //mise à jour du jeu
+                jeu.getDecrires().remove(dec);
+                modele.beginTransaction();
+                modele.saveOrUpdate(jeu);
+                modele.getTransaction().commit();
+                modele.flush();
+                //destruction de l'enregistrement Decrire
+                modele.beginTransaction();
+                modele.delete(dec);
+                modele.getTransaction().commit();
+                modele.flush();
+                //si le tag ne décrit plus rien, on le supprime
+                if (tagBDD.getDecrires().isEmpty())
                 {
-                    //mise à jour du tag
-                    tagBDD.getDecrires().remove(dec);
                     modele.beginTransaction();
-                    modele.saveOrUpdate(tagBDD);
-                    modele.getTransaction().commit();
-                    modele.flush();
-                    if (tagBDD.getDecrires().isEmpty()) //si le tag ne décrit plus rien, on le supprime
-                    {
-                        modele.beginTransaction();
-                        modele.delete(tagBDD);
-                        modele.getTransaction().commit();
-                        modele.flush();
-                    }
-                    //mise à jour du jeu
-                    jeu.getDecrires().remove(dec);
-                    modele.beginTransaction();
-                    modele.saveOrUpdate(jeu);
-                    modele.getTransaction().commit();
-                    modele.flush();
-                    //destruction de l'enregistrement Decrire
-                    modele.beginTransaction();
-                    modele.delete(dec);
+                    modele.delete(tagBDD);
                     modele.getTransaction().commit();
                     modele.flush();
                 }

@@ -553,7 +553,6 @@ public class critProduit extends javax.swing.JPanel
         {
             this.listeCategorie.setSelectedIndex(1); //type Jeu
             this.fieldTag.setText(f.getTags());
-System.out.println("BUG : !TODO il faut récupérer les tags (contrôleur ?) Nul :" + "".equals(f.getTags()));
             this.jTextAreaDescription.setText(f.getDescription());
             //plateforme
             int i=0;
