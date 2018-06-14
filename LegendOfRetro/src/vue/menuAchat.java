@@ -69,6 +69,12 @@ public class menuAchat extends menuVente
         return ligne.getQuantite() > 0; //On peut toujours acheter, il n'y a pas de condition sur la quantité.
     }
     @Override
+    public boolean modifierLigneLegal(FactureLigneForm ligne1, FactureLigneForm ligne2)
+    {
+        return (ligne1.getQuantite() + ligne2.getQuantite()) > 0;
+        //On peut toujours acheter, il n'y a pas de condition sur la quantité.
+    }
+    @Override
     protected void traiterEchecRecherche(String codeBarre) {
         //sérialisation de la facture en cours
         File file = new File("facture_achat_en_cours.ser");
