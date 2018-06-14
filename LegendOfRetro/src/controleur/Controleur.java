@@ -1569,7 +1569,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                         "Erreur : impossible de modifier jeu (version) d'identifiant " + id);
             Vector<String> tags = stringToVector(normalize(form.getTags()) ,',');
             String descr = form.getDescription();
-System.out.println("Conroleur : " + "".equals(descr));
             
             VersionJeu vj = chercherVersionJeu(id);
             if (vj == null)
@@ -1635,8 +1634,8 @@ System.out.println("Conroleur : " + "".equals(descr));
             
             //tags
             //1° supprimer les decrire qui sont dans la BDD mais pas dans le form (variable tags);
-System.out.println("BUG : la suppression de tags pendant la modification ne se fait pas. !TODO");
             //pour chaque tag décrivant le jeu dans la base de données...
+            Vector<Decrire> liensASupprimer = new Vector<Decrire>();
             for (Object dec : jeu.getDecrires())
             {
                 Tag tagBDD = (Tag) modele.load(Tag.class, ((Decrire) dec).getId().getIdTag());
@@ -1648,43 +1647,56 @@ System.out.println("BUG : la suppression de tags pendant la modification ne se f
                 
                 //et si le tag n'est pas présent dans le formulaire, on supprime la relation entre le tag et le jeu.
                 if (!present)
+                    liensASupprimer.add((Decrire) dec);
+            }
+            for (Object dec : liensASupprimer)
+            {
+                Tag tagBDD = (Tag) modele.load(Tag.class, ((Decrire) dec).getId().getIdTag());
+                //mise à jour du tag
+                tagBDD.getDecrires().remove(dec);
+                modele.beginTransaction();
+                modele.saveOrUpdate(tagBDD);
+                modele.getTransaction().commit();
+                modele.flush();
+                //mise à jour du jeu
+                jeu.getDecrires().remove(dec);
+                modele.beginTransaction();
+                modele.saveOrUpdate(jeu);
+                modele.getTransaction().commit();
+                modele.flush();
+                //destruction de l'enregistrement Decrire
+                modele.beginTransaction();
+                modele.delete(dec);
+                modele.getTransaction().commit();
+                modele.flush();
+                //si le tag ne décrit plus rien, on le supprime
+                if (tagBDD.getDecrires().isEmpty())
                 {
-                    //mise à jour du tag
-                    tagBDD.getDecrires().remove(dec);
                     modele.beginTransaction();
-                    modele.saveOrUpdate(tagBDD);
-                    modele.getTransaction().commit();
-                    modele.flush();
-                    if (tagBDD.getDecrires().isEmpty()) //si le tag ne décrit plus rien, on le supprime
-                    {
-                        modele.beginTransaction();
-                        modele.delete(tagBDD);
-                        modele.getTransaction().commit();
-                        modele.flush();
-                    }
-                    //mise à jour du jeu
-                    jeu.getDecrires().remove(dec);
-                    modele.beginTransaction();
-                    modele.saveOrUpdate(jeu);
-                    modele.getTransaction().commit();
-                    modele.flush();
-                    //destruction de l'enregistrement Decrire
-                    modele.beginTransaction();
-                    modele.delete(dec);
+                    modele.delete(tagBDD);
                     modele.getTransaction().commit();
                     modele.flush();
                 }
             }
+System.out.println("2° création");
             //2° créer/chercher et lier les tags qui sont dans le formulaire mais pas dans la table Decrire;
             //pour chaque tag dans le formulaire...
             for (String tagForm : tags)
             {
+System.out.println("tag " + tagForm);
                 //on vérifie s'il n'est pas lié au jeu dans la base de données
                 Iterator<Object> iterateurDecriresBDD = jeu.getDecrires().iterator();
                 boolean present = false;
                 while (!present && iterateurDecriresBDD.hasNext())
+{Decrire dec = (Decrire) iterateurDecriresBDD.next();
+System.out.println(((Tag) modele.load(Tag.class, dec.getId().getIdTag())).getLabelTag());
                     present = tagForm.equals(((Tag) modele.load(
-                            Tag.class, ((Decrire) iterateurDecriresBDD.next()).getId().getIdTag())).getLabelTag());
+                            Tag.class, dec.getId().getIdTag())).getLabelTag());
+//                            Tag.class, ((Decrire) iterateurDecriresBDD.next()).getId().getIdTag())).getLabelTag());
+System.out.println(tagForm);
+System.out.println("RPG = tagForm " + "RPG".equals(tagForm));
+System.out.println("RPG = tagBDD " + "RPG".equals(((Tag) modele.load(Tag.class, dec.getId().getIdTag())).getLabelTag()));
+System.out.println(present);}
                 //si la relation entre le tag et le jeu n'existe pas dans la base de données
                 if (!present)
                 {
