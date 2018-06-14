@@ -412,12 +412,13 @@ public class critPersonne extends javax.swing.JPanel {
                             .addComponent(prenom)
                             .addComponent(prenomField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(societe)
-                            .addComponent(societeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(dteNaiss)
-                                .addComponent(dateNaissField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(dateNaissField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(societe)
+                                .addComponent(societeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(adresse)
@@ -532,8 +533,12 @@ public class critPersonne extends javax.swing.JPanel {
     }//GEN-LAST:event_buttonAjouterActionPerformed
 
     private void buttonNouveauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNouveauActionPerformed
-
+        //TEST pour compil
+        try {
             parent.creer(this.toForm());
+        } catch (DonneeInvalideException ex) {
+            Logger.getLogger(critPersonne.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_buttonNouveauActionPerformed
 
     private void buttonModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonModifierActionPerformed
@@ -590,37 +595,26 @@ public class critPersonne extends javax.swing.JPanel {
     *********/
  
     private PersonneForm toForm() throws DonneeInvalideException{
-        String nom;
-        String prenom;
-        String adresse;
-        String pays;
-        String codePostal;
-        String ville;
-        String mail;
-        String teleph;
-        String societe;
-        String dateNaissance;
         
-        try{
-            nom = nomField.getText();
-            prenom = prenomField.getText();
-            adresse = adresseField.getText();
-            pays = (String) paysComboBox.getSelectedItem();
-            codePostal = (String) CPComboBox.getSelectedItem() ;
-            ville = (String) VilleComboBox.getSelectedItem();
-            mail = fieldNomMail.getText();
-            teleph = telField.getText();
-            societe = societeField.getText();
-            dateNaissance = dateNaissField.getText();
+        if(!"".equals(nomField.getText()) || !"".equals(prenomField.getText()) || !"".equals(adresseField.getText())
+                || !"".equals(fieldNomMail.getText()) || !"".equals(telField.getText())
+                || !"".equals(dateNaissField.getText())){
+            throw new DonneeInvalideException("Erreur : veuillez  remplir le formulaire, SVP");
         }
         
-        catch (NumberFormatException nfe) {
-            if(!"".equals(nomField.getText()) || !"".equals(prenomField.getText()) || !"".equals(adresseField.getText()) || !"".equals(fieldNomMail.getText()) || !"".equals(telField.getText()) || !"".equals(dateNaissField.getText())){
-                throw new DonneeInvalideException("Erreur : veuillez  remplir le formulaire, SVP");
-            }
-        }
-         
-        return new PersonneForm(-1,this.prenom,this.nom,this.adresse,this.ville,(String)CPComboBox.getSelectedItem(),(String)paysComboBox.getSelectedItem(), this.mail,dateNaissField.getText(),telField.getText());
+        PersonneForm retour = new PersonneForm();
+        retour.setPrenom(prenomField.getText());
+        retour.setNom(nomField.getText());
+        retour.setSociete(societeField.getText());
+        retour.setAdresse(adresseField.getText());
+        retour.setVille((String) VilleComboBox.getSelectedItem());
+        retour.setCodePostal((String)CPComboBox.getSelectedItem());
+        retour.setPays((String)paysComboBox.getSelectedItem());
+        retour.setMail(fieldNomMail.getText());
+        retour.setDateNaissance(dateNaissField.getText());
+        retour.setTelephone(telField.getText());
+        
+        return retour;
     }
 
     

@@ -31,6 +31,7 @@ public class PersonneForm extends Form
         this.nom = "";
         this.adresse = "";
         this.ville = "";
+        this.societe = "N/A";
         this.codePostal = "";
         this.pays = "";
         this.dateNaiss = "";
