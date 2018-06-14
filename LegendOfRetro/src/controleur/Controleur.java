@@ -989,7 +989,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         if (!"".equals(edition))
             q.addCondition("vc.edition", edition, HQLRecherche.Operateur.LIKE);
 
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
         ret.addAll(resultats);
@@ -1032,7 +1031,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         if (!"".equals(edition))
             q.addCondition("vc.edition", edition, HQLRecherche.Operateur.LIKE);
 
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
         ret.addAll(resultats);
@@ -1046,7 +1044,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         HQLRecherche q = new HQLRecherche("VersionConsole vc");
         q.addCondition("vc.idVersionConsole", id, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
 
@@ -1148,7 +1145,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         if (!"".equals(edition)) //edition
             q.addCondition("vj.edition", edition, HQLRecherche.Operateur.LIKE);
 
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
         ret.addAll(resultats);
@@ -1229,7 +1225,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         if (!"".equals(edition)) //edition
             q.addCondition("vj.edition", edition, HQLRecherche.Operateur.LIKE);
 
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
         ret.addAll(resultats);
@@ -1243,7 +1238,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         HQLRecherche q = new HQLRecherche("VersionJeu vj");
         q.addCondition("vj.idVersionJeu", id, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
 
         if (resultats.isEmpty())
@@ -1268,8 +1262,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         q.addCondition("c.nomConsole", nomCons, HQLRecherche.Operateur.EGAL);
         if (!"".equals(nomFabr))
             q.addCondition("c.fabricant.nomFabricant", nomFabr, HQLRecherche.Operateur.EGAL);
-        System.out.println("Recherche Console"); //imprimé à des fins de test
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
 
@@ -1309,8 +1301,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         q.addCondition("j.nomJeu", nomJeu, HQLRecherche.Operateur.EGAL);
         if (!"".equals(nomEditeur))
             q.addCondition("j.editeur.idEditeur", idEditeur , HQLRecherche.Operateur.EGAL);
-        System.out.println("Recherche Jeu"); //imprimé à des fins de test
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
 
@@ -1335,7 +1325,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         HQLRecherche q = new HQLRecherche("Fabricant f");
         q.addCondition("f.nomFabricant", nomFabr, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
 
@@ -1354,7 +1343,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         HQLRecherche q = new HQLRecherche("Editeur e");
         q.addCondition("e.nomEditeur", nomEdit, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         //modele.flush();
 
@@ -1373,7 +1361,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         HQLRecherche q = new HQLRecherche("Zone z");
         q.addCondition("z.nomZone", zone, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
 
@@ -1392,7 +1379,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         HQLRecherche q = new HQLRecherche("Tag t");
         q.addCondition("t.labelTag", tag, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
 
@@ -1445,7 +1431,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         HQLRecherche q = new HQLRecherche("Pays p");
         q.addCondition("p.nomPays", pays, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
 
@@ -1472,7 +1457,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         q.addCondition("v.nomVille", nomVille, HQLRecherche.Operateur.EGAL);
         q.addCondition("v.cp", cp, HQLRecherche.Operateur.EGAL);
         q.addCondition("v.pays.nomPays", nomPays, HQLRecherche.Operateur.EGAL);
-        System.out.println(q.toString()); //imprimé à des fins de test
         List resultats = modele.createQuery(q.toString()).list();
         modele.flush();
 
@@ -1678,25 +1662,16 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                     modele.flush();
                 }
             }
-System.out.println("2° création");
             //2° créer/chercher et lier les tags qui sont dans le formulaire mais pas dans la table Decrire;
             //pour chaque tag dans le formulaire...
             for (String tagForm : tags)
             {
-System.out.println("tag " + tagForm);
                 //on vérifie s'il n'est pas lié au jeu dans la base de données
                 Iterator<Object> iterateurDecriresBDD = jeu.getDecrires().iterator();
                 boolean present = false;
                 while (!present && iterateurDecriresBDD.hasNext())
-{Decrire dec = (Decrire) iterateurDecriresBDD.next();
-System.out.println(((Tag) modele.load(Tag.class, dec.getId().getIdTag())).getLabelTag());
                     present = tagForm.equals(((Tag) modele.load(
-                            Tag.class, dec.getId().getIdTag())).getLabelTag());
-//                            Tag.class, ((Decrire) iterateurDecriresBDD.next()).getId().getIdTag())).getLabelTag());
-System.out.println(tagForm);
-System.out.println("RPG = tagForm " + "RPG".equals(tagForm));
-System.out.println("RPG = tagBDD " + "RPG".equals(((Tag) modele.load(Tag.class, dec.getId().getIdTag())).getLabelTag()));
-System.out.println(present);}
+                            Tag.class, ((Decrire) iterateurDecriresBDD.next()).getId().getIdTag())).getLabelTag());
                 //si la relation entre le tag et le jeu n'existe pas dans la base de données
                 if (!present)
                 {
