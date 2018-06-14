@@ -13,13 +13,7 @@ import controleur.DonneeInvalideException;
 import controleur.DonneesInsuffisantesException;
 import controleur.EnregistrementExistantException;
 import controleur.EnregistrementInexistantException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.ImageIcon;
-import static org.hibernate.cfg.AvailableSettings.URL;
 
 /**
  *

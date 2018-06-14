@@ -46,7 +46,7 @@ public class Controleur
     private GUI vue; //utilisé pour communiquer avec l'affichage
     private Session modele; //session hibernate
 
-    public Controleur() throws InitException
+    public Controleur()
     {
         init();
     }
@@ -55,14 +55,14 @@ public class Controleur
      * le modele va preparer la sesion hibernate
      * @throws InitException va etre lancér si un fichier de confiquration requis n'est pas trouvé
      */
-    public void init() throws InitException
+    public void init()
     {
         try {
             this.modele = (HibernateUtil.getSessionFactory()).openSession();
             this.vue = new GUI(this);
         }
-        catch (ExceptionInInitializerError eiie)    {System.out.println("Erreur lors de l'initialisation du modèle.\n"
-                + eiie.getMessage());}
+        catch (ExceptionInInitializerError eiie)    {
+            System.out.println("Erreur lors de l'initialisation du modèle.\n" + eiie.getMessage());}
     }
 
     /**
@@ -2326,14 +2326,11 @@ System.out.println("BUG : la suppression de tags pendant la modification ne se f
      */
     public static void main(String[] args)
     {
-        try {
             //magical - do not touch
               /*@SuppressWarnings("unused")
                 org.jboss.logging.Logger logger = org.jboss.logging.Logger.getLogger("org.hibernate");
                 java.util.logging.Logger.getLogger("org.hibernate").setLevel(java.util.logging.Level.OFF); //or whatever level you need*/
 
-            new Controleur();}
-        catch (InitException ex) {
-            System.out.println(ex.getMessage());}
+        new Controleur();
     }
 }

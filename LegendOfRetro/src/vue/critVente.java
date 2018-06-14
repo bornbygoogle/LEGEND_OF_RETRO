@@ -13,12 +13,7 @@ import bean.Form;
 import bean.ProduitForm;
 import bean.PersonneForm;
 import controleur.Controleur;
-import controleur.DonneeInvalideException;
-import controleur.DonneesInsuffisantesException;
 import java.awt.Color;
-import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.SpinnerNumberModel;
 
 /**
