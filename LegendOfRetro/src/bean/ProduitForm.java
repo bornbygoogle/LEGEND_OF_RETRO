@@ -41,6 +41,7 @@ public class ProduitForm extends CodeBarreForm
         this.photo = "";
         this.description = "";
         this.tags = "";
+        this.plateforme = "";
         this.prix = -1;
         this.stock = -1;
         this.cote = 1.0f;

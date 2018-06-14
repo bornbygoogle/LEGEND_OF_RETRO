@@ -627,13 +627,23 @@ System.out.println("BUG : !TODO il faut récupérer les tags (contrôleur ?) Nul
                 && "".equals(fieldEdition.getText()) && "".equals(fieldTag.getText()))
             return new CodeBarreForm(fieldCodeBarre.getText());
         else
-            return new ProduitForm(this.idVersionConsole, this.idVersionJeu,
-                    (String) listeCategorie.getSelectedItem(), fieldCodeBarre.getText(),
-                    fieldNom.getText(), fieldEdition.getText(),
-                    (String) listeZone.getSelectedItem(),
-                    fieldEditeur.getText(),""/*Photo*/, jTextAreaDescription.getText(),
-                    fieldTag.getText(), (String) listePlateforme.getSelectedItem(),
-                    prix, stock);
+        {
+            ProduitForm retour = new ProduitForm();
+            retour.setIdVersionConsole(this.idVersionConsole);
+            retour.setIdVersionJeu(this.idVersionJeu);
+            retour.setType((String) listeCategorie.getSelectedItem());
+            retour.setCodeBarre(fieldCodeBarre.getText());
+            retour.setNom(fieldNom.getText());
+            retour.setEdition(fieldEdition.getText());
+            retour.setZone((String) listeZone.getSelectedItem());
+            retour.setEditeur(fieldEditeur.getText());
+            retour.setDescription(jTextAreaDescription.getText());
+            retour.setTags(fieldTag.getText());
+            retour.setPlateforme((String) listePlateforme.getSelectedItem());
+            retour.setPrix(prix);
+            retour.setStock(stock);
+            return retour;
+        }
     }
     
     

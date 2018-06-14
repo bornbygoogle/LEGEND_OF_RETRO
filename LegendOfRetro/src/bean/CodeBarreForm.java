@@ -24,5 +24,6 @@ public class CodeBarreForm extends Form
         this.codeBarre = cb;
     }
     
-    public String getCodeBarre()      {return this.codeBarre;}
+    public String getCodeBarre()                {return this.codeBarre;}
+    public void setCodeBarre(String cb)         {this.codeBarre = cb;}
 }
