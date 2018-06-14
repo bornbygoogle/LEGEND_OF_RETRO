@@ -8,6 +8,7 @@ package vue;
 import bean.Form;
 import bean.PersonneForm;
 import controleur.Controleur;
+import controleur.DonneeInvalideException;
 import controleur.DonneesInsuffisantesException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,24 +57,22 @@ public class critPersonne extends javax.swing.JPanel {
         villeAjoutField = new javax.swing.JTextField();
         adresseField = new javax.swing.JTextField();
         adresse = new javax.swing.JLabel();
-        complement = new javax.swing.JLabel();
-        complementField = new javax.swing.JTextField();
         ville = new javax.swing.JLabel();
         CP = new javax.swing.JLabel();
         mail = new javax.swing.JLabel();
         fieldNomMail = new javax.swing.JTextField();
         mail1 = new javax.swing.JLabel();
-        mailField1 = new javax.swing.JTextField();
+        telField = new javax.swing.JTextField();
         buttonAjouter = new javax.swing.JButton();
         buttonAjouter.setVisible(false);
         buttonNouveau = new javax.swing.JButton();
         buttonModifier = new javax.swing.JButton();
         VilleComboBox = new javax.swing.JComboBox<>();
-        VilleComboBox1 = new javax.swing.JComboBox<>();
+        CPComboBox = new javax.swing.JComboBox<>();
         Pays = new javax.swing.JLabel();
         paysComboBox = new javax.swing.JComboBox<>();
         buttonChercher1 = new javax.swing.JButton();
-        societeField1 = new javax.swing.JTextField();
+        societeField = new javax.swing.JTextField();
         villeAjoutCp = new javax.swing.JTextField();
         paysAjoutField = new javax.swing.JTextField();
         histoVente = new javax.swing.JLabel();
@@ -82,8 +81,6 @@ public class critPersonne extends javax.swing.JPanel {
         histoAchat = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         achatTab = new javax.swing.JTable();
-        fieldDomainMail = new javax.swing.JTextField();
-        arobas = new javax.swing.JLabel();
         tota = new javax.swing.JLabel();
         labelTotalAchat = new javax.swing.JLabel();
         e2 = new javax.swing.JLabel();
@@ -91,6 +88,8 @@ public class critPersonne extends javax.swing.JPanel {
         labelTotalVente = new javax.swing.JLabel();
         e1 = new javax.swing.JLabel();
         buttonSelectionner = new javax.swing.JButton();
+        dteNaiss = new javax.swing.JLabel();
+        dateNaissField = new javax.swing.JTextField();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -147,14 +146,6 @@ public class critPersonne extends javax.swing.JPanel {
 
         adresse.setText("Adresse");
 
-        complement.setText("Compl.");
-
-        complementField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                complementFieldActionPerformed(evt);
-            }
-        });
-
         ville.setText("Ville");
 
         CP.setText("C.P.");
@@ -169,9 +160,9 @@ public class critPersonne extends javax.swing.JPanel {
 
         mail1.setText("Téléphone");
 
-        mailField1.addActionListener(new java.awt.event.ActionListener() {
+        telField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mailField1ActionPerformed(evt);
+                telFieldActionPerformed(evt);
             }
         });
 
@@ -202,9 +193,9 @@ public class critPersonne extends javax.swing.JPanel {
             }
         });
 
-        VilleComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        CPComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                VilleComboBox1ActionPerformed(evt);
+                CPComboBoxActionPerformed(evt);
             }
         });
 
@@ -223,9 +214,9 @@ public class critPersonne extends javax.swing.JPanel {
             }
         });
 
-        societeField1.addActionListener(new java.awt.event.ActionListener() {
+        societeField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                societeField1ActionPerformed(evt);
+                societeFieldActionPerformed(evt);
             }
         });
 
@@ -276,14 +267,6 @@ public class critPersonne extends javax.swing.JPanel {
         jScrollPane2.setViewportView(achatTab);
         achatTab.getAccessibleContext().setAccessibleName("achatTab");
 
-        fieldDomainMail.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldDomainMailActionPerformed(evt);
-            }
-        });
-
-        arobas.setText("@");
-
         tota.setText("Total");
 
         labelTotalAchat.setText("10000000");
@@ -303,6 +286,14 @@ public class critPersonne extends javax.swing.JPanel {
             }
         });
 
+        dteNaiss.setText("Date de naissance");
+
+        dateNaissField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dateNaissFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -312,40 +303,41 @@ public class critPersonne extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(complement, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(complementField))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(societe, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(societeField1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(Pays, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(paysComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(paysAjoutField, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addGap(68, 68, 68)
-                                    .addComponent(id))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(nom)
-                                    .addGap(34, 34, 34)
-                                    .addComponent(nomField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(prenom)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(prenomField, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGroup(layout.createSequentialGroup()
                             .addComponent(adresse, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(adresseField)))
+                            .addComponent(adresseField))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(Pays, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(paysComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(paysAjoutField, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLabel2)
+                                            .addGap(68, 68, 68)
+                                            .addComponent(id))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(nom)
+                                            .addGap(34, 34, 34)
+                                            .addComponent(nomField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(prenom))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(societe, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(societeField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(dteNaiss, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(prenomField, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                                        .addComponent(idField)
+                                        .addComponent(dateNaissField))))
+                            .addGap(67, 67, 67)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -358,19 +350,12 @@ public class critPersonne extends javax.swing.JPanel {
                                 .addComponent(VilleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(villeAjoutField, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(11, 11, 11)
-                                .addComponent(CP)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(VilleComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(villeAjoutCp, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(arobas, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(fieldDomainMail)))
+                        .addGap(11, 11, 11)
+                        .addComponent(CP)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(CPComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(villeAjoutCp, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(buttonAjouter))
                     .addGroup(layout.createSequentialGroup()
@@ -386,7 +371,7 @@ public class critPersonne extends javax.swing.JPanel {
                                 .addComponent(buttonModifier)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(buttonSelectionner))
-                            .addComponent(mailField1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(telField, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -421,26 +406,23 @@ public class critPersonne extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(2, 2, 2)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(nom)
-                                .addComponent(nomField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(prenom)
-                                .addComponent(prenomField)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(nom)
+                            .addComponent(nomField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(prenom)
+                            .addComponent(prenomField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(societe)
-                            .addComponent(societeField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(adresse)
-                            .addComponent(adresseField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(societeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(dteNaiss)
+                                .addComponent(dateNaissField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(complement)
-                            .addComponent(complementField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(adresse)
+                            .addComponent(adresseField, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Pays)
                             .addComponent(paysComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -450,27 +432,24 @@ public class critPersonne extends javax.swing.JPanel {
                             .addComponent(ville)
                             .addComponent(VilleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(CP)
-                            .addComponent(VilleComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(CPComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(villeAjoutField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(villeAjoutCp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(buttonAjouter))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(mail)
-                            .addComponent(fieldNomMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fieldDomainMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(arobas))
+                            .addComponent(fieldNomMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(mailField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(telField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(mail1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(buttonNouveau)
                             .addComponent(buttonModifier)
                             .addComponent(buttonChercher1)
-                            .addComponent(buttonSelectionner))
-                        .addContainerGap())
+                            .addComponent(buttonSelectionner)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
@@ -489,8 +468,8 @@ public class critPersonne extends javax.swing.JPanel {
                             .addComponent(e2)
                             .addComponent(histoAchat))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
 
         id.getAccessibleContext().setAccessibleName("id");
@@ -501,7 +480,6 @@ public class critPersonne extends javax.swing.JPanel {
         prenomField.getAccessibleContext().setAccessibleName("prenomField");
         villeAjoutField.getAccessibleContext().setAccessibleName("villeAjoutField");
         adresseField.getAccessibleContext().setAccessibleName("adresseField");
-        complementField.getAccessibleContext().setAccessibleName("complementField");
         mail.getAccessibleContext().setAccessibleName("mail");
         fieldNomMail.getAccessibleContext().setAccessibleName("fieldNomMail");
         buttonAjouter.getAccessibleContext().setAccessibleName("buttonAjouter");
@@ -511,13 +489,13 @@ public class critPersonne extends javax.swing.JPanel {
         paysAjoutField.getAccessibleContext().setAccessibleName("paysAjoutField");
         histoVente.getAccessibleContext().setAccessibleName("histoVente");
         histoAchat.getAccessibleContext().setAccessibleName("histoAchat");
-        fieldDomainMail.getAccessibleContext().setAccessibleName("fieldDomainMail");
         tota.getAccessibleContext().setAccessibleName("tota");
         labelTotalAchat.getAccessibleContext().setAccessibleName("labelTotalAchat");
         e2.getAccessibleContext().setAccessibleName("e2");
         totalV.getAccessibleContext().setAccessibleName("totv");
         labelTotalVente.getAccessibleContext().setAccessibleName("labelTotalVente");
         e1.getAccessibleContext().setAccessibleName("e1");
+        dateNaissField.getAccessibleContext().setAccessibleName("dateNaissField");
     }// </editor-fold>//GEN-END:initComponents
 
     private void idFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idFieldActionPerformed
@@ -540,17 +518,13 @@ public class critPersonne extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_adresseFieldActionPerformed
 
-    private void complementFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_complementFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_complementFieldActionPerformed
-
     private void fieldNomMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldNomMailActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_fieldNomMailActionPerformed
 
-    private void mailField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mailField1ActionPerformed
+    private void telFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_telFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_mailField1ActionPerformed
+    }//GEN-LAST:event_telFieldActionPerformed
 
     private void buttonAjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAjouterActionPerformed
         
@@ -570,9 +544,9 @@ public class critPersonne extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_VilleComboBoxActionPerformed
 
-    private void VilleComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VilleComboBox1ActionPerformed
+    private void CPComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CPComboBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_VilleComboBox1ActionPerformed
+    }//GEN-LAST:event_CPComboBoxActionPerformed
 
     private void paysComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paysComboBoxActionPerformed
         // TODO add your handling code here:
@@ -582,9 +556,9 @@ public class critPersonne extends javax.swing.JPanel {
         
     }//GEN-LAST:event_buttonChercher1ActionPerformed
 
-    private void societeField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_societeField1ActionPerformed
+    private void societeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_societeFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_societeField1ActionPerformed
+    }//GEN-LAST:event_societeFieldActionPerformed
 
     private void villeAjoutCpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_villeAjoutCpActionPerformed
         // TODO add your handling code here:
@@ -594,10 +568,6 @@ public class critPersonne extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_paysAjoutFieldActionPerformed
 
-    private void fieldDomainMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldDomainMailActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldDomainMailActionPerformed
-
     private void buttonSelectionnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSelectionnerActionPerformed
         if (this.selectedForm != null)
             this.parent.selectionner(this.selectedForm);
@@ -605,22 +575,81 @@ public class critPersonne extends javax.swing.JPanel {
             this.parent.afficherErreur(new IllegalArgumentException("Veuillez créer ou rechercher un client."));
     }//GEN-LAST:event_buttonSelectionnerActionPerformed
 
+    private void dateNaissFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dateNaissFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dateNaissFieldActionPerformed
+
     
+  
+    /********
+    *
+    *   Fonction utilisé pour récupérer les champs dans le menu
+    *   @param void
+    *   @return Form ( récupération de tous les champs remplis dans le menu et retourne le form complété)
+    * 
+    *********/
+ 
+    private PersonneForm toForm() throws DonneeInvalideException{
+        String nom;
+        String prenom;
+        String adresse;
+        String pays;
+        String codePostal;
+        String ville;
+        String mail;
+        String teleph;
+        String societe;
+        String dateNaissance;
+        
+        try{
+            nom = nomField.getText();
+            prenom = prenomField.getText();
+            adresse = adresseField.getText();
+            pays = (String) paysComboBox.getSelectedItem();
+            codePostal = (String) CPComboBox.getSelectedItem() ;
+            ville = (String) VilleComboBox.getSelectedItem();
+            mail = fieldNomMail.getText();
+            teleph = telField.getText();
+            societe = societeField.getText();
+            dateNaissance = dateNaissField.getText();
+        }
+        
+        catch (NumberFormatException nfe) {
+            if(!"".equals(nomField.getText()) || !"".equals(prenomField.getText()) || !"".equals(adresseField.getText()) || !"".equals(fieldNomMail.getText()) || !"".equals(telField.getText()) || !"".equals(dateNaissField.getText())){
+                throw new DonneeInvalideException("Erreur : veuillez  remplir le formulaire, SVP");
+            }
+        }
+         
+        return new PersonneForm(-1,this.prenom,this.nom,this.adresse,this.ville,(String)CPComboBox.getSelectedItem(),(String)paysComboBox.getSelectedItem(), this.mail,dateNaissField.getText(),telField.getText());
+    }
+
     
+    /********
+    *
+    *   Fonction utilisé pour remplir les champs dans le menu
+    *   @param PersonneForm f
+    *   @return void ( le remplissage se fait directement par le menu )
+    * 
+    *********/
+  
     public void setForm(PersonneForm f)
     {
         this.selectedForm = f;
         
-        //TODO: setForm ici !
+       this.idField.setText(String.valueOf(f.getIdPersonne()));
+       this.prenomField.setText(f.getPrenom());
+       this.nomField.setText(f.getNom());
+       this.societeField.setText(f.getSociete());                 
+       this.adresseField.setText(f.getAdresse());
+       this.VilleComboBox.getModel().setSelectedItem(f.getVille());
+       this.CPComboBox.getModel().setSelectedItem(f.getCodePostal());
+       this.paysComboBox.getModel().setSelectedItem(f.getPays());   
+       this.fieldNomMail.setText(f.getMail());
+       this.telField.setText(f.getTelephone()); 
+        this.dateNaissField.setText(f.getDateNaissance());
     }
-    private PersonneForm toForm()
-    {
-        PersonneForm retour = new PersonneForm();
-        
-        //TODO: inifialiser le form !
-        
-        return retour;
-    }
+
+    
     public void selectionnerVisible(boolean b)
     {
         this.buttonSelectionner.setVisible(b);
@@ -628,23 +657,21 @@ public class critPersonne extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel CP;
+    private javax.swing.JComboBox<String> CPComboBox;
     private javax.swing.JLabel Pays;
     private javax.swing.JComboBox<String> VilleComboBox;
-    private javax.swing.JComboBox<String> VilleComboBox1;
     private javax.swing.JTable achatTab;
     private javax.swing.JLabel adresse;
     private javax.swing.JTextField adresseField;
-    private javax.swing.JLabel arobas;
     private javax.swing.JButton buttonAjouter;
     private javax.swing.JButton buttonChercher1;
     private javax.swing.JButton buttonModifier;
     private javax.swing.JButton buttonNouveau;
     private javax.swing.JButton buttonSelectionner;
-    private javax.swing.JLabel complement;
-    private javax.swing.JTextField complementField;
+    private javax.swing.JTextField dateNaissField;
+    private javax.swing.JLabel dteNaiss;
     private javax.swing.JLabel e1;
     private javax.swing.JLabel e2;
-    private javax.swing.JTextField fieldDomainMail;
     private javax.swing.JTextField fieldNomMail;
     private javax.swing.JLabel histoAchat;
     private javax.swing.JLabel histoVente;
@@ -658,7 +685,6 @@ public class critPersonne extends javax.swing.JPanel {
     private javax.swing.JLabel labelTotalVente;
     private javax.swing.JLabel mail;
     private javax.swing.JLabel mail1;
-    private javax.swing.JTextField mailField1;
     private javax.swing.JLabel nom;
     private javax.swing.JTextField nomField;
     private javax.swing.JTextField paysAjoutField;
@@ -666,7 +692,8 @@ public class critPersonne extends javax.swing.JPanel {
     private javax.swing.JLabel prenom;
     private javax.swing.JTextField prenomField;
     private javax.swing.JLabel societe;
-    private javax.swing.JTextField societeField1;
+    private javax.swing.JTextField societeField;
+    private javax.swing.JTextField telField;
     private javax.swing.JLabel tota;
     private javax.swing.JLabel totalV;
     private javax.swing.JTable venteTab;

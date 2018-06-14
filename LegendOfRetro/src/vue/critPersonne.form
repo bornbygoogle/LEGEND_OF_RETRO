@@ -38,49 +38,50 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="complement" min="-2" pref="45" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="complementField" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <Component id="societe" min="-2" pref="45" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="societeField1" min="-2" pref="210" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="Pays" min="-2" pref="45" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="paysComboBox" min="-2" pref="101" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="paysAjoutField" min="-2" pref="101" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
-                                  <Component id="id" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="nom" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                                  <Component id="nomField" min="-2" pref="141" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="idField" min="-2" pref="150" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="prenom" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="prenomField" min="-2" pref="139" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
                           <Component id="adresse" min="-2" pref="45" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="adresseField" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="Pays" min="-2" pref="45" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="paysComboBox" min="-2" pref="101" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="paysAjoutField" min="-2" pref="101" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
+                                          <Component id="id" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="nom" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                                          <Component id="nomField" min="-2" pref="141" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Component id="prenom" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="societe" min="-2" pref="45" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Component id="societeField" min="-2" pref="141" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Component id="dteNaiss" min="-2" pref="45" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="prenomField" pref="139" max="32767" attributes="0"/>
+                                      <Component id="idField" max="32767" attributes="0"/>
+                                      <Component id="dateNaissField" alignment="0" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -98,22 +99,12 @@
                               <Component id="villeAjoutField" min="-2" pref="101" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                              <Component id="CP" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="VilleComboBox1" min="-2" pref="85" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="villeAjoutCp" min="-2" pref="85" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="arobas" min="-2" pref="16" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="fieldDomainMail" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
+                      <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                      <Component id="CP" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="CPComboBox" min="-2" pref="85" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="villeAjoutCp" min="-2" pref="85" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="buttonAjouter" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -131,7 +122,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="buttonSelectionner" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="mailField1" min="-2" pref="116" max="-2" attributes="0"/>
+                          <Component id="telField" min="-2" pref="116" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -176,32 +167,27 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                              <Component id="nom" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="nomField" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                              <Component id="prenom" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="prenomField" alignment="3" max="32767" attributes="0"/>
-                          </Group>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="nom" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="nomField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="prenom" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="prenomField" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="societe" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="societeField1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="adresse" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="adresseField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="societeField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                              <Component id="dteNaiss" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="dateNaissField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="complement" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="complementField" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="adresse" min="-2" max="-2" attributes="0"/>
+                          <Component id="adresseField" min="-2" pref="41" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="Pays" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="paysComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -212,7 +198,7 @@
                           <Component id="ville" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="VilleComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="CP" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="VilleComboBox1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="CPComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="villeAjoutField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="villeAjoutCp" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="buttonAjouter" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -221,12 +207,10 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="mail" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="fieldNomMail" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="fieldDomainMail" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="arobas" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="mailField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="telField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="mail1" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -236,7 +220,6 @@
                           <Component id="buttonChercher1" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="buttonSelectionner" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
@@ -262,9 +245,9 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane2" min="-2" pref="110" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -355,19 +338,6 @@
         <Property name="text" type="java.lang.String" value="Adresse"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="complement">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Compl."/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="complementField">
-      <AccessibilityProperties>
-        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="complementField"/>
-      </AccessibilityProperties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="complementFieldActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JLabel" name="ville">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ville"/>
@@ -399,9 +369,9 @@
         <Property name="text" type="java.lang.String" value="T&#xe9;l&#xe9;phone"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="mailField1">
+    <Component class="javax.swing.JTextField" name="telField">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mailField1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="telFieldActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="buttonAjouter">
@@ -450,14 +420,14 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JComboBox" name="VilleComboBox1">
+    <Component class="javax.swing.JComboBox" name="CPComboBox">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="0"/>
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="VilleComboBox1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CPComboBoxActionPerformed"/>
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -492,9 +462,9 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonChercher1ActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="societeField1">
+    <Component class="javax.swing.JTextField" name="societeField">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="societeField1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="societeFieldActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="villeAjoutCp">
@@ -584,19 +554,6 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JTextField" name="fieldDomainMail">
-      <AccessibilityProperties>
-        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="fieldDomainMail"/>
-      </AccessibilityProperties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldDomainMailActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="arobas">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="@"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JLabel" name="tota">
       <Properties>
         <Property name="text" type="java.lang.String" value="Total"/>
@@ -651,6 +608,19 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonSelectionnerActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="dteNaiss">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Date de naissance"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="dateNaissField">
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="dateNaissField"/>
+      </AccessibilityProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dateNaissFieldActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
