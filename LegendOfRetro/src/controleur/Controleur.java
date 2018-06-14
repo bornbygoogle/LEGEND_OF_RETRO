@@ -919,7 +919,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 else 
                 {   System.out.println(enr.getIdVersionConsole());
                     cote = getCoteProduct("Console", enr.getIdVersionConsole());}*/
-                ret.add(new PromoForm(enr.getIdVersionConsole(), -1, "Console",
+                ret.add(new PromoForm(-1,enr.getIdVersionConsole(), -1, "Console",
                         enr.getCodeBarre(), enr.getConsole().getNomConsole(), enr.getEdition(), enr.getZone().getNomZone(),
                         enr.getConsole().getFabricant().getNomFabricant(), "", "", "", "",
                         enr.getPrix(), enr.getStock(), getCoteProduct(type, enr.getIdVersionConsole())));
@@ -928,7 +928,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         else if ("Jeu".equals(type))
         {
             for (VersionJeu enr : chercherVersionsJeuPromo(edition, zone, plateforme,editeur, tags))
-                ret.add(new PromoForm(-1, enr.getIdVersionJeu(), "Jeu",
+                ret.add(new PromoForm(-1,-1, enr.getIdVersionJeu(), "Jeu",
                     enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
                     enr.getJeu().getEditeur().getNomEditeur(), ""/*Photo*/, enr.getJeu().getDescriptionJeu(),
                     decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
@@ -998,6 +998,45 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         return ret;
     }
+   /**
+     * Recherche les promotions des versions de consoles 
+     * @param id id du PromoConsole
+     * @return Vector retourne un vecteur generique des objets de type PromoConsole 
+     */
+    private PromoConsole chercherPromoConsole(int id) throws DonneeInvalideException
+    {
+        if (id < 0)
+            throw new DonneeInvalideException("Impossible de chercher un promotion produit (console) : aucun identifiant n'a été renseigné.");
+
+        HQLRecherche q = new HQLRecherche("PromoConsole pc");
+        q.addCondition("pc.idPromoConsole", id, HQLRecherche.Operateur.EGAL);
+        List resultats = modele.createQuery(q.toString()).list();
+
+        if (resultats.isEmpty())
+            return null;
+        else //on suppose qu'il n'y a qu'un seul résultat !
+            return (PromoConsole) resultats.get(0);
+    }
+   /**
+     * Recherche les promotions des versions de jeux 
+     * @param id id du PromoJeu
+     * @return Vector retourne un vecteur generique des objets de type PromoJeux 
+     */
+    private PromoJeu chercherPromoJeu(int id) throws DonneeInvalideException
+    {
+        if (id < 0)
+            throw new DonneeInvalideException("Impossible de chercher un produit (jeu) : aucun identifiant n'a été renseigné.");
+
+        HQLRecherche q = new HQLRecherche("PromoJeu pj");
+        q.addCondition("pj.idPromoJeu", id, HQLRecherche.Operateur.EGAL);
+        List resultats = modele.createQuery(q.toString()).list();
+
+        if (resultats.isEmpty())
+            return null;
+        else //on suppose qu'il n'y a qu'un seul résultat !
+            return (PromoJeu) resultats.get(0);
+    }
+
     private Vector<VersionConsole> chercherVersionsConsolePromo(String edition, String zone, String fabricant)
             throws DonneesInsuffisantesException, DonneeInvalideException
     {
@@ -1726,11 +1765,68 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             
             rapport.addOperation(vj.getIdVersionJeu(), Rapport.Table.VERSIONJEU, Rapport.Operation.MODIFIER);
         }
-
         return rapport;
-        
     }
 
+    public Rapport modifierPromo(PromoForm form) throws DonneesInsuffisantesException, DonneeInvalideException, EnregistrementInexistantException
+    {
+        Rapport rapport = new Rapport();
+        
+        int id;
+        int idPromo = form.getIdPromo();
+        String type = form.getType();
+
+        float prix = form.getPrix();
+
+        if (prix <= 0f)
+            throw new DonneeInvalideException("Erreur : le prix ne peut pas être négatif ou nul.");
+        
+        if ("Console".equals(type))
+        {
+            id = form.getIdVersionConsole();
+            if (id <= 0)
+                throw new DonneesInsuffisantesException(
+                        "Erreur : impossible de modifier console (version) d'identifiant " + id);
+            PromoConsole pc = chercherPromoConsole(id);
+
+            if (pc.getPrixPromoConsole() != prix)
+                pc.setPrixPromoConsole(prix);
+            
+            //sauvegarde de la version de console
+            modele.beginTransaction();
+            modele.save(pc);
+            modele.getTransaction().commit();
+            modele.flush();
+            
+            rapport.addOperation(pc.getIdPromoConsole(), Rapport.Table.VERSIONCONSOLE, Rapport.Operation.MODIFIER);
+        }
+        else if ("Jeu".equals(type))
+        {
+            id = form.getIdVersionJeu();
+            if (id <= 0)
+                throw new DonneesInsuffisantesException(
+                        "Erreur : impossible de modifier jeu (version) d'identifiant " + id);
+            
+            PromoJeu pj = chercherPromoJeu(id);
+            if (pj == null)
+                throw new EnregistrementInexistantException("Erreur : version de jeu " + id
+                        + " non trouvée");
+            // Chercher a changer le prix
+            if (pj.getPrixPromoJeu() != prix)
+                pj.setPrixPromoJeu(prix);
+               
+            //sauvegarde de la version de jeu
+            modele.beginTransaction();
+            modele.save(pj);
+            modele.getTransaction().commit();
+            modele.flush();
+            
+            rapport.addOperation(pj.getIdPromoJeu(), Rapport.Table.VERSIONJEU, Rapport.Operation.MODIFIER);
+        }
+        return rapport;       
+    }
+    
+    
      /**
      * Crée une zone dans la table des zones. Si la zone renseignée est trouvé, un objet Zone est renvoyé. Sinon, la méthode renvoie null.
      * On trouve des methodés a l'interioeur de cette methode voir See Also.
