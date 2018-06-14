@@ -13,7 +13,13 @@ import controleur.DonneeInvalideException;
 import controleur.DonneesInsuffisantesException;
 import controleur.EnregistrementExistantException;
 import controleur.EnregistrementInexistantException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import static org.hibernate.cfg.AvailableSettings.URL;
 
 /**
  *
@@ -515,8 +521,8 @@ public class critProduit extends javax.swing.JPanel
         this.listePlateforme.setSelectedIndex(0);
         this.listeZone.setSelectedIndex(0);
         this.selectedForm = null;
-        this.idVersionConsole = 0;
-        this.idVersionJeu = 0;
+        this.idVersionConsole = -1;
+        this.idVersionJeu = -1;
         parent.lancerRecherche(null);
     }
     public void setCodeBarre(String cb)
@@ -568,7 +574,6 @@ System.out.println("BUG : !TODO il faut récupérer les tags (contrôleur ?) Nul
         this.fieldEdition.setText(f.getEdition());
         this.fieldPrix.setText(String.valueOf(f.getPrix()));
         this.fieldStock.setText(String.valueOf(f.getStock()));
-        this.fieldCote.setText(String.valueOf(f.getCote()));
     
         //zone
         int i = 0;
@@ -605,7 +610,7 @@ System.out.println("BUG : !TODO il faut récupérer les tags (contrôleur ?) Nul
     *********/
     private Form toForm() throws DonneeInvalideException
     {
-        float prix = 0.0f, cote=0.0f;
+        float prix = 0f;
         int stock = 0;
         try {
             prix = Float.valueOf(fieldPrix.getText());
@@ -622,13 +627,23 @@ System.out.println("BUG : !TODO il faut récupérer les tags (contrôleur ?) Nul
                 && "".equals(fieldEdition.getText()) && "".equals(fieldTag.getText()))
             return new CodeBarreForm(fieldCodeBarre.getText());
         else
-            return new ProduitForm(this.idVersionConsole, this.idVersionJeu,
-                    (String) listeCategorie.getSelectedItem(), fieldCodeBarre.getText(),
-                    fieldNom.getText(), fieldEdition.getText(),
-                    (String) listeZone.getSelectedItem(),
-                    fieldEditeur.getText(),""/*Photo*/, jTextAreaDescription.getText(),
-                    fieldTag.getText(), (String) listePlateforme.getSelectedItem(),
-                    prix, stock, cote);
+        {
+            ProduitForm retour = new ProduitForm();
+            retour.setIdVersionConsole(this.idVersionConsole);
+            retour.setIdVersionJeu(this.idVersionJeu);
+            retour.setType((String) listeCategorie.getSelectedItem());
+            retour.setCodeBarre(fieldCodeBarre.getText());
+            retour.setNom(fieldNom.getText());
+            retour.setEdition(fieldEdition.getText());
+            retour.setZone((String) listeZone.getSelectedItem());
+            retour.setEditeur(fieldEditeur.getText());
+            retour.setDescription(jTextAreaDescription.getText());
+            retour.setTags(fieldTag.getText());
+            retour.setPlateforme((String) listePlateforme.getSelectedItem());
+            retour.setPrix(prix);
+            retour.setStock(stock);
+            return retour;
+        }
     }
     
     
