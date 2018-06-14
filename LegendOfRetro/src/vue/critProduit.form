@@ -341,6 +341,9 @@
         <Property name="verticalAlignment" type="int" value="1"/>
         <Property name="verticalTextPosition" type="int" value="1"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="labelDescription.setVisible(false); "/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="labelPhoto">
       <Properties>
@@ -355,9 +358,6 @@
         <Property name="enabled" type="boolean" value="false"/>
         <Property name="focusable" type="boolean" value="false"/>
       </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="try{&#xa;    URL url = new URL(&quot;htts://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg&quot;);&#xa;    //more code goes here&#xa;    labelPhoto.setIcon(new ImageIcon(url));&#xa;}catch(MalformedURLException ex){&#xa;//do exception handling here&#xa;labelPhoto.setText(&quot;Cant get photo !!!&quot;);&#xa;}"/>
-      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="labelCurrency">
       <Properties>
@@ -439,9 +439,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonNouveauActionPerformed"/>
       </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="buttonNouveau.setVisible(false);"/>
-      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="buttonModifier">
       <Properties>
@@ -450,9 +447,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonModifierActionPerformed"/>
       </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="buttonModifier.setVisible(false);"/>
-      </AuxValues>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
@@ -466,6 +460,9 @@
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jTextAreaDescription.setVisible(false); "/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

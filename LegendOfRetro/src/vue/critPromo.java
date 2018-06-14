@@ -9,8 +9,7 @@ import bean.Form;
 import bean.PromoForm;
 import controleur.Controleur;
 import controleur.DonneeInvalideException;
-import controleur.DonneesInsuffisantesException;
-import controleur.EnregistrementExistantException;
+import controleur.EnregistrementInexistantException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +27,7 @@ public class critPromo extends javax.swing.JPanel
     private int idVersionJeu;
     private int idVersionConsole;
 
+
     /**
      * Creates new form Resultat
      */
@@ -37,11 +37,9 @@ public class critPromo extends javax.swing.JPanel
         this.parent = parent;
         this.selectedForm = null;
         initComponents();
-        
-        
-       // Initialisation la modele pour listeEdition
-        Vector<String> editions;
-        editions = controleur.listeEdition((String)listeCategorie.getSelectedItem());
+        // Initialisation la modele pour listeEdition
+        Vector<String> editions;        
+        editions = controleur.listeEdition("Console");
         editions.add(0, "");
         listeEdition.setModel(new javax.swing.DefaultComboBoxModel<>(editions));
 
@@ -65,8 +63,8 @@ public class critPromo extends javax.swing.JPanel
         tags.add(0, "");
         listeTags.setModel(new javax.swing.DefaultComboBoxModel<>(tags)); 
         
-        this.idVersionJeu = -1;
-        this.idVersionConsole = -1;
+        this.idVersionJeu = 0;
+        this.idVersionConsole = 0;
     }
     
     /**
@@ -102,6 +100,7 @@ public class critPromo extends javax.swing.JPanel
         listeTags = new javax.swing.JComboBox<>();
         listeTags.setVisible(false);
         fieldStock = new javax.swing.JLabel();
+        buttonChercher = new javax.swing.JButton();
 
         setName("critResultat"); // NOI18N
 
@@ -179,11 +178,18 @@ public class critPromo extends javax.swing.JPanel
 
         fieldStock.setText("0");
 
+        buttonChercher.setText("Chercher");
+        buttonChercher.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonChercherActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelCategorie)
@@ -195,7 +201,7 @@ public class critPromo extends javax.swing.JPanel
                     .addComponent(listeCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(listeZone, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(listePlateforme, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(14, 14, 14)
@@ -208,25 +214,29 @@ public class critPromo extends javax.swing.JPanel
                     .addComponent(listeFabricant, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(listeEdition, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(listeTags, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(55, 55, 55)
+                .addGap(61, 61, 61)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(labelPrix)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(fieldPrix, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(labelCurrency, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(labelCote)
-                            .addGap(10, 10, 10)
-                            .addComponent(fieldCote)
-                            .addGap(40, 40, 40)
-                            .addComponent(labelStock)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(fieldStock)))
-                    .addComponent(buttonModifier, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelPrix)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fieldPrix, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labelCurrency, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelCote)
+                        .addGap(10, 10, 10)
+                        .addComponent(fieldCote)
+                        .addGap(40, 40, 40)
+                        .addComponent(labelStock)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(fieldStock)))
                 .addGap(36, 36, 36))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(81, 81, 81)
+                .addComponent(buttonChercher, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(buttonModifier, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(169, 169, 169))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -267,12 +277,14 @@ public class critPromo extends javax.swing.JPanel
                                     .addComponent(fieldPrix, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(labelCurrency))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(buttonModifier)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(listeTags, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(labelTag)))))
-                .addGap(9, 9, 9))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(listeTags, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelTag))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(buttonModifier)
+                    .addComponent(buttonChercher))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getAccessibleContext().setAccessibleName("critResultat");
@@ -282,30 +294,76 @@ public class critPromo extends javax.swing.JPanel
         // TODO add your handling code here:
         if ("Jeu".equals((String)listeCategorie.getSelectedItem())) 
            {
-               fieldDevFab.setText("Développeur :");
-               labelPlateforme.setVisible(true);
-               listePlateforme.setVisible(true);
-               labelTag.setVisible(true);
-               listeTags.setVisible(true);
+               
+                fieldDevFab.setText("Développeur :");
+                labelPlateforme.setVisible(true);
+                listePlateforme.setVisible(true);
+                labelTag.setVisible(true);
+                listeTags.setVisible(true);
+                
+                //Réinitialiser tous les champs
+                listeEdition.removeAllItems();
+                // Initialisation la modele pour listeEdition
+                Vector<String> editions;
+                editions = controleur.listeEdition("Jeu");
+                editions.add(0, "");
+                listeEdition.setModel(new javax.swing.DefaultComboBoxModel<>(editions));
+
+                // Initialisation la modele pour listeZone        
+                listeZone.removeAllItems();
+                Vector<String> zones = controleur.listeZones();
+                zones.add(0, "");
+                listeZone.setModel(new javax.swing.DefaultComboBoxModel<>(zones));
+
+                // Initialisation la modele pour listeConsoles
+                listePlateforme.removeAllItems();
+                Vector<String> plateformes = controleur.listeConsoles();
+                plateformes.add(0, "");
+                listePlateforme.setModel(new javax.swing.DefaultComboBoxModel<>(plateformes));
+        
+                // Initialisation la modele pour listeFabricant
+                listeFabricant.removeAllItems();
+                Vector<String> fabricants = controleur.listeFabricant();
+                fabricants.add(0, "");
+                listeFabricant.setModel(new javax.swing.DefaultComboBoxModel<>(fabricants));
+        
+                // Initialisation la modele pour listeTags
+                listeTags.removeAllItems();
+                Vector<String> tags = controleur.listeTags();
+                tags.add(0, "");
+                listeTags.setModel(new javax.swing.DefaultComboBoxModel<>(tags)); 
            }
         else 
-            { 
+            {
                 fieldDevFab.setText("Fabricant : ");
                 labelPlateforme.setVisible(false);
                 listePlateforme.setVisible(false);
                 labelTag.setVisible(false);
                 listeTags.setVisible(false);
+                //Réinitialiser tous les champs
+                listeEdition.removeAllItems();
+                // Initialisation la modele pour listeEdition
+                Vector<String> editions;
+                editions = controleur.listeEdition("Console");
+                editions.add(0, "");
+                listeEdition.setModel(new javax.swing.DefaultComboBoxModel<>(editions));
+
+                // Initialisation la modele pour listeZone        
+                listeZone.removeAllItems();
+                Vector<String> zones = controleur.listeZones();
+                zones.add(0, "");
+                listeZone.setModel(new javax.swing.DefaultComboBoxModel<>(zones));
+   
+                // Initialisation la modele pour listeFabricant
+                listeFabricant.removeAllItems();
+                Vector<String> fabricants = controleur.listeFabricant();
+                fabricants.add(0, "");
+                listeFabricant.setModel(new javax.swing.DefaultComboBoxModel<>(fabricants));
             }
-        try {
-            this.parent.lancerRecherche(toForm());}
-        catch (DonneeInvalideException ex) {
-            this.parent.afficherErreur(ex);
-        }
     }//GEN-LAST:event_listeCategorieItemStateChanged
 
     private void listePlateformeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listePlateformeItemStateChanged
-        // TODO add your handling code here:
-        try {
+     try {
             this.parent.lancerRecherche(toForm());}
         catch (DonneeInvalideException ex) {
             this.parent.afficherErreur(ex);
@@ -313,12 +371,17 @@ public class critPromo extends javax.swing.JPanel
     }//GEN-LAST:event_listePlateformeItemStateChanged
 
     private void buttonModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonModifierActionPerformed
-        throw new UnsupportedOperationException("La modification de produit n'a pas encore été implémentée.");
+        try {
+            this.controleur.calculCote("Console", 2);
+        } catch (EnregistrementInexistantException ex) {
+            Logger.getLogger(critPromo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DonneeInvalideException ex) {
+            Logger.getLogger(critPromo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_buttonModifierActionPerformed
 
     private void listeZoneItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listeZoneItemStateChanged
-        // TODO add your handling code here:
-        try {
+     try {
             this.parent.lancerRecherche(toForm());}
         catch (DonneeInvalideException ex) {
             this.parent.afficherErreur(ex);
@@ -326,8 +389,7 @@ public class critPromo extends javax.swing.JPanel
     }//GEN-LAST:event_listeZoneItemStateChanged
 
     private void listeFabricantItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listeFabricantItemStateChanged
-        // TODO add your handling code here:
-        try {
+     try {
             this.parent.lancerRecherche(toForm());}
         catch (DonneeInvalideException ex) {
             this.parent.afficherErreur(ex);
@@ -335,8 +397,7 @@ public class critPromo extends javax.swing.JPanel
     }//GEN-LAST:event_listeFabricantItemStateChanged
 
     private void listeEditionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listeEditionItemStateChanged
-        // TODO add your handling code here:
-        try {
+     try {
             this.parent.lancerRecherche(toForm());}
         catch (DonneeInvalideException ex) {
             this.parent.afficherErreur(ex);
@@ -344,13 +405,21 @@ public class critPromo extends javax.swing.JPanel
     }//GEN-LAST:event_listeEditionItemStateChanged
 
     private void listeTagsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listeTagsItemStateChanged
-        // TODO add your handling code here:
-        try {
+     try {
             this.parent.lancerRecherche(toForm());}
         catch (DonneeInvalideException ex) {
             this.parent.afficherErreur(ex);
         }
     }//GEN-LAST:event_listeTagsItemStateChanged
+
+    private void buttonChercherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChercherActionPerformed
+        // TODO add your handling code here:
+     try {
+            this.parent.lancerRecherche(toForm());}
+        catch (DonneeInvalideException ex) {
+            this.parent.afficherErreur(ex);
+        }
+    }//GEN-LAST:event_buttonChercherActionPerformed
 
     public void setForm(PromoForm f)
     {
@@ -359,12 +428,11 @@ public class critPromo extends javax.swing.JPanel
         /*
         *    Si le type de form est "jeu"
         */
-        if ("jeu".equals(f.getType()))
-        {
-            
+        if ("Jeu".equals(f.getType()))
+        {           
             this.listeCategorie.setSelectedIndex(1);                   //type Jeu
         }
-        else if ("console".equals(f.getType()))
+        else if ("Console".equals(f.getType()))
             this.listeCategorie.setSelectedIndex(0);                   //type Console
             
         this.listeEdition.setSelectedItem(f.getEdition());             // Edition
@@ -376,37 +444,62 @@ public class critPromo extends javax.swing.JPanel
         this.idVersionConsole = f.getIdVersionConsole();               // Id Version Console
         this.fieldPrix.setText(String.valueOf(f.getPrix()));           // Prix
         this.fieldStock.setText(String.valueOf(f.getStock()));         // Stock
-        this.fieldCote.setText("10");                                  // Cote
+        this.fieldCote.setText(String.valueOf(f.getCote()));           // Cote
     }
     private Form toForm() throws DonneeInvalideException
     {
-        float prix;
+        String typeCat = "";
+        String cb = ""/*CodeBarre*/;
+        String nom = ""/*Nom*/;
+        String edition = ""/*Edition*/;
+        String zone = ""/*Zone*/;
+        String fab = ""/*Fabricant*/;
+        String photo = ""/*Photo*/;
+        String desc = ""/* Description */;
+        String platforme = ""/*Platforme*/;               
+        String tag = ""/*Tags*/;
+        float prix,cote=0f;
         int stock;
-        try {
-            prix = Float.valueOf(fieldPrix.getText());
-            stock = Integer.valueOf(fieldStock.getText());}
+        try {        
+                    //typeCat = listeCategorie.getSelectedItem().toString()/*type*/; 
+                    cb = ""/*CodeBarre*/;
+                    nom = ""/*Nom*/;
+                    System.out.println(listeEdition.getSelectedItem());
+                    edition = listeEdition.getSelectedItem().toString()/*Edition*/;
+                    zone = listeZone.getSelectedItem().toString()/*Zone*/;
+                    fab = listeFabricant.getSelectedItem().toString()/*Fabricant*/;
+                    photo = ""/*Photo*/;
+                    desc = ""/* Description */;
+                    platforme = listePlateforme.getSelectedItem().toString()/*Platforme*/;               
+                    tag = listeTags.getSelectedItem().toString()/*Tags*/;
+                    prix = Float.valueOf(fieldPrix.getText());
+                    stock = Integer.valueOf(fieldStock.getText());
+                    cote = Float.valueOf(fieldCote.getText());
+        }
         catch (NumberFormatException nfe) {
             prix = 0f;
             stock = 0;
+            cote = 0f;
         }
-            
+                System.out.println(this.idVersionConsole);    
         return new PromoForm(this.idVersionConsole,
                                 this.idVersionJeu,
-                                (String) listeCategorie.getSelectedItem() /*type*/, 
-                                 ""/*CodeBarre*/,
-                                 ""/*Nom*/,
-                                 (String) listeEdition.getSelectedItem() /*Edition*/,
-                                 (String) listeZone.getSelectedItem()/*Zone*/,
-                                 (String) listeFabricant.getSelectedItem()/*Fabricant*/,
-                                 ""/* Description */,
-                                 (String) listeTags.getSelectedItem()/*Tags*/,
-                                 (String) listePlateforme.getSelectedItem() /*Platforme*/,
-                                 prix,
-                                 stock);
+                                typeCat /*type*/, 
+                                cb/*CodeBarre*/,
+                                nom/*Nom*/,
+                                edition/*Edition*/,
+                                zone/*Zone*/,
+                                fab/*Fabricant*/,
+                                photo/*Photo*/,
+                                desc/* Description */,
+                                platforme/*Platforme*/,                
+                                tag/*Tags*/,
+                                prix, stock, cote);
     }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static javax.swing.JButton buttonChercher;
     public static javax.swing.JButton buttonModifier;
     public static javax.swing.JLabel fieldCote;
     public static javax.swing.JLabel fieldDevFab;

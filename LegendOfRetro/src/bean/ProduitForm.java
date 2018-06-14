@@ -27,11 +27,12 @@ public class ProduitForm extends CodeBarreForm
     private String plateforme;
     private float prix;
     private int stock;
+    private float cote;
     
     public ProduitForm()
     {
-        this.idVersionConsole = -1;
-        this.idVersionJeu = -1;
+        this.idVersionConsole = 0;
+        this.idVersionJeu = 0;
         this.type = "";
         this.nom = "";
         this.edition = "";
@@ -42,12 +43,13 @@ public class ProduitForm extends CodeBarreForm
         this.tags = "";
         this.prix = -1;
         this.stock = -1;
+        this.cote = 1.0f;
     }
     public ProduitForm(
             int idVersionConsole, int idVersionJeu,
             String type, String cb, String nom, String edition, String zone,
             String editeur, String photo, String description, String tags, String plateforme,
-            float prix, int stock)
+            float prix, int stock, float cote)
     {
         super(cb);
         this.idVersionConsole = idVersionConsole;
@@ -63,6 +65,7 @@ public class ProduitForm extends CodeBarreForm
         this.tags = tags;
         this.prix = prix;
         this.stock = stock;
+        this.cote = cote;
     }
     
     public int getIdVersionConsole()      {return this.idVersionConsole;}
@@ -78,6 +81,7 @@ public class ProduitForm extends CodeBarreForm
     public String getPlateforme()      {return this.plateforme;}
     public float getPrix()      {return this.prix;}
     public int getStock()      {return this.stock;}
+    public float getCote()     {return this.cote;}
     
     public void setIdVersionConsole(int id)      {this.idVersionConsole = id;}
     public void setIdVersionJeu(int id)      {this.idVersionJeu = id;}
@@ -87,9 +91,10 @@ public class ProduitForm extends CodeBarreForm
     public void setZone(String zone)      {this.zone = zone;}
     public void setEditeur(String editeur)      {this.editeur = editeur;}
     public void setDescription(String descr)      {this.description = descr;}
+    public void setPhoto(String photo)      {this.photo = photo;}
     public void setTags(String tags)      {this.tags = tags;}
     public void setPlateforme(String pf)      {this.plateforme = pf;}
     public void setPrix(float p)      {this.prix = p;}
     public void setStock(int n)      {this.stock = n;}
-    
+    public void setCote(float c)      {this.cote = c;}    
 }

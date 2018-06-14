@@ -26,7 +26,6 @@ public class GUI extends JFrame implements ActionListener
     private Controleur controleur;
     
     public enum Menu {AUCUN, PRODUIT, ACHAT, VENTE, PERSONNE, PROMO};
-    private Menu FLAG_menuOuvert; // à fixer (voir ouvrirMenu. Et oui, à fixer quand même, car on en a besoin !)
     private JPanel menuOuvert;
     private JPanel menuPanel;
     private JButton buttonProduit;
@@ -34,14 +33,20 @@ public class GUI extends JFrame implements ActionListener
     private JButton buttonVente;
     private JButton buttonClient;
     private JButton buttonPromo;
+    private int largueur;
+    private int longueur;
     
     public GUI(Controleur controleur)
     {
         super();
         
+        // définition des dimensions des menus
+        largueur = 700;
+        longueur = 1100;
+        
         //initialisation des composants
         menuPanel = new JPanel();
-        menuPanel.setPreferredSize(new java.awt.Dimension(150, 560));
+        menuPanel.setPreferredSize(new java.awt.Dimension(150, largueur));
         
         buttonProduit = new JButton();
         buttonProduit.setText("Produit");
@@ -100,9 +105,8 @@ public class GUI extends JFrame implements ActionListener
         c.add(this.menuPanel, BorderLayout.WEST);
         
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setSize(990, 560);
+        this.setSize(longueur, largueur);
         this.setVisible(true);
-        
         this.controleur = controleur;
     }
 
@@ -143,7 +147,6 @@ public class GUI extends JFrame implements ActionListener
     }
     public void ouvrirMenu(Menu m)
     {
-        this.FLAG_menuOuvert = m;
         if (m == Menu.PRODUIT)
         {
             fermerMenu();
@@ -226,6 +229,6 @@ public class GUI extends JFrame implements ActionListener
         this.setContentPane(c);
         
         this.menuOuvert = null;
-        this.FLAG_menuOuvert = Menu.AUCUN;
     }
+    
 }

@@ -12,6 +12,7 @@ import controleur.Controleur;
 import controleur.DonneeInvalideException;
 import controleur.DonneesInsuffisantesException;
 import controleur.EnregistrementExistantException;
+import controleur.EnregistrementInexistantException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Vector;
@@ -26,12 +27,13 @@ import static org.hibernate.cfg.AvailableSettings.URL;
  */
 public class critProduit extends javax.swing.JPanel
 {
-    private Form selectedForm;
+    private ProduitForm selectedForm;
     private Controleur controleur;
     private Chercheur parent;
     
     private int idVersionJeu;
     private int idVersionConsole;
+    private String urlPhotoJeu;
 
     /**
      * Creates new form Resultat
@@ -43,7 +45,7 @@ public class critProduit extends javax.swing.JPanel
         this.controleur = controleur;
         this.parent = parent;
         this.selectedForm = null;
-        initComponents();
+        initComponents(); 
         
         Vector<String> zones = controleur.listeZones();
         zones.add(0, "");
@@ -165,6 +167,7 @@ public class critProduit extends javax.swing.JPanel
         labelDescription.setText("Description :");
         labelDescription.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         labelDescription.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        labelDescription.setVisible(false);
 
         labelPhoto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelPhoto.setText("Photo :");
@@ -172,14 +175,6 @@ public class critProduit extends javax.swing.JPanel
         labelPhoto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         labelPhoto.setEnabled(false);
         labelPhoto.setFocusable(false);
-        try{
-            URL url = new URL("htts://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg");
-            //more code goes here
-            labelPhoto.setIcon(new ImageIcon(url));
-        }catch(MalformedURLException ex){
-            //do exception handling here
-            labelPhoto.setText("Cant get photo !!!");
-        }
 
         labelCurrency.setText("€");
 
@@ -218,7 +213,6 @@ public class critProduit extends javax.swing.JPanel
         });
 
         buttonNouveau.setText("Nouveau");
-        buttonNouveau.setVisible(false);
         buttonNouveau.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonNouveauActionPerformed(evt);
@@ -226,7 +220,6 @@ public class critProduit extends javax.swing.JPanel
         });
 
         buttonModifier.setText("Modifier");
-        buttonModifier.setVisible(false);
         buttonModifier.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonModifierActionPerformed(evt);
@@ -235,6 +228,7 @@ public class critProduit extends javax.swing.JPanel
 
         jTextAreaDescription.setColumns(20);
         jTextAreaDescription.setRows(5);
+        jTextAreaDescription.setVisible(false);
         jScrollPane1.setViewportView(jTextAreaDescription);
 
         fieldPrix.setText("0");
@@ -400,6 +394,8 @@ public class critProduit extends javax.swing.JPanel
             labelTag.setVisible(true);
             fieldTag.setVisible(true);
             labelPhoto.setVisible(true);
+            labelDescription.setVisible(true);
+            jTextAreaDescription.setVisible(true);
         }
         else 
         { 
@@ -409,7 +405,10 @@ public class critProduit extends javax.swing.JPanel
             labelTag.setVisible(false);
             fieldTag.setVisible(false);
             labelPhoto.setVisible(false);
+            labelDescription.setVisible(false);
+            jTextAreaDescription.setVisible(false);
         }
+        clean(); //réinitialisation des champs
     }//GEN-LAST:event_listeCategorieItemStateChanged
 
     private void listePlateformeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listePlateformeItemStateChanged
@@ -450,10 +449,10 @@ public class critProduit extends javax.swing.JPanel
     private void buttonNouveauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNouveauActionPerformed
         try {
             Form f = this.toForm();
-            if (f instanceof CodeBarreForm)
-                this.parent.afficherLog(this.controleur.creer((CodeBarreForm) f).toString());
-            else if (f instanceof ProduitForm)
-                this.parent.afficherLog(this.controleur.creer((ProduitForm) f).toString());
+            //controleur.creer(CodeBarreForm) lance une exception si le form n'est pas un ProduitForm.
+            this.parent.afficherLog(this.controleur.creer((CodeBarreForm) f).toString());
+            //exécuté seulement si le form est un ProduitForm
+            this.selectedForm = (ProduitForm) f;
             
             /*
             *  Refresh la liste Platforme après Ajout
@@ -473,7 +472,20 @@ public class critProduit extends javax.swing.JPanel
     }//GEN-LAST:event_buttonNouveauActionPerformed
 
     private void buttonModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonModifierActionPerformed
-        throw new UnsupportedOperationException("La modification de produit n'a pas encore été implémentée.");
+        try {
+            Form f = toForm();
+            if (!(f instanceof ProduitForm))
+                throw new DonneesInsuffisantesException(
+                        "Erreur : on ne peut pas effacer toutes ces données sur le produit");
+            this.parent.afficherLog(
+                    this.controleur.modifier((ProduitForm) f).toString());
+            this.selectedForm = (ProduitForm) f;
+            setForm(this.selectedForm); //update affichage dans critProduit (normalement inutile)
+        }
+        catch (DonneesInsuffisantesException ex) {this.parent.afficherErreur(ex);}
+        catch (DonneeInvalideException ex) {this.parent.afficherErreur(ex);}
+        catch (EnregistrementInexistantException ex) {this.parent.afficherErreur(ex);}
+
     }//GEN-LAST:event_buttonModifierActionPerformed
 
     private void listeZoneItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listeZoneItemStateChanged
@@ -494,19 +506,64 @@ public class critProduit extends javax.swing.JPanel
         // TODO add your handling code here:
     }//GEN-LAST:event_listePlateformeActionPerformed
 
+    public void clean()
+    {
+        this.fieldAjoutCasse.setValue(0);
+        this.fieldCodeBarre.setText("");
+        this.fieldEditeur.setText("");
+        this.fieldEdition.setText("");
+        this.fieldNom.setText("");
+        this.fieldPrix.setValue("");
+        this.fieldStock.setValue("");
+        this.fieldTag.setText("");
+        this.fieldTxtAjoutZone.setText("");
+        this.jTextAreaDescription.setText("");
+        this.listePlateforme.setSelectedIndex(0);
+        this.listeZone.setSelectedIndex(0);
+        this.selectedForm = null;
+        this.idVersionConsole = 0;
+        this.idVersionJeu = 0;
+        parent.lancerRecherche(null);
+    }
     public void setCodeBarre(String cb)
     {
         this.fieldCodeBarre.setText(cb);
     }
+    
+    /********
+    *
+    *   Fonction utilisé pour remplir les champs dans le menu
+    *   @param ProduitForm f
+    *   @return void ( le remplissage se fait directement par le menu )
+    * 
+    *********/
     public void setForm(ProduitForm f)
     {
         this.selectedForm = f;
+        String errors = "";
         
-        if ("jeu".equals(f.getType()))
+        if ("Jeu".equals(f.getType()))
         {
             this.listeCategorie.setSelectedIndex(1); //type Jeu
             this.fieldTag.setText(f.getTags());
+System.out.println("BUG : !TODO il faut récupérer les tags (contrôleur ?) Nul :" + "".equals(f.getTags()));
             this.jTextAreaDescription.setText(f.getDescription());
+            //plateforme
+            int i=0;
+            boolean found = false;
+            String dansListe = null;
+            String plateforme = f.getPlateforme();
+            while (!found && i < listePlateforme.getModel().getSize())
+            {
+                dansListe = listePlateforme.getModel().getElementAt(i);
+                found = plateforme.equals(dansListe);
+                i++;
+            }
+            if (found)
+                listePlateforme.getModel().setSelectedItem(dansListe);
+            else
+                errors = errors.concat("Erreur lors de la sélection de la plateforme " + plateforme
+                        + " : plateforme non trouvée dans la liste déroulante. \n");
         }
         else if ("console".equals(f.getType()))
             this.listeCategorie.setSelectedIndex(0); //type Console
@@ -517,16 +574,44 @@ public class critProduit extends javax.swing.JPanel
         this.fieldEdition.setText(f.getEdition());
         this.fieldPrix.setText(String.valueOf(f.getPrix()));
         this.fieldStock.setText(String.valueOf(f.getStock()));
+        this.fieldCote.setText(String.valueOf(f.getCote()));
+    
+        //zone
+        int i = 0;
+        boolean found = false;
+        String dansListe = null;
+        String zone = f.getZone();
+        while (!found && i < listeZone.getModel().getSize())
+        {
+            dansListe = listeZone.getModel().getElementAt(i);
+            found = zone.equals(dansListe);
+            i++;
+        }
+        if (found)
+            listeZone.getModel().setSelectedItem(dansListe);
+        else
+            errors = errors.concat("Erreur lors de la sélection de la zone " + zone
+                    + " : zone non trouvée dans la liste déroulante. \n");
                 
         
         this.idVersionJeu = f.getIdVersionJeu();
         this.idVersionConsole = f.getIdVersionConsole();
-        
-        //TODO: à terminer (zones, plateformes... D'ailleurs, celles-ci doivent être initialisées proprement !)
+
+        if (!"".equals(errors))
+            this.parent.afficherErreur(new Exception(errors));
+
     }
+    
+    /********
+    *
+    *   Fonction utilisé pour récupérer les champs dans le menu
+    *   @param void
+    *   @return Form ( récupération tous les champs remplis dans le menu et popularise le form avec.
+    * 
+    *********/
     private Form toForm() throws DonneeInvalideException
     {
-        float prix = 0f;
+        float prix = 0.0f, cote=0.0f;
         int stock = 0;
         try {
             prix = Float.valueOf(fieldPrix.getText());
@@ -534,10 +619,8 @@ public class critProduit extends javax.swing.JPanel
         catch (NumberFormatException nfe) {
             if (!"".equals(fieldPrix.getText()))
                 throw new DonneeInvalideException("Erreur : veuillez saisir le 'prix' en notation anglo-saxonne (par exemple : 2.5");
-            if (!"".equals(Integer.valueOf(fieldStock.getText())))
+            if (!"".equals(fieldStock.getText()))
                 throw new DonneeInvalideException("Erreur : veuillez saisir un entier dans le champ 'stock'");
-            //prix = 0f;
-            //stock = 0;
         }
             
         if("".equals(fieldNom.getText()) && "".equals(fieldEditeur.getText())
@@ -551,8 +634,9 @@ public class critProduit extends javax.swing.JPanel
                     (String) listeZone.getSelectedItem(),
                     fieldEditeur.getText(),""/*Photo*/, jTextAreaDescription.getText(),
                     fieldTag.getText(), (String) listePlateforme.getSelectedItem(),
-                    prix, stock);
+                    prix, stock, cote);
     }
+    
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
