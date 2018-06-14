@@ -50,6 +50,8 @@
                                   <Component id="paysComboBox" min="-2" pref="101" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="paysAjoutField" min="-2" pref="101" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="buttonAjouterPays" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
@@ -102,11 +104,11 @@
                       <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                       <Component id="CP" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="CPComboBox" min="-2" pref="85" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="villeAjoutCp" min="-2" pref="85" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="buttonAjouter" min="-2" max="-2" attributes="0"/>
+                      <Component id="CP2" min="-2" pref="28" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="buttonAjouterVille" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="mail1" min="-2" pref="45" max="-2" attributes="0"/>
@@ -126,7 +128,7 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="80" max="32767" attributes="0"/>
+              <EmptySpace pref="158" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="jScrollPane1" min="-2" pref="294" max="-2" attributes="0"/>
@@ -194,16 +196,17 @@
                           <Component id="Pays" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="paysComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="paysAjoutField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="buttonAjouterPays" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="ville" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="VilleComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="CP" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="CPComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="villeAjoutField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="villeAjoutCp" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="buttonAjouter" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="buttonAjouterVille" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="CP2" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -347,7 +350,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="CP">
       <Properties>
-        <Property name="text" type="java.lang.String" value="C.P."/>
+        <Property name="text" type="java.lang.String" value="("/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="mail">
@@ -376,7 +379,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="telFieldActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="buttonAjouter">
+    <Component class="javax.swing.JButton" name="buttonAjouterVille">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ajouter"/>
       </Properties>
@@ -384,10 +387,10 @@
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="buttonAjouter"/>
       </AccessibilityProperties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonAjouterActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonAjouterVilleActionPerformed"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="buttonAjouter.setVisible(false);"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="buttonAjouterVille.setVisible(false);"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="buttonNouveau">
@@ -417,19 +420,6 @@
       </AccessibilityProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="VilleComboBoxActionPerformed"/>
-      </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.swing.JComboBox" name="CPComboBox">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="0"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CPComboBoxActionPerformed"/>
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -487,6 +477,9 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="paysAjoutFieldActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="paysAjoutField.setVisible(false);"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="histoVente">
       <Properties>
@@ -624,6 +617,22 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dateNaissFieldActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="CP2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value=")"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="buttonAjouterPays">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ajouter"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonAjouterPaysActionPerformed"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="buttonAjouterVille.setVisible(false);"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>
