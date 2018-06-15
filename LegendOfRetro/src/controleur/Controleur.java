@@ -1543,7 +1543,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
      * @see  LOREntities.Personne
      */
     
-   private Personne chercherPersonne(String nomPers, String prenomPers) throws DonneesInsuffisantesException{
+   public Personne chercherPersonne(String nomPers, String prenomPers) throws DonneesInsuffisantesException{
        
         if ("".equals(nomPers) || "".equals(prenomPers)){
             throw new DonneesInsuffisantesException(
@@ -1567,7 +1567,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         else
             return (Personne) resultats.get(0);
     }
-   private Vector<PersonneForm> chercherPersonnes(PersonneForm form) throws DonneesInsuffisantesException{
+   public Vector<PersonneForm> chercherPersonnes(PersonneForm form) throws DonneesInsuffisantesException{
         
        Vector<PersonneForm> retour = new Vector<PersonneForm>();
         
@@ -1605,7 +1605,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             
             pf.setPrenom(personneBDD.getPrenom());
             pf.setNom(personneBDD.getNom());
-            pf.setSociete(""); //TODO : champ Société dans la BDD
+            pf.setSociete(personneBDD.getSociete());
             pf.setAdresse(personneBDD.getAdresse());
             pf.setMail(personneBDD.getMail());
             pf.setTelephone(personneBDD.getTelephone());
@@ -1615,14 +1615,61 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             
             //factures
             Vector<FactureForm> factures = new Vector<FactureForm>();
-            for(Object elementBDD : personneBDD.getFactures())
+            for (Object elementBDD : personneBDD.getFactures())
             {
                 Facture factureBDD = (Facture) elementBDD;
                 FactureForm ff = new FactureForm();
-                
                 ff.setActeur(pf);
-                //...
+                ff.setNature(new Character('a').equals(factureBDD.getTypeFacture()));
+                ff.setReductions(factureBDD.getReduction());
                 
+                //lignes
+                Vector<FactureLigneForm> lignes = new Vector<FactureLigneForm>();
+                for (Object lcBDD : factureBDD.getLigneFactureConsoles())
+                {
+                    LigneFactureConsole ligneBDD = (LigneFactureConsole) lcBDD;
+                    FactureLigneForm flfc = new FactureLigneForm();
+                    flfc.setQuantite(ligneBDD.getQuantite());
+                    flfc.setPrixLigne(0f); //on n'a pas besoin de cette information
+                    
+                    //produit
+                    ProduitForm prf = new ProduitForm();
+                    prf.setCodeBarre(ligneBDD.getVersionConsole().getCodeBarre());
+                    prf.setIdVersionConsole(ligneBDD.getVersionConsole().getIdVersionConsole());
+                    prf.setIdVersionJeu(-1);
+                    prf.setNom(ligneBDD.getVersionConsole().getConsole().getNomConsole());
+                    prf.setPrix(ligneBDD.getVersionConsole().getPrix());
+                    prf.setStock(ligneBDD.getVersionConsole().getStock());
+                    prf.setType("Console");
+                    prf.setZone(ligneBDD.getVersionConsole().getZone().getNomZone());
+                    flfc.setProduit(prf);
+                    
+                    lignes.add(flfc);
+                }
+                for (Object lcBDD : factureBDD.getLigneFactureJeus())
+                {
+                    LigneFactureJeu ligneBDD = (LigneFactureJeu) lcBDD;
+                    FactureLigneForm flfj = new FactureLigneForm();
+                    flfj.setQuantite(ligneBDD.getQuantite());
+                    flfj.setPrixLigne(0f); //on n'a pas besoin de cette information
+                    
+                    //produit
+                    ProduitForm prf = new ProduitForm();
+                    prf.setCodeBarre(ligneBDD.getVersionJeu().getCodeBarre());
+                    prf.setIdVersionConsole(-1);
+                    prf.setIdVersionJeu(ligneBDD.getVersionJeu().getIdVersionJeu());
+                    prf.setNom(ligneBDD.getVersionJeu().getJeu().getNomJeu());
+                    prf.setPrix(ligneBDD.getVersionJeu().getPrix());
+                    prf.setStock(ligneBDD.getVersionJeu().getStock());
+                    prf.setType("Jeu");
+                    prf.setZone(ligneBDD.getVersionJeu().getZone().getNomZone());
+                    flfj.setProduit(prf);
+                    
+                    lignes.add(flfj);
+                }
+                
+                
+                ff.setLignes(lignes);
                 factures.add(ff);
             }
             pf.setFactures(factures);

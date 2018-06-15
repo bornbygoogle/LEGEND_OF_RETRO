@@ -8,6 +8,8 @@ package vue;
 import bean.PersonneForm;
 import controleur.Controleur;
 import controleur.DonneeInvalideException;
+import controleur.DonneesInsuffisantesException;
+import controleur.EnregistrementExistantException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,8 +23,6 @@ public class critPersonne extends javax.swing.JPanel {
     private PersonneForm selectedForm;
     private Controleur controleur;
     private menuPersonne parent;
-    
-    private int idPersonne;
 
     /**
      * Creates new form critPersonne
@@ -537,8 +537,10 @@ public class critPersonne extends javax.swing.JPanel {
     }//GEN-LAST:event_telFieldActionPerformed
 
     private void buttonAjouterVilleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAjouterVilleActionPerformed
-        
-        
+        try {
+            controleur.creerVille(villeAjoutField.getText(),villeAjoutCp.getText(), (String) paysComboBox.getSelectedItem());}
+        catch (DonneesInsuffisantesException | EnregistrementExistantException | DonneeInvalideException ex) {
+            this.parent.afficherErreur(ex);}
     }//GEN-LAST:event_buttonAjouterVilleActionPerformed
 
     private void buttonNouveauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNouveauActionPerformed
@@ -589,7 +591,12 @@ public class critPersonne extends javax.swing.JPanel {
     }//GEN-LAST:event_paysComboBoxActionPerformed
 
     private void buttonChercher1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChercher1ActionPerformed
-        
+        try {
+            this.parent.lancerRecherche(toForm());
+        }
+        catch (DonneeInvalideException ex) {
+            this.parent.afficherErreur(ex);
+        }
     }//GEN-LAST:event_buttonChercher1ActionPerformed
 
     private void societeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_societeFieldActionPerformed
@@ -616,7 +623,10 @@ public class critPersonne extends javax.swing.JPanel {
     }//GEN-LAST:event_dateNaissFieldActionPerformed
 
     private void buttonAjouterPaysActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAjouterPaysActionPerformed
-        // TODO add your handling code here:
+        try {
+            controleur.creerPays(paysAjoutField.getText());}
+        catch (DonneesInsuffisantesException | EnregistrementExistantException ex) {
+            this.parent.afficherErreur(ex);}
     }//GEN-LAST:event_buttonAjouterPaysActionPerformed
 
     private void refreshListePays()
