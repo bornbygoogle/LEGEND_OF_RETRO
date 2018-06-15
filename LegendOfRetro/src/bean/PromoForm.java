@@ -11,7 +11,7 @@ import java.util.Vector;
  *
  * @author Adrien Marchand
  */
-public class PromoForm extends ProduitForm
+public class PromoForm extends Form
 {
     private int idPromo;
     private int idVersionConsole;
@@ -44,9 +44,9 @@ public class PromoForm extends ProduitForm
         this.photo = "";
         this.description = "";
         this.tags = "";
-        this.prix = -1;
-        this.stock = -1;
-        this.cote = -1;
+        this.prix = 0.2f;
+        this.stock = 0;
+        this.cote = 0.2f;
     }
     public PromoForm(
             int idPromo, int idVersionConsole, int idVersionJeu,

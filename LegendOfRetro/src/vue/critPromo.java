@@ -396,9 +396,9 @@ public class critPromo extends javax.swing.JPanel
     private void clean()
     {
         this.listeEdition.setSelectedIndex(0);
-        this.fieldPrix.setValue(0);
+        this.fieldPrix.setValue(String.format("%.2f", 0.0f));
         this.fieldStock.setText("0");
-        this.fieldCote.setText("0");
+        this.fieldCote.setText(String.format("%.2f", 0.0f));
         this.listeTags.setSelectedIndex(0);
         this.listePlateforme.setSelectedIndex(0);
         this.listeZone.setSelectedIndex(0);
@@ -419,6 +419,7 @@ public class critPromo extends javax.swing.JPanel
             
             this.selectedForm = (PromoForm) f;
             setForm((PromoForm) this.selectedForm); //update affichage dans critProduit (normalement inutile)
+            clean();
         }
         catch (DonneesInsuffisantesException ex) {this.parent.afficherErreur(ex);}
         catch (DonneeInvalideException ex) {this.parent.afficherErreur(ex);} 
@@ -476,9 +477,9 @@ System.out.println("BUG : !TODO il faut récupérer les tags (contrôleur ?) Nul
         this.fieldNom.setText(f.getNom());
         this.listeFabricant.setSelectedItem(f.getEditeur());
         this.listeEdition.setSelectedItem(f.getEdition());
-        this.fieldPrix.setText(String.valueOf(f.getPrix()));
+        this.fieldPrix.setText(String.valueOf(String.format("%.2f", f.getPrix())));
         this.fieldStock.setText(String.valueOf(f.getStock()));
-        this.fieldCote.setText(String.valueOf(f.getCote()));
+        this.fieldCote.setText(String.valueOf(String.format("%.2f", f.getCote())));
     
         //zone
         int i = 0;
