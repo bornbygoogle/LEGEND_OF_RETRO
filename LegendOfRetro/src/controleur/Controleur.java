@@ -893,6 +893,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         Vector<PromoForm> ret = new Vector<PromoForm>();
 
         //On récupère les variables du bean pour améliorer la lisibilité
+        int idPromo = 0;
         String type = form.getType();
         String cb = form.getCodeBarre();
         if (!"".equals(cb))
@@ -919,10 +920,12 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 float prix = enr.getPrix();
                 if (chercherPromoExiste(type, enr.getIdVersionConsole()))
                 {
-                    PromoConsole pctmp = chercherPromoConsole(chercherIdPromo(type,enr.getIdVersionConsole())); 
+                    PromoConsole pctmp = chercherPromoConsole(chercherIdPromo(type,enr.getIdVersionConsole()));
+                    idPromo = pctmp.getIdPromoConsole();
                     prix = pctmp.getPrixPromoConsole();
                 }
-                ret.add(new PromoForm(-1,enr.getIdVersionConsole(), -1, "Console",
+                else { idPromo = 0; }
+                ret.add(new PromoForm(idPromo,enr.getIdVersionConsole(), -1, "Console",
                         enr.getCodeBarre(), enr.getConsole().getNomConsole(), enr.getEdition(), enr.getZone().getNomZone(),
                         enr.getConsole().getFabricant().getNomFabricant(), "", "", "", "",
                         prix, enr.getStock(), getCoteProduct(type, enr.getIdVersionConsole())));
@@ -937,9 +940,11 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 if (chercherPromoExiste(type, enr.getIdVersionJeu()))
                 {
                     PromoJeu pctmp = chercherPromoJeu(chercherIdPromo(type,enr.getIdVersionJeu())); 
+                    idPromo = pctmp.getIdPromoJeu();
                     prix = pctmp.getPrixPromoJeu();
                 }
-                ret.add(new PromoForm(-1,-1, enr.getIdVersionJeu(), "Jeu",
+                else { idPromo = 0; }
+                ret.add(new PromoForm(idPromo,-1, enr.getIdVersionJeu(), "Jeu",
                     enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
                     enr.getJeu().getEditeur().getNomEditeur(), ""/*Photo*/, enr.getJeu().getDescriptionJeu(),
                     decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
@@ -1025,8 +1030,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         List resultats = modele.createQuery(q.toString()).list();
         
         if (resultats.isEmpty())
-        {System.out.println("rsul empty");
-            return null;}
+            return null;
         else //on suppose qu'il n'y a qu'un seul résultat !
             return (PromoConsole) resultats.get(resultats.size()-1);
     }
@@ -1980,6 +1984,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 if (pc.getPrixPromoConsole() != prix)
                     pc.setPrixPromoConsole(prix);
                 System.out.println(calculCoteAPartirPrix(type,pc.getIdPromoConsole(),prix));
+                pc.setIdPromoConsole(idPromo);
                 pc.setCoteConsole(calculCoteAPartirPrix(type,id,prix));
                 //sauvegarde de la version de console
                 modele.beginTransaction();
@@ -2382,13 +2387,21 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         List resul = null;
         if ("CONSOLE".equals(normalize(typeProduit))) 
         {
-            resul = modele.createQuery("select vc.prix from LOREntities.VersionConsole vc  where vc.idVersionConsole="+idProduit+")").list();
+            HQLRecherche q = new HQLRecherche("VersionConsole vc");
+            q.setSelect("vc.prix");
+            q.addCondition("vc.idVersionConsole", idProduit, HQLRecherche.Operateur.EGAL);
+            List resultats = modele.createQuery(q.toString()).list();
+        
+            if (resultats.isEmpty())
+                prixProduit = 0;
+            else //on suppose qu'il n'y a qu'un seul résultat !
+                prixProduit = Float.valueOf(resultats.get(0).toString());          
         }
         else if ("JEU".equals(normalize(typeProduit))) 
         {
             resul = modele.createQuery("select vj.prix from LOREntities.VersionJeu vj where vj.idVersionJeu="+idProduit+")").list();
         } 
-        prixProduit = Float.valueOf(resul.get(resul.size()-1).toString());
+
         modele.flush();
         return prixProduit;
     }
@@ -2597,7 +2610,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
      */
     public float calculCoteAPartirPrix(String typeProduit, Integer idProduit, Float prixPromo) throws EnregistrementInexistantException, DonneeInvalideException
     {
-        float cote = (float) Math.round(prixPromo/getSellPrixProduct(typeProduit, idProduit));
+        
+        float cote = ((float) Math.round(prixPromo/getSellPrixProduct(typeProduit, idProduit))*100f)/100;
         return cote;
     }
     /**
