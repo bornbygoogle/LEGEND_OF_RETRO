@@ -82,12 +82,9 @@ public class critPersonne extends javax.swing.JPanel {
         histoAchat = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         achatTab = new javax.swing.JTable();
-        tota = new javax.swing.JLabel();
-        labelTotalAchat = new javax.swing.JLabel();
-        e2 = new javax.swing.JLabel();
+        totalA = new javax.swing.JLabel();
         totalV = new javax.swing.JLabel();
-        labelTotalVente = new javax.swing.JLabel();
-        e1 = new javax.swing.JLabel();
+        totalV.setVisible(false);
         buttonSelectionner = new javax.swing.JButton();
         dteNaiss = new javax.swing.JLabel();
         dateNaissField = new javax.swing.JTextField();
@@ -234,6 +231,9 @@ public class critPersonne extends javax.swing.JPanel {
 
         histoVente.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         histoVente.setText("Historique des ventes");
+        histoVente.setVisible(false);
+
+        jScrollPane1.setVisible(false);
 
         venteTab.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -246,11 +246,15 @@ public class critPersonne extends javax.swing.JPanel {
                 "Jeu", "Prix", "Date"
             }
         ));
+        venteTab.setVisible(false);
         jScrollPane1.setViewportView(venteTab);
         venteTab.getAccessibleContext().setAccessibleName("venteTab");
 
         histoAchat.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         histoAchat.setText("Historique des achats");
+        histoAchat.setVisible(false);
+
+        jScrollPane2.setVisible(false);
 
         achatTab.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -263,20 +267,14 @@ public class critPersonne extends javax.swing.JPanel {
                 "Jeu", "Prix", "Date"
             }
         ));
+        achatTab.setVisible(false);
         jScrollPane2.setViewportView(achatTab);
         achatTab.getAccessibleContext().setAccessibleName("achatTab");
 
-        tota.setText("Total");
-
-        labelTotalAchat.setText("10000000");
-
-        e2.setText("€");
+        totalA.setText("Total");
+        totalA.setVisible(false);
 
         totalV.setText("Total");
-
-        labelTotalVente.setText("10000000");
-
-        e1.setText("€");
 
         buttonSelectionner.setText("Sélectionner");
         buttonSelectionner.addActionListener(new java.awt.event.ActionListener() {
@@ -389,19 +387,12 @@ public class critPersonne extends javax.swing.JPanel {
                             .addComponent(histoVente)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(totalV)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(labelTotalVente, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(e1)))
+                            .addGap(68, 68, 68)))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(histoAchat)
                         .addGap(37, 37, 37)
-                        .addComponent(tota)
-                        .addGap(16, 16, 16)
-                        .addComponent(labelTotalAchat, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(e2)))
+                        .addComponent(totalA)))
                 .addGap(18, 18, 18))
         );
         layout.setVerticalGroup(
@@ -414,18 +405,13 @@ public class critPersonne extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(totalV)
-                                        .addComponent(labelTotalVente)
-                                        .addComponent(e1))
+                                    .addComponent(totalV)
                                     .addComponent(histoVente))
                                 .addGap(119, 119, 119))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tota)
-                            .addComponent(labelTotalAchat)
-                            .addComponent(e2)
+                            .addComponent(totalA)
                             .addComponent(histoAchat))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -499,12 +485,8 @@ public class critPersonne extends javax.swing.JPanel {
         paysAjoutField.getAccessibleContext().setAccessibleName("paysAjoutField");
         histoVente.getAccessibleContext().setAccessibleName("histoVente");
         histoAchat.getAccessibleContext().setAccessibleName("histoAchat");
-        tota.getAccessibleContext().setAccessibleName("tota");
-        labelTotalAchat.getAccessibleContext().setAccessibleName("labelTotalAchat");
-        e2.getAccessibleContext().setAccessibleName("e2");
+        totalA.getAccessibleContext().setAccessibleName("tota");
         totalV.getAccessibleContext().setAccessibleName("totv");
-        labelTotalVente.getAccessibleContext().setAccessibleName("labelTotalVente");
-        e1.getAccessibleContext().setAccessibleName("e1");
         dateNaissField.getAccessibleContext().setAccessibleName("dateNaissField");
     }// </editor-fold>//GEN-END:initComponents
 
@@ -541,6 +523,7 @@ public class critPersonne extends javax.swing.JPanel {
             controleur.creerVille(villeAjoutField.getText(),villeAjoutCp.getText(), (String) paysComboBox.getSelectedItem());}
         catch (DonneesInsuffisantesException | EnregistrementExistantException | DonneeInvalideException ex) {
             this.parent.afficherErreur(ex);}
+        refreshListeVilles();
     }//GEN-LAST:event_buttonAjouterVilleActionPerformed
 
     private void buttonNouveauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNouveauActionPerformed
@@ -627,6 +610,8 @@ public class critPersonne extends javax.swing.JPanel {
             controleur.creerPays(paysAjoutField.getText());}
         catch (DonneesInsuffisantesException | EnregistrementExistantException ex) {
             this.parent.afficherErreur(ex);}
+        refreshListePays();
+        refreshListeVilles();
     }//GEN-LAST:event_buttonAjouterPaysActionPerformed
 
     private void refreshListePays()
@@ -655,20 +640,30 @@ public class critPersonne extends javax.swing.JPanel {
  
     private PersonneForm toForm() throws DonneeInvalideException{
         
-        if(!"".equals(nomField.getText()) || !"".equals(prenomField.getText()) || !"".equals(adresseField.getText())
-                || !"".equals(fieldNomMail.getText()) || !"".equals(telField.getText())
-                || !"".equals(dateNaissField.getText())){
+        if(!"".equals(nomField.getText()) && !"".equals(prenomField.getText()) && !"".equals(adresseField.getText())
+                && !"".equals(fieldNomMail.getText()) && !"".equals(telField.getText())
+                && !"".equals(dateNaissField.getText())){
             throw new DonneeInvalideException("Erreur : veuillez  remplir le formulaire, SVP");
         }
         
-        //TODO : séparation de la ville et du code postal
+        //Séparation de la ville et du code postal
         String villeCP = (String) VilleComboBox.getSelectedItem();
-        int indexParentheseOuvrante = villeCP.indexOf("(");
-        int indexParentheseFermante = villeCP.indexOf(")");
-        if (indexParentheseOuvrante < 0 || indexParentheseOuvrante >= indexParentheseFermante)
-            throw new DonneeInvalideException("Erreur : format de ville inconnu");
-        String villeString = villeCP.substring(0, indexParentheseOuvrante);
-        String CP = villeCP.substring(indexParentheseOuvrante + 1, indexParentheseFermante);
+        String villeString;
+        String CP;
+        if (villeCP != null && !"".equals(villeCP))
+        {
+            int indexParentheseOuvrante = villeCP.indexOf("(");
+            int indexParentheseFermante = villeCP.indexOf(")");
+            if (indexParentheseOuvrante < 0 || indexParentheseOuvrante >= indexParentheseFermante)
+                throw new DonneeInvalideException("Erreur : format de ville inconnu");
+            villeString = villeCP.substring(0, indexParentheseOuvrante);
+            CP = villeCP.substring(indexParentheseOuvrante + 1, indexParentheseFermante);
+        }
+        else
+        {
+            villeString = "";
+            CP = "";
+        }
         
         PersonneForm retour = new PersonneForm();
         retour.setPrenom(prenomField.getText());
@@ -733,8 +728,6 @@ public class critPersonne extends javax.swing.JPanel {
     private javax.swing.JButton buttonSelectionner;
     private javax.swing.JTextField dateNaissField;
     private javax.swing.JLabel dteNaiss;
-    private javax.swing.JLabel e1;
-    private javax.swing.JLabel e2;
     private javax.swing.JTextField fieldNomMail;
     private javax.swing.JLabel histoAchat;
     private javax.swing.JLabel histoVente;
@@ -743,8 +736,6 @@ public class critPersonne extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel labelTotalAchat;
-    private javax.swing.JLabel labelTotalVente;
     private javax.swing.JLabel mail;
     private javax.swing.JLabel mail1;
     private javax.swing.JLabel nom;
@@ -757,7 +748,7 @@ public class critPersonne extends javax.swing.JPanel {
     private javax.swing.JTextField societeField;
     private javax.swing.JTextField telField;
     private javax.swing.JLabel titre;
-    private javax.swing.JLabel tota;
+    private javax.swing.JLabel totalA;
     private javax.swing.JLabel totalV;
     private javax.swing.JTable venteTab;
     private javax.swing.JLabel ville;

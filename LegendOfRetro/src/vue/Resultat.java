@@ -7,6 +7,7 @@ package vue;
 
 import bean.FactureLigneForm;
 import bean.Form;
+import bean.PersonneForm;
 import bean.ProduitForm;
 import bean.PromoForm;
 import java.util.Vector;
@@ -31,6 +32,12 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
         "Edition",
         "Zone",
         "Fabricant"};
+    protected static String [] typePersonne = {
+        "Nom",
+        "Prénom",
+        "Date naissance",
+        "Ville",
+        "Téléphone"};
     protected static String [] typePromo = {
         "Code Barre",
         "Nom",
@@ -199,14 +206,15 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
                     rowIndex++;
                 }
             }
-            else if (test instanceof FactureLigneForm){
+            else if (test instanceof FactureLigneForm)
+            {
                
                 nomsChamps = typeFactureLigneForm;
                 rowIndex = 0;
                 //on remplit le tableau ligne à ligne
                 for (Form f : this.res)
                 {
-                    FactureLigneForm pf = ( FactureLigneForm) f;
+                    FactureLigneForm pf = (FactureLigneForm) f;
                     Object[] donneesLigne = {
                         pf.getProduit().getNom(),
                         pf.getQuantite(),
@@ -215,7 +223,27 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
                     donnees[rowIndex] = donneesLigne;
                     rowIndex++;
                 }  
-            }    
+            }
+            else if (test instanceof PersonneForm)
+            {
+               
+                nomsChamps = typePersonne;
+                rowIndex = 0;
+                //on remplit le tableau ligne à ligne
+                for (Form f : this.res)
+                {
+                    PersonneForm pf = (PersonneForm) f;
+                    Object[] donneesLigne = {
+                        pf.getNom(),
+                        pf.getPrenom(),
+                        pf.getDateNaissance(),
+                        pf.getVille() + " (" + pf.getPays() + ")",
+                        pf.getTelephone()
+                    };
+                    donnees[rowIndex] = donneesLigne;
+                    rowIndex++;
+                }
+            }
             else
                 throw new UnsupportedOperationException("Erreur lors de l'affichage du résultat : le type du formulaire est inconnu");
             // Affectation les resultats au Jtable
