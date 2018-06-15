@@ -1,5 +1,5 @@
 package LOREntities;
-// Generated Jun 15, 2018 6:38:29 PM by Hibernate Tools 4.3.1
+// Generated Jun 15, 2018 7:40:31 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -20,13 +20,14 @@ public class Personne  implements java.io.Serializable {
      private Date deDeNaissance;
      private String mail;
      private String telephone;
+     private String societe;
      private Set factures = new HashSet(0);
 
     public Personne() {
     }
 
 	
-    public Personne(Ville ville, String nom, String prenom, String adresse, Date deDeNaissance, String mail, String telephone) {
+    public Personne(Ville ville, String nom, String prenom, String adresse, Date deDeNaissance, String mail, String telephone, String societe) {
         this.ville = ville;
         this.nom = nom;
         this.prenom = prenom;
@@ -34,8 +35,9 @@ public class Personne  implements java.io.Serializable {
         this.deDeNaissance = deDeNaissance;
         this.mail = mail;
         this.telephone = telephone;
+        this.societe = societe;
     }
-    public Personne(Ville ville, String nom, String prenom, String adresse, Date deDeNaissance, String mail, String telephone, Set factures) {
+    public Personne(Ville ville, String nom, String prenom, String adresse, Date deDeNaissance, String mail, String telephone, String societe, Set factures) {
        this.ville = ville;
        this.nom = nom;
        this.prenom = prenom;
@@ -43,6 +45,7 @@ public class Personne  implements java.io.Serializable {
        this.deDeNaissance = deDeNaissance;
        this.mail = mail;
        this.telephone = telephone;
+       this.societe = societe;
        this.factures = factures;
     }
    
@@ -101,6 +104,13 @@ public class Personne  implements java.io.Serializable {
     
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+    public String getSociete() {
+        return this.societe;
+    }
+    
+    public void setSociete(String societe) {
+        this.societe = societe;
     }
     public Set getFactures() {
         return this.factures;
