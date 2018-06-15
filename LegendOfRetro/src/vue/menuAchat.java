@@ -15,8 +15,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -69,6 +67,12 @@ public class menuAchat extends menuVente
     public boolean ajoutLigneLegal(FactureLigneForm ligne)
     {
         return ligne.getQuantite() > 0; //On peut toujours acheter, il n'y a pas de condition sur la quantité.
+    }
+    @Override
+    public boolean modifierLigneLegal(FactureLigneForm ligne1, FactureLigneForm ligne2)
+    {
+        return (ligne1.getQuantite() + ligne2.getQuantite()) > 0;
+        //On peut toujours acheter, il n'y a pas de condition sur la quantité.
     }
     @Override
     protected void traiterEchecRecherche(String codeBarre) {

@@ -8,12 +8,7 @@ package vue;
 import bean.Form;
 import bean.PersonneForm;
 import controleur.Controleur;
-import controleur.DonneeInvalideException;
-import controleur.DonneesInsuffisantesException;
-import controleur.ResultatInvalideException;
 import java.awt.BorderLayout;
-import java.util.Vector;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /**
@@ -39,10 +34,8 @@ public class menuPersonne extends JPanel implements Chercheur
         this.controleur = c;
         this.menuAppelant = null;
         initComponents();
-        
-System.out.println("test liste pays " + this.controleur.listePays());
-System.out.println("test liste villes de France " + this.controleur.listeVilles("France"));
     }
+	
     public menuPersonne(Controleur c, menuVente menuVente)
     {
         this(c);

@@ -13,12 +13,7 @@ import bean.Form;
 import bean.ProduitForm;
 import bean.PersonneForm;
 import controleur.Controleur;
-import controleur.DonneeInvalideException;
-import controleur.DonneesInsuffisantesException;
 import java.awt.Color;
-import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.SpinnerNumberModel;
 
 /**
@@ -205,11 +200,11 @@ public class critVente extends javax.swing.JPanel {
     }//GEN-LAST:event_buttonAjouterActionPerformed
 
     private void buttonSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSupprimerActionPerformed
-        if (!"".equals(this.fieldCodeBarre))
+        if ("".equals(this.fieldCodeBarre))
             this.parent.afficherErreur(new Exception("Veuillez entrer un code barre."));
         else
         {
-            this.parent.supprimerLigne(toForm());
+            this.parent.supprimerLigne(this.fieldCodeBarre.getText());
             clean();
         }
         buttonSupprimer.setBackground(Color.GREEN);

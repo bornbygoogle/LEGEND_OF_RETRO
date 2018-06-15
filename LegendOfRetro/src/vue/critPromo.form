@@ -22,130 +22,163 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="labelCategorie" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Group type="103" alignment="0" groupAlignment="0" attributes="0">
-                      <Component id="labelPlateforme" min="-2" max="-2" attributes="0"/>
-                      <Component id="labelZone" alignment="1" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="labelCategorie" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labelTag" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="labelPlateforme" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="fieldDevFab" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="labelEdition" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
+                  <Component id="labelZone" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="listeCategorie" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
-                  <Component id="listeZone" min="-2" pref="150" max="-2" attributes="0"/>
-                  <Component id="listePlateforme" min="-2" pref="150" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                      <Component id="listeCategorie" alignment="1" min="-2" pref="150" max="-2" attributes="0"/>
+                      <Component id="listeEdition" alignment="1" min="-2" pref="150" max="-2" attributes="0"/>
+                      <Component id="listeZone" alignment="1" min="-2" pref="150" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                      <Component id="listeFabricant" alignment="1" min="-2" pref="150" max="-2" attributes="0"/>
+                      <Component id="listePlateforme" alignment="1" min="-2" pref="150" max="-2" attributes="0"/>
+                      <Component id="listeTags" alignment="1" min="-2" pref="150" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="buttonChercher" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="58" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="buttonModifier" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="labelTag" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="labelEdition" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelCodeBarre" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelCasse" alignment="0" min="-2" pref="73" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                              <Component id="labelStock" min="-2" pref="73" max="-2" attributes="0"/>
+                              <Component id="labelCote" min="-2" pref="73" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="labelNom" max="32767" attributes="0"/>
+                              <Component id="labelPrix" min="-2" pref="73" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="fieldNom" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="fieldPrix" min="-2" pref="60" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                                      <Component id="labelCurrency" min="-2" pref="20" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="fieldStock" min="-2" pref="45" max="-2" attributes="0"/>
+                                  <Component id="fieldCasse" min="-2" pref="45" max="-2" attributes="0"/>
+                                  <Component id="fieldCote" alignment="0" min="-2" pref="45" max="-2" attributes="0"/>
+                                  <Component id="fieldCodeBarre" min="-2" pref="150" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
-                  <Component id="fieldDevFab" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="listeFabricant" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
-                  <Component id="listeEdition" min="-2" pref="150" max="-2" attributes="0"/>
-                  <Component id="listeTags" min="-2" pref="150" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="labelPrix" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="fieldPrix" min="-2" pref="60" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="labelCurrency" min="-2" pref="20" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="labelCote" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                      <Component id="fieldCote" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                      <Component id="labelStock" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="fieldStock" min="-2" max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="0" min="-2" pref="227" max="-2" attributes="0"/>
+                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                      <Component id="labelDescription" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelPhoto" min="-2" pref="226" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
-              <Component id="buttonChercher" min="-2" pref="188" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="buttonModifier" min="-2" pref="180" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="169" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="labelCategorie" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
-                          <Component id="listeCategorie" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="labelPhoto" min="-2" pref="128" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                              <Component id="labelDescription" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jScrollPane1" min="-2" pref="117" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="labelCategorie" alignment="0" min="-2" pref="28" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="listeZone" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="labelZone" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="labelPlateforme" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="listePlateforme" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="labelEdition" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="listeEdition" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="listeFabricant" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="fieldDevFab" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="listeCategorie" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="labelCote" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="fieldCote" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="fieldStock" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="labelStock" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="labelPrix" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="fieldPrix" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="labelCurrency" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="fieldStock" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="listeZone" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelZone" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelStock" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="listeEdition" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelEdition" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelCasse" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="fieldCasse" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="listeFabricant" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="fieldDevFab" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelCodeBarre" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="fieldCodeBarre" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="listePlateforme" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelPlateforme" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelNom" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="fieldNom" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="listeTags" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="labelTag" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelPrix" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="fieldPrix" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelCurrency" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="buttonModifier" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="buttonChercher" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="buttonModifier" min="-2" max="-2" attributes="0"/>
-                  <Component id="buttonChercher" alignment="0" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -195,6 +228,7 @@
         <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="listeCategorieItemStateChanged"/>
       </Events>
       <AuxValues>
+        <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="critPromo_listeCategorie"/>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
@@ -212,9 +246,6 @@
           <Connection component="listePlateforme" name="model" type="property"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="listePlateformeItemStateChanged"/>
-      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="listePlateforme.setVisible(false);"/>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -251,9 +282,6 @@
           <Connection component="listeZone" name="model" type="property"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="listeZoneItemStateChanged"/>
-      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
@@ -274,9 +302,6 @@
           <Connection component="listeFabricant" name="model" type="property"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="listeFabricantItemStateChanged"/>
-      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
@@ -287,9 +312,6 @@
           <Connection component="listeEdition" name="model" type="property"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="listeEditionItemStateChanged"/>
-      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
@@ -300,9 +322,6 @@
           <Connection component="listeTags" name="model" type="property"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="listeTagsItemStateChanged"/>
-      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="listeTags.setVisible(false);"/>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -320,6 +339,78 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonChercherActionPerformed"/>
       </Events>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="jTextAreaDescription">
+          <Properties>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="rows" type="int" value="5"/>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jTextAreaDescription.setVisible(false); "/>
+          </AuxValues>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JLabel" name="labelDescription">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Description :"/>
+        <Property name="verticalAlignment" type="int" value="1"/>
+        <Property name="verticalTextPosition" type="int" value="1"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelPhoto">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" value="Photo :"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+            <LineBorder/>
+          </Border>
+        </Property>
+        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="focusable" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelCasse">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Casse :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="fieldCasse">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="1000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelCodeBarre">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Code Barre : "/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelNom">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Nom : "/>
+        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+          <Color id="Default Cursor"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="fieldCodeBarre">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="CodeBarre"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="fieldNom">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="NomJeu"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

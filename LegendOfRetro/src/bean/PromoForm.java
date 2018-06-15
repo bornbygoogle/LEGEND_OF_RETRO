@@ -11,8 +11,9 @@ import java.util.Vector;
  *
  * @author Adrien Marchand
  */
-public class PromoForm extends Form
+public class PromoForm extends ProduitForm
 {
+    private int idPromo;
     private int idVersionConsole;
     private int idVersionJeu;
     
@@ -32,6 +33,7 @@ public class PromoForm extends Form
     
     public PromoForm()
     {
+        this.idPromo = 0;
         this.idVersionConsole = 0;
         this.idVersionJeu = 0;
         this.type = "";
@@ -47,13 +49,14 @@ public class PromoForm extends Form
         this.cote = -1;
     }
     public PromoForm(
-            int idVersionConsole, int idVersionJeu,
+            int idPromo, int idVersionConsole, int idVersionJeu,
             String type, String cb, String nom, String edition, String zone,
             String editeur,String photo, String description, String tags, String plateforme,
             float prix, int stock, float cote)
     {
         super();
         this.cb = cb;
+        this.idPromo = idPromo;
         this.idVersionConsole = idVersionConsole;
         this.idVersionJeu = idVersionJeu;
         this.type = type;
@@ -70,6 +73,7 @@ public class PromoForm extends Form
         this.cote = cote;
     }
     
+    public int getIdPromo()      { return this.idPromo; }
     public int getIdVersionConsole()      {return this.idVersionConsole;}
     public int getIdVersionJeu()      {return this.idVersionJeu;}
     public String getType()      {return this.type;}
@@ -86,6 +90,7 @@ public class PromoForm extends Form
     public int getStock()      {return this.stock;}
     public float getCote()      {return this.cote;}
     
+    public void setIdPromo(int idPromo)      { this.idPromo = idPromo; }
     public void setIdVersionConsole(int id)      {this.idVersionConsole = id;}
     public void setIdVersionJeu(int id)      {this.idVersionJeu = id;}
     public void setType(String type)      {this.type = type;}
