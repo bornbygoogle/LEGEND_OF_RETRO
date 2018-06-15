@@ -96,11 +96,6 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
                 tableMouseClicked(evt);
             }
         });
-        table.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                tableKeyTyped(evt);
-            }
-        });
         jScrollPane1.setViewportView(table);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -133,10 +128,6 @@ public class Resultat <F extends Form> extends javax.swing.JPanel
         if (0 <= rowIndex && rowIndex < this.res.size()) //this.res n'est normalement pas nul
             this.parent.selectionnerResultat(res.elementAt(rowIndex));
     }//GEN-LAST:event_tableMouseClicked
-
-    private void tableKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tableKeyTyped
     
     //important : il est nécessaire que le vecteur contienne des données de type HOMOGENE (autrement dit, pas des formulaires différents. TODO: tester ça ?
     public void afficherRes(Vector<F> res)

@@ -72,15 +72,14 @@
                       </Group>
                       <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="fieldPrix" min="-2" pref="60" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                              <Component id="labelCurrency" min="-2" pref="20" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                          </Group>
                           <Component id="fieldNom" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="fieldPrix" min="-2" pref="60" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                                      <Component id="labelCurrency" min="-2" pref="20" max="-2" attributes="0"/>
+                                  </Group>
                                   <Component id="fieldStock" min="-2" pref="45" max="-2" attributes="0"/>
                                   <Component id="fieldCasse" min="-2" pref="45" max="-2" attributes="0"/>
                                   <Component id="fieldCote" alignment="0" min="-2" pref="45" max="-2" attributes="0"/>
@@ -135,11 +134,13 @@
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="listeZone" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="labelZone" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="labelStock" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="fieldStock" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="listeZone" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelZone" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelStock" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
