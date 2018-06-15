@@ -133,21 +133,14 @@
                           <Component id="histoVente" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="totalV" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="labelTotalVente" min="-2" pref="46" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="e1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Component id="jScrollPane2" alignment="0" min="-2" pref="294" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="histoAchat" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
-                      <Component id="tota" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                      <Component id="labelTotalAchat" min="-2" pref="46" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="e2" min="-2" max="-2" attributes="0"/>
+                      <Component id="totalA" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
@@ -164,11 +157,7 @@
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                                      <Component id="totalV" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="labelTotalVente" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="e1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="totalV" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="histoVente" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="119" max="-2" attributes="0"/>
@@ -177,9 +166,7 @@
                       </Group>
                       <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="tota" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="labelTotalAchat" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="e2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="totalA" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="histoAchat" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -489,9 +476,13 @@
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="histoVente"/>
       </AccessibilityProperties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="histoVente.setVisible(false);"/>
+      </AuxValues>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jScrollPane1.setVisible(false);"/>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
       </AuxValues>
 
@@ -510,6 +501,9 @@
           <AccessibilityProperties>
             <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="venteTab"/>
           </AccessibilityProperties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="venteTab.setVisible(false);"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
@@ -523,9 +517,13 @@
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="histoAchat"/>
       </AccessibilityProperties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="histoAchat.setVisible(false);"/>
+      </AuxValues>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane2">
       <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jScrollPane2.setVisible(false);"/>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
       </AuxValues>
 
@@ -544,32 +542,22 @@
           <AccessibilityProperties>
             <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="achatTab"/>
           </AccessibilityProperties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="achatTab.setVisible(false);"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JLabel" name="tota">
+    <Component class="javax.swing.JLabel" name="totalA">
       <Properties>
         <Property name="text" type="java.lang.String" value="Total"/>
       </Properties>
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="tota"/>
       </AccessibilityProperties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="labelTotalAchat">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="10000000"/>
-      </Properties>
-      <AccessibilityProperties>
-        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="labelTotalAchat"/>
-      </AccessibilityProperties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="e2">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="&#x20ac;"/>
-      </Properties>
-      <AccessibilityProperties>
-        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="e2"/>
-      </AccessibilityProperties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="totalA.setVisible(false);"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="totalV">
       <Properties>
@@ -578,22 +566,9 @@
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="totv"/>
       </AccessibilityProperties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="labelTotalVente">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="10000000"/>
-      </Properties>
-      <AccessibilityProperties>
-        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="labelTotalVente"/>
-      </AccessibilityProperties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="e1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="&#x20ac;"/>
-      </Properties>
-      <AccessibilityProperties>
-        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="e1"/>
-      </AccessibilityProperties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="totalV.setVisible(false);"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="buttonSelectionner">
       <Properties>

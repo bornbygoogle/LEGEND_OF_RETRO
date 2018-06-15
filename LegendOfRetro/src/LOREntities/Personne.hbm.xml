@@ -21,7 +21,7 @@
             <column name="adresse" length="100" not-null="true" />
         </property>
         <property name="deDeNaissance" type="date">
-            <column name="deDeNaissance" length="10" not-null="true" />
+            <column name="deDeNaissance" length="10" />
         </property>
         <property name="mail" type="string">
             <column name="mail" length="50" not-null="true" />

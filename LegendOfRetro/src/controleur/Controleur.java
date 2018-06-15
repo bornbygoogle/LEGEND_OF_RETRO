@@ -1575,12 +1575,13 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         
         String nom = normalize(form.getNom());
         String prenom = normalize(form.getPrenom());
+        String societe = normalize(form.getSociete());
         String ville = normalize(form.getVille());
         String pays = normalize(form.getPays());
         
-        if ("".equals(nom) || "".equals(prenom)){
+        if ("".equals(nom) && "".equals(prenom) && "".equals(societe)){
             throw new DonneesInsuffisantesException(
-                    "Erreur lors de la recherche du client/fournisseur : le nom ET le prenom doivent être renseignés.");
+                    "Erreur lors de la recherche du client/fournisseur : le nom, le prenom ou la société doivent être renseignés.");
         }
         
         HQLRecherche query = new HQLRecherche("LOREntities.Personne pers");
@@ -1589,6 +1590,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             query.addCondition("pers.nom", nom, HQLRecherche.Operateur.LIKE);
         if (!"".equals(prenom))
             query.addCondition("pers.prenom", prenom, HQLRecherche.Operateur.LIKE);
+        if (!"".equals(societe))
+            query.addCondition("pers.societe", societe, HQLRecherche.Operateur.LIKE);
         if (!"".equals(pays))
         {
             query.addCondition("pers.ville.pays.nomPays", pays, HQLRecherche.Operateur.EGAL);
@@ -1614,67 +1617,69 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             pf.setVille(personneBDD.getVille().getNomVille());
             pf.setCodePostal(personneBDD.getVille().getCp());
             pf.setPays(personneBDD.getVille().getPays().getNomPays());
-            
-            //factures
-            Vector<FactureForm> factures = new Vector<FactureForm>();
-            for (Object elementBDD : personneBDD.getFactures())
-            {
-                Facture factureBDD = (Facture) elementBDD;
-                FactureForm ff = new FactureForm();
-                ff.setActeur(pf);
-                ff.setNature(new Character('a').equals(factureBDD.getTypeFacture()));
-                ff.setReductions(factureBDD.getReduction());
-                
-                //lignes
-                Vector<FactureLigneForm> lignes = new Vector<FactureLigneForm>();
-                for (Object lcBDD : factureBDD.getLigneFactureConsoles())
-                {
-                    LigneFactureConsole ligneBDD = (LigneFactureConsole) lcBDD;
-                    FactureLigneForm flfc = new FactureLigneForm();
-                    flfc.setQuantite(ligneBDD.getQuantite());
-                    flfc.setPrixLigne(0f); //on n'a pas besoin de cette information
-                    
-                    //produit
-                    ProduitForm prf = new ProduitForm();
-                    prf.setCodeBarre(ligneBDD.getVersionConsole().getCodeBarre());
-                    prf.setIdVersionConsole(ligneBDD.getVersionConsole().getIdVersionConsole());
-                    prf.setIdVersionJeu(-1);
-                    prf.setNom(ligneBDD.getVersionConsole().getConsole().getNomConsole());
-                    prf.setPrix(ligneBDD.getVersionConsole().getPrix());
-                    prf.setStock(ligneBDD.getVersionConsole().getStock());
-                    prf.setType("Console");
-                    prf.setZone(ligneBDD.getVersionConsole().getZone().getNomZone());
-                    flfc.setProduit(prf);
-                    
-                    lignes.add(flfc);
-                }
-                for (Object lcBDD : factureBDD.getLigneFactureJeus())
-                {
-                    LigneFactureJeu ligneBDD = (LigneFactureJeu) lcBDD;
-                    FactureLigneForm flfj = new FactureLigneForm();
-                    flfj.setQuantite(ligneBDD.getQuantite());
-                    flfj.setPrixLigne(0f); //on n'a pas besoin de cette information
-                    
-                    //produit
-                    ProduitForm prf = new ProduitForm();
-                    prf.setCodeBarre(ligneBDD.getVersionJeu().getCodeBarre());
-                    prf.setIdVersionConsole(-1);
-                    prf.setIdVersionJeu(ligneBDD.getVersionJeu().getIdVersionJeu());
-                    prf.setNom(ligneBDD.getVersionJeu().getJeu().getNomJeu());
-                    prf.setPrix(ligneBDD.getVersionJeu().getPrix());
-                    prf.setStock(ligneBDD.getVersionJeu().getStock());
-                    prf.setType("Jeu");
-                    prf.setZone(ligneBDD.getVersionJeu().getZone().getNomZone());
-                    flfj.setProduit(prf);
-                    
-                    lignes.add(flfj);
-                }
-                
-                
-                ff.setLignes(lignes);
-                factures.add(ff);
-            }
-            pf.setFactures(factures);
+//            //factures
+//            List facturesBDD = modele.createQuery(
+//                    "from Facture f where f.personne.idPersonne IN "
+//                    + "(select idPersonne from Personne p where idPersonne = "
+//                    + personneBDD.getIdPersonne() + ")").list();
+//            modele.flush();
+//            Vector<FactureForm> factures = new Vector<FactureForm>();
+//            for(Object objetBDD : facturesBDD)
+//            {
+//                Facture factureBDD = (Facture) objetBDD;
+//                FactureForm ff = new FactureForm();
+//                ff.setActeur(pf);
+//                ff.setNature(new Character('a').equals(factureBDD.getTypeFacture()));
+//                ff.setReductions(factureBDD.getReduction());
+//                
+//                //lignes
+//                Vector<FactureLigneForm> lignes = new Vector<FactureLigneForm>();
+//                for (Object lcBDD : factureBDD.getLigneFactureConsoles())
+//                {
+//                    LigneFactureConsole ligneBDD = (LigneFactureConsole) lcBDD;
+//                    FactureLigneForm flfc = new FactureLigneForm();
+//                    flfc.setQuantite(ligneBDD.getQuantite());
+//                    flfc.setPrixLigne(0f); //on n'a pas besoin de cette information
+//                    
+//                    //produit
+//                    ProduitForm prf = new ProduitForm();
+//                    prf.setCodeBarre(ligneBDD.getVersionConsole().getCodeBarre());
+//                    prf.setIdVersionConsole(ligneBDD.getVersionConsole().getIdVersionConsole());
+//                    prf.setIdVersionJeu(-1);
+//                    prf.setNom(ligneBDD.getVersionConsole().getConsole().getNomConsole());
+//                    prf.setPrix(ligneBDD.getVersionConsole().getPrix());
+//                    prf.setStock(ligneBDD.getVersionConsole().getStock());
+//                    prf.setType("Console");
+//                    prf.setZone(ligneBDD.getVersionConsole().getZone().getNomZone());
+//                    flfc.setProduit(prf);
+//                    
+//                    lignes.add(flfc);
+//                }
+//                for (Object lcBDD : factureBDD.getLigneFactureJeus())
+//                {
+//                    LigneFactureJeu ligneBDD = (LigneFactureJeu) lcBDD;
+//                    FactureLigneForm flfj = new FactureLigneForm();
+//                    flfj.setQuantite(ligneBDD.getQuantite());
+//                    flfj.setPrixLigne(0f); //on n'a pas besoin de cette information
+//                    
+//                    //produit
+//                    ProduitForm prf = new ProduitForm();
+//                    prf.setCodeBarre(ligneBDD.getVersionJeu().getCodeBarre());
+//                    prf.setIdVersionConsole(-1);
+//                    prf.setIdVersionJeu(ligneBDD.getVersionJeu().getIdVersionJeu());
+//                    prf.setNom(ligneBDD.getVersionJeu().getJeu().getNomJeu());
+//                    prf.setPrix(ligneBDD.getVersionJeu().getPrix());
+//                    prf.setStock(ligneBDD.getVersionJeu().getStock());
+//                    prf.setType("Jeu");
+//                    prf.setZone(ligneBDD.getVersionJeu().getZone().getNomZone());
+//                    flfj.setProduit(prf);
+//                    
+//                    lignes.add(flfj);
+//                }
+//                ff.setLignes(lignes);
+//                factures.add(ff);
+//            }
+            pf.setFactures(new Vector<FactureForm>());
             
             retour.add(pf);
         }
