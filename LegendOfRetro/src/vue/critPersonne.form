@@ -70,7 +70,7 @@
                           <Group type="102" attributes="0">
                               <Component id="villeAjoutField" min="-2" pref="101" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="CP" min="-2" max="-2" attributes="0"/>
+                              <Component id="CP1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="villeAjoutCp" min="-2" pref="49" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -225,7 +225,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="ville" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="VilleComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="CP" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="CP1" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="villeAjoutField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="villeAjoutCp" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="buttonAjouterVille" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -343,12 +343,12 @@
         <Property name="text" type="java.lang.String" value="Ville"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="CP">
+    <Component class="javax.swing.JLabel" name="CP1">
       <Properties>
         <Property name="text" type="java.lang.String" value="("/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="CP.setVisible(false);"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="CP1.setVisible(false);"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="mail">
