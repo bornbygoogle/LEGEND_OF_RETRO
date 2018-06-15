@@ -747,7 +747,9 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
     {
         if ("".equals(nomVille) || "".equals(cp) || "".equals(nomPays))
             throw new DonneesInsuffisantesException("Impossible de créer la ville : un nom, un code postal et un pays sont requis.");
-
+        if (nomVille.contains("(") || nomVille.contains(")"))
+            throw new DonneeInvalideException("Impossible de créer la ville : les caractères '(' et ')' sont interdits.");
+        
         //on détermine l'identifiant du pays
         Pays pays = chercherPays(nomPays);
         if (pays == null)
@@ -1985,7 +1987,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 "from LOREntities.Ville v where v.pays.nomPays = '" + pays + "' order by v.nomVille"
                 ).list();
         for (Object v : villes)
-            ret.add(((Ville) v).getNomVille() + " (" + ((Ville) v).getCp() + " )");
+            ret.add(((Ville) v).getNomVille() + "(" + ((Ville) v).getCp() + ")");
         modele.flush();
         
         return ret;

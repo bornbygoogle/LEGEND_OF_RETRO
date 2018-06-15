@@ -34,10 +34,8 @@ public class menuPersonne extends JPanel implements Chercheur
         this.controleur = c;
         this.menuAppelant = null;
         initComponents();
-        
-System.out.println("test liste pays " + this.controleur.listePays());
-System.out.println("test liste villes de France " + this.controleur.listeVilles("France"));
     }
+	
     public menuPersonne(Controleur c, menuVente menuVente)
     {
         this(c);
