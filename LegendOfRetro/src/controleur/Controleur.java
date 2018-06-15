@@ -120,7 +120,7 @@ public class Controleur
      * @throws DonneesInsuffisantesException si la facture ne contient aucune ligne.
      * @return un objet rapport qui permet d'afficher les différentes opérations réalisées.
     */
-    public Rapport creer(FactureForm form) throws DonneesInsuffisantesException
+    public Rapport creer(FactureForm form) throws DonneesInsuffisantesException, EnregistrementInexistantException
     {
         if (form.getLignes().isEmpty())
             throw new DonneesInsuffisantesException("Erreur : la facture est vide.");
@@ -144,13 +144,11 @@ public class Controleur
         facture.setDateFacture(Date.from(Instant.now()));
         
         //Client ou fournisseur lié
-System.out.println("        TODO: à implémenter, Personne dans Facture (méthode creer(FactureForm))");
-        /*
-        if (form.getActeur() != null) {
-            //chercher Personne et l'affecter
-        }
-        else
-            facture.setActeur(null);//*/
+        Personne personne = chercherPersonne(form.getActeur().getNom(), form.getActeur().getPrenom());
+        if (personne == null)
+            throw new EnregistrementInexistantException(
+                    "Erreur lors de la création de la facture : personne non trouvée.");
+        facture.setPersonne(personne);
 
         //sauvegarde de la facture dans la base de données
         modele.beginTransaction();
