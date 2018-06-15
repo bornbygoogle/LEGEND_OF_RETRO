@@ -523,8 +523,9 @@ public class critProduit extends javax.swing.JPanel
         this.fieldEditeur.setText("");
         this.fieldEdition.setText("");
         this.fieldNom.setText("");
-        this.fieldPrix.setValue("");
+        this.fieldPrix.setValue(String.format("%.2f", ""));
         this.fieldStock.setValue("");
+        this.fieldCote.setText(String.format("%.2f", ""));
         this.fieldTag.setText("");
         this.fieldTxtAjoutZone.setText("");
         this.labelPhoto.setIcon(null);
@@ -586,9 +587,9 @@ public class critProduit extends javax.swing.JPanel
         this.fieldNom.setText(f.getNom());
         this.fieldEditeur.setText(f.getEditeur());
         this.fieldEdition.setText(f.getEdition());
-        this.fieldPrix.setText(String.valueOf(f.getPrix()));
+        this.fieldPrix.setText(String.valueOf(String.format("%.2f", f.getPrix())));
         this.fieldStock.setText(String.valueOf(f.getStock()));
-        this.fieldCote.setText(String.valueOf(f.getCote()));
+        this.fieldCote.setText(String.valueOf(String.format("%.2f", f.getCote())));
     
         //zone
         int i = 0;
