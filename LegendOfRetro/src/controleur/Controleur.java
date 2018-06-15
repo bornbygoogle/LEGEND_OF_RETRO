@@ -917,6 +917,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 {   System.out.println(enr.getIdVersionConsole());
                     cote = getCoteProduct("Console", enr.getIdVersionConsole());}*/
                 // Vérifier s'il y a pas deja une promo sur ce VersionConsole
+                float prixbase = enr.getPrix();
                 float prix = enr.getPrix();
                 if (chercherPromoExiste(type, enr.getIdVersionConsole()))
                 {
@@ -928,7 +929,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 ret.add(new PromoForm(idPromo,enr.getIdVersionConsole(), -1, "Console",
                         enr.getCodeBarre(), enr.getConsole().getNomConsole(), enr.getEdition(), enr.getZone().getNomZone(),
                         enr.getConsole().getFabricant().getNomFabricant(), "", "", "", "",
-                        prix, enr.getStock(), getCoteProduct(type, enr.getIdVersionConsole())));
+                        prixbase, prix, enr.getStock(), getCoteProduct(type, enr.getIdVersionConsole())));
             }
         }
         else if ("Jeu".equals(type))
@@ -936,6 +937,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             for (VersionJeu enr : chercherVersionsJeuPromo(edition, zone, plateforme,editeur, tags))
             {
                 // Vérifier s'il y a pas deja une promo sur ce VersionConsole
+                float prixbase= enr.getPrix();
                 float prix = enr.getPrix();
                 if (chercherPromoExiste(type, enr.getIdVersionJeu()))
                 {
@@ -948,7 +950,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                     enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
                     enr.getJeu().getEditeur().getNomEditeur(), ""/*Photo*/, enr.getJeu().getDescriptionJeu(),
                     decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
-                    prix, enr.getStock(), getCoteProduct(type, enr.getIdVersionJeu())));
+                    prixbase, prix, enr.getStock(), getCoteProduct(type, enr.getIdVersionJeu())));
             }
         }
 
@@ -2001,8 +2003,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         {
             idPromo = form.getIdPromo();
             id = form.getIdVersionConsole();
-            System.out.println("Id Promo COnsole "+idPromo);
-            System.out.println("id Vdrsion demandé " + id);
             if (id <= 0)
                 throw new DonneesInsuffisantesException(
                         "Erreur : impossible de modifier console (version) d'identifiant " + id);
@@ -2024,13 +2024,12 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 modele.saveOrUpdate(newpc);
                 modele.getTransaction().commit();
                 modele.flush();
+                idPromo = newpc.getIdPromoConsole();
             }
             else // Si promo existe
             {
-                System.out.println("Id Version Console "+pc.getVersionConsole().getIdVersionConsole());
                 if (pc.getPrixPromoConsole() != prix)
                     pc.setPrixPromoConsole(prix);
-                System.out.println(calculCoteAPartirPrix(type,pc.getIdPromoConsole(),prix));
                 pc.setIdPromoConsole(idPromo);
                 pc.setCoteConsole(calculCoteAPartirPrix(type,id,prix));
                 //sauvegarde de la version de console
@@ -2039,8 +2038,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 modele.getTransaction().commit();
                 modele.flush(); 
             }
-            
-            //rapport.addOperation(pc.getIdPromoConsole(), Rapport.Table.VERSIONCONSOLE, Rapport.Operation.MODIFIER);
+            rapport.addOperation(idPromo, Rapport.Table.PROMOCONSOLE, Rapport.Operation.MODIFIER);
         }
         else if ("Jeu".equals(type))
         {
@@ -2060,27 +2058,28 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 PromoJeu newpj = new PromoJeu();
                 newpj.setVersionJeu(vj);
                 newpj.setPrixPromoJeu(prix);
-                newpj.setCoteJeu(calculCoteAPartirPrix(type,newpj.getIdPromoJeu(),prix));
+                newpj.setCoteJeu(calculCoteAPartirPrix(type,id,prix));
                 //sauvegarde de la version de console
                 modele.beginTransaction();
                 modele.saveOrUpdate(newpj);
                 modele.getTransaction().commit();
                 modele.flush();
+                idPromo = newpj.getIdPromoJeu();
             }
             else
             {
                 // Chercher a changer le prix
-                pj.setIdPromoJeu(idPromo);
                 if (pj.getPrixPromoJeu() != prix)
                     pj.setPrixPromoJeu(prix);
-                pj.setCoteJeu(calculCoteAPartirPrix(type,pj.getIdPromoJeu(),prix));
+                pj.setIdPromoJeu(idPromo);
+                pj.setCoteJeu(calculCoteAPartirPrix(type,id,prix));
                 //sauvegarde de la version de jeu
                 modele.beginTransaction();
                 modele.saveOrUpdate(pj);
                 modele.getTransaction().commit();
                 modele.flush();
             }
-            //rapport.addOperation(pj.getIdPromoJeu(), Rapport.Table.VERSIONJEU, Rapport.Operation.MODIFIER);
+            rapport.addOperation(idPromo, Rapport.Table.PROMOJEU, Rapport.Operation.MODIFIER);
         }
         return rapport;       
     }
@@ -2446,9 +2445,16 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
         }
         else if ("JEU".equals(normalize(typeProduit))) 
         {
-            resul = modele.createQuery("select vj.prix from LOREntities.VersionJeu vj where vj.idVersionJeu="+idProduit+")").list();
+            HQLRecherche q = new HQLRecherche("VersionJeu vj");
+            q.setSelect("vj.prix");
+            q.addCondition("vj.idVersionJeu", idProduit, HQLRecherche.Operateur.EGAL);
+            List resultats = modele.createQuery(q.toString()).list();
+        
+            if (resultats.isEmpty())
+                prixProduit = 0;
+            else //on suppose qu'il n'y a qu'un seul résultat !
+                prixProduit = Float.valueOf(resultats.get(0).toString());  
         } 
-
         modele.flush();
         return prixProduit;
     }
@@ -2599,7 +2605,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
      */
     public void calculCote(String typeProduit, Integer idProduit) throws EnregistrementInexistantException, DonneeInvalideException
     {
-        float cote = 0.0f, prixPromo = 0.0f; 
+        float cote, prixPromo; 
         
 
         //on vérifie que le jeu existe déjà !
@@ -2614,8 +2620,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             // Recuperer le stock actuel
             int stockActuel = getStockProduct(typeProduit, idProduit);
             //Calculer cote
-            cote = (float)Math.round((frequentDeVente/stockActuel)*100d) + Float.valueOf(nbreVente/10);
-            prixPromo = getSellPrixProduct(typeProduit, idProduit) * cote;
+            cote = (float) Math.round(((frequentDeVente/stockActuel)*100) + Float.valueOf(nbreVente/10)) / 100;
+            prixPromo = (float) Math.round(( getSellPrixProduct(typeProduit, idProduit) * cote * 100 )) / 100;
         }
         // Enregistrement le calcul de cote dans la BDD
         if ("CONSOLE".equals(normalize(typeProduit)))
@@ -2658,7 +2664,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
     public float calculCoteAPartirPrix(String typeProduit, Integer idProduit, Float prixPromo) throws EnregistrementInexistantException, DonneeInvalideException
     {
         
-        float cote = ((float) Math.round(prixPromo/getSellPrixProduct(typeProduit, idProduit))*100f)/100;
+        float cote = (float) Math.round(prixPromo/getSellPrixProduct(typeProduit, idProduit))*100 / 100;
         return cote;
     }
     /**
