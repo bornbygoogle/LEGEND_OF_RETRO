@@ -1,5 +1,5 @@
 package LOREntities;
-// Generated Jun 15, 2018 7:35:49 PM by Hibernate Tools 4.3.1
+// Generated Jun 15, 2018 7:40:31 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -27,7 +27,7 @@ public class Personne  implements java.io.Serializable {
     }
 
 	
-    public Personne(Ville ville, String nom, String prenom, String adresse, Date deDeNaissance, String mail, String telephone) {
+    public Personne(Ville ville, String nom, String prenom, String adresse, Date deDeNaissance, String mail, String telephone, String societe) {
         this.ville = ville;
         this.nom = nom;
         this.prenom = prenom;
@@ -35,6 +35,7 @@ public class Personne  implements java.io.Serializable {
         this.deDeNaissance = deDeNaissance;
         this.mail = mail;
         this.telephone = telephone;
+        this.societe = societe;
     }
     public Personne(Ville ville, String nom, String prenom, String adresse, Date deDeNaissance, String mail, String telephone, String societe, Set factures) {
        this.ville = ville;
