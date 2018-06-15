@@ -18,7 +18,7 @@
             <column name="typeFacture" length="1" not-null="true" />
         </property>
         <property name="reduction" type="java.lang.Float">
-            <column name="reduction" precision="12" scale="0" />
+            <column name="reduction" precision="12" scale="0" not-null="true" />
         </property>
         <property name="dateFacture" type="date">
             <column name="dateFacture" length="10" not-null="true" />
