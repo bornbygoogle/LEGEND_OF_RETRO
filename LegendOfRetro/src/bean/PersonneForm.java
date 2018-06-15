@@ -5,6 +5,8 @@
  */
 package bean;
 
+import java.util.Vector;
+
 /**
  *
  * @author Home
@@ -24,6 +26,8 @@ public class PersonneForm extends Form
     private String mail;
     private String telephone;
     
+    private Vector<FactureForm> factures;
+    
     public PersonneForm()
     {
         this.idPersonne = 0;
@@ -37,6 +41,7 @@ public class PersonneForm extends Form
         this.dateNaiss = "";
         this.mail = "";
         this.telephone = "";
+        this.factures = new Vector<FactureForm>();
     }
     
     public int getIdPersonne()                      {return this.idPersonne;}
@@ -50,6 +55,7 @@ public class PersonneForm extends Form
     public String getDateNaissance()                {return this.dateNaiss;}
     public String getMail()                         {return this.mail;}
     public String getTelephone()                    {return this.telephone;}
+    public Vector<FactureForm> getFactures()        {return this.factures;}
     
     public void setPrenom(String prenom)            {this.prenom = prenom;}
     public void setNom(String nom)                  {this.nom = nom;}
@@ -61,5 +67,6 @@ public class PersonneForm extends Form
     public void setDateNaissance(String date)       {this.dateNaiss = date;}
     public void setMail(String mail)                {this.mail = mail;}
     public void setTelephone(String tel)            {this.telephone = tel;}
+    public void setFactures(Vector<FactureForm> factures)   {this.factures = factures;}
     
 }

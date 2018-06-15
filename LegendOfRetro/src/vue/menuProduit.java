@@ -94,7 +94,7 @@ public class menuProduit extends JPanel implements Chercheur
         try {
             // Affectuer la recherche avec fonction RECHERCHE dans CONTROLEUR
             Vector<ProduitForm> resultatsRecherche = null;
-            resultatsRecherche = this.controleur.chercher(form);
+            resultatsRecherche = this.controleur.chercherProduits(form);
             // Afficher les résultats avec fonction AFFICHERES dans RESULTAT
             if (resultatsRecherche != null)
                 this.Resultats.afficherRes(resultatsRecherche); 
