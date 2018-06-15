@@ -1,5 +1,5 @@
 package LOREntities;
-// Generated Jun 9, 2018 12:02:55 AM by Hibernate Tools 4.3.1
+// Generated Jun 15, 2018 6:38:29 PM by Hibernate Tools 4.3.1
 
 
 
@@ -17,7 +17,7 @@ public class PromoConsole  implements java.io.Serializable {
     public PromoConsole() {
     }
 
-    public PromoConsole(VersionConsole versionConsole, int coteConsole, int prixPromoConsole) {
+    public PromoConsole(VersionConsole versionConsole, float coteConsole, float prixPromoConsole) {
        this.versionConsole = versionConsole;
        this.coteConsole = coteConsole;
        this.prixPromoConsole = prixPromoConsole;

@@ -1611,12 +1611,12 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             
             //factures
             Vector<FactureForm> factures = new Vector<FactureForm>();
-            for(Object elementBDD : resultBDD.getFactures())
+            for(Object elementBDD : resultBDD. .getFactures())
             {
                 Facture factureBDD = (Facture) elementBDD;
                 FactureForm ff = new FactureForm();
                 
-                ...
+                //...
                 
                 factures.add(ff);
             }
