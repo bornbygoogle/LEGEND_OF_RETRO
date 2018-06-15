@@ -917,6 +917,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 {   System.out.println(enr.getIdVersionConsole());
                     cote = getCoteProduct("Console", enr.getIdVersionConsole());}*/
                 // Vérifier s'il y a pas deja une promo sur ce VersionConsole
+                float prixbase = enr.getPrix();
                 float prix = enr.getPrix();
                 if (chercherPromoExiste(type, enr.getIdVersionConsole()))
                 {
@@ -928,7 +929,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 ret.add(new PromoForm(idPromo,enr.getIdVersionConsole(), -1, "Console",
                         enr.getCodeBarre(), enr.getConsole().getNomConsole(), enr.getEdition(), enr.getZone().getNomZone(),
                         enr.getConsole().getFabricant().getNomFabricant(), "", "", "", "",
-                        prix, enr.getStock(), getCoteProduct(type, enr.getIdVersionConsole())));
+                        prixbase, prix, enr.getStock(), getCoteProduct(type, enr.getIdVersionConsole())));
             }
         }
         else if ("Jeu".equals(type))
@@ -936,6 +937,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             for (VersionJeu enr : chercherVersionsJeuPromo(edition, zone, plateforme,editeur, tags))
             {
                 // Vérifier s'il y a pas deja une promo sur ce VersionConsole
+                float prixbase= enr.getPrix();
                 float prix = enr.getPrix();
                 if (chercherPromoExiste(type, enr.getIdVersionJeu()))
                 {
@@ -948,7 +950,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                     enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
                     enr.getJeu().getEditeur().getNomEditeur(), ""/*Photo*/, enr.getJeu().getDescriptionJeu(),
                     decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
-                    prix, enr.getStock(), getCoteProduct(type, enr.getIdVersionJeu())));
+                    prixbase, prix, enr.getStock(), getCoteProduct(type, enr.getIdVersionJeu())));
             }
         }
 
@@ -1975,6 +1977,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 modele.saveOrUpdate(newpc);
                 modele.getTransaction().commit();
                 modele.flush();
+                idPromo = newpc.getIdPromoConsole();
             }
             else // Si promo existe
             {
@@ -1988,7 +1991,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 modele.getTransaction().commit();
                 modele.flush(); 
             }
-            rapport.addOperation(pc.getIdPromoConsole(), Rapport.Table.PROMOCONSOLE, Rapport.Operation.MODIFIER);
+            rapport.addOperation(idPromo, Rapport.Table.PROMOCONSOLE, Rapport.Operation.MODIFIER);
         }
         else if ("Jeu".equals(type))
         {
@@ -2014,6 +2017,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 modele.saveOrUpdate(newpj);
                 modele.getTransaction().commit();
                 modele.flush();
+                idPromo = newpj.getIdPromoJeu();
             }
             else
             {
@@ -2028,7 +2032,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
                 modele.getTransaction().commit();
                 modele.flush();
             }
-            rapport.addOperation(pj.getIdPromoJeu(), Rapport.Table.PROMOJEU, Rapport.Operation.MODIFIER);
+            rapport.addOperation(idPromo, Rapport.Table.PROMOJEU, Rapport.Operation.MODIFIER);
         }
         return rapport;       
     }
