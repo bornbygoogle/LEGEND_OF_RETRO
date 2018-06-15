@@ -57,6 +57,7 @@ public class PersonneForm extends Form
     public String getTelephone()                    {return this.telephone;}
     public Vector<FactureForm> getFactures()        {return this.factures;}
     
+    public void setIdPersonne(int id)               {this.idPersonne = id;}
     public void setPrenom(String prenom)            {this.prenom = prenom;}
     public void setNom(String nom)                  {this.nom = nom;}
     public void setSociete(String societe)          {this.societe = societe;}

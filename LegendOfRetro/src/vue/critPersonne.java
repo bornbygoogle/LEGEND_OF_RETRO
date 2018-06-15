@@ -23,6 +23,8 @@ public class critPersonne extends javax.swing.JPanel {
     private PersonneForm selectedForm;
     private Controleur controleur;
     private menuPersonne parent;
+    
+    private int idPersonne;
 
     /**
      * Creates new form critPersonne
@@ -32,6 +34,7 @@ public class critPersonne extends javax.swing.JPanel {
         this.controleur = controleur;
         this.parent = parent;
         this.selectedForm = null;
+        this.idPersonne = -1;
         initComponents();
         
         refreshListePays();
@@ -666,6 +669,7 @@ public class critPersonne extends javax.swing.JPanel {
         }
         
         PersonneForm retour = new PersonneForm();
+        retour.setIdPersonne(this.idPersonne);
         retour.setPrenom(prenomField.getText());
         retour.setNom(nomField.getText());
         retour.setSociete(societeField.getText());
@@ -703,7 +707,8 @@ public class critPersonne extends javax.swing.JPanel {
        this.VilleComboBox.getModel().setSelectedItem(f.getVille() + "(" + f.getCodePostal() + ")");
        this.fieldNomMail.setText(f.getMail());
        this.telField.setText(f.getTelephone()); 
-        this.dateNaissField.setText(f.getDateNaissance());
+       this.dateNaissField.setText(f.getDateNaissance());
+       this.idPersonne = f.getIdPersonne();
     }
 
     
