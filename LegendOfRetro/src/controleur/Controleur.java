@@ -11,6 +11,7 @@ import bean.CodeBarreForm;
 import bean.FactureForm;
 import bean.FactureLigneForm;
 import bean.Form;
+import bean.PersonneForm;
 import bean.ProduitForm;
 import bean.PromoForm;
 import hibernateConfig.HibernateUtil;
@@ -785,7 +786,7 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
  le but est de chercherProduit une version de console ou une verion de jeu dans la base de données
      * @return Vecteur( un vecteur de type  générique)retourne un vecteur des objets de type ProduitForm le but est
     */
-    public Vector<ProduitForm> chercher(Form form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
+    public Vector<ProduitForm> chercherProduits(Form form) throws DonneeInvalideException, ResultatInvalideException, DonneesInsuffisantesException
     {
         if (form instanceof ProduitForm)
                 return chercherProduit((ProduitForm) form);
@@ -1541,7 +1542,8 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
    private Personne chercherPersonne(String nomPers, String prenomPers) throws DonneesInsuffisantesException{
        
         if ("".equals(nomPers) || "".equals(prenomPers)){
-            throw new DonneesInsuffisantesException("Erreur lors de la recherche de la console : nom, prenom de la console non renseignés.");
+            throw new DonneesInsuffisantesException(
+                    "Erreur lors de la recherche du client/fournisseur : le nom ET le prenom doivent être renseignés.");
         }
         
         HQLRecherche query = new HQLRecherche("LOREntities.Personne pers");
@@ -1560,6 +1562,69 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
             throw new DonneesInsuffisantesException("Erreur lors de la recherche de la console : plusieurs résultats sont retournés.");
         else
             return (Personne) resultats.get(0);
+    }
+   private Vector<PersonneForm> chercherPersonnes(PersonneForm form) throws DonneesInsuffisantesException{
+        
+       Vector<PersonneForm> retour = new Vector<PersonneForm>();
+        
+        String nom = normalize(form.getNom());
+        String prenom = normalize(form.getPrenom());
+        String ville = normalize(form.getVille());
+        String pays = normalize(form.getPays());
+        
+        if ("".equals(nom) || "".equals(prenom)){
+            throw new DonneesInsuffisantesException(
+                    "Erreur lors de la recherche du client/fournisseur : le nom ET le prenom doivent être renseignés.");
+        }
+        
+        HQLRecherche query = new HQLRecherche("LOREntities.Personne pers");
+               
+        if (!"".equals(nom))
+            query.addCondition("pers.nom", nom, HQLRecherche.Operateur.LIKE);
+        if (!"".equals(prenom))
+            query.addCondition("pers.prenom", prenom, HQLRecherche.Operateur.LIKE);
+        if (!"".equals(pays))
+        {
+            query.addCondition("pers.ville.pays.nomPays", pays, HQLRecherche.Operateur.EGAL);
+            if (!"".equals(ville))
+                query.addCondition("pers.ville.nomVille", ville, HQLRecherche.Operateur.EGAL);
+        }
+     
+        List resultats = modele.createQuery(query.toString()).list();
+        modele.flush();
+
+        //traduction des entités hibernate (Personne) en beans (PersonneForm)
+        for (Object resultBDD : resultats)
+        {
+            Personne personneBDD = (Personne) resultBDD;
+            PersonneForm pf = new PersonneForm();
+            
+            pf.setPrenom(personneBDD.getPrenom());
+            pf.setNom(personneBDD.getNom());
+            pf.setSociete(""); //TODO : champ Société dans la BDD
+            pf.setAdresse(personneBDD.getAdresse());
+            pf.setMail(personneBDD.getMail());
+            pf.setTelephone(personneBDD.getTelephone());
+            pf.setVille(personneBDD.getVille().getNomVille());
+            pf.setCodePostal(personneBDD.getVille().getCp());
+            pf.setPays(personneBDD.getVille().getPays().getNomPays());
+            
+            //factures
+            Vector<FactureForm> factures = new Vector<FactureForm>();
+            for(Object elementBDD : resultBDD.getFactures())
+            {
+                Facture factureBDD = (Facture) elementBDD;
+                FactureForm ff = new FactureForm();
+                
+                ...
+                
+                factures.add(ff);
+            }
+            pf.setFactures(factures);
+            
+            retour.add(pf);
+        }
+        return retour;
     }
     
     /**
@@ -2008,7 +2073,6 @@ System.out.println("        TODO: à implémenter, Personne dans Facture (métho
 
         return rapport;
     }
-//!TODO : créer ville / créer pays / créer personne (==> fonctions de recherche)
     
     /**
      * Renvoie la liste des Editions.

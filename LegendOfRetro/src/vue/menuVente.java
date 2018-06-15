@@ -78,7 +78,7 @@ public class menuVente extends JPanel implements Chercheur
         try {
             // Effectuer la recherche avec fonction RECHERCHE dans CONTROLEUR
             Vector<ProduitForm> resultatsRecherche = null;
-            resultatsRecherche = this.controleur.chercher(form);
+            resultatsRecherche = this.controleur.chercherProduits(form);
             // Afficher le produit dans CRITERE
             if (resultatsRecherche != null && !resultatsRecherche.isEmpty())
                 this.selectionProduit.setForm(resultatsRecherche.elementAt(0)); //normalement, il n'y a qu'un produit

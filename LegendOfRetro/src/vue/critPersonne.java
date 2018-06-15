@@ -9,6 +9,8 @@ import bean.PersonneForm;
 import controleur.Controleur;
 import controleur.DonneeInvalideException;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -57,7 +59,7 @@ public class critPersonne extends javax.swing.JPanel {
         adresseField = new javax.swing.JTextField();
         adresse = new javax.swing.JLabel();
         ville = new javax.swing.JLabel();
-        CP = new javax.swing.JLabel();
+        CP1 = new javax.swing.JLabel();
         mail = new javax.swing.JLabel();
         fieldNomMail = new javax.swing.JTextField();
         mail1 = new javax.swing.JLabel();
@@ -150,8 +152,8 @@ public class critPersonne extends javax.swing.JPanel {
 
         ville.setText("Ville");
 
-        CP.setText("(");
-        CP.setVisible(false);
+        CP1.setText("(");
+        CP1.setVisible(false);
 
         mail.setText("Mail");
 
@@ -337,7 +339,7 @@ public class critPersonne extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(villeAjoutField, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(CP)
+                                .addComponent(CP1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(villeAjoutCp, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -460,7 +462,7 @@ public class critPersonne extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(ville)
                             .addComponent(VilleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(CP)
+                            .addComponent(CP1)
                             .addComponent(villeAjoutField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(villeAjoutCp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(buttonAjouterVille)
@@ -557,7 +559,7 @@ public class critPersonne extends javax.swing.JPanel {
         {
             villeAjoutField.setVisible(true); 
             villeAjoutCp.setVisible(true); 
-            CP.setVisible(true); 
+            CP1.setVisible(true); 
             CP2.setVisible(true); 
             buttonAjouterVille.setVisible(true);
         }
@@ -565,7 +567,7 @@ public class critPersonne extends javax.swing.JPanel {
         {
             villeAjoutField.setVisible(false); 
             villeAjoutCp.setVisible(false); 
-            CP.setVisible(false); 
+            CP1.setVisible(false); 
             CP2.setVisible(false); 
             buttonAjouterVille.setVisible(false);
         }
@@ -655,7 +657,7 @@ public class critPersonne extends javax.swing.JPanel {
         int indexParentheseFermante = villeCP.indexOf(")");
         if (indexParentheseOuvrante < 0 || indexParentheseOuvrante >= indexParentheseFermante)
             throw new DonneeInvalideException("Erreur : format de ville inconnu");
-        String ville = villeCP.substring(0, indexParentheseOuvrante);
+        String villeString = villeCP.substring(0, indexParentheseOuvrante);
         String CP = villeCP.substring(indexParentheseOuvrante + 1, indexParentheseFermante);
         
         PersonneForm retour = new PersonneForm();
@@ -663,7 +665,7 @@ public class critPersonne extends javax.swing.JPanel {
         retour.setNom(nomField.getText());
         retour.setSociete(societeField.getText());
         retour.setAdresse(adresseField.getText());
-        retour.setVille(ville);
+        retour.setVille(villeString);
         retour.setCodePostal(CP);
         retour.setPays((String)paysComboBox.getSelectedItem());
         retour.setMail(fieldNomMail.getText());
@@ -706,7 +708,7 @@ public class critPersonne extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel CP;
+    private javax.swing.JLabel CP1;
     private javax.swing.JLabel CP2;
     private javax.swing.JLabel Pays;
     private javax.swing.JComboBox<String> VilleComboBox;
