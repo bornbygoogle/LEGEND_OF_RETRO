@@ -26,6 +26,7 @@ public class critPromo extends javax.swing.JPanel
     private Controleur controleur;
     private Chercheur parent;
     
+    private int idPromo;
     private int idVersionJeu;
     private int idVersionConsole;
 
@@ -64,6 +65,7 @@ public class critPromo extends javax.swing.JPanel
         tags.add(0, "");
         listeTags.setModel(new javax.swing.DefaultComboBoxModel<>(tags)); 
         
+        this.idPromo = 0;
         this.idVersionJeu = 0;
         this.idVersionConsole = 0;
 
@@ -247,8 +249,7 @@ public class critPromo extends javax.swing.JPanel
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(fieldPrix, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(4, 4, 4)
-                                .addComponent(labelCurrency, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(labelCurrency, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(fieldNom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -290,11 +291,12 @@ public class critPromo extends javax.swing.JPanel
                                     .addComponent(labelCote)
                                     .addComponent(fieldCote))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(listeZone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelZone)
-                            .addComponent(labelStock)
-                            .addComponent(fieldStock))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(fieldStock, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(listeZone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(labelZone)
+                                .addComponent(labelStock)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(listeEdition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -401,6 +403,7 @@ public class critPromo extends javax.swing.JPanel
         this.listePlateforme.setSelectedIndex(0);
         this.listeZone.setSelectedIndex(0);
         this.selectedForm = null;
+        this.idPromo = 0;
         this.idVersionConsole = 0;
         this.idVersionJeu = 0;
         //parent.lancerRecherche(null);
@@ -413,6 +416,7 @@ public class critPromo extends javax.swing.JPanel
                         "Erreur : on ne peut pas effacer toutes ces données sur le produit");
             this.parent.afficherLog(
                     this.controleur.modifierPromo((PromoForm) f).toString());
+            
             this.selectedForm = (PromoForm) f;
             setForm((PromoForm) this.selectedForm); //update affichage dans critProduit (normalement inutile)
         }
@@ -494,6 +498,7 @@ System.out.println("BUG : !TODO il faut récupérer les tags (contrôleur ?) Nul
                     + " : zone non trouvée dans la liste déroulante. \n");
                 
         
+        this.idPromo = f.getIdPromo();
         this.idVersionJeu = f.getIdVersionJeu();
         this.idVersionConsole = f.getIdVersionConsole();
 
@@ -503,7 +508,7 @@ System.out.println("BUG : !TODO il faut récupérer les tags (contrôleur ?) Nul
     }
     private Form toForm() throws DonneeInvalideException
     {
-        float prix,cote=0f;
+        float prix,cote;
         int stock;
 
         try {
@@ -517,7 +522,7 @@ System.out.println("BUG : !TODO il faut récupérer les tags (contrôleur ?) Nul
             cote = 0f;
         }
 
-        return new PromoForm(-1,this.idVersionConsole, this.idVersionJeu,
+        return new PromoForm(this.idPromo,this.idVersionConsole, this.idVersionJeu,
                     (String) listeCategorie.getSelectedItem(), ""/*CodeBarre*/,
                     ""/*Nom*/, (String) listeEdition.getSelectedItem(),
                     (String) listeZone.getSelectedItem(),
