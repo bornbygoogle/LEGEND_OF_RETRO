@@ -14,9 +14,12 @@ import bean.ProduitForm;
 import controleur.Controleur;
 import controleur.DonneeInvalideException;
 import controleur.DonneesInsuffisantesException;
+import controleur.EnregistrementInexistantException;
 import controleur.ResultatInvalideException;
 import java.awt.BorderLayout;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 /**
@@ -129,7 +132,7 @@ public class menuVente extends JPanel implements Chercheur
             this.afficherLog(
                     this.controleur.creer(this.facture).toString());
         }
-        catch (DonneesInsuffisantesException ex) {
+        catch (DonneesInsuffisantesException| EnregistrementInexistantException ex) {
             this.afficherErreur(ex);}
         //retour à l'affichage initial
         this.removeAll();
