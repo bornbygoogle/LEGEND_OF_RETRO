@@ -22,8 +22,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -31,6 +35,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import org.hibernate.*;
@@ -695,6 +701,101 @@ public class Controleur
 
         //si aucun produit n'a été créé
         return -1;
+    }
+    
+    
+    /**
+     * Crée une personne. Assure l'unicité de l'enregistrement.
+     * @param  rapport-une variable de type Rapport qui est utilisé pour retourner une réponse dans l'interface graphique
+     * @param pNomPersonne
+     * @param pPrenomPersonne
+     * @param pSociete
+     * @param pAdresse
+     * @param pDateNaissance
+     * @param pPays
+     * @param pVille
+     * @param pTelephone
+     * @param pMail
+     * @throws DonneesInsuffisantesException si l'utilisateur rentre des données insufisantes
+     * @throws EnregistrementExistantException si la valeur entrée existe deja dans la base de données
+     * @return un objet de type personne qui contien des attributs qui appartient à la classe Personne (voir See Also)
+     * @see LOREntities.Personne
+     */
+    protected Personne creerPersonne(Rapport rapport, String pNomPersonne, String pPrenomPersonne, String pSociete, String pAdresse,
+            String pDateNaissance, String pPays, String pVille, String pCP, String pTelephone, String pMail) throws DonneesInsuffisantesException, EnregistrementExistantException
+    {
+        
+       
+     
+            //on vérifie que le jeu n'existe pas déjà !
+            //remarque : les tags ne sont pas un critère de recherche
+            Personne personneExistante = chercherPersonne(pNomPersonne,pNomPersonne,pTelephone);
+            if (personneExistante != null){
+                throw new EnregistrementExistantException("Impossible de créer cette personne : cette personne existe déjà.");
+            }
+            
+            Ville opville = chercherVille(pVille,pCP, pPays);
+           
+            
+            //création de la personne 
+            
+            Personne personne = new Personne();
+            personne.setNom(pNomPersonne);
+            personne.setPrenom(pPrenomPersonne);
+            personne.setSociete(pSociete);
+            personne.setAdresse(pAdresse);
+            personne.setTelephone(pTelephone);
+            
+            personne.setVille(opville);
+            
+            
+            personne.setDeDeNaissance(formateDateToBDD(pDateNaissance));
+            personne.setMail(pMail);
+            
+            //création de l'enregistrement dans la table Personne
+            
+            modele.beginTransaction();
+            modele.save(personne);
+            modele.getTransaction().commit();
+            modele.flush();
+            
+            rapport.addOperation(personne.getIdPersonne(), Rapport.Table.PERSONNE, Rapport.Operation.CREER);
+            
+            
+            
+            return personne;
+        }
+    
+    /**
+     * Formate une date format base de données en string pour la gui. 
+     */
+    
+    public String formateDateToGui(Date pDate){
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd-MM-yyyy");
+        String fdate=formatDate.format(pDate);
+        return  fdate;
+    }
+    
+    /**
+     * Formate une date type string en objet date (avec le formatcorrect) pour la base de données. 
+     */
+    
+    public Date formateDateToBDD(String pDate) {
+        
+        Date fDate = null;
+        
+        if(!"".equals(pDate)){       
+         
+            //format BDD YYYY-MM-JJ = 2018-06-07 = 2018 Juin 07
+            SimpleDateFormat formatBDD = new SimpleDateFormat("YYYY-MM-DD");
+            try { 
+                fDate = formatBDD.parse(pDate);
+            } catch (ParseException ex) {
+                System.out.println("Merci d'écrire la date sous forme 18-06-2018");
+            }
+        }
+        
+        return fDate;
     }
     
     /**
@@ -1543,9 +1644,9 @@ public class Controleur
      * @see  LOREntities.Personne
      */
     
-   public Personne chercherPersonne(String nomPers, String prenomPers) throws DonneesInsuffisantesException{
+   private Personne chercherPersonne(String nomPers, String prenomPers, String telephonePers) throws DonneesInsuffisantesException{
        
-        if ("".equals(nomPers) || "".equals(prenomPers)){
+        if ("".equals(nomPers) || "".equals(prenomPers) || "".equals(telephonePers)){
             throw new DonneesInsuffisantesException(
                     "Erreur lors de la recherche du client/fournisseur : le nom ET le prenom doivent être renseignés.");
         }
@@ -1556,6 +1657,8 @@ public class Controleur
             query.addCondition("pers.nom", nomPers, HQLRecherche.Operateur.LIKE);
         if (!"".equals(prenomPers))
             query.addCondition("pers.prenom", prenomPers, HQLRecherche.Operateur.LIKE);
+         if (!"".equals(telephonePers))
+            query.addCondition("pers.telephone", telephonePers, HQLRecherche.Operateur.LIKE);
      
         List resultats = modele.createQuery(query.toString()).list();
         modele.flush();
@@ -1567,7 +1670,8 @@ public class Controleur
         else
             return (Personne) resultats.get(0);
     }
-   public Vector<PersonneForm> chercherPersonnes(PersonneForm form) throws DonneesInsuffisantesException{
+   
+   private Vector<PersonneForm> chercherPersonnes(PersonneForm form) throws DonneesInsuffisantesException{
         
        Vector<PersonneForm> retour = new Vector<PersonneForm>();
         
@@ -1611,6 +1715,7 @@ public class Controleur
             pf.setSociete(personneBDD.getSociete());
             pf.setAdresse(personneBDD.getAdresse());
             pf.setMail(personneBDD.getMail());
+            pf.setDateNaissance(formateDateToGui(personneBDD.getDeDeNaissance()));
             pf.setTelephone(personneBDD.getTelephone());
             pf.setVille(personneBDD.getVille().getNomVille());
             pf.setCodePostal(personneBDD.getVille().getCp());
