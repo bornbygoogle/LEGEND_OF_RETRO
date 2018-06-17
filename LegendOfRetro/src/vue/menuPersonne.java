@@ -112,7 +112,8 @@ public class menuPersonne extends JPanel implements Chercheur
     public void creer(PersonneForm pf)
     {
         try {
-            this.controleur.creer(pf);}
+            this.afficherLog(this.controleur.creer(pf).toString());
+            this.Criteres.setForm(pf);}
         catch (DonneesInsuffisantesException | EnregistrementExistantException | EnregistrementInexistantException ex) {
             this.afficherErreur(ex);}
         

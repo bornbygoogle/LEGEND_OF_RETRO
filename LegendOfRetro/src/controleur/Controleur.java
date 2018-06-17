@@ -756,7 +756,7 @@ public class Controleur
             throws DonneesInsuffisantesException, EnregistrementExistantException, EnregistrementInexistantException
     {
         //on vérifie que les critères minimaux sont présents
-        if ("".equals(pNomPersonne) || "".equals(pPrenomPersonne) || "".equals(pSociete))
+        if ("".equals(pNomPersonne) || "".equals(pPrenomPersonne) || "".equals(pTelephone))
             throw new DonneesInsuffisantesException(
                     "Impossible de créer cette personne : un nom, un prénom et un numéro de téléphone sont requis.");
         
