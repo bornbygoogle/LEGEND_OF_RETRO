@@ -280,6 +280,7 @@ public class critPersonne extends javax.swing.JPanel {
         totalV.setText("Total");
 
         buttonSelectionner.setText("Sélectionner");
+        buttonSelectionner.setVisible(false);
         buttonSelectionner.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonSelectionnerActionPerformed(evt);
