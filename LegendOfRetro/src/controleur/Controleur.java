@@ -150,7 +150,10 @@ public class Controleur
         facture.setDateFacture(Date.from(Instant.now()));
         
         //Client ou fournisseur lié
-        Personne personne = chercherPersonne(form.getActeur().getNom(), form.getActeur().getPrenom());
+        Personne personne = chercherPersonne(
+                form.getActeur().getNom(),
+                form.getActeur().getPrenom(),
+                form.getActeur().getTelephone());
         if (personne == null)
             throw new EnregistrementInexistantException(
                     "Erreur lors de la création de la facture : personne non trouvée.");
@@ -1671,7 +1674,7 @@ public class Controleur
             return (Personne) resultats.get(0);
     }
    
-   private Vector<PersonneForm> chercherPersonnes(PersonneForm form) throws DonneesInsuffisantesException{
+   public Vector<PersonneForm> chercherPersonnes(PersonneForm form) throws DonneesInsuffisantesException{
         
        Vector<PersonneForm> retour = new Vector<PersonneForm>();
         

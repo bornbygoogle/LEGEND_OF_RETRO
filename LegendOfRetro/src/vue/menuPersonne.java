@@ -44,7 +44,7 @@ public class menuPersonne extends JPanel implements Chercheur
     {
         this(c);
         this.menuAppelant = menuVente;
-        this.Criteres.selectionnerVisible(false);
+            this.Criteres.selectionnerVisible(menuVente != null);
     }
 
     /**
