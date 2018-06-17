@@ -120,6 +120,32 @@ public class Controleur
 
         return rapport;
     }
+    public Rapport creer(PersonneForm form) throws DonneesInsuffisantesException, EnregistrementExistantException, EnregistrementInexistantException
+    {
+        Rapport rapport = new Rapport();
+        
+        String nom = normalize(form.getNom());
+        String prenom = normalize(form.getPrenom());
+        String societe = normalize(form.getSociete());
+        String adresse = form.getAdresse();
+        String dateNaissance = form.getDateNaissance();
+        String pays = form.getPays();
+        String ville = form.getVille();
+        String cp = form.getCodePostal();
+        String telephone = normalize(form.getTelephone());
+        String mail = form.getMail();
+        
+        Personne P = creerPersonne(rapport, nom, prenom, societe, adresse,
+                dateNaissance, pays, ville, cp, telephone, mail);
+        
+        form.setIdPersonne(P.getIdPersonne());
+        form.setNom(P.getNom());
+        form.setPrenom(P.getPrenom());
+        form.setSociete(P.getSociete());
+        form.setTelephone(P.getTelephone());
+        
+        return rapport;
+    }
     /**
      * Crée une facture décrite par le bean.
      * @param form formulaire décrivant la facture.
@@ -724,50 +750,52 @@ public class Controleur
      * @return un objet de type personne qui contien des attributs qui appartient à la classe Personne (voir See Also)
      * @see LOREntities.Personne
      */
-    protected Personne creerPersonne(Rapport rapport, String pNomPersonne, String pPrenomPersonne, String pSociete, String pAdresse,
-            String pDateNaissance, String pPays, String pVille, String pCP, String pTelephone, String pMail) throws DonneesInsuffisantesException, EnregistrementExistantException
+    protected Personne creerPersonne(Rapport rapport, String pNomPersonne, String pPrenomPersonne,
+            String pSociete, String pAdresse,String pDateNaissance,
+            String pPays, String pVille, String pCP, String pTelephone, String pMail)
+            throws DonneesInsuffisantesException, EnregistrementExistantException, EnregistrementInexistantException
     {
+        //on vérifie que les critères minimaux sont présents
+        if ("".equals(pNomPersonne) || "".equals(pPrenomPersonne) || "".equals(pSociete))
+            throw new DonneesInsuffisantesException(
+                    "Impossible de créer cette personne : un nom, un prénom et un numéro de téléphone sont requis.");
         
-       
-     
-            //on vérifie que le jeu n'existe pas déjà !
-            //remarque : les tags ne sont pas un critère de recherche
-            Personne personneExistante = chercherPersonne(pNomPersonne,pNomPersonne,pTelephone);
-            if (personneExistante != null){
-                throw new EnregistrementExistantException("Impossible de créer cette personne : cette personne existe déjà.");
-            }
-            
-            Ville opville = chercherVille(pVille,pCP, pPays);
-           
-            
-            //création de la personne 
-            
-            Personne personne = new Personne();
-            personne.setNom(pNomPersonne);
-            personne.setPrenom(pPrenomPersonne);
-            personne.setSociete(pSociete);
-            personne.setAdresse(pAdresse);
-            personne.setTelephone(pTelephone);
-            
-            personne.setVille(opville);
-            
-            
-            personne.setDeDeNaissance(formateDateToBDD(pDateNaissance));
-            personne.setMail(pMail);
-            
-            //création de l'enregistrement dans la table Personne
-            
-            modele.beginTransaction();
-            modele.save(personne);
-            modele.getTransaction().commit();
-            modele.flush();
-            
-            rapport.addOperation(personne.getIdPersonne(), Rapport.Table.PERSONNE, Rapport.Operation.CREER);
-            
-            
-            
-            return personne;
+        //on vérifie que la personne n'existe pas déjà !
+        //remarque : critère d'unicité : nom, prénom, téléphone
+        Personne personneExistante = chercherPersonne(pNomPersonne,pNomPersonne,pTelephone);
+        if (personneExistante != null){
+            throw new EnregistrementExistantException(
+                    "Impossible de créer cette personne : cette personne existe déjà.");
         }
+
+        //on récupère la ville.
+        Ville opville = chercherVille(pVille,pCP, pPays);
+        if (opville == null)
+            throw new EnregistrementInexistantException("Erreur interne : la ville " + pVille + "n'a pas été trouvée");
+
+        //création de la personne 
+        Personne personne = new Personne();
+        personne.setNom(pNomPersonne);
+        personne.setPrenom(pPrenomPersonne);
+        personne.setSociete(pSociete);
+        personne.setAdresse(pAdresse);
+        personne.setTelephone(pTelephone);
+        personne.setVille(opville);
+        personne.setDeDeNaissance(formateDateToBDD(pDateNaissance));
+        personne.setMail(pMail);
+
+        //création de l'enregistrement dans la table Personne
+        modele.beginTransaction();
+        modele.save(personne);
+        modele.getTransaction().commit();
+        modele.flush();
+
+        rapport.addOperation(personne.getIdPersonne(), Rapport.Table.PERSONNE, Rapport.Operation.CREER);
+
+
+
+        return personne;
+    }
     
     /**
      * Formate une date format base de données en string pour la gui. 
@@ -790,11 +818,11 @@ public class Controleur
         if(!"".equals(pDate)){       
          
             //format BDD YYYY-MM-JJ = 2018-06-07 = 2018 Juin 07
-            SimpleDateFormat formatBDD = new SimpleDateFormat("YYYY-MM-DD");
+            SimpleDateFormat formatBDD = new SimpleDateFormat("JJ-MM-YYYY");
             try { 
                 fDate = formatBDD.parse(pDate);
             } catch (ParseException ex) {
-                System.out.println("Merci d'écrire la date sous forme 18-06-2018");
+                System.out.println("Merci d'écrire la date sous forme JJ-MM-YYYY");
             }
         }
         
