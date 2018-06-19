@@ -1663,7 +1663,7 @@ public class Controleur
         if (resultats.isEmpty())
             return null;
         else 
-            return (Tag) resultats;
+            return (Tag) resultats.get(0);
     }
     
    /**
