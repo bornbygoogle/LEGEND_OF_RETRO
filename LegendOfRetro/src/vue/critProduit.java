@@ -634,7 +634,7 @@ public class critProduit extends javax.swing.JPanel
             stock = Integer.valueOf(fieldStock.getText());}
         catch (NumberFormatException nfe) {
             if (!"".equals(fieldPrix.getText()))
-                throw new DonneeInvalideException("Erreur : veuillez saisir le 'prix' en notation anglo-saxonne (par exemple : 2.5");
+                throw new DonneeInvalideException("Erreur : veuillez saisir le 'prix' en notation anglo-saxonne (par exemple : 2.5)");
             if (!"".equals(fieldStock.getText()))
                 throw new DonneeInvalideException("Erreur : veuillez saisir un entier dans le champ 'stock'");
         }
