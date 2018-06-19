@@ -12,6 +12,7 @@ import controleur.DonneeInvalideException;
 import controleur.DonneesInsuffisantesException;
 import controleur.EnregistrementInexistantException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,13 +23,14 @@ import java.util.logging.Logger;
  */
 public class critPromo extends javax.swing.JPanel
 {
-    private Form selectedForm;
+    private PromoForm selectedForm;
     private Controleur controleur;
     private Chercheur parent;
     
     private int idPromo;
     private int idVersionJeu;
     private int idVersionConsole;
+    private String urlPhotoJeu;
 
     /**
      * Creates new form Resultat
@@ -64,6 +66,8 @@ public class critPromo extends javax.swing.JPanel
         Vector<String> tags = controleur.listeTags();
         tags.add(0, "");
         listeTags.setModel(new javax.swing.DefaultComboBoxModel<>(tags)); 
+        
+        labelPhoto.setVisible(false);
         
         this.idPromo = 0;
         this.idVersionJeu = 0;
@@ -378,7 +382,7 @@ public class critPromo extends javax.swing.JPanel
             listePlateforme.setVisible(true);
             labelTag.setVisible(true);
             listeTags.setVisible(true);
-            
+            labelPhoto.setVisible(true);
             // Initialisation la modele pour listeEdition
             Vector<String> editions;        
             listeEdition.removeAllItems();
@@ -414,6 +418,7 @@ public class critPromo extends javax.swing.JPanel
             listePlateforme.setVisible(false);
             labelTag.setVisible(false);
             listeTags.setVisible(false);
+            labelPhoto.setVisible(false);
             // Initialisation la modele pour listeEdition
             Vector<String> editions;        
             listeEdition.removeAllItems();
@@ -439,6 +444,7 @@ public class critPromo extends javax.swing.JPanel
         this.fieldCote.setText(String.format("%.2f", 0.0f));
         this.listeTags.setSelectedIndex(0);
         this.listePlateforme.setSelectedIndex(0);
+        this.labelPhoto.setIcon(null);
         this.listeZone.setSelectedIndex(0);
         this.selectedForm = null;
         this.idPromo = 0;
@@ -456,7 +462,7 @@ public class critPromo extends javax.swing.JPanel
                     this.controleur.modifierPromo((PromoForm) f).toString());
             
             this.selectedForm = (PromoForm) f;
-            setForm((PromoForm) this.selectedForm); //update affichage dans critProduit (normalement inutile)
+            setForm(this.selectedForm); //update affichage dans critProduit (normalement inutile)
             clean();
         }
         catch (DonneesInsuffisantesException ex) {this.parent.afficherErreur(ex);}
@@ -477,7 +483,7 @@ public class critPromo extends javax.swing.JPanel
         }
     }                                              
 
-    public void setForm(PromoForm f) throws IOException
+    public void setForm(PromoForm f) throws MalformedURLException, IOException
     {
         this.selectedForm = f;
         String errors = "";
@@ -486,7 +492,7 @@ public class critPromo extends javax.swing.JPanel
         {
             this.listeCategorie.setSelectedIndex(1); //type Jeu
             this.listeTags.setSelectedItem(f.getTags());
-            //this.jTextAreaDescription.setText(f.getDescription());
+            this.jTextAreaDescription.setText(f.getDescription());
             //plateforme
             int i=0;
             boolean found = false;
@@ -504,6 +510,7 @@ public class critPromo extends javax.swing.JPanel
                 errors = errors.concat("Erreur lors de la sélection de la plateforme " + plateforme
                         + " : plateforme non trouvée dans la liste déroulante. \n");
             
+            System.out.println("Link photo : "+f.getPhoto());
             //Affichage photo dans le cadre          
             if (f.getPhoto()!="") { controleur.setPhotoProduct(f.getPhoto()); }
         }

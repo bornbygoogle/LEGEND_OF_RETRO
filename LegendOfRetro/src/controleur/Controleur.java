@@ -1078,6 +1078,7 @@ public class Controleur
         String zone = form.getZone();
         String editeur = normalize(form.getEditeur());
         String description = form.getDescription();
+        String photo = form.getPhoto();
         Vector<String> tags = stringToVector(normalize(form.getTags()).replace(" ", ""), ',');
         String plateforme = form.getPlateforme();
         Float cote = 0.0f;
@@ -1087,10 +1088,6 @@ public class Controleur
         {
             for (VersionConsole enr : chercherVersionsConsolePromo(edition, zone, editeur))
             {
-                /*if (enr.getIdVersionConsole()<1) cote = 0.0f;
-                else 
-                {   System.out.println(enr.getIdVersionConsole());
-                    cote = getCoteProduct("Console", enr.getIdVersionConsole());}*/
                 // Vérifier s'il y a pas deja une promo sur ce VersionConsole
                 float prixbase = enr.getPrix();
                 float prix = enr.getPrix();
@@ -1121,9 +1118,10 @@ public class Controleur
                     prix = pctmp.getPrixPromoJeu();
                 }
                 else { idPromo = 0; }
+                photo = enr.getJeu().getPhotoJeu();
                 ret.add(new PromoForm(idPromo,-1, enr.getIdVersionJeu(), "Jeu",
                     enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
-                    enr.getJeu().getEditeur().getNomEditeur(), ""/*Photo*/, enr.getJeu().getDescriptionJeu(),
+                    enr.getJeu().getEditeur().getNomEditeur(), photo, enr.getJeu().getDescriptionJeu(),
                     decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
                     prixbase, prix, enr.getStock(), getCoteProduct(type, enr.getIdVersionJeu())));
             }
@@ -2706,9 +2704,10 @@ public class Controleur
     public void setPhotoProduct(String urlPhotoJeu) throws IOException
     {
         try{
+            System.out.println("Link photo trong Controleur : "+urlPhotoJeu);
             URL url = new URL(urlPhotoJeu);
             BufferedImage img = ImageIO.read(url);
-            Image newimg = img.getScaledInstance(242, 128,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+            Image newimg = img.getScaledInstance(242, 128, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
             ImageIcon icon = new ImageIcon(newimg);
             labelPhoto.setIcon(icon);
         }catch(MalformedURLException ex){
