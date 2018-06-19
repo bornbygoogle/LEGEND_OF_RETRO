@@ -14,6 +14,8 @@ import bean.ProduitForm;
 import bean.PersonneForm;
 import controleur.Controleur;
 import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SpinnerNumberModel;
 
 /**
@@ -194,7 +196,9 @@ public class critVente extends javax.swing.JPanel {
     }//GEN-LAST:event_buttonChercherActionPerformed
 
     private void buttonAjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAjouterActionPerformed
-        this.parent.ajouterLigne(toForm());
+        try {
+            this.parent.ajouterLigne(toForm());}
+        catch (Exception ex)  {this.parent.afficherErreur(ex);}
         clean();
         buttonAjouter.setBackground(Color.GREEN);
     }//GEN-LAST:event_buttonAjouterActionPerformed
@@ -295,8 +299,11 @@ public class critVente extends javax.swing.JPanel {
         this.labelPrix.setVisible(true);
         this.labelStock.setVisible(true);
     }
-    private FactureLigneForm toForm()
+    private FactureLigneForm toForm() throws Exception
     {
+        if (this.produitExamine == null)
+            throw new Exception("Veuillez sélectionner un produit");
+        
         FactureLigneForm retour = new FactureLigneForm();
         retour.setProduit(this.produitExamine);
         int q = (((SpinnerNumberModel) this.fieldQuantite.getModel()).getNumber().intValue());

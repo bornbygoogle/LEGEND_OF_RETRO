@@ -280,6 +280,7 @@ public class critPersonne extends javax.swing.JPanel {
         totalV.setText("Total");
 
         buttonSelectionner.setText("Sélectionner");
+        buttonSelectionner.setVisible(false);
         buttonSelectionner.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonSelectionnerActionPerformed(evt);
@@ -643,11 +644,6 @@ public class critPersonne extends javax.swing.JPanel {
  
     private PersonneForm toForm() throws DonneeInvalideException{
         
-        if(!"".equals(nomField.getText()) && !"".equals(prenomField.getText()) && !"".equals(adresseField.getText())
-                && !"".equals(fieldNomMail.getText()) && !"".equals(telField.getText())
-                && !"".equals(dateNaissField.getText())){
-            throw new DonneeInvalideException("Erreur : veuillez  remplir le formulaire, SVP");
-        }
         
         //Séparation de la ville et du code postal
         String villeCP = (String) VilleComboBox.getSelectedItem();

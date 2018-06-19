@@ -10,9 +10,13 @@ import bean.PersonneForm;
 import controleur.Controleur;
 import controleur.DonneeInvalideException;
 import controleur.DonneesInsuffisantesException;
+import controleur.EnregistrementExistantException;
+import controleur.EnregistrementInexistantException;
 import controleur.ResultatInvalideException;
 import java.awt.BorderLayout;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 /**
@@ -44,7 +48,7 @@ public class menuPersonne extends JPanel implements Chercheur
     {
         this(c);
         this.menuAppelant = menuVente;
-        this.Criteres.selectionnerVisible(false);
+            this.Criteres.selectionnerVisible(menuVente != null);
     }
 
     /**
@@ -107,8 +111,11 @@ public class menuPersonne extends JPanel implements Chercheur
     }
     public void creer(PersonneForm pf)
     {
-        //TODO : this.controleur.creer(pf)
-System.out.println("TODO : la méthode creer(PersonneForm) dans le contrôleur./nCe message est contenu à la fin de menuPersonne./n            this.afficherLog((this.controleur.creer(pf)).toString());");
+        try {
+            this.afficherLog(this.controleur.creer(pf).toString());
+            this.Criteres.setForm(pf);}
+        catch (DonneesInsuffisantesException | EnregistrementExistantException | EnregistrementInexistantException ex) {
+            this.afficherErreur(ex);}
         
          /*si nous sommes dans un sous-menu (de menuVente), il faut informer
         le menu appelant de notre création/sélection*/
