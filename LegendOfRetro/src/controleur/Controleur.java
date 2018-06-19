@@ -89,6 +89,12 @@ public class Controleur
         ProduitForm f = (ProduitForm) form;
         Rapport rapport = new Rapport();
         String type = f.getType();
+        float prix = f.getPrix();
+        int stock = f.getStock();
+        if (prix <= 0f)
+            throw new DonneeInvalideException("Erreur : le prix ne peut pas être négatif ou nul.");
+        if (stock < 0)
+            throw new DonneeInvalideException("Erreur : le stock ne peut pas être négatif.");
 
         if ("Console".equals(type))
         {
@@ -98,8 +104,8 @@ public class Controleur
                     f.getCodeBarre(),
                     normalize(f.getEdition()),
                     f.getZone(),
-                    f.getPrix(),
-                    f.getStock(),
+                    prix,
+                    stock,
                     normalize(f.getNom()),
                     normalize(f.getEditeur())));
         }
@@ -110,8 +116,8 @@ public class Controleur
                     f.getCodeBarre(),
                     normalize(f.getEdition()),
                     f.getZone(),
-                    f.getPrix(),
-                    f.getStock(),
+                    prix,
+                    stock,
                     normalize(f.getNom()),       //getNom() renvoie le nom du JEU, pas de la Version du jeu
                     f.getDescription(), stringToVector(normalize(f.getTags()) ,','),
                     f.getPlateforme(),
