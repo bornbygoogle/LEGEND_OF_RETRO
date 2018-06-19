@@ -1693,8 +1693,8 @@ public class Controleur
 
         if (resultats.isEmpty())
             return null;
-        else //on suppose qu'il n'y a qu'un seul résultat !
-            return (Tag) resultats.get(0);
+        else 
+            return (Tag) resultats;
     }
     
    /**
