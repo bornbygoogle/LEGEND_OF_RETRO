@@ -120,7 +120,7 @@ public class Controleur
 
         return rapport;
     }
-    public Rapport creer(PersonneForm form) throws DonneesInsuffisantesException, EnregistrementExistantException, EnregistrementInexistantException
+    public Rapport creer(PersonneForm form) throws DonneesInsuffisantesException, EnregistrementExistantException, EnregistrementInexistantException, DonneeInvalideException
     {
         Rapport rapport = new Rapport();
         
@@ -602,6 +602,9 @@ public class Controleur
         else //si on crée une version de console
         {
             cb = codeBarreValide(cb); //on vérifie le code barre
+            if (cb == null || "".equals(cb))
+                    throw new DonneesInsuffisantesException(
+                            "Impossible de créer la version de console : veuillez entrer un code barre.");
 
             //on détermine l'identifiant de la console
             Console console = chercherConsole(nomConsole, nomFabr);
@@ -686,6 +689,9 @@ public class Controleur
         else //si on crée une version de jeu
         {
             cb = codeBarreValide(cb); //on vérifie le code barre
+            if (cb == null || "".equals(cb))
+                    throw new DonneesInsuffisantesException(
+                            "Impossible de créer la version de jeu : veuillez entrer un code barre.");
 
             //on détermine l'identifiant du jeu
             Jeu jeu = chercherJeu(nomJeu, tags, nomEditeur);
@@ -734,7 +740,7 @@ public class Controleur
     
     
     /**
-     * Crée une personne. Assure l'unicité de l'enregistrement.
+     * Crée une personne. Le nom, prénom et le téléphone assure l'unicité de l'enregistrement.
      * @param  rapport-une variable de type Rapport qui est utilisé pour retourner une réponse dans l'interface graphique
      * @param pNomPersonne
      * @param pPrenomPersonne
@@ -743,17 +749,20 @@ public class Controleur
      * @param pDateNaissance
      * @param pPays
      * @param pVille
+     * @param pCP
      * @param pTelephone
      * @param pMail
      * @throws DonneesInsuffisantesException si l'utilisateur rentre des données insufisantes
      * @throws EnregistrementExistantException si la valeur entrée existe deja dans la base de données
      * @return un objet de type personne qui contien des attributs qui appartient à la classe Personne (voir See Also)
+     * @throws controleur.EnregistrementInexistantException
+     * @throws controleur.DonneeInvalideException
      * @see LOREntities.Personne
      */
     protected Personne creerPersonne(Rapport rapport, String pNomPersonne, String pPrenomPersonne,
             String pSociete, String pAdresse,String pDateNaissance,
             String pPays, String pVille, String pCP, String pTelephone, String pMail)
-            throws DonneesInsuffisantesException, EnregistrementExistantException, EnregistrementInexistantException
+            throws DonneesInsuffisantesException, EnregistrementExistantException, EnregistrementInexistantException, DonneeInvalideException
     {
         //on vérifie que les critères minimaux sont présents
         if ("".equals(pNomPersonne) || "".equals(pPrenomPersonne) || "".equals(pTelephone))
@@ -762,7 +771,7 @@ public class Controleur
         
         //on vérifie que la personne n'existe pas déjà !
         //remarque : critère d'unicité : nom, prénom, téléphone
-        Personne personneExistante = chercherPersonne(pNomPersonne,pNomPersonne,pTelephone);
+        Personne personneExistante = chercherPersonne(pNomPersonne,pPrenomPersonne,pTelephone);
         if (personneExistante != null){
             throw new EnregistrementExistantException(
                     "Impossible de créer cette personne : cette personne existe déjà.");
@@ -782,23 +791,39 @@ public class Controleur
         personne.setTelephone(pTelephone);
         personne.setVille(opville);
         personne.setDeDeNaissance(formateDateToBDD(pDateNaissance));
-        personne.setMail(pMail);
+        
+        /**
+        *Test que le formatage de la date de naissance s'est bien passé -> il faut que l'utilisateur
+        *entre la date de naissance au bon format (ex: 17-06-1980
+        */
+        if(formateDateToBDD(pDateNaissance)==null){
+            throw new DonneeInvalideException("Merci d'écrire la date sous forme 17-06-2018");
+            
+        }
+        
+        
+        else{
+             personne.setMail(pMail);
+                
 
-        //création de l'enregistrement dans la table Personne
-        modele.beginTransaction();
-        modele.save(personne);
-        modele.getTransaction().commit();
-        modele.flush();
+            //création de l'enregistrement dans la table Personne
+            modele.beginTransaction();
+            modele.save(personne);
+            modele.getTransaction().commit();
+            modele.flush();
 
-        rapport.addOperation(personne.getIdPersonne(), Rapport.Table.PERSONNE, Rapport.Operation.CREER);
+            rapport.addOperation(personne.getIdPersonne(), Rapport.Table.PERSONNE, Rapport.Operation.CREER);
 
 
 
-        return personne;
+            return personne;
+        }
     }
     
     /**
-     * Formate une date format base de données en string pour la gui. 
+     * Formate une date au format base de données en string pour la gui. 
+     * @param pDate
+     * @return
      */
     
     public String formateDateToGui(Date pDate){
@@ -808,7 +833,9 @@ public class Controleur
     }
     
     /**
-     * Formate une date type string en objet date (avec le formatcorrect) pour la base de données. 
+     * Formate une date type string en objet date (avec le format correct) pour la base de données. 
+     * @param pDate
+     * @return 
      */
     
     public Date formateDateToBDD(String pDate) {
@@ -817,21 +844,25 @@ public class Controleur
         
         if(!"".equals(pDate)){       
          
-            //format BDD YYYY-MM-JJ = 2018-06-07 = 2018 Juin 07
-            SimpleDateFormat formatBDD = new SimpleDateFormat("JJ-MM-YYYY");
-            try { 
+            
+            try {
+                //format BDD YYYY-MM-JJ = 2018-06-07 = 2018 Juin 07
+                SimpleDateFormat formatBDD = new SimpleDateFormat("dd-MM-yyyy");
+                
                 fDate = formatBDD.parse(pDate);
             } catch (ParseException ex) {
-                System.out.println("Merci d'écrire la date sous forme JJ-MM-YYYY");
+                Logger.getLogger(Controleur.class.getName()).log(Level.SEVERE, null, ex);
             }
+     
+            
         }
         
         return fDate;
     }
     
+    /** * 
     /**
      * Crée un pays. Assure l'unicité de l'enregistrement.
-     * @param rapport le rapport dans lequel l'opération sera enregistrée
      * @param nomPays le nom exact du pays à créer
      * @throws DonneesInsuffisantesException si l'utilisateur rentre des données insufisantes
      * @throws EnregistrementExistantException si la valeur entrée existe deja dans la base de données
@@ -865,7 +896,7 @@ public class Controleur
     /**
      * Crée une ville.
      * @param nomVille le nom exact de la ville à créer
-     * @param CP le code postal de la ville à créer
+     * @param cp
      * @param nomPays le nom exact du pays auquel appartient la ville
      * @throws DonneesInsuffisantesException si l'utilisateur rentre de données insufisantes
      * @throws EnregistrementExistantException si la valeur entre existe deja dans la base de données
@@ -1667,7 +1698,7 @@ public class Controleur
     }
     
    /**
-     * Recherche le client/fournisseur dont le nom correspond parfaitement à la chaîne renseignée et/ou ayant le prenom renseigné.
+     * Recherche le client/fournisseur dont le nom, prénom et le téléphone correspondent parfaitement.
      *@param nomPers une variable de type String utilisé dans la methode .addCondition("pers.nom", nomPers, HQLRecherche.Operateur.LIKE) pour la recherche d'un client via son nom
      *@param prenomPers une variable de type String utilisé dans la methode query.addCondition("pers.prenom", prenomPers, HQLRecherche.Operateur.LIKE) pour la recherche d'un client via son prenom
      *@return un objet de type Personne,(voir See Also) qui est une classe.
@@ -1676,10 +1707,11 @@ public class Controleur
      */
     
    private Personne chercherPersonne(String nomPers, String prenomPers, String telephonePers) throws DonneesInsuffisantesException{
+     
        
         if ("".equals(nomPers) || "".equals(prenomPers) || "".equals(telephonePers)){
             throw new DonneesInsuffisantesException(
-                    "Erreur lors de la recherche du client/fournisseur : le nom ET le prenom doivent être renseignés.");
+                    "Erreur lors de la recherche du client/fournisseur : le nom, le téléphone et le prenom doivent être renseignés.");
         }
         
         HQLRecherche query = new HQLRecherche("LOREntities.Personne pers");
@@ -2856,6 +2888,7 @@ public class Controleur
     /**
      * Démarre l'application
      * args x
+     * @param args
      */
     public static void main(String[] args)
     {
