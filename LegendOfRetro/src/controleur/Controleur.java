@@ -602,6 +602,9 @@ public class Controleur
         else //si on crée une version de console
         {
             cb = codeBarreValide(cb); //on vérifie le code barre
+            if (cb == null || "".equals(cb))
+                    throw new DonneesInsuffisantesException(
+                            "Impossible de créer la version de console : veuillez entrer un code barre.");
 
             //on détermine l'identifiant de la console
             Console console = chercherConsole(nomConsole, nomFabr);
@@ -686,6 +689,9 @@ public class Controleur
         else //si on crée une version de jeu
         {
             cb = codeBarreValide(cb); //on vérifie le code barre
+            if (cb == null || "".equals(cb))
+                    throw new DonneesInsuffisantesException(
+                            "Impossible de créer la version de jeu : veuillez entrer un code barre.");
 
             //on détermine l'identifiant du jeu
             Jeu jeu = chercherJeu(nomJeu, tags, nomEditeur);
