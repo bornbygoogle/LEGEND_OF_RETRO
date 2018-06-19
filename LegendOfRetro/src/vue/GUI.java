@@ -103,6 +103,7 @@ public class GUI extends JFrame implements ActionListener
         c.setLayout(new BorderLayout());
         c.add(this.menuPanel, BorderLayout.WEST);
         
+        this.setTitle("Legend Of Retro");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(longueur, largueur);
         this.setVisible(true);
