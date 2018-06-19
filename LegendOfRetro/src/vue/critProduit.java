@@ -13,6 +13,7 @@ import controleur.DonneeInvalideException;
 import controleur.DonneesInsuffisantesException;
 import controleur.EnregistrementExistantException;
 import controleur.EnregistrementInexistantException;
+import controleur.ResultatInvalideException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Vector;
@@ -471,13 +472,9 @@ public class critProduit extends javax.swing.JPanel
             plateformes.add(0, "");
             listePlateforme.setModel(new javax.swing.DefaultComboBoxModel<>(plateformes));
         }
-        catch (DonneeInvalideException ex) {
+        catch (DonneeInvalideException | DonneesInsuffisantesException |
+                EnregistrementExistantException | ResultatInvalideException ex) {
             this.parent.afficherErreur(ex);}
-        catch (DonneesInsuffisantesException ex) {
-            this.parent.afficherErreur(ex);}
-        catch (EnregistrementExistantException ex) {
-            this.parent.afficherErreur(ex);
-        }
     }//GEN-LAST:event_buttonNouveauActionPerformed
 
     private void buttonModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonModifierActionPerformed
