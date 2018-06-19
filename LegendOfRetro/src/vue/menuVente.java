@@ -84,34 +84,8 @@ public class menuVente extends JPanel implements Chercheur
             resultatsRecherche = this.controleur.chercherProduits(form);
             // Afficher le produit dans CRITERE
             if (resultatsRecherche != null && !resultatsRecherche.isEmpty())
-            { 
-                
-                this.count=this.count+1;
-                vectorcontrolCodeBarre.add(resultatsRecherche.elementAt(0).getCodeBarre());
-                
-                if(this.count>1)
-                {    
-                    for(int i=0; i<vectorcontrolCodeBarre.size()-1;i++)
-                    {
-                       if(vectorcontrolCodeBarre.elementAt(i)==vectorcontrolCodeBarre.lastElement())
-                       {
-                       
-                        this.detectredondCodeBarre=true;
-                        this.detectQuelLigne=i;
-                       } 
-                        
-                    
-                     }  
-                }
-                
-                
-               
                 this.selectionProduit.setForm(resultatsRecherche.elementAt(0)); //normalement, il n'y a qu'un produit
-                
-            
-            
-            }
-            
+//            }
                 else //ou, si le produit n'a pas été trouvé :
                 traiterEchecRecherche(((CodeBarreForm) form).getCodeBarre());
         }
@@ -192,84 +166,43 @@ public class menuVente extends JPanel implements Chercheur
         try {
             if (!ajoutLigneLegal(ligne))
                 throw new Exception("La quantité excède les stocks disponibles.");
-             if(this.detectredondCodeBarre=true){ 
-             //modifLigne(ligne);
-             supprimerLigne(ligne);                           
-            }
-            this.facture.getLignes().add(ligne);
+            //Détecte une redondance du code barre
+            int indiceLigneExistante = chercherLigne(ligne.getProduit().getCodeBarre());
+            if (indiceLigneExistante >= 0) //Si le code barre est déjà dans une ligne, on modifie ladite ligne.
+                modifierLigne(ligne, indiceLigneExistante);
+            else //sinon, on ajoute la ligne à la facture
+                this.facture.getLignes().add(ligne);
+            
+            //affichage de la nouvelle facture.
             this.affichageFacture.afficherRes(this.facture.getLignes());
         }
         catch (Exception e)     {afficherErreur(e);}
     }
-    
-   public void modifLigne(FactureLigneForm ligne)
+   public void modifierLigne(FactureLigneForm nouvelleLigne, int indiceLigneAModifier)
     {
-       //on commence par trouver, dans this.facture, une ligne qui a le même code barre que la ligne fournie en paramètre.
-        Iterator<FactureLigneForm> it = this.facture.getLignes().iterator();
-        String codeBarre = ligne.getProduit().getCodeBarre();
-        boolean ligneNonTrouvee = it.hasNext();
-        boolean ligneclean=false;
-          
-                   for(int i=0; i<vectorcontrolCodeBarre.size()-1;i++)
-                    {
-                      ligneNonTrouvee = it.next().getProduit().getCodeBarre().equals(
-                        codeBarre);
-                       if(vectorcontrolCodeBarre.elementAt(i)==vectorcontrolCodeBarre.lastElement())
-                       {
-                          
-                        
-                        this.detectredondCodeBarre=false;
-                        this.detectQuelLigne=i;
-                        this.facture.getLignes().elementAt(i).getQuantite();
-                        this.facture.getLignes().elementAt(i).getPrixLigne();
-                        
-                        Integer sqexist=this.facture.getLignes().elementAt(i).getQuantite();
-                        Float   spexist=this.facture.getLignes().elementAt(i).getPrixLigne();
-                        Integer sqraj=ligne.getQuantite();
-                        Float   spraj=ligne.getPrixLigne();
-                        
-                       
-                        ligne.setQuantite(sqexist+sqraj);
-                        ligne.setPrixLigne(spexist+spraj);
-                                         
-                       }
-                    } 
-               
-          
-       // this.affichageFacture.afficherRes(this.facture.getLignes()); 
- 
-         
-         
-    }      
-    
-    
-    
-    
-  void supprimerLigne(FactureLigneForm ligne)
-    {  
-        //on commence par trouver, dans this.facture, une ligne qui a le même code barre que la ligne fournie en paramètre.
-        Iterator<FactureLigneForm> it = this.facture.getLignes().iterator();
-        String codeBarre = ligne.getProduit().getCodeBarre();
-        boolean ligneNonTrouvee = it.hasNext();
-        boolean ligneclean=false;
-          
-                   for(int i=0; i<vectorcontrolCodeBarre.size()-1;i++)
-                    {
-                      ligneNonTrouvee = it.next().getProduit().getCodeBarre().equals(
-                        codeBarre);
-                       if(vectorcontrolCodeBarre.elementAt(i)==vectorcontrolCodeBarre.lastElement())
-                       {
-                        
-                        this.detectredondCodeBarre=false;
-                        this.detectQuelLigne=i;
-                        it.remove();
-                        vectorcontrolCodeBarre.remove(i);
-                       }
-                    } 
-               
-          
-        this.affichageFacture.afficherRes(this.facture.getLignes());
-       
+        FactureLigneForm ligneAModifier = facture.getLignes().elementAt(indiceLigneAModifier);
+        try {
+            if (!modifierLigneLegal(nouvelleLigne,
+                    ligneAModifier))
+                throw new Exception("La quantité excède les stocks disponibles.");
+            ligneAModifier.setQuantite(ligneAModifier.getQuantite() + nouvelleLigne.getQuantite());
+            ligneAModifier.setPrixLigne(ligneAModifier.getPrixLigne() + nouvelleLigne.getPrixLigne());
+        }
+        catch (Exception e)     {afficherErreur(e);}
+    }
+  void supprimerLigne(String codeBarre)
+    {
+        try {
+            int indiceLigneASupprimer = chercherLigne(codeBarre);
+            if (indiceLigneASupprimer >= 0) //Si le code barre est déjà dans une ligne, on modifie ladite ligne.
+                this.facture.getLignes().removeElementAt(indiceLigneASupprimer);
+            else
+                throw new Exception("Ligne non trouvée.");
+
+            this.affichageFacture.afficherRes(this.facture.getLignes());
+            afficherLog(""); //efface le message (0 résultats)
+        }
+        catch (Exception e)     {afficherErreur(e);}
     }        
     
     public boolean ajoutLigneLegal(FactureLigneForm ligne) {
