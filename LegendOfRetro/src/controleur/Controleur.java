@@ -81,7 +81,7 @@ public class Controleur
      * @return Rapport donc va etre utiliseé pour HQLRecherche,voir le constructeur Rapport
     */
     public Rapport creer(CodeBarreForm form)
-            throws DonneesInsuffisantesException, DonneeInvalideException, EnregistrementExistantException
+            throws DonneesInsuffisantesException, DonneeInvalideException, EnregistrementExistantException, ResultatInvalideException
     {
         if (!(form instanceof ProduitForm))
             throw new DonneesInsuffisantesException("Impossible de créer le produit : le code barre n'est pas une donnée suffisante.");
@@ -89,6 +89,12 @@ public class Controleur
         ProduitForm f = (ProduitForm) form;
         Rapport rapport = new Rapport();
         String type = f.getType();
+        float prix = f.getPrix();
+        int stock = f.getStock();
+        if (prix <= 0f)
+            throw new DonneeInvalideException("Erreur : le prix ne peut pas être négatif ou nul.");
+        if (stock < 0)
+            throw new DonneeInvalideException("Erreur : le stock ne peut pas être négatif.");
 
         if ("Console".equals(type))
         {
@@ -98,8 +104,8 @@ public class Controleur
                     f.getCodeBarre(),
                     normalize(f.getEdition()),
                     f.getZone(),
-                    f.getPrix(),
-                    f.getStock(),
+                    prix,
+                    stock,
                     normalize(f.getNom()),
                     normalize(f.getEditeur())));
         }
@@ -110,8 +116,8 @@ public class Controleur
                     f.getCodeBarre(),
                     normalize(f.getEdition()),
                     f.getZone(),
-                    f.getPrix(),
-                    f.getStock(),
+                    prix,
+                    stock,
                     normalize(f.getNom()),       //getNom() renvoie le nom du JEU, pas de la Version du jeu
                     f.getDescription(), stringToVector(normalize(f.getTags()) ,','),
                     f.getPlateforme(),
@@ -589,7 +595,7 @@ public class Controleur
     */
     protected int creerVersionConsole(Rapport rapport, String cb, String edition, String nomZone,
             float prix, int stock, String nomConsole, String nomFabr)
-            throws DonneesInsuffisantesException, DonneeInvalideException, EnregistrementExistantException
+            throws DonneesInsuffisantesException, DonneeInvalideException, EnregistrementExistantException, ResultatInvalideException
     {
         if ("".equals(edition) && "".equals(nomZone)) //si on ne crée pas une version de console.
         {
@@ -617,11 +623,15 @@ public class Controleur
                 throw new DonneeInvalideException("Impossible de créer la version de console : la zone renseignée n'existe pas.");
 
             //on vérifie que la version de console n'existe pas déjà !
-            Vector<VersionConsole> existe = chercherVersionsConsole(cb, edition,
+            Vector<VersionConsole> existe = chercherVersionsConsole("", edition,
                     zone.getNomZone(), console.getNomConsole(), console.getFabricant().getNomFabricant());
             if (!(existe == null) && !existe.isEmpty())
-                throw new EnregistrementExistantException("Impossible de créer la version de console : cette dernière existe déjà.");
-
+            {
+                Vector<ProduitForm> existe2 = chercher(new CodeBarreForm(cb));
+                if (!(existe2 == null) && !existe2.isEmpty())
+                    throw new EnregistrementExistantException("Impossible de créer la version de console : cette dernière existe déjà.");
+            }
+            
             //création de la version de console
             VersionConsole vc = new VersionConsole();
             vc.setCodeBarre(cb);
@@ -676,7 +686,7 @@ public class Controleur
     protected int creerVersionJeu(Rapport rapport, String cb, String edition, String nomZone,
             float prix, int stock, String nomJeu, String description, Vector<String> tags,
             String nomConsole, String nomEditeur)
-            throws DonneesInsuffisantesException, DonneeInvalideException, EnregistrementExistantException
+            throws DonneesInsuffisantesException, DonneeInvalideException, EnregistrementExistantException, ResultatInvalideException
     {
         if ("".equals(edition) && "".equals(nomZone) && "".equals(nomConsole)) //si on ne crée pas une version de jeu.
         {
@@ -709,10 +719,14 @@ public class Controleur
                 throw new DonneeInvalideException("Impossible de créer la version de jeu : la plateforme renseignée n'existe pas.");
 
             //on vérifie que la version de jeu n'existe pas déjà !
-            Vector<VersionJeu> existante = chercherVersionsJeu(cb, edition, zone.getNomZone(), console.getNomConsole(), nomJeu, nomEditeur, tags);
+            Vector<VersionJeu> existante = chercherVersionsJeu("", edition, zone.getNomZone(), console.getNomConsole(), nomJeu, nomEditeur, tags);
             if (!(existante == null) && !existante.isEmpty())
-                throw new EnregistrementExistantException("Impossible de créer la version de jeu : cette dernière existe déjà.");
-
+            {
+                Vector<ProduitForm> existe2 = chercher(new CodeBarreForm(cb));
+                if (!(existe2 == null) && !existe2.isEmpty())
+                    throw new EnregistrementExistantException("Impossible de créer la version de jeu : cette dernière existe déjà.");
+            }
+            
             //création de la version de console
             VersionJeu vj = new VersionJeu();
             vj.setCodeBarre(cb);
