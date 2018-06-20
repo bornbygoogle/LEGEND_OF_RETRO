@@ -1078,6 +1078,7 @@ public class Controleur
         String zone = form.getZone();
         String editeur = normalize(form.getEditeur());
         String description = form.getDescription();
+        String photo = form.getPhoto();
         Vector<String> tags = stringToVector(normalize(form.getTags()).replace(" ", ""), ',');
         String plateforme = form.getPlateforme();
         Float cote = 0.0f;
@@ -1087,10 +1088,6 @@ public class Controleur
         {
             for (VersionConsole enr : chercherVersionsConsolePromo(edition, zone, editeur))
             {
-                /*if (enr.getIdVersionConsole()<1) cote = 0.0f;
-                else 
-                {   System.out.println(enr.getIdVersionConsole());
-                    cote = getCoteProduct("Console", enr.getIdVersionConsole());}*/
                 // Vérifier s'il y a pas deja une promo sur ce VersionConsole
                 float prixbase = enr.getPrix();
                 float prix = enr.getPrix();
@@ -1123,7 +1120,7 @@ public class Controleur
                 else { idPromo = 0; }
                 ret.add(new PromoForm(idPromo,-1, enr.getIdVersionJeu(), "Jeu",
                     enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
-                    enr.getJeu().getEditeur().getNomEditeur(), ""/*Photo*/, enr.getJeu().getDescriptionJeu(),
+                    enr.getJeu().getEditeur().getNomEditeur(), enr.getJeu().getPhotoJeu(), enr.getJeu().getDescriptionJeu(),
                     decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
                     prixbase, prix, enr.getStock(), getCoteProduct(type, enr.getIdVersionJeu())));
             }
@@ -1708,7 +1705,7 @@ public class Controleur
         if (resultats.isEmpty())
             return null;
         else 
-            return (Tag) resultats;
+            return (Tag) resultats.get(0);
     }
     
    /**
@@ -1787,6 +1784,7 @@ public class Controleur
             Personne personneBDD = (Personne) resultBDD;
             PersonneForm pf = new PersonneForm();
             
+            pf.setIdPersonne(personneBDD.getIdPersonne());
             pf.setPrenom(personneBDD.getPrenom());
             pf.setNom(personneBDD.getNom());
             pf.setSociete(personneBDD.getSociete());
@@ -2703,14 +2701,15 @@ public class Controleur
      * @param : String - url de la photo du jeu
      * @return : void
      */
-    public void setPhotoProduct(String urlPhotoJeu) throws IOException
+    public void setPhotoProduct(String urlPhotoJeu) throws MalformedURLException, IOException
     {
         try{
+            System.out.println("Link photo trong Controleur : "+urlPhotoJeu);
             URL url = new URL(urlPhotoJeu);
             BufferedImage img = ImageIO.read(url);
-            Image newimg = img.getScaledInstance(242, 128,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+            Image newimg = img.getScaledInstance(242, 128, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
             ImageIcon icon = new ImageIcon(newimg);
-            labelPhoto.setIcon(icon);
+            if (!icon.equals(null)) labelPhoto.setIcon(icon);
         }catch(MalformedURLException ex){
             labelPhoto.setText("Cant get photo !!!");
         }
