@@ -1714,7 +1714,7 @@ public class Controleur
        
         if ("".equals(nomPers) || "".equals(prenomPers) || "".equals(telephonePers)){
             throw new DonneesInsuffisantesException(
-                    "Erreur lors de la recherche du client/fournisseur : le nom ET le prenom doivent être renseignés.");
+                    "Erreur lors de la recherche du client/fournisseur : le nom, le prenom ET le téléphone doivent être renseignés.");
         }
         
         HQLRecherche query = new HQLRecherche("LOREntities.Personne pers");
@@ -1732,7 +1732,7 @@ public class Controleur
         if (resultats.isEmpty())
             return null;
         else if (resultats.size() != 1)
-            throw new DonneesInsuffisantesException("Erreur lors de la recherche de la console : plusieurs résultats sont retournés.");
+            throw new DonneesInsuffisantesException("Erreur lors de la recherche de la personne : plusieurs résultats sont retournés.");
         else
             return (Personne) resultats.get(0);
     }
@@ -1903,6 +1903,82 @@ public class Controleur
             return (Ville) resultats.get(0);
     }
     
+    public Rapport modifier(PersonneForm form) throws DonneesInsuffisantesException, DonneeInvalideException, EnregistrementInexistantException
+    {
+        Rapport rapport = new Rapport();
+        
+        //on récupère les données du form
+        int id = form.getIdPersonne();
+        String nom = normalize(form.getNom());
+        String prenom = normalize(form.getPrenom());
+        String societe = normalize(form.getSociete());
+        String mail = normalize(form.getMail());
+        String telephone = normalize(form.getTelephone());
+        String ville = form.getVille();
+        String cp = form.getCodePostal();
+        String pays = form.getPays();
+        String adresse = form.getAdresse();
+        Date dateNaissance = null;
+        String dateNaiss = form.getDateNaissance();
+        if (!"".equals(dateNaiss))
+            dateNaissance = formateDateToBDD(dateNaiss);
+        
+        //on vérifie que les nouvelles données sont valides
+        if ("".equals(nom))
+            throw new DonneeInvalideException("Erreur : le nom ne peut pas être vide.");
+        if ("".equals(prenom))
+            throw new DonneeInvalideException("Erreur : le prénom ne peut pas être vide.");
+        if ("".equals(telephone))
+            throw new DonneeInvalideException("Erreur : le téléphone ne peut pas être vide.");
+        
+        if (id <= 0)
+            throw new DonneesInsuffisantesException(
+                    "Erreur : impossible de modifier personne d'identifiant " + id);
+        Personne p = (Personne) modele.load(Personne.class, id);
+        if (p == null)
+            throw new EnregistrementInexistantException("Erreur : personne " + id
+                    + " non trouvée");
+        
+        //attributs directs
+        if (!p.getNom().equals(nom))
+            p.setNom(nom);
+        if (!p.getPrenom().equals(prenom))
+            p.setPrenom(prenom);
+        if (!p.getSociete().equals(societe))
+            p.setSociete(societe);
+        if (!p.getMail().equals(mail))
+            p.setMail(mail);
+        if (!p.getMail().equals(mail))
+            p.setMail(mail);
+        if (!p.getTelephone().equals(telephone))
+            p.setTelephone(telephone);
+        if (!p.getAdresse().equals(adresse))
+            p.setAdresse(adresse);
+        if ((p.getDeDeNaissance() == null && dateNaissance != null)
+                || (p.getDeDeNaissance() != null &&  !p.getDeDeNaissance().equals(dateNaissance)))
+            p.setDeDeNaissance(dateNaissance);
+        
+        //ville et pays
+        if (!"".equals(ville))
+        {
+            Ville v = chercherVille(ville, cp, pays);
+            if (v == null) //si la ville n'existe pas, on ne la crée pas.
+                throw new EnregistrementInexistantException("Erreur : la ville " + ville
+                        + "(" + cp + ") - " + pays + " n'existe pas.");
+            if (!v.equals(p.getVille()))
+                p.setVille(v);
+        }
+        
+        //sauvegarde de la version de console
+        modele.beginTransaction();
+        modele.save(p);
+        modele.getTransaction().commit();
+        modele.flush();
+
+        rapport.addOperation(p.getIdPersonne(), Rapport.Table.PERSONNE, Rapport.Operation.MODIFIER);
+        
+        return rapport;
+        }
     public Rapport modifier(ProduitForm form) throws DonneesInsuffisantesException, DonneeInvalideException, EnregistrementInexistantException
     {
         Rapport rapport = new Rapport();

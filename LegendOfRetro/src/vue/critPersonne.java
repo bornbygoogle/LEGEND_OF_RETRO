@@ -5,11 +5,13 @@
  */
 package vue;
 
+import bean.Form;
 import bean.PersonneForm;
 import controleur.Controleur;
 import controleur.DonneeInvalideException;
 import controleur.DonneesInsuffisantesException;
 import controleur.EnregistrementExistantException;
+import controleur.EnregistrementInexistantException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -540,7 +542,16 @@ public class critPersonne extends javax.swing.JPanel {
     }//GEN-LAST:event_buttonNouveauActionPerformed
 
     private void buttonModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonModifierActionPerformed
-        throw new UnsupportedOperationException("La modification de produit n'a pas encore été implémentée.");
+        try {
+            Form f = toForm();
+            this.parent.afficherLog(
+                    this.controleur.modifier((PersonneForm) f).toString());
+            this.selectedForm = (PersonneForm) f;
+            setForm(this.selectedForm); //update affichage dans critProduit (normalement inutile)
+        }
+        catch (DonneesInsuffisantesException ex) {this.parent.afficherErreur(ex);}
+        catch (DonneeInvalideException ex) {this.parent.afficherErreur(ex);}
+        catch (EnregistrementInexistantException ex) {this.parent.afficherErreur(ex);}
     }//GEN-LAST:event_buttonModifierActionPerformed
 
     private void VilleComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VilleComboBoxActionPerformed
