@@ -97,10 +97,6 @@ public class Controleur
         String type = f.getType();
         float prix = f.getPrix();
         int stock = f.getStock();
-        if (prix <= 0f)
-            throw new DonneeInvalideException("Erreur : le prix ne peut pas être négatif ou nul.");
-        if (stock < 0)
-            throw new DonneeInvalideException("Erreur : le stock ne peut pas être négatif.");
 
         if ("Console".equals(type))
         {
@@ -255,7 +251,14 @@ public class Controleur
             //mise à jour de la version de console dans la base de données
             VersionConsole vc = chercherVersionConsole(ligneConsole.getId().getIdVersionConsole());
             vc.getLigneFactureConsoles().add(ligneConsole);
-            int nouveauStock = vc.getStock() - ligneConsole.getQuantite();
+            
+            int nouveauStock= (new Character('v').equals(facture.getTypeFacture()))?
+                    vc.getStock() - ligneConsole.getQuantite() :
+                    vc.getStock() + ligneConsole.getQuantite();
+            if (nouveauStock < 0)
+                throw new DonneeInvalideException("Impossible de créer la ligne : le stock obtenu est négatif.");
+            vc.setStock(nouveauStock);
+            
             if (nouveauStock < 0)
                 throw new DonneeInvalideException("Impossible de créer la ligne : le stock obtenu est négatif.");
             vc.setStock(nouveauStock);
@@ -299,10 +302,14 @@ public class Controleur
             //mise à jour de la version de jeu dans la base de données
             VersionJeu vj = chercherVersionJeu(ligneJeu.getId().getIdVersionJeu());
             vj.getLigneFactureJeus().add(ligneJeu);
-            int nouveauStock = vj.getStock() - ligneJeu.getQuantite();
+            
+            int nouveauStock= (new Character('v').equals(facture.getTypeFacture()))?
+                    vj.getStock() - ligneJeu.getQuantite() :
+                    vj.getStock() + ligneJeu.getQuantite();
             if (nouveauStock < 0)
                 throw new DonneeInvalideException("Impossible de créer la ligne : le stock obtenu est négatif.");
             vj.setStock(nouveauStock);
+            
             modele.beginTransaction();
             modele.save(facture);
             modele.getTransaction().commit();
@@ -617,6 +624,10 @@ public class Controleur
             if (cb == null || "".equals(cb))
                     throw new DonneesInsuffisantesException(
                             "Impossible de créer la version de console : veuillez entrer un code barre.");
+            if (prix <= 0f)
+                throw new DonneeInvalideException("Erreur : le prix ne peut pas être négatif ou nul.");
+            if (stock < 0)
+                throw new DonneeInvalideException("Erreur : le stock ne peut pas être négatif.");
 
             //on détermine l'identifiant de la console
             Console console = chercherConsole(nomConsole, nomFabr);
@@ -708,6 +719,10 @@ public class Controleur
             if (cb == null || "".equals(cb))
                     throw new DonneesInsuffisantesException(
                             "Impossible de créer la version de jeu : veuillez entrer un code barre.");
+            if (prix <= 0f)
+                throw new DonneeInvalideException("Erreur : le prix ne peut pas être négatif ou nul.");
+            if (stock < 0)
+                throw new DonneeInvalideException("Erreur : le stock ne peut pas être négatif.");
 
             //on détermine l'identifiant du jeu
             Jeu jeu = chercherJeu(nomJeu, tags, nomEditeur);
@@ -1796,7 +1811,9 @@ public class Controleur
             pf.setSociete(personneBDD.getSociete());
             pf.setAdresse(personneBDD.getAdresse());
             pf.setMail(personneBDD.getMail());
-            pf.setDateNaissance(formateDateToGui(personneBDD.getDeDeNaissance()));
+            Date naissance = personneBDD.getDeDeNaissance();
+            if (naissance != null)
+                pf.setDateNaissance(formateDateToGui(naissance));
             pf.setTelephone(personneBDD.getTelephone());
             pf.setVille(personneBDD.getVille().getNomVille());
             pf.setCodePostal(personneBDD.getVille().getCp());
