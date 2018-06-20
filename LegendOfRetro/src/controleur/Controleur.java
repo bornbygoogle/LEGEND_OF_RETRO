@@ -1784,6 +1784,7 @@ public class Controleur
             Personne personneBDD = (Personne) resultBDD;
             PersonneForm pf = new PersonneForm();
             
+            pf.setIdPersonne(personneBDD.getIdPersonne());
             pf.setPrenom(personneBDD.getPrenom());
             pf.setNom(personneBDD.getNom());
             pf.setSociete(personneBDD.getSociete());

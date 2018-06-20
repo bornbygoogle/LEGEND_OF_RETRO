@@ -111,6 +111,7 @@ public class critPersonne extends javax.swing.JPanel {
 
         id.setText("Identifiant");
 
+        idField.setEditable(false);
         idField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 idFieldActionPerformed(evt);
