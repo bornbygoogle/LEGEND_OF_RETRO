@@ -2486,7 +2486,7 @@ public class Controleur
             textToWrite = textToWrite + sl;
            
         //information entreprise
-        for (String sl : formater("Entreprise : " + nomEntreprise, "", largeurFacture, 0, ' '))
+        for (String sl : formater("Entreprise : " + nomEntreprise, "", largeurFacture-3, 0, ' '))
             textToWrite = textToWrite + sl;
 
         //TODO: informations client/fourn
@@ -2513,7 +2513,7 @@ public class Controleur
             for (String sl : formater(
                     vc.getConsole().getNomConsole() + " x" + quantite,
                     vc.getPrix() * quantite + "€",
-                    largeurFacture, 6, '.'))
+                    largeurFacture+3, 6, '.'))
                 textToWrite = textToWrite + sl;
         }
         for (Object o : facture.getLigneFactureJeus())
@@ -2523,7 +2523,7 @@ public class Controleur
                     ((LigneFactureJeu) o).getId().getIdVersionJeu());
             for (String sl : formater(vj.getJeu().getNomJeu() + " x" + quantite,
                     vj.getPrix() * quantite + "€",
-                    largeurFacture, 6, '.'))
+                    largeurFacture+3, 6, '.'))
                 textToWrite = textToWrite + sl;
         }
         
@@ -2537,7 +2537,7 @@ public class Controleur
 
         //réduction
         for (String sl : formater("REDUCTIONS", "-" + ((Float) facture.getReduction()).toString() + "€",
-                largeurFacture, 0, '.'))
+                largeurFacture-1, 0, '.'))
             textToWrite = textToWrite + sl;
             
         //ligne du total
