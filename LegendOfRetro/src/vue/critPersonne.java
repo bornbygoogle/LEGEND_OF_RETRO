@@ -569,6 +569,7 @@ public class critPersonne extends javax.swing.JPanel {
         {
             paysAjoutField.setVisible(true); 
             buttonAjouterPays.setVisible(true);
+            VilleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>());
         }
         else //sinon on refresh la liste des villes
         {

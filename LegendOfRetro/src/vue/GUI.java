@@ -136,11 +136,6 @@ public class GUI extends JFrame implements ActionListener
             Container c = this.getContentPane();
             c.add(this.menuOuvert, BorderLayout.CENTER);
             this.setContentPane(c);
-            buttonVente.setBackground(null);
-            buttonClient.setBackground(null);
-            buttonPromo.setBackground(null);
-            buttonAchat.setBackground(null);
-            buttonProduit.setBackground(Color.GREEN);
         }
         else //ignorer le second paramètre
             ouvrirMenu(m);
@@ -154,11 +149,6 @@ public class GUI extends JFrame implements ActionListener
             Container c = this.getContentPane();
             c.add(this.menuOuvert, BorderLayout.CENTER);
             this.setContentPane(c);
-            buttonVente.setBackground(null);
-            buttonClient.setBackground(null);
-            buttonPromo.setBackground(null);
-            buttonAchat.setBackground(null);
-            buttonProduit.setBackground(Color.blue);
         }
         else if (m == Menu.PERSONNE)
         {
@@ -166,15 +156,7 @@ public class GUI extends JFrame implements ActionListener
             this.menuOuvert = new menuPersonne(this.controleur);
             Container c = this.getContentPane();
             c.add(this.menuOuvert, BorderLayout.CENTER);
-            this.setContentPane(c);
-            buttonVente.setBackground(null);
-            buttonPromo.setBackground(null);
-            buttonProduit.setBackground(null);
-            buttonAchat.setBackground(null);
-            buttonClient.setBackground(Color.blue);
-            
-            
-        }
+            this.setContentPane(c);}
         else if (m == Menu.ACHAT)
         {
             fermerMenu();
@@ -182,11 +164,6 @@ public class GUI extends JFrame implements ActionListener
             Container c = this.getContentPane();
             c.add(this.menuOuvert, BorderLayout.CENTER);
             this.setContentPane(c);
-            buttonVente.setBackground(null);
-            buttonClient.setBackground(null);
-            buttonPromo.setBackground(null);
-            buttonProduit.setBackground(null);
-            buttonAchat.setBackground(Color.blue);
         }
         else if (m == Menu.VENTE)
         {
@@ -195,12 +172,6 @@ public class GUI extends JFrame implements ActionListener
             Container c = this.getContentPane();
             c.add(this.menuOuvert, BorderLayout.CENTER);
             this.setContentPane(c);
-            buttonClient.setBackground(null);
-            buttonPromo.setBackground(null);
-            buttonProduit.setBackground(null);
-            buttonAchat.setBackground(null);
-            buttonPromo.setBackground(null);
-            buttonVente.setBackground(Color.blue);
         }
         
         else if (m == Menu.PROMO)
@@ -210,13 +181,6 @@ public class GUI extends JFrame implements ActionListener
             Container c = this.getContentPane();
             c.add(this.menuOuvert, BorderLayout.CENTER);
             this.setContentPane(c);
-            buttonVente.setBackground(null);
-            buttonClient.setBackground(null);
-            buttonClient.setBackground(null);
-            buttonPromo.setBackground(null);
-            buttonAchat.setBackground(null);
-            buttonProduit.setBackground(null);
-            buttonPromo.setBackground(Color.blue);
         }
         else
             throw new UnsupportedOperationException("Le programme ne gère pas ce menu.");

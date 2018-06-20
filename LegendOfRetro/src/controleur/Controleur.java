@@ -97,10 +97,6 @@ public class Controleur
         String type = f.getType();
         float prix = f.getPrix();
         int stock = f.getStock();
-        if (prix <= 0f)
-            throw new DonneeInvalideException("Erreur : le prix ne peut pas être négatif ou nul.");
-        if (stock < 0)
-            throw new DonneeInvalideException("Erreur : le stock ne peut pas être négatif.");
 
         if ("Console".equals(type))
         {
@@ -255,7 +251,14 @@ public class Controleur
             //mise à jour de la version de console dans la base de données
             VersionConsole vc = chercherVersionConsole(ligneConsole.getId().getIdVersionConsole());
             vc.getLigneFactureConsoles().add(ligneConsole);
-            int nouveauStock = vc.getStock() - ligneConsole.getQuantite();
+            
+            int nouveauStock= (new Character('v').equals(facture.getTypeFacture()))?
+                    vc.getStock() - ligneConsole.getQuantite() :
+                    vc.getStock() + ligneConsole.getQuantite();
+            if (nouveauStock < 0)
+                throw new DonneeInvalideException("Impossible de créer la ligne : le stock obtenu est négatif.");
+            vc.setStock(nouveauStock);
+            
             if (nouveauStock < 0)
                 throw new DonneeInvalideException("Impossible de créer la ligne : le stock obtenu est négatif.");
             vc.setStock(nouveauStock);
@@ -299,10 +302,14 @@ public class Controleur
             //mise à jour de la version de jeu dans la base de données
             VersionJeu vj = chercherVersionJeu(ligneJeu.getId().getIdVersionJeu());
             vj.getLigneFactureJeus().add(ligneJeu);
-            int nouveauStock = vj.getStock() - ligneJeu.getQuantite();
+            
+            int nouveauStock= (new Character('v').equals(facture.getTypeFacture()))?
+                    vj.getStock() - ligneJeu.getQuantite() :
+                    vj.getStock() + ligneJeu.getQuantite();
             if (nouveauStock < 0)
                 throw new DonneeInvalideException("Impossible de créer la ligne : le stock obtenu est négatif.");
             vj.setStock(nouveauStock);
+            
             modele.beginTransaction();
             modele.save(facture);
             modele.getTransaction().commit();
@@ -617,6 +624,10 @@ public class Controleur
             if (cb == null || "".equals(cb))
                     throw new DonneesInsuffisantesException(
                             "Impossible de créer la version de console : veuillez entrer un code barre.");
+            if (prix <= 0f)
+                throw new DonneeInvalideException("Erreur : le prix ne peut pas être négatif ou nul.");
+            if (stock < 0)
+                throw new DonneeInvalideException("Erreur : le stock ne peut pas être négatif.");
 
             //on détermine l'identifiant de la console
             Console console = chercherConsole(nomConsole, nomFabr);
@@ -708,6 +719,10 @@ public class Controleur
             if (cb == null || "".equals(cb))
                     throw new DonneesInsuffisantesException(
                             "Impossible de créer la version de jeu : veuillez entrer un code barre.");
+            if (prix <= 0f)
+                throw new DonneeInvalideException("Erreur : le prix ne peut pas être négatif ou nul.");
+            if (stock < 0)
+                throw new DonneeInvalideException("Erreur : le stock ne peut pas être négatif.");
 
             //on détermine l'identifiant du jeu
             Jeu jeu = chercherJeu(nomJeu, tags, nomEditeur);
@@ -894,6 +909,8 @@ public class Controleur
         if ("".equals(nomPays)) //si le nom de du pays n'est pas saisi
             throw new DonneesInsuffisantesException("Impossible de créer le pays : un nom est requis."); //vérifier le code appelant.
 
+        nomPays = normalize(nomPays);        
+        
         //on vérifie que le pays n'existe pas déjà !
         Pays existant = chercherPays(nomPays);
         if (existant != null)
@@ -930,6 +947,10 @@ public class Controleur
         if ("".equals(nomVille) || "".equals(cp) || "".equals(nomPays))
             throw new DonneesInsuffisantesException("Impossible de créer la ville : un nom, un code postal et un pays sont requis.");
 
+        nomVille = normalize(nomVille);
+        cp = normalize(cp);
+        nomPays = normalize(nomPays);
+        
         //on détermine l'identifiant du pays
         Pays pays = chercherPays(nomPays);
         if (pays == null)
@@ -1761,10 +1782,10 @@ public class Controleur
         String ville = normalize(form.getVille());
         String pays = normalize(form.getPays());
         
-        if ("".equals(nom) && "".equals(prenom) && "".equals(societe)){
+       /* if ("".equals(nom) && "".equals(prenom) && "".equals(societe)){
             throw new DonneesInsuffisantesException(
                     "Erreur lors de la recherche du client/fournisseur : le nom, le prenom ou la société doivent être renseignés.");
-        }
+        }*/
         
         HQLRecherche query = new HQLRecherche("LOREntities.Personne pers");
                
@@ -1780,7 +1801,7 @@ public class Controleur
             if (!"".equals(ville))
                 query.addCondition("pers.ville.nomVille", ville, HQLRecherche.Operateur.EGAL);
         }
-     
+        System.out.println(query.toString());
         List resultats = modele.createQuery(query.toString()).list();
         modele.flush();
 
@@ -1796,7 +1817,9 @@ public class Controleur
             pf.setSociete(personneBDD.getSociete());
             pf.setAdresse(personneBDD.getAdresse());
             pf.setMail(personneBDD.getMail());
-            pf.setDateNaissance(formateDateToGui(personneBDD.getDeDeNaissance()));
+            Date naissance = personneBDD.getDeDeNaissance();
+            if (naissance != null)
+                pf.setDateNaissance(formateDateToGui(naissance));
             pf.setTelephone(personneBDD.getTelephone());
             pf.setVille(personneBDD.getVille().getNomVille());
             pf.setCodePostal(personneBDD.getVille().getCp());
@@ -2469,7 +2492,7 @@ public class Controleur
             textToWrite = textToWrite + sl;
            
         //information entreprise
-        for (String sl : formater("Entreprise : " + nomEntreprise, "", largeurFacture, 0, ' '))
+        for (String sl : formater("Entreprise : " + nomEntreprise, "", largeurFacture-3, 0, ' '))
             textToWrite = textToWrite + sl;
 
         //TODO: informations client/fourn
@@ -2496,7 +2519,7 @@ public class Controleur
             for (String sl : formater(
                     vc.getConsole().getNomConsole() + " x" + quantite,
                     vc.getPrix() * quantite + "€",
-                    largeurFacture, 6, '.'))
+                    largeurFacture+3, 6, '.'))
                 textToWrite = textToWrite + sl;
         }
         for (Object o : facture.getLigneFactureJeus())
@@ -2506,7 +2529,7 @@ public class Controleur
                     ((LigneFactureJeu) o).getId().getIdVersionJeu());
             for (String sl : formater(vj.getJeu().getNomJeu() + " x" + quantite,
                     vj.getPrix() * quantite + "€",
-                    largeurFacture, 6, '.'))
+                    largeurFacture+3, 6, '.'))
                 textToWrite = textToWrite + sl;
         }
         
@@ -2520,7 +2543,7 @@ public class Controleur
 
         //réduction
         for (String sl : formater("REDUCTIONS", "-" + ((Float) facture.getReduction()).toString() + "€",
-                largeurFacture, 0, '.'))
+                largeurFacture-1, 0, '.'))
             textToWrite = textToWrite + sl;
             
         //ligne du total
