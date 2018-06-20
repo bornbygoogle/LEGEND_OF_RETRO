@@ -17,17 +17,13 @@ import bean.PromoForm;
 import hibernateConfig.HibernateUtil;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -39,6 +35,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import org.hibernate.*;
 import vue.GUI;
 import static vue.critProduit.labelPhoto;
@@ -51,7 +57,7 @@ import static vue.critProduit.labelPhoto;
 public class Controleur
 {
     private static final float TVA = 1.2f;
-    private static final int largeurFacture = 43;
+    private static final int largeurFacture = 80;
     private static final String nomEntreprise = "Legend Of Retro";
     private GUI vue; //utilisé pour communiquer avec l'affichage
     private static Session modele; //session hibernate
@@ -2438,19 +2444,19 @@ public class Controleur
      */
     private void exporter(Facture facture) throws IOException
     {
-        String adresseFichier = "facture_numero_" + facture.getIdFacture() + ".fac";
+        String adresseFichier = "facture_numero_" + facture.getIdFacture() + ".pdf";
         File fichier = new File(adresseFichier);
         if (fichier.exists())
             throw new IOException("Erreur lors de l'export de la facture : le fichier "
                     + adresseFichier + " existe déjà.");
-        FileWriter fw = new FileWriter(fichier);
-        
+        String textToWrite = "";
         String ligneCourante;
         
         //ligne du haut
         for (int i = 0 ; i < largeurFacture ; i++)
-            fw.write('-');
-        fw.write("\n");
+            textToWrite = textToWrite + "-";
+
+        textToWrite = textToWrite + "\n";
         //En-ête : informations facture
         ligneCourante = "Facture ";
         if (facture.getTypeFacture() == 'a')
@@ -2460,23 +2466,27 @@ public class Controleur
         ligneCourante = ligneCourante.concat("numéro " + facture.getIdFacture());
         //écriture
         for (String sl : formater(ligneCourante, "", largeurFacture, 0, ' '))
-            fw.write(sl);
+            textToWrite = textToWrite + sl;
+           
         //information entreprise
         for (String sl : formater("Entreprise : " + nomEntreprise, "", largeurFacture, 0, ' '))
-            fw.write(sl);
+            textToWrite = textToWrite + sl;
+
         //TODO: informations client/fourn
         if (facture.getTypeFacture() == 'a')
             ligneCourante = "Fournisseur : ";
         else if (facture.getTypeFacture() == 'v')
             ligneCourante = "Client : ";
         ligneCourante  =ligneCourante.concat("#TODO");
-        
-        
+            
         //ligne du milieu haut
-        fw.write('|');
+        textToWrite = textToWrite + "|";
+
         for (int i = 1 ; i < largeurFacture - 1 ; i++)
-            fw.write('-');
-        fw.write("|\n");
+            textToWrite = textToWrite + "-";
+            
+        textToWrite = textToWrite + "|\n";
+
         //lignes de la facture : d'abord consoles, puis jeux
         for (Object o : facture.getLigneFactureConsoles())
         {
@@ -2487,7 +2497,7 @@ public class Controleur
                     vc.getConsole().getNomConsole() + " x" + quantite,
                     vc.getPrix() * quantite + "€",
                     largeurFacture, 6, '.'))
-                fw.write(sl);
+                textToWrite = textToWrite + sl;
         }
         for (Object o : facture.getLigneFactureJeus())
         {
@@ -2497,29 +2507,37 @@ public class Controleur
             for (String sl : formater(vj.getJeu().getNomJeu() + " x" + quantite,
                     vj.getPrix() * quantite + "€",
                     largeurFacture, 6, '.'))
-                fw.write(sl);
+                textToWrite = textToWrite + sl;
         }
         
         //ligne du milieu bas
-        fw.write('|');
+        textToWrite = textToWrite + "|";
+
         for (int i = 1 ; i < largeurFacture - 1 ; i++)
-            fw.write('-');
-        fw.write("|\n");
+            textToWrite = textToWrite + "-";
+            
+        textToWrite = textToWrite + "|\n";
+
         //réduction
         for (String sl : formater("REDUCTIONS", "-" + ((Float) facture.getReduction()).toString() + "€",
                 largeurFacture, 0, '.'))
-            fw.write(sl);
+            textToWrite = textToWrite + sl;
+            
         //ligne du total
         for (String sl : formater("TOTAL TTC", ((Float) facture.getPrixTtc()).toString() + "€",
                 largeurFacture, 0, '.'))
-            fw.write(sl);
+            textToWrite = textToWrite + sl;
         
         //ligne du bas (fin)
         for (int i = 0 ; i < largeurFacture ; i++)
-            fw.write('-');
-        fw.write("\n");
-        
-        fw.close();
+            textToWrite = textToWrite + "-";
+            
+        textToWrite = textToWrite + "\n";
+       
+        if ((adresseFichier.equals("")) || (textToWrite.equals("")))
+            System.out.println("Erreur system, Facture ne peut pas etre cree !");
+        else 
+            generatePDF(adresseFichier,textToWrite);
     }
     
     /**
@@ -2898,6 +2916,29 @@ public class Controleur
         return s;
     }
     
+    private static final void generatePDF(String nomFacture, String text) {		
+		// You can change the File Path accordingly
+		File file = new File(nomFacture);
+		FileOutputStream fos = null;		
+		try {
+			fos = new FileOutputStream(file);
+			// Defining Document Object
+			Document document = new Document();
+			PdfWriter.getInstance(document, fos);
+			document.open();
+			// Adding the Paragraph
+			document.add(new Paragraph(text));
+			document.close();
+			System.out.println("PDF Generated Successfully...");
+		} catch (FileNotFoundException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		} catch (DocumentException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
     /**
      * Démarre l'application
      * args x

@@ -423,7 +423,9 @@ public class critPromo extends javax.swing.JPanel
     private void buttonChercherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChercherActionPerformed
         // TODO add your handling code here:
      try {
-            this.parent.lancerRecherche(toForm());}
+            this.parent.lancerRecherche(toForm());
+            //this.controleur.generatePDF("Hello Wirld !!! \n texte forllow me !!");
+     }
         catch (DonneeInvalideException ex) {
             this.parent.afficherErreur(ex);
         }
