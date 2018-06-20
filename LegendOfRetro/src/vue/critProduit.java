@@ -520,9 +520,9 @@ public class critProduit extends javax.swing.JPanel
         this.fieldEditeur.setText("");
         this.fieldEdition.setText("");
         this.fieldNom.setText("");
-        this.fieldPrix.setValue("");
-        this.fieldStock.setValue("");
-        this.fieldCote.setText("");
+        this.fieldPrix.setValue(String.format("%.2f", 0.0f));
+        this.fieldStock.setText("0");
+        this.fieldCote.setText(String.format("%.2f", 0.0f));
         this.fieldTag.setText("");
         this.fieldTxtAjoutZone.setText("");
         this.labelPhoto.setIcon(null);

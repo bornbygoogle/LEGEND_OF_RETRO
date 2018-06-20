@@ -14,6 +14,7 @@ import controleur.EnregistrementExistantException;
 import controleur.EnregistrementInexistantException;
 import controleur.ResultatInvalideException;
 import java.awt.BorderLayout;
+import java.text.ParseException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -109,7 +110,7 @@ public class menuPersonne extends JPanel implements Chercheur
         
         this.menuAppelant.selectionnerPersonne((PersonneForm) f);
     }
-    public void creer(PersonneForm pf)
+    public void creer(PersonneForm pf) throws DonneeInvalideException
     {
         try {
             this.afficherLog(this.controleur.creer(pf).toString());

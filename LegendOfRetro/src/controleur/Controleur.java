@@ -17,17 +17,13 @@ import bean.PromoForm;
 import hibernateConfig.HibernateUtil;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -39,6 +35,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import org.hibernate.*;
 import vue.GUI;
 import static vue.critProduit.labelPhoto;
@@ -51,7 +57,7 @@ import static vue.critProduit.labelPhoto;
 public class Controleur
 {
     private static final float TVA = 1.2f;
-    private static final int largeurFacture = 43;
+    private static final int largeurFacture = 80;
     private static final String nomEntreprise = "Legend Of Retro";
     private GUI vue; //utilisé pour communiquer avec l'affichage
     private static Session modele; //session hibernate
@@ -122,7 +128,7 @@ public class Controleur
 
         return rapport;
     }
-    public Rapport creer(PersonneForm form) throws DonneesInsuffisantesException, EnregistrementExistantException, EnregistrementInexistantException
+    public Rapport creer(PersonneForm form) throws DonneesInsuffisantesException, EnregistrementExistantException, EnregistrementInexistantException, DonneeInvalideException
     {
         Rapport rapport = new Rapport();
         
@@ -769,7 +775,7 @@ public class Controleur
     
     
     /**
-     * Crée une personne. Assure l'unicité de l'enregistrement.
+     * Crée une personne. Le nom, prénom et le téléphone assure l'unicité de l'enregistrement.
      * @param  rapport-une variable de type Rapport qui est utilisé pour retourner une réponse dans l'interface graphique
      * @param pNomPersonne
      * @param pPrenomPersonne
@@ -778,17 +784,20 @@ public class Controleur
      * @param pDateNaissance
      * @param pPays
      * @param pVille
+     * @param pCP
      * @param pTelephone
      * @param pMail
      * @throws DonneesInsuffisantesException si l'utilisateur rentre des données insufisantes
      * @throws EnregistrementExistantException si la valeur entrée existe deja dans la base de données
      * @return un objet de type personne qui contien des attributs qui appartient à la classe Personne (voir See Also)
+     * @throws controleur.EnregistrementInexistantException
+     * @throws controleur.DonneeInvalideException
      * @see LOREntities.Personne
      */
     protected Personne creerPersonne(Rapport rapport, String pNomPersonne, String pPrenomPersonne,
             String pSociete, String pAdresse,String pDateNaissance,
             String pPays, String pVille, String pCP, String pTelephone, String pMail)
-            throws DonneesInsuffisantesException, EnregistrementExistantException, EnregistrementInexistantException
+            throws DonneesInsuffisantesException, EnregistrementExistantException, EnregistrementInexistantException, DonneeInvalideException
     {
         //on vérifie que les critères minimaux sont présents
         if ("".equals(pNomPersonne) || "".equals(pPrenomPersonne) || "".equals(pTelephone))
@@ -797,7 +806,7 @@ public class Controleur
         
         //on vérifie que la personne n'existe pas déjà !
         //remarque : critère d'unicité : nom, prénom, téléphone
-        Personne personneExistante = chercherPersonne(pNomPersonne,pNomPersonne,pTelephone);
+        Personne personneExistante = chercherPersonne(pNomPersonne,pPrenomPersonne,pTelephone);
         if (personneExistante != null){
             throw new EnregistrementExistantException(
                     "Impossible de créer cette personne : cette personne existe déjà.");
@@ -817,23 +826,39 @@ public class Controleur
         personne.setTelephone(pTelephone);
         personne.setVille(opville);
         personne.setDeDeNaissance(formateDateToBDD(pDateNaissance));
-        personne.setMail(pMail);
+        
+        /**
+        *Test que le formatage de la date de naissance s'est bien passé -> il faut que l'utilisateur
+        *entre la date de naissance au bon format (ex: 17-06-1980
+        */
+        if(formateDateToBDD(pDateNaissance)==null){
+            throw new DonneeInvalideException("Merci d'écrire la date sous forme 17-06-2018");
+            
+        }
+        
+        
+        else{
+             personne.setMail(pMail);
+                
 
-        //création de l'enregistrement dans la table Personne
-        modele.beginTransaction();
-        modele.save(personne);
-        modele.getTransaction().commit();
-        modele.flush();
+            //création de l'enregistrement dans la table Personne
+            modele.beginTransaction();
+            modele.save(personne);
+            modele.getTransaction().commit();
+            modele.flush();
 
-        rapport.addOperation(personne.getIdPersonne(), Rapport.Table.PERSONNE, Rapport.Operation.CREER);
+            rapport.addOperation(personne.getIdPersonne(), Rapport.Table.PERSONNE, Rapport.Operation.CREER);
 
 
 
-        return personne;
+            return personne;
+        }
     }
     
     /**
-     * Formate une date format base de données en string pour la gui. 
+     * Formate une date au format base de données en string pour la gui. 
+     * @param pDate
+     * @return
      */
     
     public String formateDateToGui(Date pDate){
@@ -843,7 +868,9 @@ public class Controleur
     }
     
     /**
-     * Formate une date type string en objet date (avec le formatcorrect) pour la base de données. 
+     * Formate une date type string en objet date (avec le format correct) pour la base de données. 
+     * @param pDate
+     * @return 
      */
     
     public Date formateDateToBDD(String pDate) {
@@ -852,21 +879,25 @@ public class Controleur
         
         if(!"".equals(pDate)){       
          
-            //format BDD YYYY-MM-JJ = 2018-06-07 = 2018 Juin 07
-            SimpleDateFormat formatBDD = new SimpleDateFormat("JJ-MM-YYYY");
-            try { 
+            
+            try {
+                //format BDD YYYY-MM-JJ = 2018-06-07 = 2018 Juin 07
+                SimpleDateFormat formatBDD = new SimpleDateFormat("dd-MM-yyyy");
+                
                 fDate = formatBDD.parse(pDate);
             } catch (ParseException ex) {
-                System.out.println("Merci d'écrire la date sous forme JJ-MM-YYYY");
+                Logger.getLogger(Controleur.class.getName()).log(Level.SEVERE, null, ex);
             }
+     
+            
         }
         
         return fDate;
     }
     
+    /** * 
     /**
      * Crée un pays. Assure l'unicité de l'enregistrement.
-     * @param rapport le rapport dans lequel l'opération sera enregistrée
      * @param nomPays le nom exact du pays à créer
      * @throws DonneesInsuffisantesException si l'utilisateur rentre des données insufisantes
      * @throws EnregistrementExistantException si la valeur entrée existe deja dans la base de données
@@ -878,6 +909,8 @@ public class Controleur
         if ("".equals(nomPays)) //si le nom de du pays n'est pas saisi
             throw new DonneesInsuffisantesException("Impossible de créer le pays : un nom est requis."); //vérifier le code appelant.
 
+        nomPays = normalize(nomPays);        
+        
         //on vérifie que le pays n'existe pas déjà !
         Pays existant = chercherPays(nomPays);
         if (existant != null)
@@ -900,7 +933,7 @@ public class Controleur
     /**
      * Crée une ville.
      * @param nomVille le nom exact de la ville à créer
-     * @param CP le code postal de la ville à créer
+     * @param cp
      * @param nomPays le nom exact du pays auquel appartient la ville
      * @throws DonneesInsuffisantesException si l'utilisateur rentre de données insufisantes
      * @throws EnregistrementExistantException si la valeur entre existe deja dans la base de données
@@ -914,6 +947,10 @@ public class Controleur
         if ("".equals(nomVille) || "".equals(cp) || "".equals(nomPays))
             throw new DonneesInsuffisantesException("Impossible de créer la ville : un nom, un code postal et un pays sont requis.");
 
+        nomVille = normalize(nomVille);
+        cp = normalize(cp);
+        nomPays = normalize(nomPays);
+        
         //on détermine l'identifiant du pays
         Pays pays = chercherPays(nomPays);
         if (pays == null)
@@ -1068,6 +1105,7 @@ public class Controleur
         String zone = form.getZone();
         String editeur = normalize(form.getEditeur());
         String description = form.getDescription();
+        String photo = form.getPhoto();
         Vector<String> tags = stringToVector(normalize(form.getTags()).replace(" ", ""), ',');
         String plateforme = form.getPlateforme();
         Float cote = 0.0f;
@@ -1077,10 +1115,6 @@ public class Controleur
         {
             for (VersionConsole enr : chercherVersionsConsolePromo(edition, zone, editeur))
             {
-                /*if (enr.getIdVersionConsole()<1) cote = 0.0f;
-                else 
-                {   System.out.println(enr.getIdVersionConsole());
-                    cote = getCoteProduct("Console", enr.getIdVersionConsole());}*/
                 // Vérifier s'il y a pas deja une promo sur ce VersionConsole
                 float prixbase = enr.getPrix();
                 float prix = enr.getPrix();
@@ -1113,7 +1147,7 @@ public class Controleur
                 else { idPromo = 0; }
                 ret.add(new PromoForm(idPromo,-1, enr.getIdVersionJeu(), "Jeu",
                     enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
-                    enr.getJeu().getEditeur().getNomEditeur(), ""/*Photo*/, enr.getJeu().getDescriptionJeu(),
+                    enr.getJeu().getEditeur().getNomEditeur(), enr.getJeu().getPhotoJeu(), enr.getJeu().getDescriptionJeu(),
                     decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
                     prixbase, prix, enr.getStock(), getCoteProduct(type, enr.getIdVersionJeu())));
             }
@@ -1697,12 +1731,12 @@ public class Controleur
 
         if (resultats.isEmpty())
             return null;
-        else //on suppose qu'il n'y a qu'un seul résultat !
+        else 
             return (Tag) resultats.get(0);
     }
     
    /**
-     * Recherche le client/fournisseur dont le nom correspond parfaitement à la chaîne renseignée et/ou ayant le prenom renseigné.
+     * Recherche le client/fournisseur dont le nom, prénom et le téléphone correspondent parfaitement.
      *@param nomPers une variable de type String utilisé dans la methode .addCondition("pers.nom", nomPers, HQLRecherche.Operateur.LIKE) pour la recherche d'un client via son nom
      *@param prenomPers une variable de type String utilisé dans la methode query.addCondition("pers.prenom", prenomPers, HQLRecherche.Operateur.LIKE) pour la recherche d'un client via son prenom
      *@return un objet de type Personne,(voir See Also) qui est une classe.
@@ -1711,6 +1745,7 @@ public class Controleur
      */
     
    private Personne chercherPersonne(String nomPers, String prenomPers, String telephonePers) throws DonneesInsuffisantesException{
+     
        
         if ("".equals(nomPers) || "".equals(prenomPers) || "".equals(telephonePers)){
             throw new DonneesInsuffisantesException(
@@ -1747,10 +1782,10 @@ public class Controleur
         String ville = normalize(form.getVille());
         String pays = normalize(form.getPays());
         
-        if ("".equals(nom) && "".equals(prenom) && "".equals(societe)){
+       /* if ("".equals(nom) && "".equals(prenom) && "".equals(societe)){
             throw new DonneesInsuffisantesException(
                     "Erreur lors de la recherche du client/fournisseur : le nom, le prenom ou la société doivent être renseignés.");
-        }
+        }*/
         
         HQLRecherche query = new HQLRecherche("LOREntities.Personne pers");
                
@@ -1766,7 +1801,7 @@ public class Controleur
             if (!"".equals(ville))
                 query.addCondition("pers.ville.nomVille", ville, HQLRecherche.Operateur.EGAL);
         }
-     
+        System.out.println(query.toString());
         List resultats = modele.createQuery(query.toString()).list();
         modele.flush();
 
@@ -2508,19 +2543,19 @@ public class Controleur
      */
     private void exporter(Facture facture) throws IOException
     {
-        String adresseFichier = "facture_numero_" + facture.getIdFacture() + ".fac";
+        String adresseFichier = "facture_numero_" + facture.getIdFacture() + ".pdf";
         File fichier = new File(adresseFichier);
         if (fichier.exists())
             throw new IOException("Erreur lors de l'export de la facture : le fichier "
                     + adresseFichier + " existe déjà.");
-        FileWriter fw = new FileWriter(fichier);
-        
+        String textToWrite = "";
         String ligneCourante;
         
         //ligne du haut
         for (int i = 0 ; i < largeurFacture ; i++)
-            fw.write('-');
-        fw.write("\n");
+            textToWrite = textToWrite + "-";
+
+        textToWrite = textToWrite + "\n";
         //En-ête : informations facture
         ligneCourante = "Facture ";
         if (facture.getTypeFacture() == 'a')
@@ -2530,23 +2565,27 @@ public class Controleur
         ligneCourante = ligneCourante.concat("numéro " + facture.getIdFacture());
         //écriture
         for (String sl : formater(ligneCourante, "", largeurFacture, 0, ' '))
-            fw.write(sl);
+            textToWrite = textToWrite + sl;
+           
         //information entreprise
-        for (String sl : formater("Entreprise : " + nomEntreprise, "", largeurFacture, 0, ' '))
-            fw.write(sl);
+        for (String sl : formater("Entreprise : " + nomEntreprise, "", largeurFacture-3, 0, ' '))
+            textToWrite = textToWrite + sl;
+
         //TODO: informations client/fourn
         if (facture.getTypeFacture() == 'a')
             ligneCourante = "Fournisseur : ";
         else if (facture.getTypeFacture() == 'v')
             ligneCourante = "Client : ";
         ligneCourante  =ligneCourante.concat("#TODO");
-        
-        
+            
         //ligne du milieu haut
-        fw.write('|');
+        textToWrite = textToWrite + "|";
+
         for (int i = 1 ; i < largeurFacture - 1 ; i++)
-            fw.write('-');
-        fw.write("|\n");
+            textToWrite = textToWrite + "-";
+            
+        textToWrite = textToWrite + "|\n";
+
         //lignes de la facture : d'abord consoles, puis jeux
         for (Object o : facture.getLigneFactureConsoles())
         {
@@ -2556,8 +2595,8 @@ public class Controleur
             for (String sl : formater(
                     vc.getConsole().getNomConsole() + " x" + quantite,
                     vc.getPrix() * quantite + "€",
-                    largeurFacture, 6, '.'))
-                fw.write(sl);
+                    largeurFacture+3, 6, '.'))
+                textToWrite = textToWrite + sl;
         }
         for (Object o : facture.getLigneFactureJeus())
         {
@@ -2566,30 +2605,38 @@ public class Controleur
                     ((LigneFactureJeu) o).getId().getIdVersionJeu());
             for (String sl : formater(vj.getJeu().getNomJeu() + " x" + quantite,
                     vj.getPrix() * quantite + "€",
-                    largeurFacture, 6, '.'))
-                fw.write(sl);
+                    largeurFacture+3, 6, '.'))
+                textToWrite = textToWrite + sl;
         }
         
         //ligne du milieu bas
-        fw.write('|');
+        textToWrite = textToWrite + "|";
+
         for (int i = 1 ; i < largeurFacture - 1 ; i++)
-            fw.write('-');
-        fw.write("|\n");
+            textToWrite = textToWrite + "-";
+            
+        textToWrite = textToWrite + "|\n";
+
         //réduction
         for (String sl : formater("REDUCTIONS", "-" + ((Float) facture.getReduction()).toString() + "€",
-                largeurFacture, 0, '.'))
-            fw.write(sl);
+                largeurFacture-1, 0, '.'))
+            textToWrite = textToWrite + sl;
+            
         //ligne du total
         for (String sl : formater("TOTAL TTC", ((Float) facture.getPrixTtc()).toString() + "€",
                 largeurFacture, 0, '.'))
-            fw.write(sl);
+            textToWrite = textToWrite + sl;
         
         //ligne du bas (fin)
         for (int i = 0 ; i < largeurFacture ; i++)
-            fw.write('-');
-        fw.write("\n");
-        
-        fw.close();
+            textToWrite = textToWrite + "-";
+            
+        textToWrite = textToWrite + "\n";
+       
+        if ((adresseFichier.equals("")) || (textToWrite.equals("")))
+            System.out.println("Erreur system, Facture ne peut pas etre cree !");
+        else 
+            generatePDF(adresseFichier,textToWrite);
     }
     
     /**
@@ -2771,14 +2818,15 @@ public class Controleur
      * @param : String - url de la photo du jeu
      * @return : void
      */
-    public void setPhotoProduct(String urlPhotoJeu) throws IOException
+    public void setPhotoProduct(String urlPhotoJeu) throws MalformedURLException, IOException
     {
         try{
+            System.out.println("Link photo trong Controleur : "+urlPhotoJeu);
             URL url = new URL(urlPhotoJeu);
             BufferedImage img = ImageIO.read(url);
-            Image newimg = img.getScaledInstance(242, 128,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+            Image newimg = img.getScaledInstance(242, 128, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
             ImageIcon icon = new ImageIcon(newimg);
-            labelPhoto.setIcon(icon);
+            if (!icon.equals(null)) labelPhoto.setIcon(icon);
         }catch(MalformedURLException ex){
             labelPhoto.setText("Cant get photo !!!");
         }
@@ -2967,9 +3015,33 @@ public class Controleur
         return s;
     }
     
+    private static final void generatePDF(String nomFacture, String text) {		
+		// You can change the File Path accordingly
+		File file = new File(nomFacture);
+		FileOutputStream fos = null;		
+		try {
+			fos = new FileOutputStream(file);
+			// Defining Document Object
+			Document document = new Document();
+			PdfWriter.getInstance(document, fos);
+			document.open();
+			// Adding the Paragraph
+			document.add(new Paragraph(text));
+			document.close();
+			System.out.println("PDF Generated Successfully...");
+		} catch (FileNotFoundException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		} catch (DocumentException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
     /**
      * Démarre l'application
      * args x
+     * @param args
      */
     public static void main(String[] args)
     {
