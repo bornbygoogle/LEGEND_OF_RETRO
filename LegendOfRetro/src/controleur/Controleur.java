@@ -909,6 +909,8 @@ public class Controleur
         if ("".equals(nomPays)) //si le nom de du pays n'est pas saisi
             throw new DonneesInsuffisantesException("Impossible de créer le pays : un nom est requis."); //vérifier le code appelant.
 
+        nomPays = normalize(nomPays);        
+        
         //on vérifie que le pays n'existe pas déjà !
         Pays existant = chercherPays(nomPays);
         if (existant != null)
@@ -945,6 +947,10 @@ public class Controleur
         if ("".equals(nomVille) || "".equals(cp) || "".equals(nomPays))
             throw new DonneesInsuffisantesException("Impossible de créer la ville : un nom, un code postal et un pays sont requis.");
 
+        nomVille = normalize(nomVille);
+        cp = normalize(cp);
+        nomPays = normalize(nomPays);
+        
         //on détermine l'identifiant du pays
         Pays pays = chercherPays(nomPays);
         if (pays == null)
@@ -1776,10 +1782,10 @@ public class Controleur
         String ville = normalize(form.getVille());
         String pays = normalize(form.getPays());
         
-        if ("".equals(nom) && "".equals(prenom) && "".equals(societe)){
+       /* if ("".equals(nom) && "".equals(prenom) && "".equals(societe)){
             throw new DonneesInsuffisantesException(
                     "Erreur lors de la recherche du client/fournisseur : le nom, le prenom ou la société doivent être renseignés.");
-        }
+        }*/
         
         HQLRecherche query = new HQLRecherche("LOREntities.Personne pers");
                
@@ -1795,7 +1801,7 @@ public class Controleur
             if (!"".equals(ville))
                 query.addCondition("pers.ville.nomVille", ville, HQLRecherche.Operateur.EGAL);
         }
-     
+        System.out.println(query.toString());
         List resultats = modele.createQuery(query.toString()).list();
         modele.flush();
 
