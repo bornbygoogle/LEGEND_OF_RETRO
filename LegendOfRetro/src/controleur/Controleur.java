@@ -1118,10 +1118,9 @@ public class Controleur
                     prix = pctmp.getPrixPromoJeu();
                 }
                 else { idPromo = 0; }
-                photo = enr.getJeu().getPhotoJeu();
                 ret.add(new PromoForm(idPromo,-1, enr.getIdVersionJeu(), "Jeu",
                     enr.getCodeBarre(), enr.getJeu().getNomJeu(), enr.getEdition(), enr.getZone().getNomZone(),
-                    enr.getJeu().getEditeur().getNomEditeur(), photo, enr.getJeu().getDescriptionJeu(),
+                    enr.getJeu().getEditeur().getNomEditeur(), enr.getJeu().getPhotoJeu(), enr.getJeu().getDescriptionJeu(),
                     decriresToString(enr.getJeu().getDecrires(), ','), enr.getConsole().getNomConsole(),
                     prixbase, prix, enr.getStock(), getCoteProduct(type, enr.getIdVersionJeu())));
             }
@@ -2701,7 +2700,7 @@ public class Controleur
      * @param : String - url de la photo du jeu
      * @return : void
      */
-    public void setPhotoProduct(String urlPhotoJeu) throws IOException
+    public void setPhotoProduct(String urlPhotoJeu) throws MalformedURLException, IOException
     {
         try{
             System.out.println("Link photo trong Controleur : "+urlPhotoJeu);
@@ -2709,7 +2708,7 @@ public class Controleur
             BufferedImage img = ImageIO.read(url);
             Image newimg = img.getScaledInstance(242, 128, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
             ImageIcon icon = new ImageIcon(newimg);
-            labelPhoto.setIcon(icon);
+            if (!icon.equals(null)) labelPhoto.setIcon(icon);
         }catch(MalformedURLException ex){
             labelPhoto.setText("Cant get photo !!!");
         }
