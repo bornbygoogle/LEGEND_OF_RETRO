@@ -2306,6 +2306,7 @@ public class Controleur
                 PromoConsole newpc = new PromoConsole();
                 newpc.setVersionConsole(vc);
                 newpc.setPrixPromoConsole(prix);
+                System.out.println(calculCoteAPartirPrix(type,id,prix));
                 newpc.setCoteConsole(calculCoteAPartirPrix(type,id,prix));
                 //sauvegarde de la version de console
                 modele.beginTransaction();
@@ -2319,6 +2320,7 @@ public class Controleur
                 if (pc.getPrixPromoConsole() != prix)
                     pc.setPrixPromoConsole(prix);
                 pc.setIdPromoConsole(idPromo);
+                System.out.println(calculCoteAPartirPrix(type,id,prix));
                 pc.setCoteConsole(calculCoteAPartirPrix(type,id,prix));
                 //sauvegarde de la version de console
                 modele.beginTransaction();
@@ -2922,6 +2924,7 @@ public class Controleur
             int stockActuel = getStockProduct(typeProduit, idProduit);
             //Calculer cote
             cote = (float) Math.round(((frequentDeVente/stockActuel)*100) + Float.valueOf(nbreVente/10)) / 100;
+            System.out.println(cote);
             prixPromo = (float) Math.round(( getSellPrixProduct(typeProduit, idProduit) * cote * 100 )) / 100;
         }
         // Enregistrement le calcul de cote dans la BDD
@@ -2965,7 +2968,7 @@ public class Controleur
     public float calculCoteAPartirPrix(String typeProduit, Integer idProduit, Float prixPromo) throws EnregistrementInexistantException, DonneeInvalideException
     {
         
-        float cote = (float) Math.round(prixPromo/getSellPrixProduct(typeProduit, idProduit))*100 / 100;
+        float cote = prixPromo/getSellPrixProduct(typeProduit, idProduit);
         return cote;
     }
     /**

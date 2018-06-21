@@ -410,12 +410,9 @@ public class critPromo extends javax.swing.JPanel
             this.selectedForm = (PromoForm) f;
             setForm((PromoForm) this.selectedForm); //update affichage dans critProduit (normalement inutile)
             clean();
-        }
-        catch (DonneesInsuffisantesException ex) {this.parent.afficherErreur(ex);}
-        catch (DonneeInvalideException ex) {this.parent.afficherErreur(ex);} 
-        catch (EnregistrementInexistantException ex) {
-            Logger.getLogger(critPromo.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } 
+        catch (DonneesInsuffisantesException | DonneeInvalideException ex) {this.parent.afficherErreur(ex);} 
+        catch (EnregistrementInexistantException | IOException ex) {
             Logger.getLogger(critPromo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_buttonModifierActionPerformed
@@ -511,10 +508,10 @@ public class critPromo extends javax.swing.JPanel
             cote = Float.valueOf(fieldCote.getText());
         }
         catch (NumberFormatException nfe) {
-            prixbase = 0f;
-            prix = 0f;
+            prixbase = 0.00f;
+            prix = 0.00f;
             stock = 0;
-            cote = 0f;
+            cote = 0.00f;
         }
 
         return new PromoForm(this.idPromo,this.idVersionConsole, this.idVersionJeu,
