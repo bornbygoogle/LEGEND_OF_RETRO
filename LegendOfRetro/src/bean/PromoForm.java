@@ -5,13 +5,11 @@
  */
 package bean;
 
-import java.util.Vector;
-
 /**
  *
  * @author Adrien Marchand
  */
-public class PromoForm extends Form
+public class PromoForm extends ProduitForm
 {
     private int idPromo;
     private int idVersionConsole;

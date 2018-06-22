@@ -257,6 +257,9 @@
       </AccessibilityProperties>
     </Component>
     <Component class="javax.swing.JTextField" name="idField">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
       </AccessibilityProperties>
@@ -577,6 +580,9 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonSelectionnerActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="buttonSelectionner.setVisible(false);"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="dteNaiss">
       <Properties>
